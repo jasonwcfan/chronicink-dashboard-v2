@@ -9,3 +9,10 @@ class Pane extends Component {
         );
     }
 }
+
+Pane.propTypes = {
+    label: React.PropTypes.string.isRequired,
+    children: React.PropTypes.element.isRequired
+};
+
+export default Pane;

@@ -1,3 +1,4 @@
 import Tabs from './Tabs';
+import Pane from './Pane';
 
-export default Tabs;
+export { Tabs, Pane };

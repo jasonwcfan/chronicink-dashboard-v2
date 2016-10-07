@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 
 class Tabs extends Component {
-    constructor
-    getDefaultProps() {
-        return {
-            selected: 0
-        };
-    }
-
-    getInitialState() {
-        return {
+    constructor(props) {
+        super(props);
+        this.state = {
             selected: this.props.selected
         };
+
     }
 
     handleClick(index, event) {
@@ -59,6 +54,18 @@ class Tabs extends Component {
             </div>
         );
     }
+}
+
+Tabs.defaultProps = {
+    selected: 0
+};
+
+Tabs.propTypes = {
+    selected: React.PropTypes.number,
+    children: React.PropTypes.oneOfType([
+        React.PropTypes.array,
+        React.PropTypes.element
+    ])
 };
 
 export default Tabs;
