@@ -1,19 +1,21 @@
 import React from 'react';
 import Header from './header';
-import FollowersButton from './instagram/followers_button';
-import {Tabs, Pane} from './navigation';
+import {Tabs, Pane} from './navigation/Tabs';
 
 export default (props) => {
     return (
         <div>
             <Tabs selected={0}>
-                <Pane label="Tab 1">
+                <Pane label="Client Info">
                     <div>This is my tab 1 contents!</div>
                 </Pane>
-                <Pane label="Tab 2">
+                <Pane label="Booking Info">
                     <div>This is my tab 2 contents!</div>
                 </Pane>
-                <Pane label="Tab 3">
+                <Pane label="Calendar">
+                    <div>This is my tab 3 contents!</div>
+                </Pane>
+                <Pane label="Recommendations">
                     <div>This is my tab 3 contents!</div>
                 </Pane>
             </Tabs>

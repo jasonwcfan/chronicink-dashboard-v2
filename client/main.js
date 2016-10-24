@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import App from './components/app';
-import FollowersButton from './components/instagram/followers_button';
 import IntakeForm from './components/intake';
 
 const routes = (
     <Router history={browserHistory}>
         <Route path="/" component={App}>
-            <Route path="access_token" component={FollowersButton} />
             <Route path="intake" component={IntakeForm} />
         </Route>
     </Router>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Tabs from '../navigation';
+import Tabs from '../navigation/Tabs';
 
 class IntakeForm extends Component {
     render() {
