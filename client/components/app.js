@@ -1,9 +1,17 @@
 import React from 'react';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Header from './header';
 import IntakeForm from './intake';
 
+injectTapEventPlugin();
+
 export default (props) => {
     return (
-        <IntakeForm />
+        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+            <IntakeForm />
+        </MuiThemeProvider>
     );
 }
