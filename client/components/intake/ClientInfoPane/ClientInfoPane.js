@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
+import TextField from 'material-ui/TextField';
 
-class Pane extends Component {
+class ClientInfoPane extends Component {
     render() {
         return (
             <div>
-                Client info here
+                <TextField hintText="First Name"></TextField>
             </div>
         );
     }
 }
 
-Pane.propTypes = {
+ClientInfoPane.propTypes = {
 
 };
 
-export default Pane;
+export default ClientInfoPane;
