@@ -1,20 +1,26 @@
 import React, { Component } from 'react';
-import Tabs from '../navigation/Tabs';
+import { Tabs, Pane } from '../navigation/Tabs';
+import ClientInfoPane from './ClientInfoPane';
 
 class IntakeForm extends Component {
     render() {
         return (
-            <Tabs />
+            <div>
+                <Tabs selected={0}>
+                    <ClientInfoPane label="Client Info" />
+                    <Pane label="Booking Info">
+                        <div>This is my tab 2 contents!</div>
+                    </Pane>
+                    <Pane label="Calendar">
+                        <div>This is my tab 3 contents!</div>
+                    </Pane>
+                    <Pane label="Recommendations">
+                        <div>This is my tab 3 contents!</div>
+                    </Pane>
+                </Tabs>
+            </div>
         );
     }
 }
 
-const styles = {
-    base: {
-        font: '300 14px/1.4 \'Helvetica Neue\', Helvetica, Arial, sans-serif',
-        background: '#eee',
-        margin: '0',
-        padding: '0'
-    }
-};
 export default IntakeForm;

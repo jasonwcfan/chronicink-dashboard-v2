@@ -7,7 +7,7 @@ import IntakeForm from './components/intake';
 const routes = (
     <Router history={browserHistory}>
         <Route path="/" component={App}>
-            <Route path="intake" component={IntakeForm} />
+            <Route path="intake" />
         </Route>
     </Router>
 );
