@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Radium from 'radium';
 
-@Radium
 class Tabs extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +19,7 @@ class Tabs extends Component {
 
     _renderContent() {
         return (
-            <div className="tabs_content">
+            <div className="tabs_content" style={styles.base.tabs_content}>
                 {this.props.children[this.state.selected]}
             </div>
         );
@@ -28,14 +27,14 @@ class Tabs extends Component {
 
     _renderTitles() {
         function labels(child, index) {
-            let activeClass = (this.state.selected === index ? 'active' : '');
+            let selectedStyle = (this.state.selected === index ? styles.selected.tabs_labels_li_a : null);
             return (
                 <li key={index} style={styles.base.tabs_labels_li}>
                     <a
                         href="#"
-                        className={activeClass}
+                        key={index}
                         onClick={this.handleClick.bind(this, index)}
-                        style={styles.base.tabs_labels_li_a}
+                        style={[styles.base.tabs_labels_li_a, selectedStyle]}
                     >
                         {child.props.label}
                     </a>
@@ -91,14 +90,18 @@ const styles = {
             display: 'block',
             color: '#444',
             textDecoration: 'none',
-            borderBottom: '2px solid #f5f5f5',
-            ':hover': {
-                background: '#337ab7'
-            }
+            borderBottom: '2px solid',
+            borderBottomColor: '#f5f5f5'
         },
-        tabs_labels_li_a_active: {},
-        tabs_content: {}
+        tabs_content: {
+            padding: '25px'
+        }
+    },
+    selected: {
+        tabs_labels_li_a: {
+            borderBottomColor: '#337ab7'
+        }
     }
 };
 
-export default Tabs;
+export default Radium(Tabs);
