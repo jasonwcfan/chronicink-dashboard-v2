@@ -3,20 +3,19 @@ import AppBar from 'material-ui/AppBar';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 import Slider from 'material-ui/Slider';
+import Paper from 'material-ui/Paper';
 import ClientInfoPane from './ClientInfoPane';
 import RaisedButton from 'material-ui/RaisedButton';
 
 class IntakeForm extends Component {
+
     render() {
         return (
-            <div>
+            <Paper zDepth={4}>
                 <AppBar title="Intake" />
-                <Tabs >
+                <Tabs>
                     <Tab label="Client Info">
-                        <div>
-                            <TextField hintText="First Name" />
-                            <Slider name="slider0" defaultValue={0.5} />
-                        </div>
+                        <ClientInfoPane />
                     </Tab>
                     <Tab label="Booking Info">
                         Booking Info Pane
@@ -40,7 +39,7 @@ class IntakeForm extends Component {
                         <div>This is my tab 4 contents!</div>
                     </Pane>
                 </Tabs> **/}
-            </div>
+            </Paper>
         );
     }
 }

@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 
+const style = {
+    padding: 5,
+};
+
 class ClientInfoPane extends Component {
     render() {
         return (
-            <div>
-                <TextField hintText="First Name"></TextField>
+            <div style={style}>
+                <TextField hintText="First Name" />
             </div>
         );
     }
