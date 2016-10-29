@@ -5,8 +5,8 @@ import App from './components/app';
 
 const routes = (
     <Router history={browserHistory}>
-        <Route path="/" component={App}>
-            <Route path="intake" />
+        <Route path='/' component={App}>
+            <Route path='intake' />
         </Route>
     </Router>
 );
