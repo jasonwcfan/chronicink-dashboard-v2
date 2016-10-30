@@ -20,6 +20,12 @@ class CountrySelector extends Component {
         this.setState({value});
     }
 
+    _filter(searchText, key) {
+        const lowerCaseSearchText = searchText.toLowerCase();
+        const lowerCaseKey = key.toLowerCase();
+        return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
+    }
+
     render() {
         return (
             <AutoComplete
@@ -27,6 +33,7 @@ class CountrySelector extends Component {
                 floatingLabelText='Country'
                 value={this.state.value}
                 dataSource={countries}
+                filter={this._filter}
             />
         )
     }

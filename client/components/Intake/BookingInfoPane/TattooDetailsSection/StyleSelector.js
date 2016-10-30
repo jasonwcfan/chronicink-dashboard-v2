@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
+import styles from '../../../../constants/styles';
 
 class StyleSelector extends Component {
     constructor() {
@@ -14,13 +15,19 @@ class StyleSelector extends Component {
         this.setState({value});
     }
 
+    _filter(searchText, key) {
+        const lowerCaseSearchText = searchText.toLowerCase();
+        const lowerCaseKey = key.toLowerCase();
+        return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
+    }
+
     render() {
         return (
             <AutoComplete
-                style={style}
-                floatingLabelText='Country'
+                floatingLabelText='Style'
                 value={this.state.value}
-                dataSource={countries}
+                dataSource={styles}
+                filter={this._filter}
             />
         )
     }

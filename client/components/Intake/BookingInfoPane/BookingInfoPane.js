@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import TattooDetailsSection from './TattooDetailsSection';
 
 const style = {
     container: {
-        padding: 10
+        padding: 5
     },
     group: {
         display: 'flex',
@@ -59,6 +60,7 @@ class BookingInfoPane extends Component {
                         style={style.item}
                     />
                 </RadioButtonGroup>
+                <TattooDetailsSection />
             </div>
         )
     }

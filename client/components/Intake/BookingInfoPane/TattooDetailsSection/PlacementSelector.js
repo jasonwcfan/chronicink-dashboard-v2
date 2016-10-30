@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
+import placements from '../../../../constants/placements';
 
 class PlacementSelector extends Component {
     constructor() {
@@ -14,13 +15,19 @@ class PlacementSelector extends Component {
         this.setState({value});
     }
 
+    _filter(searchText, key) {
+        const lowerCaseSearchText = searchText.toLowerCase();
+        const lowerCaseKey = key.toLowerCase();
+        return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
+    }
+
     render() {
         return (
             <AutoComplete
-                style={style}
-                floatingLabelText='Country'
+                floatingLabelText='Placement'
                 value={this.state.value}
-                dataSource={countries}
+                dataSource={placements}
+                filter={this._filter}
             />
         )
     }

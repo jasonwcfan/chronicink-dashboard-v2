@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Checkbox from 'material-ui/Checkbox';
-import conditions from './conditions';
+import conditions from '../../../../constants/conditions';
 
 const style = {
     container: {
