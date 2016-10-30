@@ -3,7 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
 import ClientInfoPane from './ClientInfoPane';
-import RaisedButton from 'material-ui/RaisedButton';
+import DepositPane from './DepositPane';
 
 class IntakeForm extends Component {
 
@@ -14,6 +14,9 @@ class IntakeForm extends Component {
                 <Tabs>
                     <Tab label='Client Info'>
                         <ClientInfoPane />
+                    </Tab>
+                    <Tab label='Deposit'>
+                        <DepositPane />
                     </Tab>
                     <Tab label='Booking Info'>
                         Booking Info Pane
