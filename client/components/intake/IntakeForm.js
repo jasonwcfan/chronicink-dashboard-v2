@@ -4,6 +4,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import Paper from 'material-ui/Paper';
 import ClientInfoPane from './ClientInfoPane';
 import DepositPane from './DepositPane';
+import BookingInfoPane from './BookingInfoPane';
 
 class IntakeForm extends Component {
 
@@ -19,7 +20,7 @@ class IntakeForm extends Component {
                         <DepositPane />
                     </Tab>
                     <Tab label='Booking Info'>
-                        Booking Info Pane
+                        <BookingInfoPane />
                     </Tab>
                     <Tab label='Calendar'>
                         Calendar Pane

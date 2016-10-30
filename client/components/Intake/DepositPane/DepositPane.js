@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import Checkbox from 'material-ui/Checkbox';
 
+const style = {
+    container: {
+        padding: 10
+    },
+    item: {
+        padding: 10
+    }
+};
+
 class DepositPane extends Component {
     render() {
         return (
-            <div>
+            <div style={style.container}>
                 <h3>Deposit Structure</h3><br />
                     Small – $80<br />
                     Medium – $150<br />
@@ -30,6 +39,9 @@ class DepositPane extends Component {
 
                             <h4>UNDER 18 POLICY</h4>
                             If you are under 18 years old (for tattooing) or 17 years old (for piercing), we ask that you bring your Parent or Legal Guardian along to fill out the form below at the time of booking. The Parent or Guardian must be present when you are receiving your tattoo/piercing and present government issued identification.
+                <Checkbox style={style.item} label="I have read and accept the disclaimer"/>
+                <Checkbox style={style.item} label="Yes, I would like to leave a deposit" />
+                <Checkbox style={style.item} label="I would like to subscribe to the newsletter" />
             </div>
         );
     }
