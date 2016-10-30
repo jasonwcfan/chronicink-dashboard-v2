@@ -9,10 +9,6 @@ const style = {
         marginLeft: 5,
         marginRight: 5
     },
-    datePicker: {
-        marginLeft: 5,
-        marginRight: 5
-    },
     radioGroup: {
         display: 'flex',
         justifyContent: 'flex-start',
@@ -53,7 +49,7 @@ class TattooDetailsSection extends Component {
                 <TextField style={style.textField} floatingLabelText="Skin Tone" fullWidth={true} multiLine={true} /><br />
                 <TextField style={style.textField} floatingLabelText="Subject" fullWidth={true} multiLine={true} /><br />
                 <TextField style={style.textField} floatingLabelText="Feel" fullWidth={true} multiLine={true} /><br />
-                <TextField style={style.textField} floatingLabelText="Background" fullWidth={true} multiLine={true} />
+                <TextField style={style.textField} floatingLabelText="Background" fullWidth={true} multiLine={true} /><br />
             </div>
         )
     }
