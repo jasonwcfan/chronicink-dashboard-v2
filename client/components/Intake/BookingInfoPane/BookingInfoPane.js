@@ -6,9 +6,12 @@ const style = {
         padding: 10
     },
     group: {
-        display: 'flex'
+        display: 'flex',
+        flexDirection: 'row',
+        maxWidth: 250
     },
     item: {
+        display: 'inline',
         padding: 10
     }
 };
@@ -18,7 +21,7 @@ class BookingInfoPane extends Component {
         return (
             <div style={style.container}>
                 <h2>Studio</h2>
-                <RadioButtonGroup name='studio' defaultSelected='toronto'>
+                <RadioButtonGroup style={style.group} name='studio' defaultSelected='toronto'>
                     <RadioButton
                         value='toronto'
                         label='Toronto'
@@ -31,7 +34,7 @@ class BookingInfoPane extends Component {
                     />
                 </RadioButtonGroup>
                 <h2>Custom Piece?</h2>
-                <RadioButtonGroup name='customPiece' defaultSelected='yes'>
+                <RadioButtonGroup style={style.group}name='customPiece' defaultSelected='yes'>
                     <RadioButton
                         value='yes'
                         label='Yes'
@@ -44,7 +47,7 @@ class BookingInfoPane extends Component {
                     />
                 </RadioButtonGroup>
                 <h2>Coverup?</h2>
-                <RadioButtonGroup name='coverup' defaultSelected='no'>
+                <RadioButtonGroup style={style.group}name='coverup' defaultSelected='no'>
                     <RadioButton
                         value='yes'
                         label='Yes'

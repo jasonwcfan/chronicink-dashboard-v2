@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
-import countries from '../../../../constants/countries';
 
-const style = {
-    marginLeft: 5,
-    marginRight: 5
-};
-
-class CountrySelector extends Component {
+class PlacementSelector extends Component {
     constructor() {
         super();
         this.state = {
@@ -32,4 +26,4 @@ class CountrySelector extends Component {
     }
 }
 
-export default CountrySelector;
+export default PlacementSelector;

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import provinces from './provinces';
-import states from './states';
+import provinces from '../../../../constants/provinces';
+import states from '../../../../constants/states';
 
 const style = {
     marginLeft: 5,
