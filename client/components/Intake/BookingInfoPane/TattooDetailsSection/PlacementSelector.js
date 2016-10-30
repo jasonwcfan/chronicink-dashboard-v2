@@ -3,6 +3,10 @@ import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
 import placements from '../../../../constants/placements';
 
+const style = {
+    display: 'block'
+};
+
 class PlacementSelector extends Component {
     constructor() {
         super();
@@ -28,6 +32,7 @@ class PlacementSelector extends Component {
                 value={this.state.value}
                 dataSource={placements}
                 filter={this._filter}
+                style={style}
             />
         )
     }

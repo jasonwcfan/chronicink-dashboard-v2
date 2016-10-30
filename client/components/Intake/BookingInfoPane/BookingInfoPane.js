@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import TattooDetailsSection from './TattooDetailsSection';
 import RateSection from './RateSection';
+import BookingsSection from './BookingsSection';
 
 const style = {
     container: {
@@ -63,6 +64,7 @@ class BookingInfoPane extends Component {
                 </RadioButtonGroup>
                 <TattooDetailsSection />
                 <RateSection />
+                <BookingsSection />
             </div>
         )
     }

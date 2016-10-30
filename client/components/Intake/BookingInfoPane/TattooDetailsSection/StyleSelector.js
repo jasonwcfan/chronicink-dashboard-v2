@@ -3,6 +3,10 @@ import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
 import styles from '../../../../constants/styles';
 
+const style = {
+    display: 'block'
+};
+
 class StyleSelector extends Component {
     constructor() {
         super();
@@ -28,6 +32,7 @@ class StyleSelector extends Component {
                 value={this.state.value}
                 dataSource={styles}
                 filter={this._filter}
+                style={style}
             />
         )
     }

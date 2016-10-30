@@ -6,6 +6,7 @@ import PlacementSelector from './PlacementSelector';
 
 const style = {
     textField: {
+        display: 'block',
         marginLeft: 5,
         marginRight: 5
     },
@@ -17,7 +18,7 @@ const style = {
     radioButton: {
         display: 'inline-block',
         padding: 10,
-    }
+    },
 };
 
 class TattooDetailsSection extends Component {
@@ -25,8 +26,8 @@ class TattooDetailsSection extends Component {
         return (
             <div>
                 <h2>Tattoo Details</h2>
-                <StyleSelector /><br />
-                <PlacementSelector /><br />
+                <StyleSelector />
+                <PlacementSelector />
                 <TextField style={style.textField} floatingLabelText="Size" />
                 <h3>Colour</h3>
                 <RadioButtonGroup style={style.radioGroup} name='colour' defaultSelected='blackAndGrey'>
@@ -46,10 +47,10 @@ class TattooDetailsSection extends Component {
                         style={style.radioButton}
                     />
                 </RadioButtonGroup>
-                <TextField style={style.textField} floatingLabelText="Skin Tone" fullWidth={true} multiLine={true} /><br />
-                <TextField style={style.textField} floatingLabelText="Subject" fullWidth={true} multiLine={true} /><br />
-                <TextField style={style.textField} floatingLabelText="Feel" fullWidth={true} multiLine={true} /><br />
-                <TextField style={style.textField} floatingLabelText="Background" fullWidth={true} multiLine={true} /><br />
+                <TextField style={style.textField} floatingLabelText="Skin Tone" fullWidth={true} multiLine={true} />
+                <TextField style={style.textField} floatingLabelText="Subject" fullWidth={true} multiLine={true} />
+                <TextField style={style.textField} floatingLabelText="Feel" fullWidth={true} multiLine={true} />
+                <TextField style={style.textField} floatingLabelText="Background" fullWidth={true} multiLine={true} />
             </div>
         )
     }
