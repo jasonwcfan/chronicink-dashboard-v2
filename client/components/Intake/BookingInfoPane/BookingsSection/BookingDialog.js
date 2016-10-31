@@ -10,7 +10,7 @@ const style = {
         margin: 10
     },
     datePicker: {
-        display: 'inline-block',
+        display: 'block',
         marginLeft: 5,
         marginRight: 5,
     },

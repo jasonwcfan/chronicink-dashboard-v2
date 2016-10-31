@@ -13,26 +13,26 @@ class BookingsList extends Component {
                 maxWidth: 360,
                 width: '100%',
             },
-            container: {
+            listContainer: {
                 backgroundColor: '#404040',
                 height: this.props.height,
                 overflow: 'hidden',
+            },
+            dialogContainer: {
+                backgroundColor: '#404040',
                 display: 'flex',
                 flexWrap: 'wrap',
                 justifyContent: 'flex-end',
                 alignItems: 'flex-end'
-            },
-            bottomTear: {
-                display: 'block',
-                position: 'relative',
-                marginTop: -10,
-                maxWidth: 360,
-            },
+            }
         };
 
         return (
             <Paper style={style.root} zDepth={5}>
-                <div style={style.container}>
+                <List style={style.listContainer}>
+                    <ListItem primaryText="Booking 1" />
+                </List>
+                <div style={style.dialogContainer}>
                     <BookingDialog style={style.dialogButton} />
                 </div>
             </Paper>

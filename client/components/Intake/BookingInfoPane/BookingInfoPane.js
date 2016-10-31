@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import TattooDetailsSection from './TattooDetailsSection';
 import RateSection from './RateSection';
 import BookingsSection from './BookingsSection';
 
 const style = {
     container: {
-        padding: 5
+        padding: 10
     },
     group: {
         display: 'flex',
@@ -16,6 +17,9 @@ const style = {
     item: {
         display: 'inline',
         padding: 10
+    },
+    buttons: {
+        margin: 5,
     }
 };
 
@@ -65,6 +69,8 @@ class BookingInfoPane extends Component {
                 <TattooDetailsSection />
                 <RateSection />
                 <BookingsSection />
+                <RaisedButton style={style.buttons} label="Submit Form" primary={true}/>
+                <RaisedButton style={style.buttons} label="Save Form" secondary={true}/>
             </div>
         )
     }
