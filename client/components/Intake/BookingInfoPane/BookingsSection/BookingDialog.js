@@ -6,8 +6,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const style = {
     container: {
-        display: 'flex',
-        flexWrap: 'wrap'
+        display: 'inline-block',
+        margin: 10
     },
     datePicker: {
         display: 'inline-block',
@@ -22,7 +22,7 @@ const style = {
     textFieldStyle: {
         borderBottomWidth: 100,
         borderColor: 'red'
-    }
+    },
 };
 
 class BookingDialog extends Component {
@@ -52,7 +52,7 @@ class BookingDialog extends Component {
 
         return (
             <div style={style.container}>
-                <RaisedButton label="Create New Booking" onTouchTap={this._handleOpen.bind(this)} />
+                <RaisedButton style={style.dialogButton} label="Create New Booking" onTouchTap={this._handleOpen.bind(this)} />
                 <Dialog
                     title="New Booking"
                     actions={actions}

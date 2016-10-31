@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
-import BookingDialog from './BookingDialog';
+import BookingsList from './BookingsList';
 
 
 const style = {
@@ -41,7 +41,7 @@ class RateSection extends Component {
                         style={style.radioButton}
                     />
                 </RadioButtonGroup>
-                <BookingDialog />
+                <BookingsList />
             </div>
         )
     }
