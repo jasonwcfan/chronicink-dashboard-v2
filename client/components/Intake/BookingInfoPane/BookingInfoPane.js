@@ -69,7 +69,7 @@ class BookingInfoPane extends Component {
                 <TattooDetailsSection />
                 <RateSection />
                 <BookingsSection />
-                <RaisedButton style={style.buttons} label="Submit Form" primary={true}/>
+                <RaisedButton style={style.buttons} type="submit" label="Submit Form" primary={true}/>
                 <RaisedButton style={style.buttons} label="Save Form" secondary={true}/>
             </div>
         )

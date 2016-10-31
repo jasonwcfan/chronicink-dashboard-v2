@@ -9,8 +9,8 @@ const style = {
 };
 
 class CountrySelector extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             value: null
         }

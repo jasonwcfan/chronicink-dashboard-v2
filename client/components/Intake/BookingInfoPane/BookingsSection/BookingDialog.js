@@ -26,8 +26,8 @@ const style = {
 };
 
 class BookingDialog extends Component {
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
         this.state = {
             open: false
         }
