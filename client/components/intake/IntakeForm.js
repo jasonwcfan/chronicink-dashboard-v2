@@ -32,10 +32,10 @@ class IntakeForm extends Component {
                             <BookingInfoPane />
                         </Tab>
                         <Tab label='Calendar'>
-                            Calendar Pane
+                            Coming Soon
                         </Tab>
                         <Tab label='Recommendations'>
-                            Recommendations Pane
+                            Coming Soon
                         </Tab>
                     </Tabs>
                 </form>
