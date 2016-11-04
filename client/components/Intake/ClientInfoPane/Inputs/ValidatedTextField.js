@@ -9,10 +9,6 @@ class RequiredTextField extends Component {
         }
     }
 
-    componentWillMount() {
-        this.props.attachToForm(this);
-    }
-
     _handleChange(event) {
         console.log(this.props.required);
         if (event.target.value == '' && this.props.required) {

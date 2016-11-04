@@ -1,3 +1,3 @@
-import IntakeForm from './IntakeForm';
+import Intake from './Intake';
 
-export default IntakeForm;
+export default Intake;

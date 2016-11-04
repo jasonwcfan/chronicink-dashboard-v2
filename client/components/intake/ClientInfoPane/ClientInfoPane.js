@@ -23,11 +23,11 @@ class ClientInfoPane extends Component {
     render() {
         return (
             <div style={style.container}>
-                <ValidatedTextField style={style.textField} name='firstName' floatingLabelText='First Name' />
-                <ValidatedTextField style={style.textField} name='lastName' floatingLabelText='Last Name' /><br/>
-                <ValidatedTextField style={style.textField} name='address' floatingLabelText='Address' />
+                <ValidatedTextField style={style.textField} name='firstName' floatingLabelText='First Name' required/>
+                <ValidatedTextField style={style.textField} name='lastName' floatingLabelText='Last Name' required/><br/>
+                <ValidatedTextField style={style.textField} name='address' floatingLabelText='Address' required/>
                 <ValidatedTextField style={style.textField} name='secondaryAddress' floatingLabelText='Address Line 2' />
-                <ValidatedTextField style={style.textField} name='city' floatingLabelText='City' /><br />
+                <ValidatedTextField style={style.textField} name='city' floatingLabelText='City' required/><br />
                 <CountrySelector />
                 <RegionSelector />
                 <ValidatedTextField style={style.textField} name='postalCode' floatingLabelText='Postal/ZIP Code' maxLength={6}/><br/>
@@ -42,8 +42,5 @@ class ClientInfoPane extends Component {
     }
 }
 
-ClientInfoPane.propTypes = {
-
-};
 
 export default ClientInfoPane;

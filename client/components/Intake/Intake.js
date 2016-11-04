@@ -6,7 +6,7 @@ import ClientInfoPane from './ClientInfoPane';
 import DepositPane from './DepositPane';
 import BookingInfoPane from './BookingInfoPane';
 
-class IntakeForm extends Component {
+class Intake extends Component {
     constructor() {
         super();
     }
@@ -31,12 +31,12 @@ class IntakeForm extends Component {
                         <Tab label='Booking Info'>
                             <BookingInfoPane />
                         </Tab>
-                        <Tab label='Calendar'>
-                            Coming Soon
+                        {/**<Tab label='Calendar'>
+                            <p>Coming Soon</p>
                         </Tab>
                         <Tab label='Recommendations'>
-                            Coming Soon
-                        </Tab>
+                            <p>Coming Soon</p>
+                        </Tab> **/}
                     </Tabs>
                 </form>
             </Paper>
@@ -44,4 +44,4 @@ class IntakeForm extends Component {
     }
 }
 
-export default IntakeForm;
+export default Intake;
