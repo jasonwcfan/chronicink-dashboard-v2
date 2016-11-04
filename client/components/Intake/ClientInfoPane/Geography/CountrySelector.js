@@ -16,10 +16,6 @@ class CountrySelector extends Component {
         }
     }
 
-    handleChange(event, index, value) {
-        this.setState({value});
-    }
-
     _filter(searchText, key) {
         const lowerCaseSearchText = searchText.toLowerCase();
         const lowerCaseKey = key.toLowerCase();
