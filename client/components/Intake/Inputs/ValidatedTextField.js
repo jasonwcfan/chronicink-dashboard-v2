@@ -2,27 +2,26 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 
 class RequiredTextField extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            errorText: null
+            errorText: null,
         }
     }
 
     _handleChange(event) {
         if (event.target.value == '' && this.props.required) {
             this.setState({
-                errorText: this.props.floatingLabelText + ' is required'
+                errorText: this.props.floatingLabelText + ' is required',
             });
         } else {
             this.setState({
-                errorText: null
+                errorText: null,
             });
         }
     }
 
     _handleBlur(event) {
-        console.log(this.props.onChange);
         if (this.state.errorText) {
             this.props.onChange(this.props.name, {value: event.target.value, valid: false});
         } else {
@@ -34,6 +33,7 @@ class RequiredTextField extends Component {
         return(
             <TextField
                 errorText={this.state.errorText}
+                defaultValue={this.props.defaultValue || ''}
                 style={this.props.style}
                 floatingLabelText={this.props.floatingLabelText}
                 onChange={this._handleChange.bind(this)}

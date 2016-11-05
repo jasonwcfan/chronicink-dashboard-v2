@@ -25,67 +25,71 @@ class Intake extends Component {
             valid: false,
             stepIndex: 0,
             finished: false,
-            fields: {
-                firstName: {
-                    valid: false,
-                    value: null
-                },
-                lastName: {
-                    valid: false,
-                    value: null
-                },
-                address: {
-                    valid: false,
-                    value: null
-                },
-                secondaryAddress: {
-                    valid: false,
-                    value: null
-                },
-                city: {
-                    valid: false,
-                    value: null
-                },
-                postalCode: {
-                    valid: false,
-                    value: null
-                },
-                email: {
-                    valid: false,
-                    value: null
-                },
-                primaryPhoneNumber: {
-                    valid: false,
-                    value: null
-                },
-                secondaryPhoneNumber: {
-                    valid: false,
-                    value: null
-                },
-                medicalConditions: [],
-                dateOfBirth: {
-                    valid: false,
-                    value: null
-                },
-                acceptDisclaimer: {
-                    valid: false,
-                    value: null
-                },
-                leaveDeposit: {
-                    valid: false,
-                    value: null
-                },
-                subscribeNewsletter: {
-                    valid: false,
-                    value: null
-                },
-            }
+            firstName: {
+                valid: false,
+                value: null
+            },
+            lastName: {
+                valid: false,
+                value: null
+            },
+            address: {
+                valid: false,
+                value: null
+            },
+            secondaryAddress: {
+                valid: false,
+                value: null
+            },
+            city: {
+                valid: false,
+                value: null
+            },
+            region: {
+                valid: true,
+                value: null
+            },
+            country: {
+                valid: false,
+                value: null
+            },
+            postalCode: {
+                valid: false,
+                value: null
+            },
+            email: {
+                valid: false,
+                value: null
+            },
+            primaryPhoneNumber: {
+                valid: false,
+                value: null
+            },
+            secondaryPhoneNumber: {
+                valid: false,
+                value: null
+            },
+            medicalConditions: [],
+            dateOfBirth: {
+                valid: false,
+                value: null
+            },
+            acceptDisclaimer: {
+                valid: false,
+                value: null
+            },
+            leaveDeposit: {
+                valid: false,
+                value: null
+            },
+            subscribeNewsletter: {
+                valid: false,
+                value: null
+            },
         }
     }
 
     _handleChange(fieldName, value) {
-        console.log(fieldName);
-        console.log(value);
         this.setState({
             [fieldName]: value
         });
@@ -109,7 +113,7 @@ class Intake extends Component {
             case 0:
                 return (
                     <div>
-                        <ClientInfoPane onChange={this._handleChange.bind(this)} />
+                        <ClientInfoPane onChange={this._handleChange.bind(this)} fields={this.state} />
                         <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._handlePrev.bind(this)} />
                         <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._handleNext.bind(this)} />
                     </div>
@@ -117,7 +121,7 @@ class Intake extends Component {
             case 1:
                 return (
                     <div>
-                        <DepositPane onChange={this._handleChange.bind(this)} />
+                        {/** <DepositPane onChange={this._handleChange.bind(this)} /> **/}
                         <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._handlePrev.bind(this)} />
                         <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._handleNext.bind(this)} />
                     </div>
