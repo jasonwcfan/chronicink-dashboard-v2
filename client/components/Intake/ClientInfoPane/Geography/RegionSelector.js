@@ -12,10 +12,10 @@ const style = {
 };
 
 class RegionSelector extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            value: null
+            value: props.defaultValue
         }
     }
 
@@ -27,8 +27,9 @@ class RegionSelector extends Component {
         return list;
     }
 
-    handleChange(event, index, value) {
+    _handleChange(event, index, value) {
         this.setState({value});
+        this.props.onChange(this.props.name, {value: value, valid: true});
     }
 
     render() {
@@ -37,7 +38,7 @@ class RegionSelector extends Component {
                 style={style}
                 floatingLabelText='Province'
                 value={this.state.value}
-                onChange={this.handleChange.bind(this)}
+                onChange={this._handleChange.bind(this)}
                 maxHeight={200}>
                 {this._getRegionsList()}
             </SelectField>

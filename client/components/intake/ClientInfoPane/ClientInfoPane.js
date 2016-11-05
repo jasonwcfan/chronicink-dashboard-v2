@@ -26,7 +26,6 @@ const style = {
 class ClientInfoPane extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
     }
     render() {
         return (
@@ -72,12 +71,15 @@ class ClientInfoPane extends Component {
                 /><br />
                 <CountrySelector
                     style={style.selector}
+                    defaultValue={this.props.fields.country.value}
+                    name="country"
                     onChange={this.props.onChange}
                 />
                 <RegionSelector
                     style={style.selector}
+                    defaultValue={this.props.fields.region.value}
+                    name="region"
                     onChange={this.props.onChange}
-                    regionLabel={this.props.regionLabel}
                 />
                 <ValidatedTextField
                     style={style.textField}

@@ -8,7 +8,7 @@ class CountrySelector extends Component {
         super(props);
         this.state = {
             errorText: null,
-            value: 'Canada'
+            value: this.props.defaultValue
         }
     }
 
@@ -18,8 +18,8 @@ class CountrySelector extends Component {
         return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
     }
 
-    _handleBlur(event) {
-        if (event.target.value == '') {
+    _handleNewRequest(request) {
+        if (request == '') {
             this.setState({
                 errorText: 'Country is required'
             });
@@ -27,6 +27,9 @@ class CountrySelector extends Component {
             this.setState({
                 errorText: null
             });
+            console.log(this.props.name);
+            console.log(this.props.onChange);
+            this.props.onChange(this.props.name, {value: request, valid: true});
         }
     }
 
@@ -42,8 +45,8 @@ class CountrySelector extends Component {
                 }}
                 floatingLabelText='Country'
                 value={this.state.value}
-                searchText='Canada'
-                onBlur={this._handleBlur.bind(this)}
+                searchText={this.props.defaultValue || 'Canada'}
+                onNewRequest={this._handleNewRequest.bind(this)}
                 dataSource={countries}
                 filter={this._filter}
                 maxSearchResults={10}
