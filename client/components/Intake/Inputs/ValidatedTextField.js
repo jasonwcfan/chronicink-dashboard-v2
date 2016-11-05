@@ -38,6 +38,11 @@ class RequiredTextField extends Component {
                 floatingLabelText={this.props.floatingLabelText}
                 onChange={this._handleChange.bind(this)}
                 onBlur={this._handleBlur.bind(this)}
+                errorStyle={{
+                    // Workaround to fix layout issues caused by material ui's error text
+                    // https://github.com/callemall/material-ui/issues/1151
+                    float: 'left'
+                }}
             />
         )
     }
