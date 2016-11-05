@@ -3,6 +3,11 @@ import AppBar from 'material-ui/AppBar';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
+import {
+    Step,
+    Stepper,
+    StepLabel,
+} from 'material-ui/Stepper';
 import ClientInfoPane from './ClientInfoPane';
 import DepositPane from './DepositPane';
 import BookingInfoPane from './BookingInfoPane';
@@ -12,114 +17,62 @@ class Intake extends Component {
         super();
         this.state = {
             valid: false,
-            firstName: {
-                valid: false,
-                value: null
-            },
-            lastName: {
-                valid: false,
-                value: null
-            },
-            address: {
-                valid: false,
-                value: null
-            },
-            secondaryAddress: {
-                valid: false,
-                value: null
-            },
-            city: {
-                valid: false,
-                value: null
-            },
-            postalCode: {
-                valid: false,
-                value: null
-            },
-            email: {
-                valid: false,
-                value: null
-            },
-            primaryPhoneNumber: {
-                valid: false,
-                value: null
-            },
-            secondaryPhoneNumber: {
-                valid: false,
-                value: null
-            },
-            medicalConditions: [],
-            dateOfBirth: {
-                valid: false,
-                value: null
-            },
-            acceptDisclaimer: {
-                valid: false,
-                value: null
-            },
-            leaveDeposit: {
-                valid: false,
-                value: null
-            },
-            subscribeNewsletter: {
-                valid: false,
-                value: null
-            },
-            studio: {
-                valid: false,
-                value: null
-            },
-            custom: {
-                valid: false,
-                value: null
-            },
-            coverup: {
-                valid: false,
-                value: null
-            },
-            style: {
-                valid: false,
-                value: null
-            },
-            placement: {
-                valid: false,
-                value: null
-            },
-            size: {
-                valid: false,
-                value: null
-            },
-            colour: {
-                valid: false,
-                value: null
-            },
-            skintone: {
-                valid: false,
-                value: null
-            },
-            subject: {
-                valid: false,
-                value: null
-            },
-            feel: {
-                valid: false,
-                value: null
-            },
-            background: {
-                valid: false,
-                value: null
-            },
-            rateType: {
-                valid: false,
-                value: null
-            },
-            rate: {
-                valid: false,
-                value: null
-            },
-            deposit: {
-                valid: false,
-                value: null
+            stepIndex: 0,
+            finished: false,
+            fields: {
+                firstName: {
+                    valid: false,
+                    value: null
+                },
+                lastName: {
+                    valid: false,
+                    value: null
+                },
+                address: {
+                    valid: false,
+                    value: null
+                },
+                secondaryAddress: {
+                    valid: false,
+                    value: null
+                },
+                city: {
+                    valid: false,
+                    value: null
+                },
+                postalCode: {
+                    valid: false,
+                    value: null
+                },
+                email: {
+                    valid: false,
+                    value: null
+                },
+                primaryPhoneNumber: {
+                    valid: false,
+                    value: null
+                },
+                secondaryPhoneNumber: {
+                    valid: false,
+                    value: null
+                },
+                medicalConditions: [],
+                dateOfBirth: {
+                    valid: false,
+                    value: null
+                },
+                acceptDisclaimer: {
+                    valid: false,
+                    value: null
+                },
+                leaveDeposit: {
+                    valid: false,
+                    value: null
+                },
+                subscribeNewsletter: {
+                    valid: false,
+                    value: null
+                },
             }
         }
     }
@@ -127,32 +80,64 @@ class Intake extends Component {
     _handleChange(fieldName, value) {
         this.setState({
             [fieldName]: value
-        })
+        });
+    }
+
+    _handleNext() {
+        this.setState({
+            stepIndex: this.state.stepIndex + 1,
+            finished: this.state.stepIndex >= 2,
+        });
+    }
+
+    _handlePrev() {
+        this.setState({
+            stepIndex: this.state.stepIndex > 0 ? this.state.stepIndex - 1 : this.state.stepIndex
+        });
+    }
+
+    _getStepContent(stepIndex) {
+        switch (stepIndex) {
+            case 0:
+                return (
+                    <div>
+                        <ClientInfoPane onChange={this._handleChange} />
+                        <RaisedButton label="Previous" onTouchTap={this._handlePrev.bind(this)} />
+                        <RaisedButton label="Next" onTouchTap={this._handleNext.bind(this)} />
+                    </div>
+                );
+            case 1:
+                return (
+                    <div>
+                        <DepositPane onChange={this._handleChange} />
+                        <RaisedButton label="Previous" onTouchTap={this._handlePrev.bind(this)} />
+                        <RaisedButton label="Next" onTouchTap={this._handleNext.bind(this)} />
+                    </div>
+                );
+            case 2:
+                return (
+                    <div>
+                        <RaisedButton label="Previous" onTouchTap={this._handlePrev.bind(this)} />
+                    </div>
+                );
+        }
     }
 
     render() {
         return (
             <Paper zDepth={4}>
                 <AppBar title='Intake' />
-                <Tabs>
-                    <Tab label='Client Info'>
-                        <ClientInfoPane onChange={this._handleChange} />
-                    </Tab>
-                    <Tab label='Deposit'>
-                        <DepositPane onChange={this._handleChange}/>
-                    </Tab>
-                    <Tab label='Booking Info'>
-                        <BookingInfoPane onChange={this._handleChange} />
-                        <RaisedButton style={{margin: 5}} type="submit" label="Submit Form" primary={true}/>
-                        <RaisedButton style={{margin: 5}} label="Save Form" secondary={true}/>
-                    </Tab>
-                    {/**<Tab label='Calendar'>
-                        <p>Coming Soon</p>
-                    </Tab>
-                    <Tab label='Recommendations'>
-                        <p>Coming Soon</p>
-                    </Tab> **/}
-                </Tabs>
+                <Stepper activeStep={this.state.stepIndex}>
+                    <Step>
+                        <StepLabel>Personal Information</StepLabel>
+                    </Step>
+                    <Step>
+                        <StepLabel>Agreement</StepLabel>
+                    </Step>
+                </Stepper>
+                <div>
+                    {this._getStepContent(this.state.stepIndex)}
+                </div>
             </Paper>
         );
     }
