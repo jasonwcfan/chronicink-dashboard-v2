@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import ClientInfoPane from './ClientInfoPane';
 import DepositPane from './DepositPane';
@@ -47,6 +48,7 @@ class Intake extends Component {
                 valid: false,
                 value: null
             },
+            medicalConditions: [],
             dateOfBirth: {
                 valid: false,
                 value: null
@@ -122,12 +124,9 @@ class Intake extends Component {
         }
     }
 
-    _handleChange(fieldName, value, valid) {
+    _handleChange(fieldName, value) {
         this.setState({
-            [fieldName]: {
-                valid: valid,
-                value: value
-            }
+            [fieldName]: value
         })
     }
 
@@ -144,6 +143,8 @@ class Intake extends Component {
                     </Tab>
                     <Tab label='Booking Info'>
                         <BookingInfoPane onChange={this._handleChange} />
+                        <RaisedButton style={{margin: 5}} type="submit" label="Submit Form" primary={true}/>
+                        <RaisedButton style={{margin: 5}} label="Save Form" secondary={true}/>
                     </Tab>
                     {/**<Tab label='Calendar'>
                         <p>Coming Soon</p>

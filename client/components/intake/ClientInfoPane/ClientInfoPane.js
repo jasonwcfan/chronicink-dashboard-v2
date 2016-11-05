@@ -30,7 +30,7 @@ class ClientInfoPane extends Component {
                 <ValidatedTextField style={style.textField} name='secondaryAddress' floatingLabelText='Address Line 2' onChange={this.props.onChange} />
                 <ValidatedTextField style={style.textField} name='city' floatingLabelText='City' onChange={this.props.onChange} required/><br />
                 <CountrySelector onChange={this.props.onChange} />
-                <RegionSelector />
+                <RegionSelector onChange={this.props.onChange} />
                 <ValidatedTextField style={style.textField} name='postalCode' floatingLabelText='Postal/ZIP Code' onChange={this.props.onChange} maxLength={6}/><br/>
                 <EmailTextField style={style.textField} name='email' floatingLabelText='Email' onChange={this.props.onChange} required />
                 <PhoneNumberTextField style={style.textField} name='primaryPhoneNumber' floatingLabelText='Primary Phone Number' onChange={this.props.onChange} required />

@@ -14,12 +14,12 @@ class RequiredTextField extends Component {
             this.setState({
                 errorText: this.props.floatingLabelText + ' is required'
             });
-            this.props.onChange(this.props.name, event.target.value, false);
+            this.props.onChange(this.props.name, {value: event.target.value, valid: false});
         } else {
             this.setState({
                 errorText: null
             });
-            this.props.onChange(this.props.name, event.target.value, true);
+            this.props.onChange(this.props.name, {value: event.target.value, valid: true});
         }
     }
 
