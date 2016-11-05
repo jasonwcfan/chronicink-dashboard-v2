@@ -6,7 +6,9 @@ import states from '../../../../constants/states';
 
 const style = {
     marginLeft: 5,
-    marginRight: 5
+    marginRight: 5,
+    // Workaround for SelectField fucking up the layout >:(
+    float: 'left'
 };
 
 class RegionSelector extends Component {

@@ -16,6 +16,10 @@ const style = {
     datePicker: {
         marginLeft: 5,
         marginRight: 5
+    },
+    selector: {
+        marginLeft: 5,
+        marginRight: 5
     }
 };
 
@@ -27,10 +31,10 @@ class ClientInfoPane extends Component {
                 <ValidatedTextField style={style.textField} name='firstName' floatingLabelText='First Name' onChange={this.props.onChange} required/>
                 <ValidatedTextField style={style.textField} name='lastName' floatingLabelText='Last Name' onChange={this.props.onChange} required/><br/>
                 <ValidatedTextField style={style.textField} name='address' floatingLabelText='Address' onChange={this.props.onChange} required/>
-                <ValidatedTextField style={style.textField} name='secondaryAddress' floatingLabelText='Address Line 2' onChange={this.props.onChange} />
+                <ValidatedTextField style={style.textField} name='secondaryAddress' floatingLabelText='Address Line 2' onChange={this.props.onChange} required />
                 <ValidatedTextField style={style.textField} name='city' floatingLabelText='City' onChange={this.props.onChange} required/><br />
-                <CountrySelector onChange={this.props.onChange} />
-                <RegionSelector onChange={this.props.onChange} />
+                <CountrySelector style={style.selector} onChange={this.props.onChange} />
+                <RegionSelector style={style.selector} onChange={this.props.onChange} regionLabel={this.props.regionLabel}/>
                 <ValidatedTextField style={style.textField} name='postalCode' floatingLabelText='Postal/ZIP Code' onChange={this.props.onChange} maxLength={6}/><br/>
                 <EmailTextField style={style.textField} name='email' floatingLabelText='Email' onChange={this.props.onChange} required />
                 <PhoneNumberTextField style={style.textField} name='primaryPhoneNumber' floatingLabelText='Primary Phone Number' onChange={this.props.onChange} required />
