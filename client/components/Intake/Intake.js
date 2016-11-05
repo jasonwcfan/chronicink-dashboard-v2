@@ -12,6 +12,12 @@ import ClientInfoPane from './ClientInfoPane';
 import DepositPane from './DepositPane';
 import BookingInfoPane from './BookingInfoPane';
 
+const style = {
+    navButton: {
+        margin: 10
+    }
+};
+
 class Intake extends Component {
     constructor() {
         super();
@@ -78,6 +84,8 @@ class Intake extends Component {
     }
 
     _handleChange(fieldName, value) {
+        console.log(fieldName);
+        console.log(value);
         this.setState({
             [fieldName]: value
         });
@@ -86,7 +94,7 @@ class Intake extends Component {
     _handleNext() {
         this.setState({
             stepIndex: this.state.stepIndex + 1,
-            finished: this.state.stepIndex >= 2,
+            finished: this.state.stepIndex >= 1,
         });
     }
 
@@ -101,23 +109,23 @@ class Intake extends Component {
             case 0:
                 return (
                     <div>
-                        <ClientInfoPane onChange={this._handleChange} />
-                        <RaisedButton label="Previous" onTouchTap={this._handlePrev.bind(this)} />
-                        <RaisedButton label="Next" onTouchTap={this._handleNext.bind(this)} />
+                        <ClientInfoPane onChange={this._handleChange.bind(this)} />
+                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._handlePrev.bind(this)} />
+                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._handleNext.bind(this)} />
                     </div>
                 );
             case 1:
                 return (
                     <div>
-                        <DepositPane onChange={this._handleChange} />
-                        <RaisedButton label="Previous" onTouchTap={this._handlePrev.bind(this)} />
-                        <RaisedButton label="Next" onTouchTap={this._handleNext.bind(this)} />
+                        <DepositPane onChange={this._handleChange.bind(this)} />
+                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._handlePrev.bind(this)} />
+                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._handleNext.bind(this)} />
                     </div>
                 );
             case 2:
                 return (
                     <div>
-                        <RaisedButton label="Previous" onTouchTap={this._handlePrev.bind(this)} />
+                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._handlePrev.bind(this)} />
                     </div>
                 );
         }
