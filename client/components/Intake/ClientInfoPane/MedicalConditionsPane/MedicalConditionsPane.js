@@ -17,22 +17,27 @@ const style = {
 };
 
 class MedicalConditionsPane extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
-    _handleChange(event, isChecked) {
-        console.log(isChecked);
+    _handleChange(event) {
+        console.log(event.target.name);
+        this.props.onToggleCondition(event.target.name);
+    }
+    
+    _renderConditionsList(conditions) {
+        return conditions.map((condition) => {
+            return (
+                <Checkbox style={style.item} name={condition.id} key={condition.id} label={condition.id} checked={condition.value} onCheck={this._handleChange.bind(this)} />
+            )
+        })
     }
 
     render() {
-        const conditionsList = [];
-        for (let i = 0; i < conditions.length; i++) {
-            conditionsList.push(<Checkbox style={style.item} key={i} label={conditions[i]} onCheck={this._handleChange.bind(this)}/>);
-        }
         return(
             <div style={style.container}>
-                {conditionsList}
+                {this._renderConditionsList(this.props.conditions)}
             </div>
         )
     }

@@ -1,4 +1,5 @@
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux';
+import medicalConditions from '../constants/conditions';
 
 const defaultFields = [
     {
@@ -100,6 +101,12 @@ const defaultFields = [
 
 
 ];
+const defaultConditions = medicalConditions.map((condition) => {
+    return {
+        id: condition,
+        value: false
+    }
+});
 
 const field = (state, action) => {
     switch(action.type) {
@@ -122,15 +129,19 @@ const fields = (state = defaultFields, action) => {
     return state.map(f => field(f, action))
 };
 
-const conditions = (state = [], action) => {
-    return state.map(c => {
-        if (action.type == 'TOGGLE_CONDITION') {
-            return {
-                id: action.id,
-                value: !c.value
+const conditions = (state = defaultConditions, action) => {
+    if (action.type === 'TOGGLE_CONDITION') {
+        return state.map(c => {
+            if (action.id === c.id) {
+                return {
+                    id: c.id,
+                    value: !c.value
+                }
             }
-        }
-    })
+            return c;
+        })
+    }
+    return state;
 };
 
 const step = (state = 0, action) => {

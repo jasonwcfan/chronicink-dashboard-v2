@@ -28,7 +28,7 @@ class Intake extends Component {
             case 0:
                 return (
                     <div>
-                        <ClientInfoPane onFieldChange={this.props.onFieldChange} fields={this.props.fields} />
+                        <ClientInfoPane onFieldChange={this.props.onFieldChange} fields={this.props.fields} onToggleCondition={this.props.onToggleCondition} conditions={this.props.conditions} />
                         <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
                         <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
                     </div>

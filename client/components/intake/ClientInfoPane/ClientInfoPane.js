@@ -85,7 +85,7 @@ class ClientInfoPane extends Component {
             <div style={style.container}>
                 {this._renderFields(this.props.fields)}
                 <h2>Medical Conditions</h2><br />
-                <MedicalConditionsPane />
+                <MedicalConditionsPane conditions={this.props.conditions} onToggleCondition={this.props.onToggleCondition}/>
             </div>
         );
 
