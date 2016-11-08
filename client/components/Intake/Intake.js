@@ -79,6 +79,10 @@ Intake.propTypes = {
         valid: PropTypes.bool.isRequired,
         required: PropTypes.bool.isRequired
     }).isRequired).isRequired,
+    conditions: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        value: PropTypes.bool.isRequired
+    }).isRequired).isRequired,
     stepIndex: PropTypes.number.isRequired
 };
 

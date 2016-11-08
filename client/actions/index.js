@@ -5,6 +5,11 @@ export const setField = (id, value, valid) => ({
     valid
 });
 
+export const toggleCondition = (id) => ({
+    type: 'TOGGLE_CONDITION',
+    id
+});
+
 export const incrementStep = () => ({
     type: 'INCR_STEP'
 });

@@ -122,6 +122,17 @@ const fields = (state = defaultFields, action) => {
     return state.map(f => field(f, action))
 };
 
+const conditions = (state = [], action) => {
+    return state.map(c => {
+        if (action.type == 'TOGGLE_CONDITION') {
+            return {
+                id: action.id,
+                value: !c.value
+            }
+        }
+    })
+};
+
 const step = (state = 0, action) => {
     switch (action.type) {
         case 'INCR_STEP':
@@ -138,6 +149,7 @@ export default intake = (state = {}, action) => {
     console.log(state);
     const newState =  {
         fields: fields(state.fields, action),
+        conditions: conditions(state.conditions, action),
         stepIndex: step(state.stepIndex, action)
     };
     console.log('new state:');
