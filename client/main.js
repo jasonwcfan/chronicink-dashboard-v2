@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { createStore } from 'redux'
+import { Provider } from 'react-redux'
+import reducer from './reducers'
 import App from './components/app';
 
+const store = createStore(reducer);
+
 const routes = (
-    <Router history={browserHistory}>
-        <Route path='/' component={App}>
-            <Route path='intake' />
-        </Route>
-    </Router>
+    <Provider store={store}>
+        <App />
+    </Provider>
 );
 
 Meteor.startup(() => {

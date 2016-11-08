@@ -23,9 +23,9 @@ class RequiredTextField extends Component {
 
     _handleBlur(event) {
         if (this.state.errorText) {
-            this.props.onChange(this.props.name, {value: event.target.value, valid: false});
+            this.props.onFieldChange(this.props.name, {value: event.target.value, valid: false});
         } else {
-            this.props.onChange(this.props.name, {value: event.target.value, valid: true});
+            this.props.onFieldChange(this.props.name, {value: event.target.value, valid: true});
         }
     }
 

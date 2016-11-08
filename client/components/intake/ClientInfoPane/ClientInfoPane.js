@@ -26,98 +26,61 @@ const style = {
 class ClientInfoPane extends Component {
     constructor(props) {
         super(props);
+        console.log(props);
     }
+
+    _renderFields(fields) {
+        return fields.map((field) => {
+            switch (field.type) {
+                case 'text':
+                    return (
+                        <ValidatedTextField 
+                            style={style.textField}
+                            defaultValue={field.value}
+                            name={field.id}
+                            floatingLabelText={field.label}
+                            onFieldChange={this.props.onFieldChange}
+                            required={field.required}
+                        />
+                    );
+                case 'country':
+                    return (
+                        <CountrySelector
+                            style={style.selector}
+                            defaultValue={field.value}
+                            name={field.id}
+                            onFieldChange={this.props.onFieldChange}
+                            required={field.required}
+                        />
+                    );
+                case 'region':
+                    return (
+                        <RegionSelector
+                            style={style.selector}
+                            defaultValue={field.value}
+                            name={field.id}
+                            onFieldChange={this.props.onFieldChange}
+                            required={field.required}
+                        />
+                    );
+                case 'date':
+                    return (
+                        <DatePicker
+                            style={style.datePicker}
+                            value={field.value}
+                            name={field.id}
+                            floatingLabelText={field.label}
+                            onFieldChange={this.props.onFieldChange}
+                        />
+                    );
+            }
+        })
+    }
+
     render() {
         return (
             <div style={style.container}>
-                <ValidatedTextField
-                    style={style.textField}
-                    defaultValue={this.props.fields.firstName.value}
-                    name='firstName'
-                    floatingLabelText='First Name'
-                    onChange={this.props.onChange}
-                    required
-                />
-                <ValidatedTextField
-                    style={style.textField}
-                    defaultValue={this.props.fields.lastName.value}
-                    name='lastName'
-                    floatingLabelText='Last Name'
-                    onChange={this.props.onChange}
-                    required
-                /><br/>
-                <ValidatedTextField
-                    style={style.textField}
-                    defaultValue={this.props.fields.address.value}
-                    name='address'
-                    floatingLabelText='Address'
-                    onChange={this.props.onChange}
-                    required
-                />
-                <ValidatedTextField
-                    style={style.textField}
-                    defaultValue={this.props.fields.secondaryAddress.value}
-                    name='secondaryAddress'
-                    floatingLabelText='Address Line 2'
-                    onChange={this.props.onChange}
-                    required />
-                <ValidatedTextField
-                    style={style.textField}
-                    defaultValue={this.props.fields.city.value}
-                    name='city'
-                    floatingLabelText='City'
-                    onChange={this.props.onChange}
-                    required
-                /><br />
-                <CountrySelector
-                    style={style.selector}
-                    defaultValue={this.props.fields.country.value}
-                    name="country"
-                    onChange={this.props.onChange}
-                />
-                <RegionSelector
-                    style={style.selector}
-                    defaultValue={this.props.fields.region.value}
-                    name="region"
-                    onChange={this.props.onChange}
-                />
-                <ValidatedTextField
-                    style={style.textField}
-                    defaultValue={this.props.fields.postalCode.value}
-                    name='postalCode'
-                    floatingLabelText='Postal/ZIP Code'
-                    onChange={this.props.onChange}
-                    maxLength={6}
-                /><br/>
-                <ValidatedTextField
-                    style={style.textField}
-                    defaultValue={this.props.fields.email.value}
-                    name='email'
-                    floatingLabelText='Email'
-                    onChange={this.props.onChange}
-                    required
-                />
-                <ValidatedTextField
-                    style={style.textField}
-                    defaultValue={this.props.fields.primaryPhoneNumber.value}
-                    name='primaryPhoneNumber'
-                    floatingLabelText='Primary Phone Number'
-                    onChange={this.props.onChange}
-                    required />
-                <PhoneNumberTextField
-                    style={style.textField}
-                    defaultValue={this.props.fields.secondaryPhoneNumber.value}
-                    name='secondaryPhoneNumber'
-                    floatingLabelText='Additional Phone Number'
-                    onChange={this.props.onChange}
-                /><br />
-                <DatePicker
-                    style={style.datePicker}
-                    value={this.props.fields.dateOfBirth.value}
-                    name='dateOfBirth'
-                    floatingLabelText="Date of Birth"
-                    onChange={this.props.onChange}
-                />
+                {this._renderFields(this.props.fields)}
                 <h2>Medical Conditions</h2><br />
                 <MedicalConditionsPane />
             </div>

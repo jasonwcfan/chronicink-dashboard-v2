@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import AppBar from 'material-ui/AppBar';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -19,74 +19,9 @@ const style = {
 };
 
 class Intake extends Component {
-    constructor() {
-        super();
-        this.state = {
-            valid: false,
-            stepIndex: 0,
-            finished: false,
-            firstName: {
-                valid: false,
-                value: null
-            },
-            lastName: {
-                valid: false,
-                value: null
-            },
-            address: {
-                valid: false,
-                value: null
-            },
-            secondaryAddress: {
-                valid: false,
-                value: null
-            },
-            city: {
-                valid: false,
-                value: null
-            },
-            region: {
-                valid: true,
-                value: null
-            },
-            country: {
-                valid: false,
-                value: null
-            },
-            postalCode: {
-                valid: false,
-                value: null
-            },
-            email: {
-                valid: false,
-                value: null
-            },
-            primaryPhoneNumber: {
-                valid: false,
-                value: null
-            },
-            secondaryPhoneNumber: {
-                valid: false,
-                value: null
-            },
-            medicalConditions: [],
-            dateOfBirth: {
-                valid: false,
-                value: null
-            },
-            acceptDisclaimer: {
-                valid: false,
-                value: null
-            },
-            leaveDeposit: {
-                valid: false,
-                value: null
-            },
-            subscribeNewsletter: {
-                valid: false,
-                value: null
-            },
-        }
+    constructor(props) {
+        super(props);
+        console.log(props);
     }
 
     _handleChange(fieldName, value) {
@@ -95,41 +30,28 @@ class Intake extends Component {
         });
     }
 
-    _handleNext() {
-        this.setState({
-            stepIndex: this.state.stepIndex + 1,
-            finished: this.state.stepIndex >= 1,
-        });
-    }
-
-    _handlePrev() {
-        this.setState({
-            stepIndex: this.state.stepIndex > 0 ? this.state.stepIndex - 1 : this.state.stepIndex
-        });
-    }
-
     _getStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
                 return (
                     <div>
-                        <ClientInfoPane onChange={this._handleChange.bind(this)} fields={this.state} />
-                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._handlePrev.bind(this)} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._handleNext.bind(this)} />
+                        <ClientInfoPane onChange={this._handleChange.bind(this)} fields={this.props.fields} />
+                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
+                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
                     </div>
                 );
             case 1:
                 return (
                     <div>
                         {/** <DepositPane onChange={this._handleChange.bind(this)} /> **/}
-                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._handlePrev.bind(this)} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._handleNext.bind(this)} />
+                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
+                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
                     </div>
                 );
             case 2:
                 return (
                     <div>
-                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._handlePrev.bind(this)} />
+                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
                     </div>
                 );
         }
@@ -139,7 +61,7 @@ class Intake extends Component {
         return (
             <Paper zDepth={4}>
                 <AppBar title='Intake' />
-                <Stepper activeStep={this.state.stepIndex}>
+                <Stepper activeStep={this.props.stepIndex}>
                     <Step>
                         <StepLabel>Personal Information</StepLabel>
                     </Step>
@@ -148,11 +70,20 @@ class Intake extends Component {
                     </Step>
                 </Stepper>
                 <div>
-                    {this._getStepContent(this.state.stepIndex)}
+                    {this._getStepContent(this.props.stepIndex)}
                 </div>
             </Paper>
         );
     }
 }
+
+Intake.propTypes = {
+    fields: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        value: PropTypes.any.isRequired,
+        valid: PropTypes.bool.isRequired
+    }).isRequired).isRequired,
+    stepIndex: PropTypes.number.isRequired
+};
 
 export default Intake;
