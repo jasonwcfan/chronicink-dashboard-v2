@@ -21,13 +21,6 @@ const style = {
 class Intake extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
-    }
-
-    _handleChange(fieldName, value) {
-        this.setState({
-            [fieldName]: value
-        });
     }
 
     _getStepContent(stepIndex) {
@@ -35,7 +28,7 @@ class Intake extends Component {
             case 0:
                 return (
                     <div>
-                        <ClientInfoPane onChange={this._handleChange.bind(this)} fields={this.props.fields} />
+                        <ClientInfoPane onFieldChange={this.props.onFieldChange} fields={this.props.fields} />
                         <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
                         <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
                     </div>
@@ -80,8 +73,11 @@ class Intake extends Component {
 Intake.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
-        value: PropTypes.any.isRequired,
-        valid: PropTypes.bool.isRequired
+        label: PropTypes.string,
+        inputType: PropTypes.string.isRequired,
+        value: PropTypes.any,
+        valid: PropTypes.bool.isRequired,
+        required: PropTypes.bool.isRequired
     }).isRequired).isRequired,
     stepIndex: PropTypes.number.isRequired
 };

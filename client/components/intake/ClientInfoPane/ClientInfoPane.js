@@ -26,18 +26,18 @@ const style = {
 class ClientInfoPane extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
     }
 
     _renderFields(fields) {
         return fields.map((field) => {
-            switch (field.type) {
+            switch (field.inputType) {
                 case 'text':
                     return (
                         <ValidatedTextField 
                             style={style.textField}
                             defaultValue={field.value}
                             name={field.id}
+                            key={field.id}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
@@ -49,6 +49,7 @@ class ClientInfoPane extends Component {
                             style={style.selector}
                             defaultValue={field.value}
                             name={field.id}
+                            key={field.id}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                         />
@@ -59,6 +60,7 @@ class ClientInfoPane extends Component {
                             style={style.selector}
                             defaultValue={field.value}
                             name={field.id}
+                            key={field.id}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                         />
@@ -67,14 +69,15 @@ class ClientInfoPane extends Component {
                     return (
                         <DatePicker
                             style={style.datePicker}
-                            value={field.value}
+                            defaultDate={field.value}
                             name={field.id}
+                            key={field.id}
                             floatingLabelText={field.label}
-                            onFieldChange={this.props.onFieldChange}
+                            onChange={this.props.onFieldChange}
                         />
                     );
             }
-        })
+        });
     }
 
     render() {

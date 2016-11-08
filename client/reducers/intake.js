@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux'
 
-const initialFields = [
+const defaultFields = [
     {
         id: 'firstName',
         label: 'First Name',
@@ -93,7 +93,7 @@ const initialFields = [
         id: 'dateOfBirth',
         label: 'Date of Birth',
         inputType: 'date',
-        value: '',
+        value: null,
         valid: false,
         required: true
     },
@@ -106,6 +106,7 @@ const field = (state, action) => {
         case 'SET_FIELD':
             if (state.id == action.id) {
                 return {
+                    ...state,
                     id: action.id,
                     value: action.value,
                     valid: action.valid
@@ -117,7 +118,7 @@ const field = (state, action) => {
     }
 };
 
-const fields = (state = initialFields, action) => {
+const fields = (state = defaultFields, action) => {
     return state.map(f => field(f, action))
 };
 
@@ -133,8 +134,13 @@ const step = (state = 0, action) => {
 };
 
 export default intake = (state = {}, action) => {
-    return {
+    console.log('old state:');
+    console.log(state);
+    const newState =  {
         fields: fields(state.fields, action),
         stepIndex: step(state.stepIndex, action)
-    }
+    };
+    console.log('new state:');
+    console.log(newState);
+    return newState;
 };
