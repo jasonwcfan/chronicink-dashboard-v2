@@ -22,7 +22,7 @@ class RequiredTextField extends Component {
     }
 
     _handleBlur(event) {
-        this.props.onFieldChange(this.props.name, this.props.value, this.state.errorText == null);
+        this.props.onFieldChange(this.props.name, event.target.value, this.state.errorText == null);
     }
 
     render() {
