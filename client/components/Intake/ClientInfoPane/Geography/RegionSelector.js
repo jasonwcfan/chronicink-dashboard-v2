@@ -14,9 +14,6 @@ const style = {
 class RegionSelector extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            value: props.defaultValue
-        }
     }
 
     _getRegionsList() {
@@ -28,8 +25,7 @@ class RegionSelector extends Component {
     }
 
     _handleChange(event, index, value) {
-        this.setState({value});
-        this.props.onChange(this.props.name, {value: value, valid: true});
+        this.props.onFieldChange(this.props.name, value, true);
     }
 
     render() {
@@ -37,7 +33,7 @@ class RegionSelector extends Component {
             <SelectField
                 style={style}
                 floatingLabelText='Province'
-                value={this.state.value}
+                value={this.props.value}
                 onChange={this._handleChange.bind(this)}
                 maxHeight={200}>
                 {this._getRegionsList()}

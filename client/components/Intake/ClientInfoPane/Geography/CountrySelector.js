@@ -7,8 +7,7 @@ class CountrySelector extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            errorText: null,
-            value: this.props.defaultValue
+            errorText: null
         }
     }
 
@@ -23,13 +22,12 @@ class CountrySelector extends Component {
             this.setState({
                 errorText: 'Country is required'
             });
+            this.props.onFieldChange(this.props.name, request, false);
         } else {
             this.setState({
                 errorText: null
             });
-            console.log(this.props.name);
-            console.log(this.props.onChange);
-            this.props.onChange(this.props.name, {value: request, valid: true});
+            this.props.onFieldChange(this.props.name, request, true);
         }
     }
 

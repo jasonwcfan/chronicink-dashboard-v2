@@ -58,7 +58,7 @@ class ClientInfoPane extends Component {
                     return (
                         <RegionSelector
                             style={style.selector}
-                            defaultValue={field.value}
+                            value={field.value}
                             name={field.id}
                             key={field.id}
                             onFieldChange={this.props.onFieldChange}
