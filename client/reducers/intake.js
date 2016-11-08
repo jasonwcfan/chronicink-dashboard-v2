@@ -107,6 +107,20 @@ const defaultConditions = medicalConditions.map((condition) => {
         value: false
     }
 });
+const defaultAgreement = [
+    {
+        id: 'acceptDisclaimer',
+        value: false
+    },
+    {
+        id: 'acceptDeposit',
+        value: false
+    },
+    {
+        id: 'acceptNewsletter',
+        value: false
+    }
+];
 
 const field = (state, action) => {
     switch(action.type) {
@@ -144,10 +158,25 @@ const conditions = (state = defaultConditions, action) => {
     return state;
 };
 
+const agreements = (state = defaultAgreement, action) => {
+    if (action.type === 'TOGGLE_AGREEMENT') {
+        return state.map(a => {
+            if (action.id === a.id) {
+                return {
+                    id: a.id,
+                    value: !a.value
+                }
+            }
+            return a
+        })
+    }
+    return state;
+};
+
 const step = (state = 0, action) => {
     switch (action.type) {
         case 'INCR_STEP':
-            return state++;
+            return state + 1;
         case 'DECR_STEP':
             return state > 0 ? state - 1 : 0;
         default:
@@ -161,6 +190,7 @@ export default intake = (state = {}, action) => {
     const newState =  {
         fields: fields(state.fields, action),
         conditions: conditions(state.conditions, action),
+        agreements: agreements(state.agreements, action),
         stepIndex: step(state.stepIndex, action)
     };
     console.log('new state:');

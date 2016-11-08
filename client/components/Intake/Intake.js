@@ -36,7 +36,7 @@ class Intake extends Component {
             case 1:
                 return (
                     <div>
-                        {/** <DepositPane onChange={this._handleChange.bind(this)} /> **/}
+                        <DepositPane onToggleAgreement={this.props.onToggleAgreement} agreements={this.props.agreements} />
                         <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
                         <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
                     </div>

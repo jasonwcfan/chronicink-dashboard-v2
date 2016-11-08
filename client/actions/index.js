@@ -10,6 +10,11 @@ export const toggleCondition = (id) => ({
     id
 });
 
+export const toggleAgreement = (id) => ({
+    type: 'TOGGLE_AGREEMENT',
+    id
+});
+
 export const incrementStep = () => ({
     type: 'INCR_STEP'
 });

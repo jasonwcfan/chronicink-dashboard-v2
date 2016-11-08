@@ -11,6 +11,19 @@ const style = {
 };
 
 class DepositPane extends Component {
+    constructor(props) {
+        super(props);
+        console.log(props);
+    }
+
+    _renderAgreements(agreements) {
+        return agreements.map((agreement) => {
+            return (
+                <Checkbox style={style.item} name={agreement.id} key={agreement.id} label={condition.id} checked={condition.value} onCheck={this._handleChange.bind(this)} />
+            )
+        })
+    }
+
     render() {
         return (
             <div style={style.container}>
@@ -39,9 +52,27 @@ class DepositPane extends Component {
 
                             <h4>UNDER 18 POLICY</h4>
                             If you are under 18 years old (for tattooing) or 17 years old (for piercing), we ask that you bring your Parent or Legal Guardian along to fill out the form below at the time of booking. The Parent or Guardian must be present when you are receiving your tattoo/piercing and present government issued identification.
-                <Checkbox style={style.item} label="I have read and accept the disclaimer"/>
-                <Checkbox style={style.item} label="Yes, I would like to leave a deposit" />
-                <Checkbox style={style.item} label="I would like to subscribe to the newsletter" />
+                <Checkbox
+                    style={style.item}
+                    label="I have read and accept the disclaimer"
+                    name='acceptDisclaimer'
+                    checked={this.props.agreements[0].value}
+                    onCheck={(event) => {this.props.onToggleAgreement(event.target.name)}}
+                />
+                <Checkbox
+                    style={style.item}
+                    label="Yes, I would like to leave a deposit"
+                    name='acceptDeposit'
+                    checked={this.props.agreements[1].value}
+                    onCheck={(event) => {this.props.onToggleAgreement(event.target.name)}}
+                />
+                <Checkbox
+                    style={style.item}
+                    label="I would like to subscribe to the newsletter"
+                    name='acceptNewsletter'
+                    checked={this.props.agreements[2].value}
+                    onCheck={(event) => {this.props.onToggleAgreement(event.target.name)}}
+                />
             </div>
         );
     }

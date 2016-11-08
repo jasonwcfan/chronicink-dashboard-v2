@@ -22,7 +22,6 @@ class MedicalConditionsPane extends Component {
     }
 
     _handleChange(event) {
-        console.log(event.target.name);
         this.props.onToggleCondition(event.target.name);
     }
     

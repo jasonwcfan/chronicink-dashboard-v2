@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import Intake from '../components/Intake';
-import { setField, toggleCondition, incrementStep, decrementStep } from '../actions';
+import { setField, toggleCondition, toggleAgreement, incrementStep, decrementStep } from '../actions';
 
 const mapStateToProps = (state) => ({
     fields: state.intake.fields,
     conditions: state.intake.conditions,
+    agreements: state.intake.agreements,
     stepIndex: state.intake.stepIndex
 });
 
@@ -14,6 +15,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     onToggleCondition: (id) => {
         dispatch(toggleCondition(id))
+    },
+    onToggleAgreement: (id) => {
+        dispatch(toggleAgreement(id))
     },
     onClickNextStep: () => {
         dispatch(incrementStep())
