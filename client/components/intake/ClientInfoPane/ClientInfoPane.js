@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
-import { CountrySelector, RegionSelector } from './Geography';
 import MedicalConditionsPane from './MedicalConditionsPane';
-import { ValidatedTextField, ValidatedDatePicker } from '../Inputs';
+import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../Inputs';
 
 const style = {
     container: {
