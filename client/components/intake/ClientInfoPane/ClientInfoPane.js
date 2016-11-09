@@ -65,7 +65,6 @@ class ClientInfoPane extends Component {
                         />
                     );
                 case 'date':
-                    console.log(field);
                     return (
                         <ValidatedDatePicker
                             style={style.datePicker}

@@ -4,7 +4,6 @@ import DatePicker from 'material-ui/DatePicker';
 class RequiredTextField extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
     }
 
     _handleChange(_, date) {

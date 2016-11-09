@@ -125,10 +125,7 @@ const defaultAgreement = [
 const field = (state, action) => {
     switch(action.type) {
         case 'SET_FIELD':
-            console.log(action);
-            console.log(state.id);
             if (state.id == action.id) {
-                console.log(action.value);
                 return {
                     ...state,
                     id: action.id,
@@ -188,15 +185,11 @@ const step = (state = 0, action) => {
 };
 
 export default intake = (state = {}, action) => {
-    console.log('old state:');
-    console.log(state);
     const newState =  {
         fields: fields(state.fields, action),
         conditions: conditions(state.conditions, action),
         agreements: agreements(state.agreements, action),
         stepIndex: step(state.stepIndex, action)
     };
-    console.log('new state:');
-    console.log(newState);
     return newState;
 };

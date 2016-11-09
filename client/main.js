@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux'
+import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
+import ReduxThunk from 'redux-thunk';
+import createLogger from 'redux-logger';
 import reducer from './reducers'
 import App from './components/app';
 
-const store = createStore(reducer);
+const logger = createLogger();
+
+const store = createStore(reducer, applyMiddleware(ReduxThunk, logger));
 
 const routes = (
     <Provider store={store}>
