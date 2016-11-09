@@ -125,7 +125,10 @@ const defaultAgreement = [
 const field = (state, action) => {
     switch(action.type) {
         case 'SET_FIELD':
+            console.log(action);
+            console.log(state.id);
             if (state.id == action.id) {
+                console.log(action.value);
                 return {
                     ...state,
                     id: action.id,

@@ -1,5 +1,4 @@
-import PhoneNumberTextField from './PhoneNumberTextField';
-import EmailTextField from './EmailTextField';
 import ValidatedTextField from './ValidatedTextField';
+import ValidatedDatePicker from './ValidatedDatePicker';
 
-export { PhoneNumberTextField, EmailTextField, ValidatedTextField };
+export { ValidatedDatePicker, ValidatedTextField };

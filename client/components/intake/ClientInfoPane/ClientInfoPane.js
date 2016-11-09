@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
 import { CountrySelector, RegionSelector } from './Geography';
 import MedicalConditionsPane from './MedicalConditionsPane';
-import { ValidatedTextField, EmailTextField, PhoneNumberTextField } from '../Inputs';
+import { ValidatedTextField, ValidatedDatePicker } from '../Inputs';
 
 const style = {
     container: {
@@ -66,15 +66,17 @@ class ClientInfoPane extends Component {
                         />
                     );
                 case 'date':
+                    console.log(field);
                     return (
-                        <DatePicker
+                        <ValidatedDatePicker
                             style={style.datePicker}
                             defaultDate={field.value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
-                            onChange={this.props.onFieldChange}
+                            onFieldChange={this.props.onFieldChange}
                         />
+
                     );
             }
         });
