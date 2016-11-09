@@ -17,6 +17,7 @@ Meteor.methods({
             dateOfBirth: client.dateOfBirth,
             medicalConditions: client.medicalConditions,
             disclaimerAccepted: client.disclaimerAccepted,
+            depositAccepted: client.depositAccepted,
             newsletterAccepted: client.newsletterAccepted
         })
     }
