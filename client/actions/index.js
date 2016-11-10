@@ -1,24 +1,7 @@
-export const setField = (id, value, valid) => ({
-    type: 'SET_FIELD',
-    id,
-    value,
-    valid
-});
+import incrementStep from './incrementStep';
+import decrementStep from './decrementStep';
+import setField from './setField';
+import toggleAgreement from './toggleAgreement';
+import toggleCondition from './toggleCondition';
 
-export const toggleCondition = (id) => ({
-    type: 'TOGGLE_CONDITION',
-    id
-});
-
-export const toggleAgreement = (id) => ({
-    type: 'TOGGLE_AGREEMENT',
-    id
-});
-
-export const incrementStep = () => ({
-    type: 'INCR_STEP'
-});
-
-export const decrementStep = () => ({
-    type: 'DECR_STEP'
-});
+export { incrementStep, decrementStep, setField, toggleAgreement, toggleCondition };
