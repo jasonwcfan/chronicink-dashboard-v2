@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Checkbox from 'material-ui/Checkbox';
-import conditions from '../../../../constants/conditions';
+import medicalConditions from '../../../../constants/medicalConditions';
 
 const style = {
     container: {
@@ -22,11 +22,11 @@ class MedicalConditionsPane extends Component {
     }
 
     _handleChange(event) {
-        this.props.onToggleCondition(event.target.name);
+        this.props.onToggleMedicalCondition(event.target.name);
     }
     
-    _renderConditionsList(conditions) {
-        return conditions.map((condition) => {
+    _renderConditionsList(medicalConditions) {
+        return medicalConditions.map((condition) => {
             return (
                 <Checkbox style={style.item} name={condition.id} key={condition.id} label={condition.id} checked={condition.value} onCheck={this._handleChange.bind(this)} />
             )
@@ -36,7 +36,7 @@ class MedicalConditionsPane extends Component {
     render() {
         return(
             <div style={style.container}>
-                {this._renderConditionsList(this.props.conditions)}
+                {this._renderConditionsList(this.props.medicalConditions)}
             </div>
         )
     }

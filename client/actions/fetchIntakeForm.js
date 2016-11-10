@@ -1,5 +1,5 @@
-export default fetchIntakeForm = (text) => {
+export default fetchIntakeForm = (id) => {
     return () => {
-        Meteor.call('addIntakeForm', text);
+        Meteor.call('fetchIntakeForm', id);
     }
 }

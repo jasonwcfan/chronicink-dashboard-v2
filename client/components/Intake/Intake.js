@@ -28,7 +28,7 @@ class Intake extends Component {
             case 0:
                 return (
                     <div>
-                        <ClientInfoPane onFieldChange={this.props.onFieldChange} fields={this.props.fields} onToggleCondition={this.props.onToggleCondition} conditions={this.props.conditions} />
+                        <ClientInfoPane onFieldChange={this.props.onFieldChange} fields={this.props.fields} onToggleMedicalCondition={this.props.onToggleMedicalCondition} medicalConditions={this.props.medicalConditions} />
                         <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
                         <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
                     </div>
@@ -79,7 +79,7 @@ Intake.propTypes = {
         valid: PropTypes.bool.isRequired,
         required: PropTypes.bool.isRequired
     }).isRequired).isRequired,
-    conditions: PropTypes.arrayOf(PropTypes.shape({
+    medicalConditions: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         value: PropTypes.bool.isRequired
     }).isRequired).isRequired,

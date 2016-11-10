@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import medicalConditions from '../constants/conditions';
+import conditions from '../constants/medicalConditions';
 
 const defaultFields = [
     {
@@ -101,7 +101,7 @@ const defaultFields = [
 
 
 ];
-const defaultConditions = medicalConditions.map((condition) => {
+const defaultMedicalConditions = conditions.map((condition) => {
     return {
         id: condition,
         value: false
@@ -143,8 +143,8 @@ const fields = (state = defaultFields, action) => {
     return state.map(f => field(f, action))
 };
 
-const conditions = (state = defaultConditions, action) => {
-    if (action.type === 'TOGGLE_CONDITION') {
+const medicalConditions = (state = defaultMedicalConditions, action) => {
+    if (action.type === 'TOGGLE_MEDICAL_CONDITION') {
         return state.map(c => {
             if (action.id === c.id) {
                 return {
@@ -187,7 +187,7 @@ const step = (state = 0, action) => {
 export default intake = (state = {}, action) => {
     const newState =  {
         fields: fields(state.fields, action),
-        conditions: conditions(state.conditions, action),
+        medicalConditions: medicalConditions(state.medicalConditions, action),
         agreements: agreements(state.agreements, action),
         stepIndex: step(state.stepIndex, action)
     };
