@@ -10,7 +10,7 @@ const style = {
     }
 };
 
-class DepositPane extends Component {
+class AgreementStep extends Component {
     constructor(props) {
         super(props);
         console.log(props);
@@ -78,4 +78,4 @@ class DepositPane extends Component {
     }
 }
 
-export default DepositPane;
+export default AgreementStep;

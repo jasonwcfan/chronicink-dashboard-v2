@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
-import MedicalConditionsPane from './MedicalConditionsPane';
+import MedicalConditionsChecklist from './MedicalConditionsChecklist';
 import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../Inputs';
 
 const style = {
@@ -22,7 +22,7 @@ const style = {
     }
 };
 
-class ClientInfoPane extends Component {
+class ClientInfoStep extends Component {
     constructor(props) {
         super(props);
     }
@@ -85,7 +85,7 @@ class ClientInfoPane extends Component {
             <div style={style.container}>
                 {this._renderFields(this.props.fields)}
                 <h2>Medical Conditions</h2><br />
-                <MedicalConditionsPane medicalConditions={this.props.medicalConditions} onToggleMedicalCondition={this.props.onToggleMedicalCondition}/>
+                <MedicalConditionsChecklist medicalConditions={this.props.medicalConditions} onToggleMedicalCondition={this.props.onToggleMedicalCondition}/>
             </div>
         );
 
@@ -93,4 +93,4 @@ class ClientInfoPane extends Component {
 }
 
 
-export default ClientInfoPane;
+export default ClientInfoStep;

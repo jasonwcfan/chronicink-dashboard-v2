@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Checkbox from 'material-ui/Checkbox';
-import medicalConditions from '../../../../constants/medicalConditions';
 
 const style = {
     container: {
@@ -16,7 +15,7 @@ const style = {
     }
 };
 
-class MedicalConditionsPane extends Component {
+class MedicalConditionsChecklist extends Component {
     constructor(props) {
         super(props);
     }
@@ -42,4 +41,4 @@ class MedicalConditionsPane extends Component {
     }
 }
 
-export default MedicalConditionsPane;
+export default MedicalConditionsChecklist;

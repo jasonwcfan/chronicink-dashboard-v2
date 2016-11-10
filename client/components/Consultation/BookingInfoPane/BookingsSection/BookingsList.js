@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
-import BookingsSheet from '../../../../components/UI/BookingsSheet';
+import BookingsSheet from '../../../UI/BookingsSheet';
 import BookingDialog from './BookingDialog';
 
 class BookingsList extends Component {

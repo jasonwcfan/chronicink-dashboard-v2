@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import AppBar from 'material-ui/AppBar';
-import {Tabs, Tab} from 'material-ui/Tabs';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import {
@@ -8,9 +7,8 @@ import {
     Stepper,
     StepLabel,
 } from 'material-ui/Stepper';
-import ClientInfoPane from './ClientInfoPane';
-import DepositPane from './DepositPane';
-import BookingInfoPane from './BookingInfoPane';
+import ClientInfoStep from './ClientInfoStep';
+import AgreementStep from './AgreementStep';
 
 const style = {
     navButton: {
@@ -28,7 +26,7 @@ class Intake extends Component {
             case 0:
                 return (
                     <div>
-                        <ClientInfoPane onFieldChange={this.props.onFieldChange} fields={this.props.fields} onToggleMedicalCondition={this.props.onToggleMedicalCondition} medicalConditions={this.props.medicalConditions} />
+                        <ClientInfoStep onFieldChange={this.props.onFieldChange} fields={this.props.fields} onToggleMedicalCondition={this.props.onToggleMedicalCondition} medicalConditions={this.props.medicalConditions} />
                         <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
                         <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
                     </div>
@@ -36,7 +34,7 @@ class Intake extends Component {
             case 1:
                 return (
                     <div>
-                        <DepositPane onToggleAgreement={this.props.onToggleAgreement} agreements={this.props.agreements} />
+                        <AgreementStep onToggleAgreement={this.props.onToggleAgreement} agreements={this.props.agreements} />
                         <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
                         <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
                     </div>
