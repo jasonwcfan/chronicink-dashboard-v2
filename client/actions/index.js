@@ -3,6 +3,6 @@ import decrementStep from './decrementStep';
 import setField from './setField';
 import toggleAgreement from './toggleAgreement';
 import toggleMedicalCondition from './toggleMedicalCondition';
-import saveIntakeForm from './saveIntakeForm';
+import submitIntakeForm from './submitIntakeForm';
 
-export { incrementStep, decrementStep, setField, toggleAgreement, toggleMedicalCondition, saveIntakeForm };
+export { submitIntakeForm, incrementStep, decrementStep, setField, toggleAgreement, toggleMedicalCondition };

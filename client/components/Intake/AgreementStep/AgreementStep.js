@@ -16,14 +16,6 @@ class AgreementStep extends Component {
         console.log(props);
     }
 
-    _renderAgreements(agreements) {
-        return agreements.map((agreement) => {
-            return (
-                <Checkbox style={style.item} name={agreement.id} key={agreement.id} label={condition.id} checked={condition.value} onCheck={this._handleChange.bind(this)} />
-            )
-        })
-    }
-
     render() {
         return (
             <div style={style.container}>

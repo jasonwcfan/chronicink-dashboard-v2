@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Intake from '../components/Intake';
-import { setField, toggleMedicalCondition, toggleAgreement, incrementStep, decrementStep } from '../actions';
+import { submitIntakeForm, setField, toggleMedicalCondition, toggleAgreement, incrementStep, decrementStep } from '../actions';
 
 const mapStateToProps = (state) => ({
     fields: state.intake.fields,
@@ -10,6 +10,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    onSubmitIntakeForm: (form) => {
+        dispatch(submitIntakeForm(form))
+    },
     onFieldChange: (id, value, valid) => {
         dispatch(setField(id, value, valid))
     },
