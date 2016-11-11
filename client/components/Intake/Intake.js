@@ -96,7 +96,6 @@ class Intake extends Component {
     render() {
         return (
             <Paper zDepth={4}>
-                <AppBar title='Intake' />
                 <Stepper activeStep={this.props.stepIndex}>
                     <Step>
                         <StepLabel>Personal Information</StepLabel>
