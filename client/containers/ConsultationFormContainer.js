@@ -3,13 +3,11 @@ import Intake from '../components/Intake';
 import { submitIntakeForm, setField, toggleMedicalCondition, toggleAgreement, incrementStep, decrementStep } from '../actions/IntakeForm';
 
 const mapStateToProps = (state) => ({
-    fields: state.intake.fields,
-    medicalConditions: state.intake.medicalConditions,
-    agreements: state.intake.agreements,
-    stepIndex: state.intake.stepIndex,
-    isSaved: state.intake.isSaved,
-    savingForm: state.intake.savingForm,
-    formID: state.intake.formID
+    fields: state.consultation.fields,
+    sessions: state.consultation.sessions,
+    isSaved: state.consultation.isSaved,
+    savingForm: state.consultation.savingForm,
+    formID: state.consultation.formID
 });
 
 const mapDispatchToProps = (dispatch) => ({
