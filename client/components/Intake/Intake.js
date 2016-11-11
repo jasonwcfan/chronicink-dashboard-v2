@@ -7,13 +7,30 @@ import {
     Stepper,
     StepLabel,
 } from 'material-ui/Stepper';
+import LinearProgress from 'material-ui/LinearProgress';
 import ClientInfoStep from './ClientInfoStep';
 import AgreementStep from './AgreementStep';
 import FinishedStep from './FinishedStep';
 
 const style = {
+    container: {
+        margin: 5
+    },
     navButton: {
         margin: 10
+    },
+    finishedStepContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    finishedStepNavButtons: {
+        display: 'inline'
+    },
+    linearProgressContainer: {
+        paddingBottom: 10,
+        width: '95%'
     }
 };
 
@@ -50,10 +67,16 @@ class Intake extends Component {
                 );
             case 2:
                 return (
-                    <div>
+                    <div style={style.finishedStepContainer}>
                         <FinishedStep onSubmitIntake={this.props.onSubmitIntake} onClickPreviousStep={this.props.onClickPreviousStep} />
-                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
-                        <RaisedButton style={style.navButton} primary={true} label="Submit" onTouchTap={this._handleSubmit.bind(this)} />
+                        <div style={style.finishedStepNavButtons}>
+                            <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
+                            <RaisedButton style={style.navButton} primary={true} label="Submit" onTouchTap={this._handleSubmit.bind(this)} />
+                        </div>
+                        <div style={style.linearProgressContainer}>
+                            <LinearProgress mode="indeterminate" />
+                        </div>
+
                     </div>
                 );
         }
@@ -71,7 +94,7 @@ class Intake extends Component {
                         <StepLabel>Agreement</StepLabel>
                     </Step>
                 </Stepper>
-                <div>
+                <div style={style.container}>
                     {this._getStepContent(this.props.stepIndex)}
                 </div>
             </Paper>

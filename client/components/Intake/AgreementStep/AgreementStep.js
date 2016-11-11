@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import Checkbox from 'material-ui/Checkbox';
 
 const style = {
-    container: {
-        padding: 10
-    },
     item: {
         padding: 10
     }
@@ -18,7 +15,7 @@ class AgreementStep extends Component {
 
     render() {
         return (
-            <div style={style.container}>
+            <div>
                 <h3>Deposit Structure</h3><br />
                     Small – $80<br />
                     Medium – $150<br />

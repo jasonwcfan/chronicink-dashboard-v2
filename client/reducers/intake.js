@@ -209,7 +209,6 @@ const savingForm = (state = false, action) => {
 const formID = (state, action) => {
     switch (action.type) {
         case 'SAVED_FORM':
-            console.log(action.formID);
             return action.formID;
         default:
             return state;

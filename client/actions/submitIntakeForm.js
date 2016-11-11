@@ -9,7 +9,6 @@ export default submitIntakeForm = (dispatch, form) => {
             if (error) {
                 return error;
             } else {
-                console.log(formID);
                 dispatch(savedIntakeForm(formID));
             }
         });

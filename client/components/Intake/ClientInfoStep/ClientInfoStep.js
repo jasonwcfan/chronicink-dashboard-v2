@@ -5,9 +5,6 @@ import MedicalConditionsChecklist from './MedicalConditionsChecklist';
 import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../Inputs';
 
 const style = {
-    container: {
-        padding: 5
-    },
     textField: {
         marginLeft: 5,
         marginRight: 5,
@@ -82,7 +79,7 @@ class ClientInfoStep extends Component {
 
     render() {
         return (
-            <div style={style.container}>
+            <div>
                 {this._renderFields(this.props.fields)}
                 <h2>Medical Conditions</h2><br />
                 <MedicalConditionsChecklist medicalConditions={this.props.medicalConditions} onToggleMedicalCondition={this.props.onToggleMedicalCondition}/>
