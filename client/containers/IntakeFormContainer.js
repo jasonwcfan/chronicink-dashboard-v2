@@ -11,7 +11,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     onSubmitIntakeForm: (form) => {
-        dispatch(submitIntakeForm(form))
+        dispatch(submitIntakeForm(dispatch, form))
     },
     onFieldChange: (id, value, valid) => {
         dispatch(setField(id, value, valid))

@@ -7,7 +7,7 @@ Meteor.methods({
             agreements: form.agreements,
             fields: form.fields,
             medicalConditions: form.medicalConditions
-        })
+        });
     }
 });
 
