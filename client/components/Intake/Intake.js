@@ -48,6 +48,13 @@ class Intake extends Component {
         this.props.onSubmitIntakeForm(form);
     }
 
+    _getSubmitButton(isSaved) {
+        return (isSaved ?
+                <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true} /> :
+                <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this._handleSubmit.bind(this)} />
+        )
+    }
+
     _getStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
@@ -71,11 +78,15 @@ class Intake extends Component {
                         <FinishedStep onSubmitIntake={this.props.onSubmitIntake} onClickPreviousStep={this.props.onClickPreviousStep} />
                         <div style={style.finishedStepNavButtons}>
                             <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
-                            <RaisedButton style={style.navButton} primary={true} label="Submit" onTouchTap={this._handleSubmit.bind(this)} />
+                            {this._getSubmitButton(this.props.isSaved)}
                         </div>
-                        <div style={style.linearProgressContainer}>
-                            <LinearProgress mode="indeterminate" />
-                        </div>
+
+                        {this.props.savingForm ?
+                            <div style={style.linearProgressContainer}>
+                                <LinearProgress mode="indeterminate" />
+                            </div> :
+                            null
+                        }
 
                     </div>
                 );
