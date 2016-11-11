@@ -24,8 +24,8 @@ class App extends Component {
         })
     }
 
-    _handleChangePane(event) {
-        console.log(event);
+    _handleChangePane() {
+        console.log(this.name);
     }
 
     render() {
@@ -42,8 +42,8 @@ class App extends Component {
                         open={this.state.open}
                         onRequestChange={this._toggleDrawer.bind(this)}
                     >
-                        <MenuItem name='intakeForm' onTouchTap={this._handleChangePane.bind(this)} >Intake Form</MenuItem>
-                        <MenuItem name='consultationForm' onTouchTap={this._handleChangePane.bind(this)} >Consultation Form</MenuItem>
+                        <MenuItem name='intakeForm' onTouchTap={this._handleChangePane} >Intake Form</MenuItem>
+                        <MenuItem name='consultationForm' onTouchTap={this._handleChangePane} >Consultation Form</MenuItem>
                     </Drawer>
                     <IntakeFormContainer />
                 </div>

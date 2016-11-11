@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import AppBar from 'material-ui/AppBar';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import {

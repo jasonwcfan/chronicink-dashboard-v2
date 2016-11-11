@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux';
 import conditions from '../constants/medicalConditions';
 
 const defaultFields = [
