@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
-import styles from '../../../../constants/styles';
+import placements from '../../../constants/placements';
 
 const style = {
     display: 'block'
 };
 
-class StyleSelector extends Component {
+class PlacementSelector extends Component {
     constructor() {
         super();
         this.state = {
@@ -28,9 +28,9 @@ class StyleSelector extends Component {
     render() {
         return (
             <AutoComplete
-                floatingLabelText='Style'
+                floatingLabelText='Placement'
                 value={this.state.value}
-                dataSource={styles}
+                dataSource={placements}
                 filter={this._filter}
                 style={style}
             />
@@ -38,4 +38,4 @@ class StyleSelector extends Component {
     }
 }
 
-export default StyleSelector;
+export default PlacementSelector;

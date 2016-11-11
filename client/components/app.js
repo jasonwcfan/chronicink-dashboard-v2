@@ -7,6 +7,7 @@ import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import AppBar from 'material-ui/AppBar';
 import IntakeFormContainer from '../containers/IntakeFormContainer';
+import ConsultationFormContainer from '../containers/ConsultationFormContainer';
 
 injectTapEventPlugin();
 
@@ -45,7 +46,8 @@ class App extends Component {
                         <MenuItem name='intakeForm' onTouchTap={this._handleChangePane} >Intake Form</MenuItem>
                         <MenuItem name='consultationForm' onTouchTap={this._handleChangePane} >Consultation Form</MenuItem>
                     </Drawer>
-                    <IntakeFormContainer />
+                    {/**<IntakeFormContainer /> **/}
+                    <ConsultationFormContainer />
                 </div>
             </MuiThemeProvider>
         );

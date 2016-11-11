@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import Intake from '../components/Intake';
+import Consultation from '../components/Consultation';
 import { submitIntakeForm, setField, toggleMedicalCondition, toggleAgreement, incrementStep, decrementStep } from '../actions/IntakeForm';
 
 const mapStateToProps = (state) => ({
@@ -11,29 +11,17 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onSubmitIntakeForm: (form) => {
-        dispatch(submitIntakeForm(dispatch, form))
+    onSubmitConsultationForm: (form) => {
+        // dispatch(submitIntakeForm(dispatch, form))
     },
     onFieldChange: (id, value, valid) => {
-        dispatch(setField(id, value, valid))
-    },
-    onToggleMedicalCondition: (id) => {
-        dispatch(toggleMedicalCondition(id))
-    },
-    onToggleAgreement: (id) => {
-        dispatch(toggleAgreement(id))
-    },
-    onClickNextStep: () => {
-        dispatch(incrementStep())
-    },
-    onClickPreviousStep: () => {
-        dispatch(decrementStep())
+        // dispatch(setField(id, value, valid))
     }
 });
 
-const IntakeFormContainer = connect(
+const ConsultationFormContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Intake);
+)(Consultation);
 
-export default IntakeFormContainer;
+export default ConsultationFormContainer;

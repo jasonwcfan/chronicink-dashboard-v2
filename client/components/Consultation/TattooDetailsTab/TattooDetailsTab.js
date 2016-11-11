@@ -21,7 +21,7 @@ const style = {
     },
 };
 
-class TattooDetailsSection extends Component {
+class TattooDetailsTab extends Component {
     render() {
         return (
             <div>
@@ -56,4 +56,4 @@ class TattooDetailsSection extends Component {
     }
 }
 
-export default TattooDetailsSection;
+export default TattooDetailsTab;

@@ -155,6 +155,8 @@ const sessions = (state = [], action) => {
             return Object.assign({}, state).splice(action.sessionIndex, 1);
         case 'EDIT_SESSION':
             return state.map(s => session(s, action));
+        default:
+            return state;
     }
 };
 

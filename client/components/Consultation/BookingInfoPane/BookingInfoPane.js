@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import TattooDetailsSection from './TattooDetailsSection';
+import TattooDetailsSection from '../TattooDetailsTab';
 import RateSection from './RateSection';
-import BookingsSection from './BookingsSection';
+import BookingsSection from '../BookingsTab';
 
 const style = {
     container: {
