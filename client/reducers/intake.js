@@ -173,7 +173,7 @@ const agreements = (state = defaultAgreement, action) => {
     return state;
 };
 
-const step = (state = 0, action) => {
+const stepIndex = (state = 0, action) => {
     switch (action.type) {
         case 'INCR_STEP':
             return state + 1;
@@ -184,12 +184,47 @@ const step = (state = 0, action) => {
     }
 };
 
+const isSaved = (state = false, action) => {
+    switch (action.type) {
+        case 'SAVED_FORM':
+            return true;
+        case 'EDITED_FORM':
+            return false;
+        default:
+            return state;
+    }
+};
+
+const savingForm = (state = false, action) => {
+    switch (action.type) {
+        case 'SAVING_FORM':
+            return true;
+        case 'SAVED_FORM':
+            return false;
+        default:
+            return state;
+    }
+};
+
+const formID = (state, action) => {
+    switch (action.type) {
+        case 'SAVED_FORM':
+            console.log(action.formID);
+            return action.formID;
+        default:
+            return state;
+    }
+};
+
 export default intake = (state = {}, action) => {
     const newState =  {
         fields: fields(state.fields, action),
         medicalConditions: medicalConditions(state.medicalConditions, action),
         agreements: agreements(state.agreements, action),
-        stepIndex: step(state.stepIndex, action)
+        stepIndex: stepIndex(state.stepIndex, action),
+        isSaved: isSaved(state.isSaved, action),
+        savingForm: savingForm(state.savingForm, action),
+        formID: formID(state.formID, action)
     };
     return newState;
 };

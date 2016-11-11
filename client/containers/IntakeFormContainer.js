@@ -6,7 +6,10 @@ const mapStateToProps = (state) => ({
     fields: state.intake.fields,
     medicalConditions: state.intake.medicalConditions,
     agreements: state.intake.agreements,
-    stepIndex: state.intake.stepIndex
+    stepIndex: state.intake.stepIndex,
+    isSaved: state.intake.isSaved,
+    savingForm: state.intake.savingForm,
+    formID: state.intake.formID
 });
 
 const mapDispatchToProps = (dispatch) => ({

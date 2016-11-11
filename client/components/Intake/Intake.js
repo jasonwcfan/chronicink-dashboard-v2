@@ -92,7 +92,10 @@ Intake.propTypes = {
         id: PropTypes.string.isRequired,
         value: PropTypes.bool.isRequired
     }).isRequired).isRequired,
-    stepIndex: PropTypes.number.isRequired
+    stepIndex: PropTypes.number.isRequired,
+    isSaved: PropTypes.bool.isRequired,
+    savingForm: PropTypes.bool.isRequired,
+    formID: PropTypes.string
 };
 
 export default Intake;
