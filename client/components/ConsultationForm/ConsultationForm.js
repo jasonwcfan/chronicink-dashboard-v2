@@ -3,6 +3,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import TattooDetailsTab from './TattooDetailsTab';
+import BookingsTab from './BookingsTab';
 
 const style = {
     container: {
@@ -56,7 +57,7 @@ class ConsultationForm extends Component {
                         <TattooDetailsTab fields={this.props.fields} style={style.container} onFieldChange={this.props.onFieldChange} />
                     </Tab>
                     <Tab label='Booking'>
-
+                        <BookingsTab style={style.container} />
                     </Tab>
                 </Tabs>
             </Paper>

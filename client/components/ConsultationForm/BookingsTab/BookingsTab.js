@@ -22,17 +22,18 @@ const style = {
 class RateSection extends Component {
     render() {
         return (
-            <div>
+            <div style={this.props.style}>
                 <h2>Bookings</h2>
-                <RadioButtonGroup style={style.radioGroup} name='presentationRequired' defaultSelected='required'>
+                <h3>Presentation Required?</h3>
+                <RadioButtonGroup style={style.radioGroup} name='presentationRequired' defaultSelected='yes'>
                     <RadioButton
-                        value='required'
-                        label='Presentation required'
+                        value='yes'
+                        label='Yes'
                         style={style.radioButton}
                     />
                     <RadioButton
-                        value='notRequired'
-                        label='No presentation required'
+                        value='no'
+                        label='No'
                         style={style.radioButton}
                     />
                     <RadioButton
