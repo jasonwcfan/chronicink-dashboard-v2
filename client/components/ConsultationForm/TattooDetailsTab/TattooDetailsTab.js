@@ -35,7 +35,6 @@ class TattooDetailsTab extends Component {
     }
     
     _renderFields(fields) {
-        console.log(fields);
         return fields.map((field) => {
             switch (field.inputType) {
                 case 'textField':

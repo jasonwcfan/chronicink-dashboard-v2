@@ -1,4 +1,3 @@
-import conditions from '../constants/medicalConditions';
 import styles from '../constants/styles';
 import placements from '../constants/placements';
 
@@ -249,7 +248,7 @@ const formID = (state, action) => {
     }
 };
 
-export default consultation = (state = {}, action) => {
+export default consultationForm = (state = {}, action) => {
     const newState =  {
         fields: fields(state.fields, action),
         sessions: sessions(state.sessions, action),

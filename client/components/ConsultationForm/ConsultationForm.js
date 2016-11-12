@@ -26,9 +26,10 @@ const style = {
     }
 };
 
-class Intake extends Component {
+class ConsultationForm extends Component {
     constructor(props) {
         super(props);
+        console.log(this.props);
     }
 
     _handleSubmit() {
@@ -52,7 +53,7 @@ class Intake extends Component {
             <Paper zDepth={4}>
                 <Tabs>
                     <Tab label='Details'>
-                        <TattooDetailsTab fields={this.props.fields} style={style.container} />
+                        <TattooDetailsTab fields={this.props.fields} style={style.container} onFieldChange={this.props.onFieldChange} />
                     </Tab>
                     <Tab label='Booking'>
 
@@ -63,7 +64,7 @@ class Intake extends Component {
     }
 }
 
-Intake.propTypes = {
+ConsultationForm.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         label: PropTypes.string,
@@ -84,4 +85,4 @@ Intake.propTypes = {
     formID: PropTypes.string
 };
 
-export default Intake;
+export default ConsultationForm;

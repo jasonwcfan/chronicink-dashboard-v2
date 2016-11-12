@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import intake from './intake';
-import consultation from './consultation';
+import intakeForm from './intakeForm';
+import consultationForm from './consultationForm';
 
 const reducer = combineReducers({
-    intake,
-    consultation
+    intakeForm,
+    consultationForm
 });
 
 export default reducer;

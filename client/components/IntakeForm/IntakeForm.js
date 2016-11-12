@@ -33,7 +33,7 @@ const style = {
     }
 };
 
-class Intake extends Component {
+class IntakeForm extends Component {
     constructor(props) {
         super(props);
     }
@@ -111,7 +111,7 @@ class Intake extends Component {
     }
 }
 
-Intake.propTypes = {
+IntakeForm.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         label: PropTypes.string,
@@ -130,4 +130,4 @@ Intake.propTypes = {
     formID: PropTypes.string
 };
 
-export default Intake;
+export default IntakeForm;

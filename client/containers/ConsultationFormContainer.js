@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
-import Consultation from '../components/Consultation';
+import ConsultationForm from '../components/ConsultationForm';
 import { submitIntakeForm, setField, toggleMedicalCondition, toggleAgreement, incrementStep, decrementStep } from '../actions/IntakeForm';
 
 const mapStateToProps = (state) => ({
-    fields: state.consultation.fields,
-    sessions: state.consultation.sessions,
-    isSaved: state.consultation.isSaved,
-    savingForm: state.consultation.savingForm,
-    formID: state.consultation.formID
+    fields: state.consultationForm.fields,
+    sessions: state.consultationForm.sessions,
+    isSaved: state.consultationForm.isSaved,
+    savingForm: state.consultationForm.savingForm,
+    formID: state.consultationForm.formID
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -22,6 +22,6 @@ const mapDispatchToProps = (dispatch) => ({
 const ConsultationFormContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Consultation);
+)(ConsultationForm);
 
 export default ConsultationFormContainer;

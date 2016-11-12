@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
-import Intake from '../components/Intake';
+import IntakeForm from '../components/IntakeForm';
 import { submitIntakeForm, setField, toggleMedicalCondition, toggleAgreement, incrementStep, decrementStep } from '../actions/IntakeForm';
 
 const mapStateToProps = (state) => ({
-    fields: state.intake.fields,
-    medicalConditions: state.intake.medicalConditions,
-    agreements: state.intake.agreements,
-    stepIndex: state.intake.stepIndex,
-    isSaved: state.intake.isSaved,
-    savingForm: state.intake.savingForm,
-    formID: state.intake.formID
+    fields: state.intakeForm.fields,
+    medicalConditions: state.intakeForm.medicalConditions,
+    agreements: state.intakeForm.agreements,
+    stepIndex: state.intakeForm.stepIndex,
+    isSaved: state.intakeForm.isSaved,
+    savingForm: state.intakeForm.savingForm,
+    formID: state.intakeForm.formID
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -36,6 +36,6 @@ const mapDispatchToProps = (dispatch) => ({
 const IntakeFormContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Intake);
+)(IntakeForm);
 
 export default IntakeFormContainer;

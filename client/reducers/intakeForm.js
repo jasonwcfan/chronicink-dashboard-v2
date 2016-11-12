@@ -214,7 +214,7 @@ const formID = (state, action) => {
     }
 };
 
-export default intake = (state = {}, action) => {
+export default intakeForm = (state = {}, action) => {
     const newState =  {
         fields: fields(state.fields, action),
         medicalConditions: medicalConditions(state.medicalConditions, action),
