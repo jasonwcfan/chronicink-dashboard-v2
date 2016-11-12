@@ -52,7 +52,7 @@ class Intake extends Component {
             <Paper zDepth={4}>
                 <Tabs>
                     <Tab label='Details'>
-                        <TattooDetailsTab fields={this.props.fields} />
+                        <TattooDetailsTab fields={this.props.fields} style={style.container} />
                     </Tab>
                     <Tab label='Booking'>
 

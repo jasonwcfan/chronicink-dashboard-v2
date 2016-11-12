@@ -68,15 +68,19 @@ class TattooDetailsTab extends Component {
                     return (
                         <div key={field.id}>
                             <h3>{field.label}</h3>
-                            <RadioButtonGroup style={style.group} name={field.id} defaultSelected={field.value}>
-                                {field.items.map((item) =>
-                                    <RadioButton
-                                        value={item.value}
-                                        label={item.label}
-                                        key={item.value}
-                                        style={style.radioItem}
-                                    />
-                                )}
+                            <RadioButtonGroup
+                                tyle={style.group}
+                                name={field.id}
+                                defaultSelected={field.value}
+                                onChange={this.props.onFieldChange}>
+                                    {field.items.map((item) =>
+                                        <RadioButton
+                                            value={item.value}
+                                            label={item.label}
+                                            key={item.value}
+                                            style={style.radioItem}
+                                        />
+                                    )}
                             </RadioButtonGroup>
                         </div>
                     );
@@ -94,7 +98,8 @@ class TattooDetailsTab extends Component {
                                 const lowerCaseKey = key.toLowerCase();
                                 return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
                             }}
-                            style={style}
+                            onNewRequest={this.props.onFieldChange}
+                            maxSearchResults={10}
                         />
                     );
             }
@@ -103,7 +108,7 @@ class TattooDetailsTab extends Component {
     
     render() {
         return (
-            <div>
+            <div style={this.props.style}>
                 {this._renderFields(this.props.fields)}
             </div>
         )
