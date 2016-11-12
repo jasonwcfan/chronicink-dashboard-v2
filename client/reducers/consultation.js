@@ -1,104 +1,162 @@
 import conditions from '../constants/medicalConditions';
+import styles from '../constants/styles';
+import placements from '../constants/placements';
 
 const defaultFields = [
     {
-        id: 'firstName',
-        label: 'First Name',
-        inputType: 'text',
-        value: '',
-        valid: false,
-        required: true
+        id: 'studioLocation',
+        label: 'Studio location',
+        inputType: 'radio',
+        value: 'toronto',
+        valid: true,
+        required: true,
+        items: [{
+                value: 'toronto',
+                label: 'Toronto'
+            }, {
+                value: 'markham',
+                label: 'Markham'
+            }]
     },
     {
-        id: 'lastName',
-        label: 'Last Name',
-        inputType: 'text',
-        value: '',
-        valid: false,
-        required: true
+        id: 'customTattoo',
+        label: 'Is this a custom Tattoo?',
+        inputType: 'radio',
+        value: 'yes',
+        valid: true,
+        required: true,
+        items: [{
+            value: 'yes',
+            label: 'Yes'
+        }, {
+            value: 'no',
+            label: 'No'
+        }]
     },
     {
-        id: 'address',
-        label: 'Address',
-        inputType: 'text',
-        value: '',
-        valid: false,
-        required: true
+        id: 'coverup',
+        label: 'Is this a coverup?',
+        inputType: 'radio',
+        value: 'no',
+        valid: true,
+        required: true,
+        items: [{
+            value: 'yes',
+            label: 'Yes'
+        }, {
+            value: 'no',
+            label: 'No'
+        }]
     },
     {
-        id: 'secondaryAddress',
+        id: 'style',
         label: 'Address Line 2',
+        inputType: 'autocomplete',
+        value: '',
+        valid: false,
+        required: true,
+        items: styles
+    },
+    {
+        id: 'placement',
+        label: 'Placement',
+        inputType: 'autocomplete',
+        value: '',
+        valid: false,
+        required: true,
+        items: placements
+    },
+    {
+        id: 'size',
+        label: 'Size',
         inputType: 'text',
         value: '',
         valid: false,
+        required: true
+    },
+    {
+        id: 'colouring',
+        label: 'Colouring',
+        inputType: 'radio',
+        value: 'colour',
+        valid: true,
+        required: true,
+        items: [
+            {
+                value: 'colour',
+                label: 'Colour'
+            },
+            {
+                value: 'blackAndGrey',
+                label: 'Black and Grey'
+            },
+            {
+                value: 'blackAndGreyWithColour',
+                label: 'Black and Grey with touches of colour'
+            }]
+    },
+    {
+        id: 'skinTone',
+        label: 'Skin Tone',
+        inputType: 'text',
+        value: '',
+        valid: true,
         required: false
     },
     {
-        id: 'city',
-        label: 'City',
+        id: 'subject',
+        label: 'Subject',
         inputType: 'text',
         value: '',
-        valid: false,
-        required: true
-    },
-    {
-        id: 'country',
-        label: 'Country',
-        inputType: 'country',
-        value: 'Canada',
-        valid: false,
-        required: true
-    },
-    {
-        id: 'region',
-        label: 'Province',
-        inputType: 'region',
-        value: '',
-        valid: false,
-        required: true
-    },
-    {
-        id: 'postalCode',
-        label: 'Postal Code',
-        inputType: 'text',
-        value: '',
-        valid: false,
+        valid: true,
         required: false
     },
     {
-        id: 'email',
-        label: 'Email',
+        id: 'feel',
+        label: 'Feel',
         inputType: 'text',
         value: '',
-        valid: false,
-        required: true
-    },
-    {
-        id: 'primaryPhoneNumber',
-        label: 'Primary Phone Number',
-        inputType: 'text',
-        value: '',
-        valid: false,
-        required: true
-    },
-    {
-        id: 'secondaryPhoneNumber',
-        label: 'Additional Phone Number',
-        inputType: 'text',
-        value: '',
-        valid: false,
+        valid: true,
         required: false
     },
     {
-        id: 'dateOfBirth',
-        label: 'Date of Birth',
-        inputType: 'date',
-        value: null,
+        id: 'rate',
+        label: 'Rate',
+        inputType: 'radio',
+        value: 'hourly',
+        valid: true,
+        required: true,
+        items: [
+            {
+                value: 'hourly',
+                label: 'Hourly'
+            },
+            {
+                value: 'perPiece',
+                label: 'Per Piece'
+            },
+            {
+                value: 'toBeDetermined',
+                label: 'To Be Determined'
+            }
+        ]
+    },
+    {
+        id: 'rate',
+        label: 'Rate',
+        inputType: 'text',
+        value: '',
         valid: false,
         required: true
     },
-
-
+    {
+        id: 'deposit',
+        label: 'Deposit',
+        inputType: 'text',
+        value: '',
+        valid: false,
+        required: true
+    },
 ];
 
 const field = (state, action) => {

@@ -48,44 +48,6 @@ class Intake extends Component {
         )
     }
 
-    _getStepContent(stepIndex) {
-        switch (stepIndex) {
-            case 0:
-                return (
-                    <div>
-                        <ClientInfoStep onFieldChange={this.props.onFieldChange} fields={this.props.fields} onToggleMedicalCondition={this.props.onToggleMedicalCondition} medicalConditions={this.props.medicalConditions} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
-                    </div>
-                );
-            case 1:
-                return (
-                    <div>
-                        <AgreementStep onToggleAgreement={this.props.onToggleAgreement} agreements={this.props.agreements} />
-                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
-                    </div>
-                );
-            case 2:
-                return (
-                    <div style={style.finishedStepContainer}>
-                        <FinishedStep onSubmitIntake={this.props.onSubmitIntake} onClickPreviousStep={this.props.onClickPreviousStep} />
-                        <div style={style.finishedStepNavButtons}>
-                            <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
-                            {this._getSubmitButton(this.props.isSaved)}
-                        </div>
-
-                        {this.props.savingForm ?
-                            <div style={style.linearProgressContainer}>
-                                <LinearProgress mode="indeterminate" />
-                            </div> :
-                            null
-                        }
-
-                    </div>
-                );
-        }
-    }
-
     render() {
         return (
             <Paper zDepth={4}>
