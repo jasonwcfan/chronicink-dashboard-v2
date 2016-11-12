@@ -41,12 +41,21 @@ class BookingDialog extends Component {
         this.setState({open: false});
     }
 
+    _handleSubmitSession() {
+        this.props.onSubmitConsultationForm({
+            sessionType: this.props.sessionType,
+            date: this.props.date,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime
+        })
+    }
+
     render() {
         const actions = [
             <RaisedButton
                 label="Ok"
                 primary={true}
-                onTouchTap={this._handleClose.bind(this)}
+                onTouchTap={this._handleSubmitSession.bind(this)}
             />
         ];
 
@@ -58,11 +67,10 @@ class BookingDialog extends Component {
                     actions={actions}
                     modal={false}
                     open={this.state.open}
-                    onRequestClose={this._handleClose.bind(this)}
-                >
-                    <DatePicker style={style.datePicker} textFieldStyle={style.textFieldStyle} floatingLabelText="Date" />
-                    <TimePicker style={style.timePicker} textFieldStyle={style.textFieldStyle} floatingLabelText="Start Time" />
-                    <TimePicker style={style.timePicker} textFieldStyle={style.textFieldStyle} floatingLabelText="End Time" />
+                    onRequestClose={this._handleClose.bind(this)} >
+                        <DatePicker style={style.datePicker} textFieldStyle={style.textFieldStyle} floatingLabelText="Date" />
+                        <TimePicker style={style.timePicker} textFieldStyle={style.textFieldStyle} floatingLabelText="Start Time" />
+                        <TimePicker style={style.timePicker} textFieldStyle={style.textFieldStyle} floatingLabelText="End Time" />
                 </Dialog>
             </div>
         )

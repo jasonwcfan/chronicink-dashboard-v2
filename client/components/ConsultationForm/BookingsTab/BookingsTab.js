@@ -42,7 +42,7 @@ class RateSection extends Component {
                         style={style.radioButton}
                     />
                 </RadioButtonGroup>
-                <BookingsList />
+                <BookingsList sessions={this.props.sessions} />
             </div>
         )
     }

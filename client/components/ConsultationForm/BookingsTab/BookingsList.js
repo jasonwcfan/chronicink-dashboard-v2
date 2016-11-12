@@ -3,8 +3,21 @@ import { List, ListItem } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import BookingsSheet from '../../UI/BookingsSheet';
 import BookingDialog from './BookingDialog';
+import moment from 'moment';
 
 class BookingsList extends Component {
+    constructor() {
+        super();
+    }
+
+    _renderSessions(sessions) {
+        return sessions.map((session) =>
+            <ListItem
+                primaryText={session.sessionType + ' ' + session.sessionIndex + 1}
+                secondaryText={moment(session.date).format('MMM Do YYYY')} />
+        )
+    }
+
     render() {
         const style = {
             root: {
@@ -30,10 +43,10 @@ class BookingsList extends Component {
         return (
             <Paper style={style.root} zDepth={5}>
                 <List style={style.listContainer}>
-                    <ListItem primaryText="Booking 1" />
+                    {this._renderSessions(this.props.sessions)}
                 </List>
                 <div style={style.dialogContainer}>
-                    <BookingDialog style={style.dialogButton} />
+                    <BookingDialog />
                 </div>
             </Paper>
         )
