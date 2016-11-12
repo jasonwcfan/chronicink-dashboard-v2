@@ -66,13 +66,14 @@ class TattooDetailsTab extends Component {
                     );
                 case 'radio':
                     return (
-                        <div>
+                        <div key={field.id}>
                             <h3>{field.label}</h3>
-                            <RadioButtonGroup style={style.group} name={field.id}  key={field.id} defaultSelected={field.value}>
+                            <RadioButtonGroup style={style.group} name={field.id} defaultSelected={field.value}>
                                 {field.items.map((item) =>
                                     <RadioButton
                                         value={item.value}
                                         label={item.label}
+                                        key={item.value}
                                         style={style.radioItem}
                                     />
                                 )}
@@ -87,6 +88,12 @@ class TattooDetailsTab extends Component {
                             value={field.label}
                             key={field.id}
                             dataSource={field.items.map((item) => item.label)}
+                            filter={(searchText, key) => {
+                                // Fuzzier search than the default
+                                const lowerCaseSearchText = searchText.toLowerCase();
+                                const lowerCaseKey = key.toLowerCase();
+                                return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
+                            }}
                             style={style}
                         />
                     );

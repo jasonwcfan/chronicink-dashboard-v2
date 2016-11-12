@@ -120,8 +120,8 @@ const defaultFields = [
         required: false
     },
     {
-        id: 'rate',
-        label: 'Rate',
+        id: 'rateType',
+        label: 'Rate Type',
         inputType: 'radio',
         value: 'hourly',
         valid: true,
