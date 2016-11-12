@@ -29,7 +29,6 @@ const style = {
 class Intake extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
     }
 
     _handleSubmit() {
@@ -53,7 +52,7 @@ class Intake extends Component {
             <Paper zDepth={4}>
                 <Tabs>
                     <Tab label='Details'>
-                        <TattooDetailsTab />
+                        <TattooDetailsTab fields={this.props.fields} />
                     </Tab>
                     <Tab label='Booking'>
 

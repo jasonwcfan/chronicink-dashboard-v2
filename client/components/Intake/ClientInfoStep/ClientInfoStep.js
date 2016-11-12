@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TextField from 'material-ui/TextField';
 import DatePicker from 'material-ui/DatePicker';
 import MedicalConditionsChecklist from './MedicalConditionsChecklist';
-import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../Inputs';
+import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../../Inputs';
 
 const style = {
     textField: {
@@ -27,7 +27,7 @@ class ClientInfoStep extends Component {
     _renderFields(fields) {
         return fields.map((field) => {
             switch (field.inputType) {
-                case 'text':
+                case 'textField':
                     return (
                         <ValidatedTextField 
                             style={style.textField}

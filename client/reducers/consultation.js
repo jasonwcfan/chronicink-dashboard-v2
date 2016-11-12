@@ -50,7 +50,7 @@ const defaultFields = [
     },
     {
         id: 'style',
-        label: 'Address Line 2',
+        label: 'Style',
         inputType: 'autocomplete',
         value: '',
         valid: false,
@@ -69,7 +69,7 @@ const defaultFields = [
     {
         id: 'size',
         label: 'Size',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: true
@@ -98,7 +98,7 @@ const defaultFields = [
     {
         id: 'skinTone',
         label: 'Skin Tone',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: true,
         required: false
@@ -106,7 +106,7 @@ const defaultFields = [
     {
         id: 'subject',
         label: 'Subject',
-        inputType: 'text',
+        inputType: 'textBox',
         value: '',
         valid: true,
         required: false
@@ -114,7 +114,7 @@ const defaultFields = [
     {
         id: 'feel',
         label: 'Feel',
-        inputType: 'text',
+        inputType: 'textBox',
         value: '',
         valid: true,
         required: false
@@ -144,7 +144,7 @@ const defaultFields = [
     {
         id: 'rate',
         label: 'Rate',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: true
@@ -152,7 +152,7 @@ const defaultFields = [
     {
         id: 'deposit',
         label: 'Deposit',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: true

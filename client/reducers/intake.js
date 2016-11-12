@@ -4,7 +4,7 @@ const defaultFields = [
     {
         id: 'firstName',
         label: 'First Name',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: true
@@ -12,7 +12,7 @@ const defaultFields = [
     {
         id: 'lastName',
         label: 'Last Name',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: true
@@ -20,7 +20,7 @@ const defaultFields = [
     {
         id: 'address',
         label: 'Address',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: true
@@ -28,7 +28,7 @@ const defaultFields = [
     {
         id: 'secondaryAddress',
         label: 'Address Line 2',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: false
@@ -36,7 +36,7 @@ const defaultFields = [
     {
         id: 'city',
         label: 'City',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: true
@@ -60,7 +60,7 @@ const defaultFields = [
     {
         id: 'postalCode',
         label: 'Postal Code',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: false
@@ -68,7 +68,7 @@ const defaultFields = [
     {
         id: 'email',
         label: 'Email',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: true
@@ -76,7 +76,7 @@ const defaultFields = [
     {
         id: 'primaryPhoneNumber',
         label: 'Primary Phone Number',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: true
@@ -84,7 +84,7 @@ const defaultFields = [
     {
         id: 'secondaryPhoneNumber',
         label: 'Additional Phone Number',
-        inputType: 'text',
+        inputType: 'textField',
         value: '',
         valid: false,
         required: false

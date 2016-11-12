@@ -34,6 +34,8 @@ class RequiredTextField extends Component {
                 floatingLabelText={this.props.floatingLabelText}
                 onChange={this._handleChange.bind(this)}
                 onBlur={this._handleBlur.bind(this)}
+                fullWidth={this.props.fullWidth}
+                multiLine={this.props.multiLine}
                 errorStyle={{
                     // Workaround to fix layout issues caused by material ui's error text
                     // https://github.com/callemall/material-ui/issues/1151

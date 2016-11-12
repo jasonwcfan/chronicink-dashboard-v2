@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import AutoComplete from 'material-ui/AutoComplete';
 import MenuItem from 'material-ui/MenuItem';
-import countries from '../../../constants/countries';
+import countries from '../../constants/countries';
 
 class CountrySelector extends Component {
     constructor(props) {
