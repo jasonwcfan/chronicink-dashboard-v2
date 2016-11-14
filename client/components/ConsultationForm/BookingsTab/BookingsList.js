@@ -23,14 +23,14 @@ class BookingsList extends Component {
     render() {
         const style = {
             root: {
-                marginBottom: 24,
+                marginBottom: 200,
                 marginRight: 24,
                 maxWidth: 360,
                 width: '100%',
             },
             listContainer: {
                 backgroundColor: '#404040',
-                height: this.props.height,
+                height: this.props.sessions.length * 72,
                 overflow: 'hidden',
             },
             dialogContainer: {
@@ -54,9 +54,5 @@ class BookingsList extends Component {
         )
     }
 }
-
-BookingsList.defaultProps = {
-    height: 500,
-};
 
 export default BookingsList;
