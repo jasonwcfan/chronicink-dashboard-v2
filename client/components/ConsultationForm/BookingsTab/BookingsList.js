@@ -14,7 +14,7 @@ class BookingsList extends Component {
         return sessions.map((session) =>
             <ListItem
                 primaryText={session.sessionType + ' ' + (session.sessionIndex + 1)}
-                secondaryText={moment(session.date).format('MMM Do YYYY')}
+                secondaryText={moment(session.date).format('MMM Do YYYY: ') + moment(session.startTime).format('h:mm A') + ' to ' + moment(session.endTime).format('h:mm A')}
                 key={session.sessionIndex}
             />
         )
