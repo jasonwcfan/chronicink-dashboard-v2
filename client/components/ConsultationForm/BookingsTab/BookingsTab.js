@@ -19,7 +19,7 @@ const style = {
     }
 };
 
-class RateSection extends Component {
+class BookingsTab extends Component {
     render() {
         return (
             <div style={this.props.style}>
@@ -48,4 +48,4 @@ class RateSection extends Component {
     }
 }
 
-export default RateSection;
+export default BookingsTab;

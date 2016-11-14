@@ -180,11 +180,11 @@ const session = (state, action) => {
         switch (action.type) {
             case 'EDIT_SESSION':
                 return {
-                    sessionIndex: action.sessionIndex,
-                    sessionType: action.sessionType,
-                    date: action.date,
-                    startTime: action.startTime,
-                    endTime: action.endTime,
+                    sessionIndex: action.session.sessionIndex,
+                    sessionType: action.session.sessionType,
+                    date: action.session.date,
+                    startTime: action.session.startTime,
+                    endTime: action.session.endTime,
                 };
             default:
                 return state;
@@ -199,17 +199,20 @@ const fields = (state = defaultFields, action) => {
 };
 
 const sessions = (state = [], action) => {
+    const newState = state.slice();
     switch (action.type) {
         case 'ADD_SESSION':
-            return Object.assign({}, state).push({
+            newState.push({
                 sessionIndex: state.length,
-                sessionType: action.sessionType,
-                date: action.date,
-                startTime: action.startTime,
-                endTime: action.endTime
+                sessionType: action.session.sessionType,
+                date: action.session.date,
+                startTime: action.session.startTime,
+                endTime: action.session.endTime
             });
+            return newState;
         case 'REMOVE_SESSION':
-            return Object.assign({}, state).splice(action.sessionIndex, 1);
+            newState.splice(action.sessionIndex, 1);
+            return newState;
         case 'EDIT_SESSION':
             return state.map(s => session(s, action));
         default:

@@ -13,8 +13,10 @@ class BookingsList extends Component {
     _renderSessions(sessions) {
         return sessions.map((session) =>
             <ListItem
-                primaryText={session.sessionType + ' ' + session.sessionIndex + 1}
-                secondaryText={moment(session.date).format('MMM Do YYYY')} />
+                primaryText={session.sessionType + ' ' + (session.sessionIndex + 1)}
+                secondaryText={moment(session.date).format('MMM Do YYYY')}
+                key={session.sessionIndex}
+            />
         )
     }
 

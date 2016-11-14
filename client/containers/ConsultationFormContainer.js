@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ConsultationForm from '../components/ConsultationForm';
-import { submitIntakeForm, setField, toggleMedicalCondition, toggleAgreement, incrementStep, decrementStep } from '../actions/IntakeForm';
+import { addSession } from '../actions/ConsultationForm';
 
 const mapStateToProps = (state) => ({
     fields: state.consultationForm.fields,
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     onSubmitSession: (session) => {
         console.log(session);
-        // dispatch(submitIntakeForm(dispatch, form))
+        dispatch(addSession(session));
     },
     onSubmitConsultationForm: (form) => {
         // dispatch(submitIntakeForm(dispatch, form))
