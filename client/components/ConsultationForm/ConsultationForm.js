@@ -36,16 +36,16 @@ class ConsultationForm extends Component {
     _handleSubmit() {
         const form = {
             fields: this.props.fields,
-            agreements: this.props.agreements,
-            medicalConditions: this.props.medicalConditions
+            sessions: this.props.sessions,
         };
-        this.props.onSubmitIntakeForm(form);
+        this.props.onSubmitConsultationForm(form);
     }
 
     _getSubmitButton(isSaved) {
         return (isSaved ?
-                <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true} /> :
-                <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this._handleSubmit.bind(this)} />
+                <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true}/> :
+                <RaisedButton style={style.navButton} primary={true} label='Submit'
+                              onTouchTap={this._handleSubmit.bind(this)}/>
         )
     }
 
@@ -54,16 +54,20 @@ class ConsultationForm extends Component {
             <Paper zDepth={4}>
                 <Tabs>
                     <Tab label='Details'>
-                        <TattooDetailsTab fields={this.props.fields} style={style.container} onFieldChange={this.props.onFieldChange} />
+                        <TattooDetailsTab fields={this.props.fields} style={style.container}
+                                          onFieldChange={this.props.onFieldChange}/>
                     </Tab>
                     <Tab label='Booking'>
-                        <BookingsTab style={style.container} sessions={this.props.sessions} onSubmitSession={this.props.onSubmitSession} />
+                        <BookingsTab style={style.container} sessions={this.props.sessions}
+                                     onSubmitSession={this.props.onSubmitSession}/>
+                        {this._getSubmitButton(this.props.isSaved)}
                     </Tab>
                 </Tabs>
             </Paper>
         );
     }
 }
+
 
 ConsultationForm.propTypes = {
     fields: PropTypes.arrayOf(PropTypes.shape({

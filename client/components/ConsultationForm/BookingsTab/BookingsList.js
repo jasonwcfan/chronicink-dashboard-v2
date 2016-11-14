@@ -30,7 +30,7 @@ class BookingsList extends Component {
             },
             listContainer: {
                 backgroundColor: '#404040',
-                height: this.props.sessions.length * 72,
+                height: this.props.sessions.length * 72 || 144,
                 overflow: 'hidden',
             },
             dialogContainer: {

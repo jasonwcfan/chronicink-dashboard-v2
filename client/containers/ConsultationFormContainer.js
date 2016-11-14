@@ -12,10 +12,9 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     onSubmitSession: (session) => {
-        console.log(session);
         dispatch(addSession(session));
     },
-    onSubmitConsultationForm: (form) => {
+    onSubmitConsultationForm: (dispatch, form) => {
         // dispatch(submitIntakeForm(dispatch, form))
     },
     onFieldChange: (id, value, valid) => {
