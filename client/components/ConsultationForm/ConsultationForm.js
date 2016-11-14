@@ -57,7 +57,7 @@ class ConsultationForm extends Component {
                         <TattooDetailsTab fields={this.props.fields} style={style.container} onFieldChange={this.props.onFieldChange} />
                     </Tab>
                     <Tab label='Booking'>
-                        <BookingsTab style={style.container} sessions={this.props.sessions} />
+                        <BookingsTab style={style.container} sessions={this.props.sessions} onSubmitSession={this.props.onSubmitSession} />
                     </Tab>
                 </Tabs>
             </Paper>

@@ -11,6 +11,10 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    onSubmitSession: (session) => {
+        console.log(session);
+        // dispatch(submitIntakeForm(dispatch, form))
+    },
     onSubmitConsultationForm: (form) => {
         // dispatch(submitIntakeForm(dispatch, form))
     },

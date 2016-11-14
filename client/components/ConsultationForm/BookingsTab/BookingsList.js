@@ -46,7 +46,7 @@ class BookingsList extends Component {
                     {this._renderSessions(this.props.sessions)}
                 </List>
                 <div style={style.dialogContainer}>
-                    <BookingDialog />
+                    <BookingDialog onSubmitSession={this.props.onSubmitSession} />
                 </div>
             </Paper>
         )

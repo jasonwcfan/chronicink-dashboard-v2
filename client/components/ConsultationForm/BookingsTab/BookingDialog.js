@@ -29,7 +29,11 @@ class BookingDialog extends Component {
     constructor() {
         super();
         this.state = {
-            open: false
+            open: false,
+            sessionType: 'Session',
+            date: null,
+            startTime: null,
+            endTime: null
         }
     }
 
@@ -38,16 +42,34 @@ class BookingDialog extends Component {
     }
 
     _handleClose() {
-        this.setState({open: false});
+        this.setState({
+            open: false,
+            sessionType: 'Session',
+            date: null,
+            startTime: null,
+            endTime: null
+        });
     }
 
     _handleSubmitSession() {
-        this.props.onSubmitConsultationForm({
-            sessionType: this.props.sessionType,
-            date: this.props.date,
-            startTime: this.props.startTime,
-            endTime: this.props.endTime
-        })
+        console.log(this.state);
+        const date = this.state.date;
+        const startTime = this.state.startTime;
+        const endTime = this.state.endTime;
+
+        if (date && startTime && endTime) {
+            startTime.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+            endTime.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
+        }
+
+        this.props.onSubmitSession({
+            sessionType: this.state.sessionType,
+            date,
+            startTime,
+            endTime,
+        });
+
+        this._handleClose();
     }
 
     render() {
@@ -68,9 +90,24 @@ class BookingDialog extends Component {
                     modal={false}
                     open={this.state.open}
                     onRequestClose={this._handleClose.bind(this)} >
-                        <DatePicker style={style.datePicker} textFieldStyle={style.textFieldStyle} floatingLabelText="Date" />
-                        <TimePicker style={style.timePicker} textFieldStyle={style.textFieldStyle} floatingLabelText="Start Time" />
-                        <TimePicker style={style.timePicker} textFieldStyle={style.textFieldStyle} floatingLabelText="End Time" />
+                        <DatePicker
+                            style={style.datePicker}
+                            textFieldStyle={style.textFieldStyle}
+                            floatingLabelText="Date"
+                            onChange={(_, date) => {this.setState({date})}}
+                        />
+                        <TimePicker
+                            style={style.timePicker}
+                            textFieldStyle={style.textFieldStyle}
+                            floatingLabelText="Start Time"
+                            onChange={(_, startTime) => {this.setState({startTime})}}
+                        />
+                        <TimePicker
+                            style={style.timePicker}
+                            textFieldStyle={style.textFieldStyle}
+                            floatingLabelText="End Time"
+                            onChange={(_, endTime) => {this.setState({endTime})}}
+                        />
                 </Dialog>
             </div>
         )
