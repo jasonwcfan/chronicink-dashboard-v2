@@ -1,3 +1,4 @@
 import addSession from './addSession';
+import submitConsultationForm from './submitConsultationForm';
 
-export { addSession };
+export { addSession, submitConsultationForm };

@@ -71,7 +71,11 @@ class TattooDetailsTab extends Component {
                                 tyle={style.group}
                                 name={field.id}
                                 defaultSelected={field.value}
-                                onChange={this.props.onFieldChange}>
+                                onChange={(event, value) => {
+                                    console.log(field.id);
+                                    this.props.onFieldChange(field.id, value, true)
+                                }}
+                            >
                                     {field.items.map((item) =>
                                         <RadioButton
                                             value={item.value}
@@ -97,8 +101,10 @@ class TattooDetailsTab extends Component {
                                 const lowerCaseKey = key.toLowerCase();
                                 return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
                             }}
-                            onNewRequest={this.props.onFieldChange}
                             maxSearchResults={10}
+                            onNewRequest={(value) => {
+                                this.props.onFieldChange(field.id, value, value != '')
+                            }}
                         />
                     );
             }

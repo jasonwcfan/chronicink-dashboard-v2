@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import IntakeForm from '../components/IntakeForm';
-import { submitIntakeForm, setField, toggleMedicalCondition, toggleAgreement, incrementStep, decrementStep } from '../actions/IntakeForm';
+import { submitIntakeForm, toggleMedicalCondition, toggleAgreement, incrementStep, decrementStep } from '../actions/IntakeForm';
+import { setField } from '../actions';
 
 const mapStateToProps = (state) => ({
     fields: state.intakeForm.fields,

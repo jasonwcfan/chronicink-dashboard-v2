@@ -1,5 +1,5 @@
-import savingIntakeForm from './savingIntakeForm';
-import savedIntakeForm from './savedIntakeForm';
+import savingIntakeForm from './IntakeFormControl/savingIntakeForm';
+import savedIntakeForm from './IntakeFormControl/savedIntakeForm';
 
 export default submitIntakeForm = (dispatch, form) => {
     return () => {
