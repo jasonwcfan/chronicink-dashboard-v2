@@ -1,6 +1,4 @@
 node_modules/
-.idea/codeStyleSettings.xml
+.idea/
 
-.idea/workspace.xml
-
-.idea/workspace.xml
+.meteor/
