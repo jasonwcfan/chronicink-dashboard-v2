@@ -27,7 +27,7 @@ class App extends Component {
     }
 
     _getActiveApp(activeApp) {
-        switch (activeApp) {
+        switch (activeApp.id) {
             case 'intakeForm':
                 return <IntakeFormContainer />;
             case 'consultationForm':
@@ -39,6 +39,9 @@ class App extends Component {
 
     _handleChangeApp(appName) {
         this.props.onChangeApp(appName);
+        this.setState({
+            drawerIsOpen: false
+        })
     }
 
     render() {
@@ -46,7 +49,7 @@ class App extends Component {
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <div>
                     <AppBar
-                        title='Intake'
+                        title={this.props.activeApp.label}
                         onLeftIconButtonTouchTap={this._toggleDrawer.bind(this)}
                     />
                     <Drawer
@@ -66,7 +69,10 @@ class App extends Component {
 }
 
 App.propTypes = {
-    activeApp: PropTypes.string.isRequired
+    activeApp: PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        label: PropTypes.string
+    }).isRequired
 };
 
 export default App;
