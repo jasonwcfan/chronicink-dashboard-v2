@@ -4,7 +4,6 @@ import savedConsultationForm from './ConsultationFormSaveAndLoad/savedConsultati
 export default submitConsultationForm = (dispatch, form) => {
     return () => {
         dispatch(savingConsultationForm());
-        console.log(form);
         Meteor.call('consultationForm.insert', form, function(error, formID) {
             if (error) {
                 return error;

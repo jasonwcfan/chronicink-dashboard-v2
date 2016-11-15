@@ -1,3 +1,4 @@
 import setField from './setField';
+import changeApp from './changeApp';
 
-export { setField };
+export { setField, changeApp };

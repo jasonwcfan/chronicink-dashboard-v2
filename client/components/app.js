@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
@@ -14,19 +14,31 @@ injectTapEventPlugin();
 class App extends Component {
     constructor(props) {
         super(props);
+        console.log(props);
         this.state = {
-            open: false
+            drawerIsOpen: false
         }
     }
 
     _toggleDrawer() {
         this.setState({
-            open: !this.state.open
+            drawerIsOpen: !this.state.drawerIsOpen
         })
     }
 
-    _handleChangePane() {
-        console.log(this.name);
+    _getActiveApp(activeApp) {
+        switch (activeApp) {
+            case 'intakeForm':
+                return <IntakeFormContainer />;
+            case 'consultationForm':
+                return <ConsultationFormContainer />;
+            default:
+                return <IntakeFormContainer />;
+        }
+    }
+
+    _handleChangeApp(appName) {
+        this.props.onChangeApp(appName);
     }
 
     render() {
@@ -40,18 +52,21 @@ class App extends Component {
                     <Drawer
                         docked={false}
                         width={200}
-                        open={this.state.open}
+                        open={this.state.drawerIsOpen}
                         onRequestChange={this._toggleDrawer.bind(this)}
                     >
-                        <MenuItem name='intakeForm' onTouchTap={this._handleChangePane} >Intake Form</MenuItem>
-                        <MenuItem name='consultationForm' onTouchTap={this._handleChangePane} >Consultation Form</MenuItem>
+                        <MenuItem name='intakeForm' onTouchTap={() => {this._handleChangeApp('intakeForm')}} >Intake Form</MenuItem>
+                        <MenuItem name='consultationForm' onTouchTap={() => this._handleChangeApp('consultationForm')} >Consultation Form</MenuItem>
                     </Drawer>
-                    {/**<IntakeFormContainer /> **/}
-                    <ConsultationFormContainer />
+                    {this._getActiveApp(this.props.activeApp)}
                 </div>
             </MuiThemeProvider>
         );
     }
 }
+
+App.propTypes = {
+    activeApp: PropTypes.string.isRequired
+};
 
 export default App;

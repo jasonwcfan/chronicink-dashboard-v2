@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 import reducer from './reducers'
-import App from './components/app';
+import AppContainer from './containers/AppContainer';
 
 const logger = createLogger();
 
@@ -13,7 +13,7 @@ const store = createStore(reducer, applyMiddleware(ReduxThunk, logger));
 
 const routes = (
     <Provider store={store}>
-        <App />
+        <AppContainer />
     </Provider>
 );
 
