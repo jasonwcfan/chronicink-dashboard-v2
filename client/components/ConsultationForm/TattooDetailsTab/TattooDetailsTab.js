@@ -92,7 +92,8 @@ class TattooDetailsTab extends Component {
                         <AutoComplete
                             floatingLabelText={field.label}
                             style={style.autoComplete}
-                            value={field.label}
+                            value={field.value}
+                            searchText={field.value || ''}
                             key={field.id}
                             dataSource={field.items.map((item) => item.label)}
                             filter={(searchText, key) => {
