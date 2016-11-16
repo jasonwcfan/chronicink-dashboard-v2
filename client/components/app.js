@@ -16,8 +16,7 @@ const style = {
         display: 'flex'
     },
     sideNavBar: {
-        display: 'inline',
-        float: 'left',
+        width: 200
     }
 };
 
@@ -43,7 +42,7 @@ class App extends Component {
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <div style={style.app}>
                     <SideNavBar style={style.sideNavBar} onChangeApp={this.props.onChangeApp} />
-                    <Paper zDepth={2}>
+                    <Paper zDepth={4}>
                         <AppBar
                             title={this.props.activeApp.label}
                         />

@@ -15,7 +15,7 @@ class SideNavBar extends Component {
 
     render() {
         return(
-            <Paper style={this.props.style} zDepth={4}>
+            <Paper style={{width: 720}} >
                 <Menu>
                     <Divider />
                     <MenuItem name='intakeForm' onTouchTap={() => {this._handleChangeApp('intakeForm')}} >Intake Form</MenuItem>
