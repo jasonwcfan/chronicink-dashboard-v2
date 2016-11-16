@@ -8,22 +8,25 @@ import AppBar from 'material-ui/AppBar';
 import SideNavBar from './SideNavBar';
 import IntakeFormContainer from '../containers/IntakeFormContainer';
 import ConsultationFormContainer from '../containers/ConsultationFormContainer';
+import DashboardContainer from '../containers/DashboardContainer';
 
 injectTapEventPlugin();
 
 const style = {
-    app: {
+    window: {
         display: 'flex'
     },
+    appContainer: {
+        width: '100%'
+    },
     sideNavBar: {
-        width: 200
+        width: 240
     }
 };
 
 class App extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
     }
 
     _getActiveApp(activeApp) {
@@ -32,6 +35,8 @@ class App extends Component {
                 return <IntakeFormContainer />;
             case 'consultationForm':
                 return <ConsultationFormContainer />;
+            case 'dashboard':
+                return <DashboardContainer />;
             default:
                 return <IntakeFormContainer />;
         }
@@ -40,9 +45,9 @@ class App extends Component {
     render() {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                <div style={style.app}>
+                <div style={style.window}>
                     <SideNavBar style={style.sideNavBar} onChangeApp={this.props.onChangeApp} />
-                    <Paper zDepth={4}>
+                    <Paper style={style.appContainer} zDepth={4}>
                         <AppBar
                             title={this.props.activeApp.label}
                         />

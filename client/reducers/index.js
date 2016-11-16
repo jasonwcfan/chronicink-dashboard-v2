@@ -1,19 +1,22 @@
 import { combineReducers } from 'redux';
 import intakeForm from './intakeForm';
 import consultationForm from './consultationForm';
+import dashboard from './dashboard';
 
-const appLabel = (state = 'Intake Form', action) => {
+const appLabel = (state = 'Dashboard', action) => {
     switch (action.id) {
         case 'intakeForm':
             return 'Intake Form';
         case 'consultationForm':
             return 'Consultation Form';
+        case 'dashboard':
+            return 'Dashboard';
         default:
             return state;
     }
 };
 
-const activeApp = (state = {id: 'intakeForm', label: 'Intake Form'}, action) => {
+const activeApp = (state = {id: 'dashboard', label: 'Dashboard'}, action) => {
         switch (action.type) {
             case 'CHANGE_APP':
                 return {
@@ -28,6 +31,7 @@ const activeApp = (state = {id: 'intakeForm', label: 'Intake Form'}, action) => 
 const reducer = combineReducers({
     intakeForm,
     consultationForm,
+    dashboard,
     activeApp
 });
 
