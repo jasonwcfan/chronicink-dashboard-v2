@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import TattooDetailsTab from './TattooDetailsTab';
 import BookingsTab from './BookingsTab';
@@ -50,7 +49,7 @@ class ConsultationForm extends Component {
 
     render() {
         return (
-            <Paper zDepth={4}>
+            <div>
                 <Tabs>
                     <Tab label='Details'>
                         <TattooDetailsTab fields={this.props.fields} style={style.container}
@@ -62,7 +61,7 @@ class ConsultationForm extends Component {
                         {this._getSubmitButton(this.props.isSaved)}
                     </Tab>
                 </Tabs>
-            </Paper>
+            </div>
         );
     }
 }

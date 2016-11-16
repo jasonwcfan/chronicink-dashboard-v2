@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import Paper from 'material-ui/Paper';
 import {
     Step,
     Stepper,
@@ -94,7 +93,7 @@ class IntakeForm extends Component {
 
     render() {
         return (
-            <Paper zDepth={4}>
+            <div>
                 <Stepper activeStep={this.props.stepIndex}>
                     <Step>
                         <StepLabel>Personal Information</StepLabel>
@@ -106,7 +105,7 @@ class IntakeForm extends Component {
                 <div style={style.container}>
                     {this._getStepContent(this.props.stepIndex)}
                 </div>
-            </Paper>
+            </div>
         );
     }
 }
