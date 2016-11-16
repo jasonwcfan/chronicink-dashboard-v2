@@ -6,8 +6,12 @@ Meteor.methods({
         return IntakeForm.insert({
             agreements: form.agreements,
             fields: form.fields,
-            medicalConditions: form.medicalConditions
+            medicalConditions: form.medicalConditions,
+            consultPending: true
         });
+    },
+    'intakeForm.getPending': function() {
+        return IntakeForm.find({consultPending: true});
     }
 });
 

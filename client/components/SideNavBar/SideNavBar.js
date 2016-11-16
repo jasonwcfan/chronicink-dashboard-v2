@@ -21,6 +21,7 @@ class SideNavBar extends Component {
                     <MenuItem name='dashboard' onTouchTap={() => {this._handleChangeApp('dashboard')}} >Dashboard</MenuItem>
                     <MenuItem name='intakeForm' onTouchTap={() => {this._handleChangeApp('intakeForm')}} >Intake Form</MenuItem>
                     <MenuItem name='consultationForm' onTouchTap={() => this._handleChangeApp('consultationForm')} >Consultation Form</MenuItem>
+                    <Divider />
                 </Menu>
             </Paper>
         )

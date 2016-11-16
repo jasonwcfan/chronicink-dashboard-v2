@@ -1,24 +1,24 @@
 import React, { Component, PropTypes } from 'react';
-import Paper from 'material-ui/Paper';
+import IntakeList from '../Widgets/IntakeList';
 
 const style = {
-    intakeWidget: {
-        width: 300,
-        height: 600,
-        margin: 20
-    }
+    
 };
 
 class Dashboard extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
     }
 
-    _renderWidgets() {
-            return (<Paper style={style.intakeWidget} zDepth={3}>
-
-            </Paper>)
+    _renderWidgets(widgets) {
+        return widgets.map((widget) => {
+            switch (widget.id) {
+                case 'intakeList':
+                    return (
+                        <IntakeList key={widget.id} />
+                    );
+            }
+        });
     }
 
     render() {
@@ -30,5 +30,9 @@ class Dashboard extends Component {
     }
 }
 
+
+Dashboard.propTypes = {
+
+};
 
 export default Dashboard;

@@ -6,7 +6,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    onSubmitSession: (session) => {
+    fetchWidgetData: (id) => {
         // dispatch(addSession(session));
     },
 });
