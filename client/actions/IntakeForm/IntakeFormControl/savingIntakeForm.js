@@ -1,3 +1,3 @@
 export default savingIntakeForm = () => ({
-    type: 'SAVING_FORM'
+    type: 'SAVING_INTAKE_FORM'
 });

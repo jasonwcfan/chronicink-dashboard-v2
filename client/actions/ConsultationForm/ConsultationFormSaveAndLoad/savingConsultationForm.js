@@ -1,3 +1,3 @@
 export default savingConsultationForm = () => ({
-    type: 'SAVING_FORM'
+    type: 'SAVING_CONSULTATION_FORM'
 });

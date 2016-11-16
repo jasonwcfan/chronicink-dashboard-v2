@@ -185,9 +185,9 @@ const stepIndex = (state = 0, action) => {
 
 const isSaved = (state = false, action) => {
     switch (action.type) {
-        case 'SAVED_FORM':
+        case 'SAVED_INTAKE_FORM':
             return true;
-        case 'EDITED_FORM':
+        case 'EDITED_INTAKE_FORM':
             return false;
         default:
             return state;
@@ -196,9 +196,9 @@ const isSaved = (state = false, action) => {
 
 const savingForm = (state = false, action) => {
     switch (action.type) {
-        case 'SAVING_FORM':
+        case 'SAVING_INTAKE_FORM':
             return true;
-        case 'SAVED_FORM':
+        case 'SAVED_INTAKE_FORM':
             return false;
         default:
             return state;
@@ -207,7 +207,7 @@ const savingForm = (state = false, action) => {
 
 const formID = (state, action) => {
     switch (action.type) {
-        case 'SAVED_FORM':
+        case 'SAVED_INTAKE_FORM':
             return action.formID;
         default:
             return state;

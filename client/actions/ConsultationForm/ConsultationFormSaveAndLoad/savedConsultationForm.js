@@ -1,4 +1,4 @@
 export default savedConsultationForm = (formID) => ({
-    type: 'SAVED_FORM',
+    type: 'SAVED_CONSULTATION_FORM',
     formID
 });
