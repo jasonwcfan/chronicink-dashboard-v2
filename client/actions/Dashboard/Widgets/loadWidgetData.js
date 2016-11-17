@@ -1,9 +1,12 @@
 import { fetchIntakeListData } from './IntakeList';
-import {IntakeForm} from '../../../../imports/IntakeForm/intakeForm'
 
 export default loadWidgetData = (dispatch, id) => {
     switch (id) {
         case 'intakeList':
+            Meteor.call('intakeForm.observe', {}, function() {
+                console.log('added');
+                dispatch(fetchIntakeListData(dispatch, id));
+            }, _, _);
             return fetchIntakeListData(dispatch, id);
         default:
             return {

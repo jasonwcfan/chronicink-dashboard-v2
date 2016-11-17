@@ -26,6 +26,36 @@ Meteor.methods({
     },
     'intakeForm.fetch': function() {
         return IntakeForm.find({}).fetch();
+    },
+    'intakeForm.observe': function(query, onAdd, onRemove, onChange) {
+        return IntakeForm.find(query).observe(({
+            added: onAdd,
+            removed: onRemove,
+            changed: onChange
+        }))
+    }
+});
+
+IntakeFormSchema = new SimpleSchema({
+    fields: {
+        type: [Object],
+        label: "Fields"
+    },
+    medicalConditions: {
+        type: [Object],
+        label: "Medical Conditions"
+    },
+    agreements: {
+        type: [Object],
+        label: "Agreements"
+    },
+    consultPending: {
+        type: Boolean,
+        label: "Whether this intake is waiting for a consult"
+    },
+    clientID: {
+        type: String,
+        label: "ID of the client associated with this form"
     }
 });
 
