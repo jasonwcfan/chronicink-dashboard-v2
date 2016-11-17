@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import Dashboard from '../components/Dashboard';
+import { fetchIntakeListData } from '../actions/Dashboard/Widgets/IntakeList';
 
 const mapStateToProps = (state) => ({
     widgets: state.dashboard.widgets
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchWidgetData: (id) => {
-        // dispatch(addSession(session));
+    onLoadWidget: (id) => {
+        dispatch(fetchIntakeListData(dispatch, id));
     },
 });
 

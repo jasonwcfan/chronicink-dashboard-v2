@@ -10,8 +10,8 @@ Meteor.methods({
             consultPending: true
         });
     },
-    'intakeForm.getPending': function() {
-        return IntakeForm.find({consultPending: true});
+    'intakeForm.fetch': function() {
+        return IntakeForm.find({}).fetch();
     }
 });
 
