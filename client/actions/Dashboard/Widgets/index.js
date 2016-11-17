@@ -1,4 +1,3 @@
-import loadingWidget from './loadingWidget';
-import finishedLoadingWidget from './finishedLoadingWidget';
+import loadWidgetData from './loadWidgetData';
 
-export { loadingWidget, finishedLoadingWidget };
+export { loadWidgetData };

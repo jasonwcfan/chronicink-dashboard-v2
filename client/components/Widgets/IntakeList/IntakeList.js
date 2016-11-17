@@ -23,12 +23,15 @@ class IntakeList extends Component {
         super(props);
     }
 
-    _handleItemClick() {
-        this.props.onLoadWidget('intakeList');
+    componentWillMount() {
+        this.props.loadDataForWidget('intakeList');
+    }
+
+    componentWillUnmount() {
+        
     }
 
     _renderIntakeList(widget) {
-        console.log(widget);
         return widget.data.map((form) => (
             <ListItem key={form._id}>{form.clientID}</ListItem>
         ));
@@ -47,7 +50,7 @@ class IntakeList extends Component {
     }
 }
 
-ConsultationForm.propTypes = {
+IntakeList.propTypes = {
     widget: PropTypes.object.isRequired
 };
 

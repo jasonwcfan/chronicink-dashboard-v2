@@ -21,13 +21,13 @@ const routes = (
 
 Meteor.subscribe('intakeForm');
 
-Tracker.autorun(() => {
-    store.dispatch({
-        type: 'UPDATE_INTAKE_LIST',
-        id: 'intakeList',
-        data: IntakeForm.find({consultPending: true}, {limit: 10}).fetch()
-    })
-});
+// Tracker.autorun(() => {
+//     store.dispatch({
+//         type: 'UPDATE_INTAKE_LIST',
+//         id: 'intakeList',
+//         data: IntakeForm.find({consultPending: true}, {limit: 10}).fetch()
+//     })
+// });
 
 Meteor.startup(() => {
     ReactDOM.render(routes, document.querySelector('.render-target'));
