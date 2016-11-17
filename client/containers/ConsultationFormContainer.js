@@ -8,7 +8,8 @@ const mapStateToProps = (state) => ({
     sessions: state.consultationForm.sessions,
     isSaved: state.consultationForm.isSaved,
     savingForm: state.consultationForm.savingForm,
-    formID: state.consultationForm.formID
+    formID: state.consultationForm.formID,
+    clientID: state.consultationForm.clientID
 });
 
 const mapDispatchToProps = (dispatch) => ({

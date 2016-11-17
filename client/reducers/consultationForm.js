@@ -251,13 +251,24 @@ const formID = (state, action) => {
     }
 };
 
+const clientID = (state, action) => {
+    switch (action.type) {
+        case 'SET_CONSULTATION_CLIENT':
+        case 'BEGIN_CLIENT_CONSULTATION':
+            return action.clientID;
+        default:
+            return state;
+    }
+};
+
 export default consultationForm = (state = {}, action) => {
     const newState =  {
         fields: fields(state.fields, action),
         sessions: sessions(state.sessions, action),
         isSaved: isSaved(state.isSaved, action),
         savingForm: savingForm(state.savingForm, action),
-        formID: formID(state.formID, action)
+        formID: formID(state.formID, action),
+        clientID: clientID(state.clientID, action)
     };
     return newState;
 };

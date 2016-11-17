@@ -25,7 +25,7 @@ Tracker.autorun(() => {
     store.dispatch({
         type: 'UPDATE_INTAKE_LIST',
         id: 'intakeList',
-        data: IntakeForm.find({consultPending: true}).fetch()
+        data: IntakeForm.find({consultPending: true}, {limit: 10}).fetch()
     })
 });
 

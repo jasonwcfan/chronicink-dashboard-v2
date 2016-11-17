@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
@@ -30,7 +30,7 @@ class IntakeList extends Component {
     _renderIntakeList(widget) {
         console.log(widget);
         return widget.data.map((form) => (
-            <ListItem key={form._id}>{form._id}</ListItem>
+            <ListItem key={form._id}>{form.clientID}</ListItem>
         ));
     }
 
@@ -46,5 +46,9 @@ class IntakeList extends Component {
         )
     }
 }
+
+ConsultationForm.propTypes = {
+    widget: PropTypes.object.isRequired
+};
 
 export default IntakeList;
