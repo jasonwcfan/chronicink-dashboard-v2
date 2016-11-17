@@ -6,15 +6,25 @@ const defaultWidgets = [
     }
 ];
 
+const widget = (state = {}, action) => {
+    switch (action.type) {
+        case 'RECEIVE_INTAKE_LIST_DATA':
+            if (state.id == action.id) {
+                return {
+                    id: state.id,
+                    data: action.data
+                };
+            }
+            return state;
+        default:
+            return state;
+    }
+};
+
 const widgets = (state = defaultWidgets, action) => {
     switch (action.type) {
         case 'RECEIVE_INTAKE_LIST_DATA':
-            return state.map((widget) => {
-                if (widget.id == action.id) {
-                    widget.data = action.data;
-                }
-                return widget;
-            });
+            return state.map(w => widget(w, action));
         default:
             return defaultWidgets;
     }

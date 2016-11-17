@@ -23,8 +23,12 @@ class IntakeList extends Component {
         super();
     }
 
+    _handleItemClick() {
+        this.props.onLoadWidget('intakeList');
+    }
+
     _renderIntakeList() {
-        return <ListItem />
+        return <ListItem onTouchTap={this._handleItemClick.bind(this)} />
     }
 
     render() {
