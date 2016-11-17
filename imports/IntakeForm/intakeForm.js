@@ -15,4 +15,4 @@ Meteor.methods({
     }
 });
 
-export const IntakeForm = new Mongo.Collection('intakeForm');
+export default IntakeForm = new Mongo.Collection('intakeForm');

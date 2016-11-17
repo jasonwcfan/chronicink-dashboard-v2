@@ -19,16 +19,19 @@ const style = {
 };
 
 class IntakeList extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 
     _handleItemClick() {
         this.props.onLoadWidget('intakeList');
     }
 
-    _renderIntakeList() {
-        return <ListItem onTouchTap={this._handleItemClick.bind(this)} />
+    _renderIntakeList(widget) {
+        console.log(widget);
+        return widget.data.map((form) => (
+            <ListItem key={form._id}>{form._id}</ListItem>
+        ));
     }
 
     render() {
@@ -37,7 +40,7 @@ class IntakeList extends Component {
                 <h3 style={style.header} >Intake List</h3>
                 <Divider />
                 <List>
-                    {this._renderIntakeList()}
+                    {this._renderIntakeList(this.props.widget)}
                 </List>
             </Paper>
         )

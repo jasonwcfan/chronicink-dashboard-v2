@@ -11,4 +11,4 @@ Meteor.methods({
     }
 });
 
-export const ConsultationForm = new Mongo.Collection('consultationForm');
+export default ConsultationForm = new Mongo.Collection('consultationForm');
