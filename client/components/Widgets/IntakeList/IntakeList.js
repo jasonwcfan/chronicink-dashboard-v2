@@ -28,7 +28,7 @@ class IntakeList extends Component {
     }
 
     componentWillUnmount() {
-        console.log(this.props.widget);
+        this.props.widget.observer.stop();
     }
 
     _renderIntakeList(widget) {

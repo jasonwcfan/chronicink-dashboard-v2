@@ -32,6 +32,7 @@ const widget = (state = {}, action) => {
 const widgets = (state = defaultWidgets, action) => {
     switch (action.type) {
         case 'RECEIVE_INTAKE_LIST_DATA':
+        case 'WIDGET_OBSERVER_STARTED':
             return state.map(w => widget(w, action));
         default:
             return state;
