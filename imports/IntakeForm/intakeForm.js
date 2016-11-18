@@ -27,12 +27,11 @@ Meteor.methods({
     'intakeForm.fetch': function() {
         return IntakeForm.find({}).fetch();
     },
-    'intakeForm.observe': function(query, onAdd, onRemove, onChange) {
-        return IntakeForm.find(query).observe(({
-            added: onAdd,
-            removed: onRemove,
-            changed: onChange
-        }))
+    'intakeForm.observe': function(query, onAdd) {
+        const observer = IntakeForm.find(query).observe(({
+            added: onAdd
+        }));
+        return observer;
     }
 });
 

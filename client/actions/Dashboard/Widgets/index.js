@@ -1,3 +1,3 @@
-import loadWidgetData from './loadWidgetData';
+import startWidgetObserver from './startWidgetObserver';
 
-export { loadWidgetData };
+export { startWidgetObserver };

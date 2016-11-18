@@ -7,18 +7,26 @@ const defaultWidgets = [
 ];
 
 const widget = (state = {}, action) => {
-    switch (action.type) {
-        case 'RECEIVE_INTAKE_LIST_DATA':
-            if (state.id == action.id) {
+    if (state.id == action.id) {
+        switch (action.type) {
+            case 'RECEIVE_INTAKE_LIST_DATA':
                 return {
                     id: state.id,
-                    data: action.data
+                    data: action.data,
+                    observer: state.observer
                 };
-            }
-            return state;
-        default:
-            return state;
+                return state;
+            case 'WIDGET_OBSERVER_STARTED':
+                return {
+                    id: state.id,
+                    data: state.data,
+                    observer: action.observer
+                };
+            default:
+                return state;
+        }
     }
+    return state;
 };
 
 const widgets = (state = defaultWidgets, action) => {

@@ -15,7 +15,7 @@ class Dashboard extends Component {
             switch (widget.id) {
                 case 'intakeList':
                     return (
-                        <IntakeList widget={widget} key={widget.id} loadDataForWidget={this.props.loadDataForWidget} />
+                        <IntakeList widget={widget} key={widget.id} startWidgetObserver={this.props.startWidgetObserver} />
                     );
             }
         });

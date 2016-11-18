@@ -24,11 +24,11 @@ class IntakeList extends Component {
     }
 
     componentWillMount() {
-        this.props.loadDataForWidget('intakeList');
+        this.props.startWidgetObserver('intakeList');
     }
 
     componentWillUnmount() {
-        
+        console.log(this.props.widget);
     }
 
     _renderIntakeList(widget) {

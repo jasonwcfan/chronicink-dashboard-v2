@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 import Dashboard from '../components/Dashboard';
-import { loadWidgetData } from '../actions/Dashboard/Widgets';
+import { startWidgetObserver } from '../actions/Dashboard/Widgets';
 
 const mapStateToProps = (state) => ({
     widgets: state.dashboard.widgets
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    loadDataForWidget: (id) => {
-        dispatch(loadWidgetData(dispatch, id));
+    startWidgetObserver: (id) => {
+        dispatch(startWidgetObserver(dispatch, id));
     },
 });
 
