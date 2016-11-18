@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import IntakeList from '../Widgets/IntakeList';
+import Widget from '../Widgets/Widget';
 
 const style = {
     
@@ -12,12 +12,9 @@ class Dashboard extends Component {
 
     _renderWidgets(widgets) {
         return widgets.map((widget) => {
-            switch (widget.id) {
-                case 'intakeList':
-                    return (
-                        <IntakeList widget={widget} key={widget.id} startWidgetObserver={this.props.startWidgetObserver} />
-                    );
-            }
+            return (
+                <Widget widget={widget} key={widget.id} name={widget.id} startWidgetObserver={this.props.startWidgetObserver} />
+            );
         });
     }
 
@@ -32,7 +29,7 @@ class Dashboard extends Component {
 
 
 Dashboard.propTypes = {
-
+    widgets: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default Dashboard;

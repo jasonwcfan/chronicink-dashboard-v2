@@ -23,14 +23,6 @@ class IntakeList extends Component {
         super(props);
     }
 
-    componentWillMount() {
-        this.props.startWidgetObserver('intakeList');
-    }
-
-    componentWillUnmount() {
-        this.props.widget.observer.stop();
-    }
-
     _renderIntakeList(widget) {
         return widget.data.map((form) => (
             <ListItem key={form._id}>{form.clientID}</ListItem>
