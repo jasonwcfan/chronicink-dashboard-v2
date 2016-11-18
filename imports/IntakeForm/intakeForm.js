@@ -26,12 +26,6 @@ Meteor.methods({
     },
     'intakeForm.fetch': function() {
         return IntakeForm.find({}).fetch();
-    },
-    'intakeForm.observe': function(query, onAdd) {
-        const observer = IntakeForm.find(query).observe(({
-            added: onAdd
-        }));
-        return observer;
     }
 });
 
