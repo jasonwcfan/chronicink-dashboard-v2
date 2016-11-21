@@ -254,7 +254,7 @@ const formID = (state, action) => {
 const clientID = (state, action) => {
     switch (action.type) {
         case 'SET_CONSULTATION_CLIENT':
-        case 'BEGIN_CLIENT_CONSULTATION':
+        case 'START_CONSULTATION':
             return action.clientID;
         default:
             return state;

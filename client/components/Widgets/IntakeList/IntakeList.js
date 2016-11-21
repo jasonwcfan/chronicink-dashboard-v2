@@ -5,6 +5,8 @@ import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
 import IconButton from 'material-ui/IconButton';
 import EditIcon from 'material-ui/svg-icons/content/create';
+import LinkWrapper from '../../UI/LinkWrapper';
+import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 
 const style = {
     intakeListContainer: {
@@ -42,7 +44,7 @@ class IntakeList extends Component {
     }
 
     _handleListIconPressed(clientID) {
-        console.log(clientID);
+        this.props.primaryWidgetAction('intakeList', startConsultation(clientID));
     }
 
     _renderIntakeList(widget) {
@@ -50,14 +52,16 @@ class IntakeList extends Component {
             <ListItem key={form._id}>
                 <div style={style.listItemContainer}>
                     <div style={style.listItemLabel}>{form.clientID}</div>
-                    <IconButton
-                        style={style.listItemIconButton}
-                        tooltip='Start Consultation'
-                        tooltipPosition='top-right'
-                        onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
-                    >
-                        <EditIcon />
-                    </IconButton>
+                    <LinkWrapper to='consultationform'>
+                        <IconButton
+                            style={style.listItemIconButton}
+                            tooltip='Start Consultation'
+                            tooltipPosition='top-right'
+                            onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
+                        >
+                            <EditIcon />
+                        </IconButton>
+                    </LinkWrapper>
                 </div>
             </ListItem>
         ));

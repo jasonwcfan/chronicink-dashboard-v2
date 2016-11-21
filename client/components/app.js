@@ -31,9 +31,9 @@ class App extends Component {
 
     _getActiveApp(activeApp) {
         switch (activeApp) {
-            case 'intakeForm':
+            case 'intakeform':
                 return <IntakeFormContainer />;
-            case 'consultationForm':
+            case 'consultationform':
                 return <ConsultationFormContainer />;
             case 'dashboard':
                 return <DashboardContainer />;

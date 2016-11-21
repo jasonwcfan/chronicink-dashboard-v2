@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
     },
     onFieldChange: (id, value, valid) => {
         dispatch(setField(id, value, valid))
-    },
+    }
 });
 
 const ConsultationFormContainer = connect(

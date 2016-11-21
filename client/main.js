@@ -15,8 +15,7 @@ const store = createStore(reducer, applyMiddleware(ReduxThunk, logger));
 const routes = (
     <Provider store={store}>
         <Router history={browserHistory} >
-            <Route path='/(:appname)' component={AppContainer} >
-            </Route>
+            <Route path='/(:appname)' component={AppContainer} />
         </Router>
     </Provider>
 );

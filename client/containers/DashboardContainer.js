@@ -10,6 +10,9 @@ const mapDispatchToProps = (dispatch) => ({
     startWidgetObserver: (id) => {
         dispatch(startWidgetObserver(dispatch, id));
     },
+    primaryWidgetAction: (widgetID, action) => {
+        dispatch(action);
+    }
 });
 
 const DashboardContainer = connect(
