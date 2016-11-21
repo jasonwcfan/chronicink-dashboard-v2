@@ -3,6 +3,7 @@ import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
+import { Link } from 'react-router';
 
 class SideNavBar extends Component {
     constructor() {
@@ -18,9 +19,9 @@ class SideNavBar extends Component {
             <Paper style={this.props.style} >
                 <Menu>
                     <Divider />
-                    <MenuItem name='dashboard' onTouchTap={() => {this._handleChangeApp('dashboard')}} >Dashboard</MenuItem>
-                    <MenuItem name='intakeForm' onTouchTap={() => {this._handleChangeApp('intakeForm')}} >Intake Form</MenuItem>
-                    <MenuItem name='consultationForm' onTouchTap={() => this._handleChangeApp('consultationForm')} >Consultation Form</MenuItem>
+                    <Link to='/'><MenuItem name='dashboard' >Dashboard</MenuItem></Link>
+                    <Link to='intakeform'><MenuItem name='intakeForm' >Intake Form</MenuItem></Link>
+                    <Link to='consultationform'><MenuItem name='consultationForm' >Consultation Form</MenuItem></Link>
                     <Divider />
                 </Menu>
             </Paper>

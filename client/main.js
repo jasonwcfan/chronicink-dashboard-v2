@@ -4,10 +4,10 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { Tracker } from 'meteor/tracker';
-import IntakeForm from '../imports/IntakeForm/intakeForm';
+import { Router, Route, Link, browserHistory } from 'react-router'
 import reducer from './reducers'
 import AppContainer from './containers/AppContainer';
+import IntakeFormContainer from './containers/IntakeFormContainer';
 
 const logger = createLogger();
 
@@ -15,7 +15,12 @@ const store = createStore(reducer, applyMiddleware(ReduxThunk, logger));
 
 const routes = (
     <Provider store={store}>
-        <AppContainer />
+        <Router history={browserHistory} >
+            <Route path='/' component={AppContainer} >
+                <Route path='intakeform' component={IntakeFormContainer} />
+                <Route path='consultationform' component={IntakeFormContainer} />
+            </Route>
+        </Router>
     </Provider>
 );
 
