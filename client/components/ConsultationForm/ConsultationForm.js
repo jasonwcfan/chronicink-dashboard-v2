@@ -85,7 +85,8 @@ ConsultationForm.propTypes = {
     }).isRequired).isRequired,
     isSaved: PropTypes.bool.isRequired,
     savingForm: PropTypes.bool.isRequired,
-    formID: PropTypes.string
+    formID: PropTypes.string,
+    clientID: PropTypes.string
 };
 
 export default ConsultationForm;

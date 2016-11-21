@@ -7,7 +7,7 @@ class Widget extends Component {
     }
 
     componentWillMount() {
-        this.props.startWidgetObserver(this.props.name);
+        this.props.startWidgetObserver(this.props.widget.id);
     }
 
     componentWillUnmount() {
@@ -15,7 +15,7 @@ class Widget extends Component {
     }
 
     render() {
-        switch(this.props.name) {
+        switch(this.props.widget.id) {
             case 'intakeList':
                 return <IntakeList {...this.props} />
         }
@@ -24,7 +24,6 @@ class Widget extends Component {
 
 Widget.propTypes = {
     widget: PropTypes.object.isRequired,
-    name: PropTypes.string.isRequired
 };
 
 export default Widget;

@@ -3,6 +3,8 @@ import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
+import IconButton from 'material-ui/IconButton';
+import EditIcon from 'material-ui/svg-icons/content/create';
 
 const style = {
     intakeListContainer: {
@@ -14,6 +16,22 @@ const style = {
     },
     header: {
         margin: 10
+    },
+    listItemContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%'
+    },
+    listItemLabel: {
+        display: 'inline'
+    },
+    listItemIconButton: {
+        position: 'absolute',
+        padding: 0,
+        height: 24,
+        width: 24,
+        right: 10,
+        bottom: 12
     }
 
 };
@@ -23,9 +41,25 @@ class IntakeList extends Component {
         super(props);
     }
 
+    _handleListIconPressed(clientID) {
+        console.log(clientID);
+    }
+
     _renderIntakeList(widget) {
         return widget.data.map((form) => (
-            <ListItem key={form._id}>{form.clientID}</ListItem>
+            <ListItem key={form._id}>
+                <div style={style.listItemContainer}>
+                    <div style={style.listItemLabel}>{form.clientID}</div>
+                    <IconButton
+                        style={style.listItemIconButton}
+                        tooltip='Start Consultation'
+                        tooltipPosition='top-right'
+                        onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
+                    >
+                        <EditIcon />
+                    </IconButton>
+                </div>
+            </ListItem>
         ));
     }
 

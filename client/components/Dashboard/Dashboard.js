@@ -13,7 +13,7 @@ class Dashboard extends Component {
     _renderWidgets(widgets) {
         return widgets.map((widget) => {
             return (
-                <Widget widget={widget} key={widget.id} name={widget.id} startWidgetObserver={this.props.startWidgetObserver} />
+                <Widget widget={widget} key={widget.id} startWidgetObserver={this.props.startWidgetObserver} />
             );
         });
     }
