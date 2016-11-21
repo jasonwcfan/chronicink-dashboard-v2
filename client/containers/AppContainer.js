@@ -2,9 +2,11 @@ import { connect } from 'react-redux';
 import App from '../components/app';
 import { changeApp } from '../actions';
 
-const mapStateToProps = (state) => ({
-    activeApp: state.activeApp
-});
+const mapStateToProps = (state, ownProps) => {
+    return {
+        activeApp: ownProps.params.appname
+    }
+};
 
 const mapDispatchToProps = (dispatch) => ({
     onChangeApp: (id) => {

@@ -3,7 +3,7 @@ import Paper from 'material-ui/Paper';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import Divider from 'material-ui/Divider';
-import { Link } from 'react-router';
+import LinkWrapper from '../UI/LinkWrapper';
 
 class SideNavBar extends Component {
     constructor() {
@@ -19,9 +19,9 @@ class SideNavBar extends Component {
             <Paper style={this.props.style} >
                 <Menu>
                     <Divider />
-                    <Link to='/'><MenuItem name='dashboard' >Dashboard</MenuItem></Link>
-                    <Link to='intakeform'><MenuItem name='intakeForm' >Intake Form</MenuItem></Link>
-                    <Link to='consultationform'><MenuItem name='consultationForm' >Consultation Form</MenuItem></Link>
+                    <LinkWrapper to='dashboard'><MenuItem name='dashboard'>Dashboard</MenuItem></LinkWrapper>
+                    <LinkWrapper to='intakeform'><MenuItem name='intakeForm' >Intake Form</MenuItem></LinkWrapper>
+                    <LinkWrapper to='consultationform'><MenuItem name='consultationForm' >Consultation Form</MenuItem></LinkWrapper>
                     <Divider />
                 </Menu>
             </Paper>

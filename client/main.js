@@ -7,7 +7,6 @@ import createLogger from 'redux-logger';
 import { Router, Route, Link, browserHistory } from 'react-router'
 import reducer from './reducers'
 import AppContainer from './containers/AppContainer';
-import IntakeFormContainer from './containers/IntakeFormContainer';
 
 const logger = createLogger();
 
@@ -16,9 +15,7 @@ const store = createStore(reducer, applyMiddleware(ReduxThunk, logger));
 const routes = (
     <Provider store={store}>
         <Router history={browserHistory} >
-            <Route path='/' component={AppContainer} >
-                <Route path='intakeform' component={IntakeFormContainer} />
-                <Route path='consultationform' component={IntakeFormContainer} />
+            <Route path='/(:appname)' component={AppContainer} >
             </Route>
         </Router>
     </Provider>

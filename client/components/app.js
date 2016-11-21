@@ -30,7 +30,7 @@ class App extends Component {
     }
 
     _getActiveApp(activeApp) {
-        switch (activeApp.id) {
+        switch (activeApp) {
             case 'intakeForm':
                 return <IntakeFormContainer />;
             case 'consultationForm':
@@ -60,10 +60,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-    activeApp: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        label: PropTypes.string
-    }).isRequired
+    activeApp: PropTypes.string
 };
 
 export default App;
