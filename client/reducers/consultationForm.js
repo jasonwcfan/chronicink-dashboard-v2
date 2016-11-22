@@ -251,7 +251,7 @@ const formID = (state, action) => {
     }
 };
 
-const client = (state = {}, action) => {
+const client = (state, action) => {
     switch (action.type) {
         case 'RECEIVE_CONSULTATION_CLIENT':
             return action.client;
