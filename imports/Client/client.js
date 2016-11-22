@@ -9,6 +9,9 @@ Meteor.methods({
         });
 
         return Client.insert(clientInfo);
+    },
+    'client.fetchOne': function(clientID) {
+        return Client.findOne({_id: clientID});
     }
 });
 

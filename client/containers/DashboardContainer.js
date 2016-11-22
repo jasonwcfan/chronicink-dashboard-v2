@@ -10,8 +10,8 @@ const mapDispatchToProps = (dispatch) => ({
     startWidgetObserver: (id) => {
         dispatch(startWidgetObserver(dispatch, id));
     },
-    primaryWidgetAction: (widgetID, action) => {
-        dispatch(action);
+    primaryWidgetAction: (widgetID, action, args) => {
+        dispatch(action(dispatch, ...args));
     }
 });
 

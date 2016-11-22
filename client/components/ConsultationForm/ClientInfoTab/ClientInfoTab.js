@@ -1,82 +1,29 @@
 import React, { Component, PropTypes } from 'react';
+import List from 'material-ui/List';
+import ListItem from 'material-ui/List/ListItem';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
+import Client from '../../../../imports/Client/client';
 
 class ClientInfoTab extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
-    }
-
-    _fetchClient(clientID) {
 
     }
 
-    // _renderFields(fields) {
-    //     return fields.map((field) => {
-    //         switch (field.inputType) {
-    //             case 'textField':
-    //                 return (
-    //                     <ValidatedTextField
-    //                         style={style.textField}
-    //                         defaultValue={field.value}
-    //                         name={field.id}
-    //                         key={field.id}
-    //                         floatingLabelText={field.label}
-    //                         onFieldChange={this.props.onFieldChange}
-    //                         required={field.required}
-    //                     />
-    //                 );
-    //             case 'country':
-    //                 return (
-    //                     <CountrySelector
-    //                         style={style.selector}
-    //                         defaultValue={field.value}
-    //                         name={field.id}
-    //                         key={field.id}
-    //                         onFieldChange={this.props.onFieldChange}
-    //                         required={field.required}
-    //                     />
-    //                 );
-    //             case 'region':
-    //                 return (
-    //                     <RegionSelector
-    //                         style={style.selector}
-    //                         value={field.value}
-    //                         name={field.id}
-    //                         key={field.id}
-    //                         onFieldChange={this.props.onFieldChange}
-    //                         required={field.required}
-    //                     />
-    //                 );
-    //             case 'date':
-    //                 return (
-    //                     <ValidatedDatePicker
-    //                         style={style.datePicker}
-    //                         defaultDate={field.value}
-    //                         name={field.id}
-    //                         key={field.id}
-    //                         floatingLabelText={field.label}
-    //                         onFieldChange={this.props.onFieldChange}
-    //                     />
-    //
-    //                 );
-    //         }
-    //     });
-    // }
-
-    _renderSetClientForm() {
-        return (
-            <div>
-                Oops, no client set!
-            </div>
-        )
+    _renderFields(fields) {
+        return fields.map((field) => {
+            // <ListItem disabled={true} primaryText=field.value />
+        });
     }
 
     render() {
         return (
             <div>
-                {/**this.props.clientID? this._renderFields(this.props.fields) : this._renderSetClientForm()**/}
+                {this.props.client._id}
+                <List>
+                    {/**this.props.clientID? this._renderFields(this.props.fields) : this._renderSetClientForm()**/}
+                </List>
             </div>
         );
 
@@ -84,7 +31,7 @@ class ClientInfoTab extends Component {
 }
 
 ClientInfoTab.PropTypes = {
-    clientID: PropTypes.String
+    client: PropTypes.object
 };
 
 export default ClientInfoTab;

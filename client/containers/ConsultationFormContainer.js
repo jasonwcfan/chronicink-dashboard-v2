@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
     isSaved: state.consultationForm.isSaved,
     savingForm: state.consultationForm.savingForm,
     formID: state.consultationForm.formID,
-    clientID: state.consultationForm.clientID
+    client: state.consultationForm.client
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -44,7 +44,7 @@ class IntakeList extends Component {
     }
 
     _handleListIconPressed(clientID) {
-        this.props.primaryWidgetAction('intakeList', startConsultation(clientID));
+        this.props.primaryWidgetAction('intakeList', startConsultation, [clientID]);
     }
 
     _renderIntakeList(widget) {

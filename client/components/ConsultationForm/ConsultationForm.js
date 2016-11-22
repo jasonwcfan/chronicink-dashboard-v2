@@ -53,7 +53,7 @@ class ConsultationForm extends Component {
             <div>
                 <Tabs>
                     <Tab label='Client Info'>
-                        <ClientInfoTab clientID={this.props.clientID} />
+                        <ClientInfoTab client={this.props.client} />
                     </Tab>
                     <Tab label='Details'>
                         <TattooDetailsTab fields={this.props.fields} style={style.container}
@@ -90,7 +90,7 @@ ConsultationForm.propTypes = {
     isSaved: PropTypes.bool.isRequired,
     savingForm: PropTypes.bool.isRequired,
     formID: PropTypes.string,
-    clientID: PropTypes.string
+    client: PropTypes.object
 };
 
 export default ConsultationForm;
