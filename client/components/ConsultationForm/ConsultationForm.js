@@ -51,7 +51,7 @@ class ConsultationForm extends Component {
     render() {
         return (
             <div>
-                <Tabs>
+                <Tabs initialSelectedIndex={1} >
                     <Tab label='Client Info'>
                         <ClientInfoTab client={this.props.client} />
                     </Tab>
