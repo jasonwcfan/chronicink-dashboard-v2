@@ -8,11 +8,22 @@ Meteor.methods({
                 console.log(error);
                 return error;
             } else {
+                let firstName = '';
+                let lastName = '';
+                form.fields.map((field) => {
+                    if (field.id == 'firstName') {
+                        firstName = field.value;
+                    } else if (field.id == 'lastName') {
+                        lastName = field.value;
+                    }
+                });
+
                 IntakeForm.insert({
                     agreements: form.agreements,
                     fields: form.fields,
                     medicalConditions: form.medicalConditions,
                     consultPending: true,
+                    clientName: firstName + ' ' + lastName,
                     clientID
                 }, function (error, formID) {
                     if (error) {

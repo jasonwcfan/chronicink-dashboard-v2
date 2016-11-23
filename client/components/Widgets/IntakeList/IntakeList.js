@@ -51,7 +51,7 @@ class IntakeList extends Component {
         return widget.data.map((form) => (
             <ListItem key={form._id}>
                 <div style={style.listItemContainer}>
-                    <div style={style.listItemLabel}>{form.clientID}</div>
+                    <div style={style.listItemLabel}>{form.clientName}</div>
                     <LinkWrapper to='consultationform'>
                         <IconButton
                             style={style.listItemIconButton}

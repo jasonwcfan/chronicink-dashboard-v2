@@ -6,7 +6,6 @@ export default startWidgetObserver = (dispatch, id) => {
         case 'intakeList':
             const observer = IntakeForm.find({}).observe(({
                 added: function() {
-                    console.log('added');
                     dispatch(fetchIntakeListData(dispatch, id));
                 }
             }));
