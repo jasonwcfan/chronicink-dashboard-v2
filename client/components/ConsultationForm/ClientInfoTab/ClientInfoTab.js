@@ -14,15 +14,24 @@ class ClientInfoTab extends Component {
 
     _renderClientInfo(client) {
         return Object.keys(client).map((key) => {
-            const field = client[key];
-            if (field.label) {
-                switch (typeof field.value) {
-                    case 'string':
-                        return (<ListItem primaryText={field.value} secondaryText={field.label} />);
-                    case 'object':
-                        if (field.value.getMonth()) {
-                            return (<ListItem primaryText={Moment(field.value).format('MMMM Do YYYY')} secondaryText={field.label} />);
-                        }
+            const property = client[key];
+            if (key == 'conditions') {
+                let conditionsString = '';
+                property.forEach(function(condition, i) {
+                    console.log(property);
+                    conditionsString += i < property.length - 1 ? condition + ', ': condition;
+
+                });
+                return (<ListItem primaryText={conditionsString} secondaryText='Medical Conditions' />)
+            } else if (property.label) {
+                switch (property.type) {
+                    case 'textBox':
+                    case 'textField':
+                    case 'region':
+                    case 'country':
+                        return (<ListItem primaryText={property.value} secondaryText={property.label} />);
+                    case 'date':
+                        return (<ListItem primaryText={Moment(property.value).format('MMMM Do YYYY')} secondaryText={property.label} />);
                 }
             }
         })

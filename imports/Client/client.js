@@ -7,10 +7,15 @@ Meteor.methods({
         form.fields.forEach(function(field) {
             clientInfo[field.id] = {
                 label: field.label,
+                type: field.inputType,
                 value: field.value
             };
         });
-        clientInfo.conditions = form.medicalConditions.map((condition) => (condition.value ? condition.id : null));
+        clientInfo.conditions = form.medicalConditions.map((condition) => {
+            if (condition.value) {
+                return condition.id;
+            }
+        }).filter((condition) => condition);
 
         return Client.insert(clientInfo);
     },
