@@ -7,6 +7,7 @@ import IconButton from 'material-ui/IconButton';
 import EditIcon from 'material-ui/svg-icons/content/create';
 import LinkWrapper from '../../UI/LinkWrapper';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
+import { createContainer } from 'meteor/react-meteor-data';
 import IntakeForm from '../../../../imports/IntakeForm/intakeForm';
 
 const style = {
@@ -41,30 +42,6 @@ const style = {
 class IntakeList extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            observer: null,
-            data: null
-        }
-    }
-
-    componentWillMount(props) {
-        Meteor.subscribe('intakeForm');
-        const observer = IntakeForm.find().observe(({
-            added: () => {
-                this.setState({
-                    data: IntakeForm.find().fetch()
-                })
-            }
-        }));
-        this.setState({
-            observer: observer
-        });
-    }
-
-    componentWillUnmount(props) {
-        if (this.state.observer) {
-            this.state.observer.stop();
-        }
     }
 
     _handleListIconPressed(clientID) {
@@ -72,8 +49,8 @@ class IntakeList extends Component {
     }
 
     _renderIntakeList() {
-        if (this.state.data) {
-            return this.state.data.map((form) => (
+        if (this.props.subReady) {
+            return this.props.data.map((form) => (
                 <ListItem key={form._id}>
                     <div style={style.listItemContainer}>
                         <div style={style.listItemLabel}>{form.clientName}</div>
@@ -100,11 +77,18 @@ class IntakeList extends Component {
                 <h3 style={style.header} >Intake List</h3>
                 <Divider />
                 <List>
-                    {this._renderIntakeList(this.props.widget)}
+                    {this._renderIntakeList()}
                 </List>
             </Paper>
         )
     }
 }
 
-export default IntakeList;
+export default IntakeList = createContainer(({ params }) => {
+    const subscription = Meteor.subscribe('intakeForm');
+
+    return {
+        subReady: subscription.ready(),
+        data: IntakeForm.find().fetch()
+    }
+}, IntakeList);
