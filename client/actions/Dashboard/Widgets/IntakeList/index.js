@@ -1,4 +1,4 @@
-import fetchIntakeListData from './fetchIntakeListData';
+import intakeListChanged from './intakeListChanged';
 import startConsultation from './startConsultation';
 
-export { fetchIntakeListData, startConsultation };
+export { intakeListChanged, startConsultation };

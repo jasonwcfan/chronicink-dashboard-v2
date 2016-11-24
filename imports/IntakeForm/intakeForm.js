@@ -34,9 +34,6 @@ Meteor.methods({
                 });
             }
         });
-    },
-    'intakeForm.fetch': function() {
-        return IntakeForm.find({}).fetch();
     }
 });
 

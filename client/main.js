@@ -20,8 +20,6 @@ const routes = (
     </Provider>
 );
 
-Meteor.subscribe('intakeForm');
-
 Meteor.startup(() => {
     ReactDOM.render(routes, document.querySelector('.render-target'));
 });

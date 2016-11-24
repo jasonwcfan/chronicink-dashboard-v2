@@ -6,14 +6,6 @@ class Widget extends Component {
         super(props);
     }
 
-    componentWillMount() {
-        this.props.startWidgetObserver(this.props.widget.id);
-    }
-
-    componentWillUnmount() {
-        this.props.widget.observer.stop();
-    }
-
     render() {
         switch(this.props.widget.id) {
             case 'intakeList':

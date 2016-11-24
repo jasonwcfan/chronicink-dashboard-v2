@@ -7,6 +7,7 @@ import IconButton from 'material-ui/IconButton';
 import EditIcon from 'material-ui/svg-icons/content/create';
 import LinkWrapper from '../../UI/LinkWrapper';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
+import IntakeForm from '../../../../imports/IntakeForm/intakeForm';
 
 const style = {
     intakeListContainer: {
@@ -35,36 +36,62 @@ const style = {
         right: 10,
         bottom: 12
     }
-
 };
 
 class IntakeList extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            observer: null,
+            data: null
+        }
+    }
+
+    componentWillMount(props) {
+        Meteor.subscribe('intakeForm');
+        const observer = IntakeForm.find().observe(({
+            added: () => {
+                this.setState({
+                    data: IntakeForm.find().fetch()
+                })
+            }
+        }));
+        this.setState({
+            observer: observer
+        });
+    }
+
+    componentWillUnmount(props) {
+        if (this.state.observer) {
+            this.state.observer.stop();
+        }
     }
 
     _handleListIconPressed(clientID) {
         this.props.primaryWidgetAction('intakeList', startConsultation, [clientID]);
     }
 
-    _renderIntakeList(widget) {
-        return widget.data.map((form) => (
-            <ListItem key={form._id}>
-                <div style={style.listItemContainer}>
-                    <div style={style.listItemLabel}>{form.clientName}</div>
-                    <LinkWrapper to='consultationform'>
-                        <IconButton
-                            style={style.listItemIconButton}
-                            tooltip='Start Consultation'
-                            tooltipPosition='top-right'
-                            onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
-                        >
-                            <EditIcon />
-                        </IconButton>
-                    </LinkWrapper>
-                </div>
-            </ListItem>
-        ));
+    _renderIntakeList() {
+        if (this.state.data) {
+            return this.state.data.map((form) => (
+                <ListItem key={form._id}>
+                    <div style={style.listItemContainer}>
+                        <div style={style.listItemLabel}>{form.clientName}</div>
+                        <LinkWrapper to='consultationform'>
+                            <IconButton
+                                style={style.listItemIconButton}
+                                tooltip='Start Consultation'
+                                tooltipPosition='top-right'
+                                onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
+                            >
+                                <EditIcon />
+                            </IconButton>
+                        </LinkWrapper>
+                    </div>
+                </ListItem>
+            ));
+        }
+        return null;
     }
 
     render() {
@@ -79,9 +106,5 @@ class IntakeList extends Component {
         )
     }
 }
-
-IntakeList.propTypes = {
-    widget: PropTypes.object.isRequired
-};
 
 export default IntakeList;
