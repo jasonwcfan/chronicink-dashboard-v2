@@ -27,18 +27,41 @@ const style = {
 class App extends Component {
     constructor(props) {
         super(props);
+        console.log(props);
     }
 
+    // Eventually move app routing elsewhere...
     _getActiveApp(activeApp) {
-        switch (activeApp) {
-            case 'intakeform':
-                return <IntakeFormContainer />;
-            case 'consultationform':
-                return <ConsultationFormContainer />;
-            case 'dashboard':
-                return <DashboardContainer />;
-            default:
-                return <IntakeFormContainer />;
+        if (activeApp) {
+            switch (activeApp.toLowerCase()) {
+                case 'intakeform':
+                    return <IntakeFormContainer />;
+                case 'consultationform':
+                    return <ConsultationFormContainer />;
+                case 'dashboard':
+                    return <DashboardContainer />;
+                default:
+                    return <DashboardContainer />;
+            }
+        } else {
+            return <DashboardContainer />
+        }
+    }
+
+    _getAppName(activeApp) {
+        if (activeApp) {
+            switch (activeApp.toLowerCase()) {
+                case 'intakeform':
+                    return 'Intake Form';
+                case 'consultationform':
+                    return 'Consultation Form';
+                case 'dashboard':
+                    return 'Dashboard';
+                default:
+                    return 'Dashboard';
+            }
+        } else {
+            return 'Dashboard';
         }
     }
 
@@ -49,7 +72,7 @@ class App extends Component {
                     <SideNavBar style={style.sideNavBar} onChangeApp={this.props.onChangeApp} />
                     <Paper style={style.appContainer} zDepth={4}>
                         <AppBar
-                            title={this.props.activeApp.label}
+                            title={this._getAppName(this.props.activeApp)}
                         />
                         {this._getActiveApp(this.props.activeApp)}
                     </Paper>
