@@ -5,6 +5,8 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "google-auth-library": "^0.9.10",
+    "googleapis": "^14.2.0",
     "material-ui": "^0.16.1",
     "meteor-node-stubs": "~0.2.0",
     "moment": "^2.16.0",

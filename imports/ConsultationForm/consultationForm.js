@@ -8,6 +8,9 @@ Meteor.methods({
             fields: form.fields,
             sessions: form.sessions
         });
+    },
+    'consultationForm.pushToCalendar': function(form) {
+        
     }
 });
 
