@@ -6,10 +6,10 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import SideNavBar from './SideNavBar';
+import Menu from './Menu';
 import IntakeFormContainer from '../containers/IntakeFormContainer';
 import ConsultationFormContainer from '../containers/ConsultationFormContainer';
 import DashboardContainer from '../containers/DashboardContainer';
-import Login from './Login';
 
 injectTapEventPlugin();
 
@@ -75,6 +75,7 @@ class App extends Component {
                     <Paper style={style.appContainer} zDepth={4}>
                         <AppBar
                             title={this._getAppName(this.props.params.appname)}
+                            iconElementRight={<Menu />}
                         />
                         {this._getActiveApp()}
                     </Paper>
