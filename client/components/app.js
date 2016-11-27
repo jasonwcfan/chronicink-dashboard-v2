@@ -9,6 +9,7 @@ import SideNavBar from './SideNavBar';
 import IntakeFormContainer from '../containers/IntakeFormContainer';
 import ConsultationFormContainer from '../containers/ConsultationFormContainer';
 import DashboardContainer from '../containers/DashboardContainer';
+import Login from './Login';
 
 injectTapEventPlugin();
 
@@ -27,11 +28,12 @@ const style = {
 class App extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
+        this._getActiveApp = this._getActiveApp.bind(this);
     }
 
     // Eventually move app routing elsewhere...
-    _getActiveApp(activeApp) {
+    _getActiveApp() {
+        const activeApp = this.props.params.appname;
         if (activeApp) {
             switch (activeApp.toLowerCase()) {
                 case 'intakeform':
@@ -72,18 +74,14 @@ class App extends Component {
                     <SideNavBar style={style.sideNavBar} onChangeApp={this.props.onChangeApp} />
                     <Paper style={style.appContainer} zDepth={4}>
                         <AppBar
-                            title={this._getAppName(this.props.activeApp)}
+                            title={this._getAppName(this.props.params.appname)}
                         />
-                        {this._getActiveApp(this.props.activeApp)}
+                        {this._getActiveApp()}
                     </Paper>
                 </div>
             </MuiThemeProvider>
         );
     }
 }
-
-App.propTypes = {
-    activeApp: PropTypes.string
-};
 
 export default App;

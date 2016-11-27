@@ -54,7 +54,7 @@ class IntakeList extends Component {
                 <ListItem key={form._id}>
                     <div style={style.listItemContainer}>
                         <div style={style.listItemLabel}>{form.clientName}</div>
-                        <LinkWrapper to='consultationform'>
+                        <LinkWrapper to='/app/consultationform'>
                             <IconButton
                                 style={style.listItemIconButton}
                                 tooltip='Start Consultation'

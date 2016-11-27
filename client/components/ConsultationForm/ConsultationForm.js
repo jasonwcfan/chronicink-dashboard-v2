@@ -30,6 +30,7 @@ const style = {
 class ConsultationForm extends Component {
     constructor(props) {
         super(props);
+        console.log(props);
     }
 
     _handleSubmit() {

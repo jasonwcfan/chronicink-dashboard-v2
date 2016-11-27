@@ -4,10 +4,11 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { Router, Route, Link, browserHistory, IndexRoute, Redirect } from 'react-router'
+import { Router, Route, Link, browserHistory, IndexRoute, Redirect, withRouter} from 'react-router'
 import reducer from './reducers'
-// import LoginContainer from './components/Login';
-import AppContainer from './containers/AppContainer';
+import Login from './components/Login';
+import App from './components/app';
+import { LoggedInRoutes, LoggedOutRoutes } from './routes';
 
 const logger = createLogger();
 
@@ -16,10 +17,7 @@ const store = createStore(reducer, applyMiddleware(ReduxThunk, logger));
 const routes = (
     <Provider store={store}>
         <Router history={browserHistory} >
-            <Route path='/'>
-                <IndexRoute component={AppContainer} />
-                <Route path=':appname' component={AppContainer} />
-            </Route>
+            { Meteor.userId() ? LoggedInRoutes : LoggedOutRoutes }
         </Router>
     </Provider>
 );
