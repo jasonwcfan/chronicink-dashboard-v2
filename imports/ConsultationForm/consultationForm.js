@@ -3,15 +3,15 @@ import { Mongo } from 'meteor/mongo';
 
 Meteor.methods({
     'consultationForm.insert': function(form) {
-        console.log(form);
         return ConsultationForm.insert({
             clientID: form.clientID,
             fields: form.fields.map((field) => ({id: field.id, label: field.label, value: field.value})),
             sessions: form.sessions
         });
     },
-    'consultationForm.pushToCalendar': function(form) {
-        
+    'consultationForm.submitToCalendar': function(form) {
+        const client = Meteor.findOne({_id: form.clientID});
+        console.log(client);
     }
 });
 
