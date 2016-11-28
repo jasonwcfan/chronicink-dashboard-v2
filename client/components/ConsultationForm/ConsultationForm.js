@@ -30,11 +30,11 @@ const style = {
 class ConsultationForm extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
     }
 
     _handleSubmit() {
         const form = {
+            clientID: this.props.client._id,
             fields: this.props.fields,
             sessions: this.props.sessions,
         };
