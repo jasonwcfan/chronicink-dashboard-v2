@@ -1,7 +1,7 @@
 import savingConsultationForm from './ConsultationFormSaveAndLoad/savingConsultationForm';
 import savedConsultationForm from './ConsultationFormSaveAndLoad/savedConsultationForm';
 
-export default submitConsultationForm = (dispatch, form) => {
+export default saveConsultationForm = (dispatch, form) => {
     return () => {
         dispatch(savingConsultationForm());
         Meteor.call('consultationForm.insert', form, function(error, formID) {
@@ -10,7 +10,7 @@ export default submitConsultationForm = (dispatch, form) => {
             } else {
                 // Although the results return almost instantaneously, show the user the loading animation for at least
                 // 2 seconds to convince them it actually worked
-                setTimeout(function() {dispatch(savedConsultationForm(formID))}, 2000);
+                setTimeout(function() {dispatch(savedConsultationForm(formID))}, 1500);
             }
         });
     }

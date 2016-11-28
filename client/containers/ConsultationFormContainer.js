@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ConsultationForm from '../components/ConsultationForm';
-import { addSession, submitConsultationForm } from '../actions/ConsultationForm';
+import { addSession, saveConsultationForm } from '../actions/ConsultationForm';
 import { setField } from '../actions';
 
 const mapStateToProps = (state) => ({
@@ -16,7 +16,7 @@ const mapDispatchToProps = (dispatch) => ({
     onSubmitSession: (session) => {
         dispatch(addSession(session));
     },
-    onSubmitConsultationForm: (form) => {
+    onSaveConsultationForm: (form) => {
         dispatch(submitConsultationForm(dispatch, form))
     },
     onFieldChange: (id, value, valid) => {

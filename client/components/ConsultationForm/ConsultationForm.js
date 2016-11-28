@@ -32,20 +32,29 @@ class ConsultationForm extends Component {
         super(props);
     }
 
+    _handleSave() {
+        const form = {
+            clientID: this.props.client._id,
+            fields: this.props.fields,
+            sessions: this.props.sessions,
+        };
+        this.props.onSaveConsultationForm(form);
+    }
+
     _handleSubmit() {
         const form = {
             clientID: this.props.client._id,
             fields: this.props.fields,
             sessions: this.props.sessions,
         };
-        this.props.onSubmitConsultationForm(form);
+        Meteor.call('consultationForm.submitToCalendar', form);
     }
 
-    _getSubmitButton(isSaved) {
+    _getSaveButton(isSaved) {
         return (isSaved ?
                 <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true}/> :
-                <RaisedButton style={style.navButton} primary={true} label='Submit'
-                              onTouchTap={this._handleSubmit.bind(this)}/>
+                <RaisedButton style={style.navButton} primary={true} label='Save'
+                              onTouchTap={this._handleSave.bind(this)}/>
         )
     }
 
@@ -63,7 +72,13 @@ class ConsultationForm extends Component {
                     <Tab label='Booking'>
                         <BookingsTab style={style.container} sessions={this.props.sessions}
                                      onSubmitSession={this.props.onSubmitSession}/>
-                        {this._getSubmitButton(this.props.isSaved)}
+                        {this._getSaveButton(this.props.isSaved)}
+                        <RaisedButton
+                            style={style.navButton}
+                            secondary={true}
+                            label='Submit'
+                            onTouchTap={this._handleSubmit.bind(this)}
+                        />
                     </Tab>
                 </Tabs>
             </div>

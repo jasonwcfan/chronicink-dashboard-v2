@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+import Client from '../Client/client';
 
 Meteor.methods({
     'consultationForm.insert': function(form) {
@@ -10,8 +11,9 @@ Meteor.methods({
         });
     },
     'consultationForm.submitToCalendar': function(form) {
-        const client = Meteor.findOne({_id: form.clientID});
-        console.log(client);
+        const client = Client.findOne({_id: form.clientID});
+        // Parse the form and client, create events for all the sessions, save events to the collection, and then
+        // push them to the calendar.
     }
 });
 
