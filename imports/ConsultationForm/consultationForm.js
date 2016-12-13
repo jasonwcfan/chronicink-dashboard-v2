@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import Client from '../Client/client';
+import GCalendar from '../GoogleApi/GCalendar';
 
 Meteor.methods({
     'consultationForm.insert': function(form) {
@@ -12,8 +13,8 @@ Meteor.methods({
     },
     'consultationForm.submitToCalendar': function(form) {
         const client = Client.findOne({_id: form.clientID});
-        // Parse the form and client, create events for all the sessions, save events to the collection, and then
-        // push them to the calendar.
+        // Build events resource and pass it to GCalendar.insertEvent()
+        GCalendar.insertEvent(form, '');
     }
 });
 
