@@ -2,17 +2,17 @@ import { HTTP } from 'meteor/http';
 import google from 'googleapis';
 import googleAuth from 'google-auth-library';
 
+const clientSecret = Meteor.settings.google.client_secret;
+const clientID = Meteor.settings.google.client_id;
+const redirectURL = Meteor.settings.google.redirect_uris;
+
+const authFactory = new googleAuth();
+const oauth2Client = new authFactory.OAuth2(clientID, clientSecret, redirectURL);
+
+const calendar = google.calendar('v3');
+
 export default GCalendar = {
     insertEvent: function (event, artist) {
-
-        const clientSecret = Meteor.settings.google.client_secret;
-        const clientID = Meteor.settings.google.client_id;
-        const redirectURL = Meteor.settings.google.redirect_uris;
-
-        const authFactory = new googleAuth();
-        const oauth2Client = new authFactory.OAuth2(clientID, clientSecret, redirectURL);
-
-        const calendar = google.calendar('v3');
 
         oauth2Client.setCredentials({
             access_token: Meteor.user().services.google.accessToken,
