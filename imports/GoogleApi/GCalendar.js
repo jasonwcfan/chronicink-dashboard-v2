@@ -12,7 +12,7 @@ const oauth2Client = new authFactory.OAuth2(clientID, clientSecret, redirectURL)
 const calendar = google.calendar('v3');
 
 export default GCalendar = {
-    insertEvent: function (event, artist) {
+    insertEvent: function (event, calendarID) {
 
         oauth2Client.setCredentials({
             access_token: Meteor.user().services.google.accessToken,
@@ -26,9 +26,9 @@ export default GCalendar = {
 
         calendar.events.insert({
             auth: oauth2Client,
-            calendarId: 'primary',
+            calendarId: calendarID,
             resource: {
-                kind: "calendar#event",
+                kind: 'calendar#event',
                 start: {
                     dateTime: testStart.toISOString()
                 },
