@@ -119,6 +119,15 @@ const defaultFields = [
         required: false
     },
     {
+        id: 'artist',
+        label: 'Artist',
+        inputType: 'autocomplete',
+        value: '',
+        valid: false,
+        required: true,
+        items: []
+    },
+    {
         id: 'rateType',
         label: 'Rate Type',
         inputType: 'radio',

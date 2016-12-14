@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { createContainer } from 'meteor/react-meteor-data';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ValidatedTextField from '../../Inputs/ValidatedTextField';
 import AutoComplete from 'material-ui/AutoComplete';
+import Artist from '../../../../imports/Artist/artist';
 
 const style = {
     textField: {
@@ -32,6 +34,7 @@ const style = {
 class TattooDetailsTab extends Component {
     constructor(props) {
         super(props);
+        this._renderFields = this._renderFields.bind(this);
     }
     
     _renderFields(fields) {
@@ -88,6 +91,32 @@ class TattooDetailsTab extends Component {
                         </div>
                     );
                 case 'autocomplete':
+                    if (field.id == 'artist' && this.props.subReady) {
+                        console.log(this.props.data.map((artist) => ({
+                            label: artist.name,
+                            id: artist.calendarID
+                        })));
+                        return (
+                            <AutoComplete
+                                floatingLabelText={field.label}
+                                style={style.autoComplete}
+                                value={field.value}
+                                searchText={field.value || ''}
+                                key={field.id}
+                                dataSource={this.props.data.map((artist) => artist.name)}
+                                filter={(searchText, key) => {
+                                    // Fuzzier search than the default
+                                    const lowerCaseSearchText = searchText.toLowerCase();
+                                    const lowerCaseKey = key.toLowerCase();
+                                    return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
+                            }}
+                                maxSearchResults={10}
+                                onNewRequest={(value) => {
+                                    this.props.onFieldChange(field.id, value, value != '')
+                            }}
+                            />
+                        )
+                    }
                     return (
                         <AutoComplete
                             floatingLabelText={field.label}
@@ -121,4 +150,11 @@ class TattooDetailsTab extends Component {
     }
 }
 
-export default TattooDetailsTab;
+export default TattooDetailsTab = createContainer(({ params }) => {
+    const subscription = Meteor.subscribe('artist');
+
+    return {
+        subReady: subscription.ready(),
+        data: Artist.find().fetch()
+    }
+}, TattooDetailsTab);
