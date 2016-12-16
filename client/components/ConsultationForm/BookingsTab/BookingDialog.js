@@ -52,7 +52,6 @@ class BookingDialog extends Component {
     }
 
     _handleSubmitSession() {
-        console.log(this.state);
         const date = this.state.date;
         const startTime = this.state.startTime;
         const endTime = this.state.endTime;

@@ -75,7 +75,6 @@ class TattooDetailsTab extends Component {
                                 name={field.id}
                                 defaultSelected={field.value}
                                 onChange={(event, value) => {
-                                    console.log(field.id);
                                     this.props.onFieldChange(field.id, value, true)
                                 }}
                             >
@@ -92,10 +91,6 @@ class TattooDetailsTab extends Component {
                     );
                 case 'autocomplete':
                     if (field.id == 'artist' && this.props.subReady) {
-                        console.log(this.props.data.map((artist) => ({
-                            label: artist.name,
-                            id: artist.calendarID
-                        })));
                         return (
                             <AutoComplete
                                 floatingLabelText={field.label}

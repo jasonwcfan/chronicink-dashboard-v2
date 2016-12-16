@@ -3,27 +3,39 @@ import { Mongo } from 'meteor/mongo';
 import Client from '../Client/client';
 import GCalendar from '../GoogleApi/GCalendar';
 
-function createEventResource(form, client) {
-    let artist = null;
-    const event = { kind: 'calendar#event' };
-    form.fields.forEach(function(field) {
-        if (field.id == 'artist') {
-            artist = field.value;
-        }
+function createDescription(session) {
+
+}
+
+function createEventResources(form, client) {
+    const data = {};
+    const sessions = form.sessions;
+    const events = [];
+    form.fields.map((field) => {
+        data[field.id] = {
+            value: field.value,
+            label: field.label
+    };
     });
+        console.log(sessions);
 
     // TODO:
-    event.summary = null;
-    event.start = null;
-    event.end = null;
-    event.description = null;
-    event.location = null;
-    event.status = null;
-    
+    sessions.map((session) => {
+        const event = { kind: 'calendar#event' };
+        event.summary = `${client.firstName.value} ${client.lastName.value} [${session.sessionType} ${session.sessionIndex + 1}]`;
+        event.start = {
+            dateTime: session.startTime
+        };
+        event.end = {
+            dateTime: session.endTime
+        };
+        event.description = createDescription(session);
+        event.location = `${client.primaryPhoneNumber.value}/${client.email.value}`;
 
+        events.push(event);
+    });
 
-    console.log(artist);
-    console.log(client);
+    console.log(events);
 }
 
 Meteor.methods({
@@ -37,7 +49,7 @@ Meteor.methods({
     'consultationForm.submitToCalendar': function(form) {
         const client = Client.findOne({_id: form.clientID});
         // Build events resource and pass it to GCalendar.insertEvent()
-        const event = createEventResource(form, client);
+        const events = createEventResources(form, client);
         // GCalendar.insertEvent(form, '');
     }
 });
