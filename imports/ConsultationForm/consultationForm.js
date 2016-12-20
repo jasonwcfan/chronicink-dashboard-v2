@@ -47,10 +47,24 @@ function createEventResources(form, client) {
 }
 
 Meteor.methods({
-    'consultationForm.insert': function(form) {
+    'consultationForm.findByClientID': function(clientID) {
+        const client = Client.findOne({_id: clientID});
+        const form = ConsultationForm.findOne({clientID: clientID});
+        return {client, form}
+    },
+    'consultationForm.saveForm': function(form) {
+        console.log(form.formID);
+        if (form.formID) {
+            ConsultationForm.update({_id: form.formID}, {
+                clientID: form.clientID,
+                fields: form.fields,
+                sessions: form.sessions
+            });
+            return form.formID;
+        }
         return ConsultationForm.insert({
             clientID: form.clientID,
-            fields: form.fields.map((field) => ({id: field.id, label: field.label, value: field.value})),
+            fields: form.fields,
             sessions: form.sessions
         });
     },

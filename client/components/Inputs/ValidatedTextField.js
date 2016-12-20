@@ -1,22 +1,31 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
-class RequiredTextField extends Component {
+class ValidatedTextField extends Component {
     constructor(props) {
         super(props);
         this.state = {
             errorText: null,
+            value: props.defaultvalue
         }
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            value: props.defaultValue
+        })
     }
 
     _handleChange(event) {
         if (event.target.value == '' && this.props.required) {
             this.setState({
                 errorText: this.props.floatingLabelText + ' is required',
+                value: event.target.value
             });
         } else {
             this.setState({
                 errorText: null,
+                value: event.target.value
             });
         }
     }
@@ -29,7 +38,7 @@ class RequiredTextField extends Component {
         return(
             <TextField
                 errorText={this.state.errorText}
-                defaultValue={this.props.defaultValue || ''}
+                value={this.state.value}
                 style={this.props.style}
                 floatingLabelText={this.props.floatingLabelText}
                 onChange={this._handleChange.bind(this)}
@@ -46,4 +55,8 @@ class RequiredTextField extends Component {
     }
 }
 
-export default RequiredTextField;
+ValidatedTextField.propTypes = {
+    defaultValue: PropTypes.string
+};
+
+export default ValidatedTextField;

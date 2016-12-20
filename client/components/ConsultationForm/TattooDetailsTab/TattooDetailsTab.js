@@ -71,9 +71,9 @@ class TattooDetailsTab extends Component {
                         <div key={field.id}>
                             <h3>{field.label}</h3>
                             <RadioButtonGroup
-                                tyle={style.group}
+                                style={style.group}
                                 name={field.id}
-                                defaultSelected={field.value}
+                                valueSelected={field.value}
                                 onChange={(event, value) => {
                                     this.props.onFieldChange(field.id, value, true)
                                 }}

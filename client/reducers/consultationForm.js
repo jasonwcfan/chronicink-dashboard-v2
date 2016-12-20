@@ -204,7 +204,15 @@ const session = (state, action) => {
 };
 
 const fields = (state = defaultFields, action) => {
-    return state.map(f => field(f, action))
+    switch (action.type) {
+        case 'RECEIVE_CONSULTATION_FORM_AND_CLIENT':
+            if (action.form) {
+                return action.form.fields;
+            }
+            return state;
+        default:
+            return state.map(f => field(f, action));
+    }
 };
 
 const sessions = (state = [], action) => {
@@ -224,6 +232,11 @@ const sessions = (state = [], action) => {
             return newState;
         case 'EDIT_SESSION':
             return state.map(s => session(s, action));
+        case 'RECEIVE_CONSULTATION_FORM_AND_CLIENT':
+            if (action.form) {
+                return action.form.sessions;
+            }
+            return state;
         default:
             return state;
     }
@@ -256,6 +269,11 @@ const formID = (state, action) => {
     switch (action.type) {
         case 'SAVED_CONSULTATION_FORM':
             return action.formID;
+        case 'RECEIVE_CONSULTATION_FORM_AND_CLIENT':
+            if (action.form) {
+                return action.form._id;
+            }
+            return state;
         default:
             return state;
     }
@@ -263,7 +281,7 @@ const formID = (state, action) => {
 
 const client = (state, action) => {
     switch (action.type) {
-        case 'RECEIVE_CONSULTATION_CLIENT':
+        case 'RECEIVE_CONSULTATION_FORM_AND_CLIENT':
             return action.client;
         default:
             return state;

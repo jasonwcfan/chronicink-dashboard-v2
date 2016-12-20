@@ -35,6 +35,7 @@ class ConsultationForm extends Component {
     _handleSave() {
         const form = {
             clientID: this.props.client._id,
+            formID: this.props.formID,
             fields: this.props.fields,
             sessions: this.props.sessions,
         };

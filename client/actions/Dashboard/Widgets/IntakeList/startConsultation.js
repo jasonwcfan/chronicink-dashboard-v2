@@ -1,16 +1,17 @@
 export default startConsultation = (dispatch, clientID) => {
     return () => {
-        Meteor.call('client.fetchOne', clientID, function(error, client) {
+        Meteor.call('consultationForm.findByClientID', clientID, function(error, result) {
             if (error) {
                 dispatch({
-                    type: 'FETCH_CONSULTATION_CLIENT_ERROR',
+                    type: 'FETCH_CONSULTATION_ERROR',
                     clientID,
                     error
                 });
             } else {
                 dispatch({
-                    type: 'RECEIVE_CONSULTATION_CLIENT',
-                    client,
+                    type: 'RECEIVE_CONSULTATION_FORM_AND_CLIENT',
+                    client: result.client,
+                    form: result.form
                 });
             }
         });
