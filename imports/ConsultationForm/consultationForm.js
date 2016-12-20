@@ -53,28 +53,29 @@ Meteor.methods({
         return {client, form}
     },
     'consultationForm.saveForm': function(form) {
-        console.log(form.formID);
         if (form.formID) {
             ConsultationForm.update({_id: form.formID}, {
                 clientID: form.clientID,
                 fields: form.fields,
-                sessions: form.sessions
+                sessions: form.sessions,
+                artist: form.artist
             });
             return form.formID;
         }
         return ConsultationForm.insert({
             clientID: form.clientID,
             fields: form.fields,
-            sessions: form.sessions
+            sessions: form.sessions,
+            artist: form.artist
         });
     },
     'consultationForm.submitToCalendar': function(form) {
         const client = Client.findOne({_id: form.clientID});
         // Build events resource and pass it to GCalendar.insertEvent()
         const events = createEventResources(form, client);
-        console.log(form);
+        console.log(form.artist);
         events.forEach(function(event) {
-            GCalendar.insertEvent(event, 'primary');
+            GCalendar.insertEvent(event, form.artist.calendarID);
         });
     }
 });

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import ConsultationForm from '../components/ConsultationForm';
-import { addSession, saveConsultationForm } from '../actions/ConsultationForm';
+import { addSession, saveConsultationForm, setArtist } from '../actions/ConsultationForm';
 import { setField } from '../actions';
 
 const mapStateToProps = (state) => ({
@@ -9,7 +9,8 @@ const mapStateToProps = (state) => ({
     isSaved: state.consultationForm.isSaved,
     savingForm: state.consultationForm.savingForm,
     formID: state.consultationForm.formID,
-    client: state.consultationForm.client
+    client: state.consultationForm.client,
+    artist: state.consultationForm.artist
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -21,6 +22,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     onFieldChange: (id, value, valid) => {
         dispatch(setField(id, value, valid))
+    },
+    onArtistChange: (artistName, artistList) => {
+        dispatch(setArtist(artistName, artistList))
     }
 });
 

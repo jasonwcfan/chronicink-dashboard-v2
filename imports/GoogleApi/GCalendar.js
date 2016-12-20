@@ -34,7 +34,7 @@ export default GCalendar = {
                 console.log(err);
                 return;
             }
-            console.log(res);
+            // console.log(res);
         });
 
         // HTTP.call(

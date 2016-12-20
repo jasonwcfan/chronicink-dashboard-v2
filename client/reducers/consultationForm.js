@@ -288,6 +288,20 @@ const client = (state, action) => {
     }
 };
 
+const artist = (state, action) => {
+    switch (action.type) {
+        case 'SET_ARTIST':
+            return {
+                name: action.artistName,
+                calendarID: action.calendarID
+            };
+        case 'RECEIVE_CONSULTATION_FORM_AND_CLIENT':
+            return action.form.artist;
+        default:
+            return state;
+    }   
+};
+
 export default consultationForm = (state = {}, action) => {
     const newState =  {
         fields: fields(state.fields, action),
@@ -295,7 +309,8 @@ export default consultationForm = (state = {}, action) => {
         isSaved: isSaved(state.isSaved, action),
         savingForm: savingForm(state.savingForm, action),
         formID: formID(state.formID, action),
-        client: client(state.client, action)
+        client: client(state.client, action),
+        artist: artist(state.artist, action)
     };
     return newState;
 };

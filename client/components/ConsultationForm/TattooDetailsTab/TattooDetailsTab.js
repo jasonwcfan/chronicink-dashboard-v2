@@ -107,8 +107,9 @@ class TattooDetailsTab extends Component {
                                 }}
                                 maxSearchResults={10}
                                 onNewRequest={(value) => {
-                                    this.props.onFieldChange(field.id, value, value != '')
-                            }}
+                                    this.props.onFieldChange(field.id, value, true);
+                                    this.props.onArtistChange(value, this.props.data);
+                                }}
                             />
                         )
                     }

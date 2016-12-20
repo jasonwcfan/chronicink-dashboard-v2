@@ -38,6 +38,7 @@ class ConsultationForm extends Component {
             formID: this.props.formID,
             fields: this.props.fields,
             sessions: this.props.sessions,
+            artist: this.props.artist
         };
         this.props.onSaveConsultationForm(form);
     }
@@ -47,6 +48,7 @@ class ConsultationForm extends Component {
             clientID: this.props.client._id,
             fields: this.props.fields,
             sessions: this.props.sessions,
+            artist: this.props.artist
         };
         Meteor.call('consultationForm.submitToCalendar', form);
     }
@@ -68,7 +70,10 @@ class ConsultationForm extends Component {
                     </Tab>
                     <Tab label='Details'>
                         <TattooDetailsTab fields={this.props.fields} style={style.container}
-                                          onFieldChange={this.props.onFieldChange}/>
+                                          defaultArtist={this.props.artist}
+                                          onFieldChange={this.props.onFieldChange}
+                                          onArtistChange={this.props.onArtistChange}
+                        />
                     </Tab>
                     <Tab label='Booking'>
                         <BookingsTab style={style.container} sessions={this.props.sessions}
@@ -107,7 +112,8 @@ ConsultationForm.propTypes = {
     isSaved: PropTypes.bool.isRequired,
     savingForm: PropTypes.bool.isRequired,
     formID: PropTypes.string,
-    client: PropTypes.object
+    client: PropTypes.object,
+    artist: PropTypes.object
 };
 
 export default ConsultationForm;
