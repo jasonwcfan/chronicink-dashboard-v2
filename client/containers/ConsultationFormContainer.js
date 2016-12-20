@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(addSession(session));
     },
     onSaveConsultationForm: (form) => {
-        dispatch(submitConsultationForm(dispatch, form))
+        dispatch(saveConsultationForm(dispatch, form))
     },
     onFieldChange: (id, value, valid) => {
         dispatch(setField(id, value, valid))

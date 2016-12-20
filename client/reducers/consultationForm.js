@@ -233,7 +233,8 @@ const isSaved = (state = false, action) => {
     switch (action.type) {
         case 'SAVED_CONSULTATION_FORM':
             return true;
-        case 'EDITED_CONSULTATION_FORM':
+        case 'SET_FIELD':
+        case 'ADD_SESSION':
             return false;
         default:
             return state;

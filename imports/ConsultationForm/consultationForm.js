@@ -3,8 +3,17 @@ import { Mongo } from 'meteor/mongo';
 import Client from '../Client/client';
 import GCalendar from '../GoogleApi/GCalendar';
 
-function createDescription(session) {
+function createDescription(data) {
+    let description = '';
 
+    for (const key in data) {
+        if (!data.hasOwnProperty(key)) {
+            continue;
+        }
+        description = description + data[key].label + ':\n\t' + data[key].value + '\n';
+    }
+
+    return description;
 }
 
 function createEventResources(form, client) {
@@ -15,9 +24,8 @@ function createEventResources(form, client) {
         data[field.id] = {
             value: field.value,
             label: field.label
-    };
+        };
     });
-        console.log(sessions);
 
     // TODO:
     sessions.map((session) => {
@@ -29,7 +37,7 @@ function createEventResources(form, client) {
         event.end = {
             dateTime: session.endTime
         };
-        event.description = createDescription(session);
+        event.description = createDescription(data);
         event.location = `${client.primaryPhoneNumber.value}/${client.email.value}`;
 
         events.push(event);
