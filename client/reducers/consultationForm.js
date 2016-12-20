@@ -82,15 +82,15 @@ const defaultFields = [
         required: true,
         items: [
             {
-                value: 'colour',
+                value: 'Colour',
                 label: 'Colour'
             },
             {
-                value: 'blackAndGrey',
+                value: 'Black and Grey',
                 label: 'Black and Grey'
             },
             {
-                value: 'blackAndGreyWithColour',
+                value: 'Black and Grey with touches of colour',
                 label: 'Black and Grey with touches of colour'
             }]
     },

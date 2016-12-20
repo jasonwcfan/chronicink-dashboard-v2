@@ -43,7 +43,7 @@ function createEventResources(form, client) {
         events.push(event);
     });
 
-    console.log(events);
+    return events;
 }
 
 Meteor.methods({
@@ -72,7 +72,10 @@ Meteor.methods({
         const client = Client.findOne({_id: form.clientID});
         // Build events resource and pass it to GCalendar.insertEvent()
         const events = createEventResources(form, client);
-        // GCalendar.insertEvent(form, '');
+        console.log(form);
+        events.forEach(function(event) {
+            GCalendar.insertEvent(event, 'primary');
+        });
     }
 });
 

@@ -27,15 +27,7 @@ export default GCalendar = {
         calendar.events.insert({
             auth: oauth2Client,
             calendarId: calendarID,
-            resource: {
-                kind: 'calendar#event',
-                start: {
-                    dateTime: testStart.toISOString()
-                },
-                end: {
-                    dateTime: testEnd.toISOString()
-                }
-            }
+            resource: event
 
         }, function(err, res) {
             if (err) {

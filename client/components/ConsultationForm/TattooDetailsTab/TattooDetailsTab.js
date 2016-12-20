@@ -104,7 +104,7 @@ class TattooDetailsTab extends Component {
                                     const lowerCaseSearchText = searchText.toLowerCase();
                                     const lowerCaseKey = key.toLowerCase();
                                     return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
-                            }}
+                                }}
                                 maxSearchResults={10}
                                 onNewRequest={(value) => {
                                     this.props.onFieldChange(field.id, value, value != '')
