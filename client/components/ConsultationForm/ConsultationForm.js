@@ -41,11 +41,12 @@ class ConsultationForm extends Component {
                     valid: field.valid
                 }
             });
+            state.sessions = props.sessions;
             return state;
         })();
 
         this._onFieldChange = this._onFieldChange.bind(this);
-        this._onSubmitSession = this._onSubmitSession.bind(this);
+        this._onCreateSession = this._onCreateSession.bind(this);
     }
 
     _handleSave() {
@@ -86,8 +87,16 @@ class ConsultationForm extends Component {
         })
     }
 
-    _onSubmitSession() {
-
+    _onCreateSession(session) {
+        this.setState({
+            sessions: this.state.sessions.concat({
+                sessionIndex: this.state.sessions.length,
+                sessionType: session.sessionType,
+                date: session.date,
+                startTime: session.startTime,
+                endTime: session.endTime
+            })
+        })
     }
 
     render() {
@@ -107,8 +116,8 @@ class ConsultationForm extends Component {
                         />
                     </Tab>
                     <Tab label='Booking'>
-                        <BookingsTab style={style.container} sessions={this.props.sessions}
-                                     onSubmitSession={this.props.onSubmitSession}/>
+                        <BookingsTab style={style.container} sessions={this.state.sessions}
+                                     onSubmitSession={this._onCreateSession}/>
                         {this._getSaveButton(this.props.isSaved)}
                         <RaisedButton
                             style={style.navButton}
