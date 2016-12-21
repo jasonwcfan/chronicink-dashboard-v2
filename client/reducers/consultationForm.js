@@ -296,7 +296,10 @@ const artist = (state, action) => {
                 calendarID: action.calendarID
             };
         case 'RECEIVE_CONSULTATION_FORM_AND_CLIENT':
-            return action.form.artist;
+            if (action.form) {
+                return action.form.artist;
+            }
+            return state;
         default:
             return state;
     }   
