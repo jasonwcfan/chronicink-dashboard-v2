@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import { createContainer } from 'meteor/react-meteor-data';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import Artist from '../../../imports/Artist/artist';
+import Consultation from '../../../imports/Consultation/consultation';
 import TattooDetailsTab from './TattooDetailsTab';
 import BookingsTab from './BookingsTab';
 import ClientInfoTab from './ClientInfoTab';
@@ -50,7 +53,7 @@ class ConsultationForm extends Component {
             sessions: this.props.sessions,
             artist: this.props.artist
         };
-        Meteor.call('consultationForm.submitToCalendar', form);
+        Meteor.call('consultation.submitToCalendar', form);
     }
 
     _getSaveButton(isSaved) {
@@ -70,6 +73,8 @@ class ConsultationForm extends Component {
                     </Tab>
                     <Tab label='Details'>
                         <TattooDetailsTab fields={this.props.fields} style={style.container}
+                                          artists={this.props.artists}
+                                          subReady={this.props.artistSubReady}
                                           defaultArtist={this.props.artist}
                                           onFieldChange={this.props.onFieldChange}
                                           onArtistChange={this.props.onArtistChange}
@@ -116,4 +121,14 @@ ConsultationForm.propTypes = {
     artist: PropTypes.object
 };
 
-export default ConsultationForm;
+export default ConsultationForm = createContainer(({ params }) => {
+    const artistSubscription = Meteor.subscribe('artist');
+    const formSubscription = Meteor.subscribe('consultation');
+
+    return {
+        artistSubReady: artistSubscription.ready(),
+        formSubReady: formSubscription.ready(),
+        artists: Artist.find().fetch(),
+        // form: ConsultationForm.findOne({})
+    }
+}, ConsultationForm);

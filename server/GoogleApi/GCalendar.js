@@ -11,7 +11,7 @@ const oauth2Client = new authFactory.OAuth2(clientID, clientSecret, redirectURL)
 
 const calendar = google.calendar('v3');
 
-export default GCalendar = {
+GCalendar = {
     insertEvent: function (event, calendarID) {
 
         oauth2Client.setCredentials({
@@ -43,4 +43,4 @@ export default GCalendar = {
         //     {data: event}
         // )
     }
-}
+};

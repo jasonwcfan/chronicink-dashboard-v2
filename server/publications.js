@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import IntakeForm from '../imports/IntakeForm/intakeForm';
-import ConsultationForm from '../imports/ConsultationForm/consultationForm';
+import Consultation from '../imports/Consultation/consultation';
 import Client from '../imports/Client/client';
 import Artist from '../imports/Artist/artist';
 
@@ -10,4 +10,8 @@ Meteor.publish('intakeForm', function() {
 
 Meteor.publish('artist', function() {
     return Artist.find({});
+});
+
+Meteor.publish('consultation', function() {
+    return Consultation.find({});
 });

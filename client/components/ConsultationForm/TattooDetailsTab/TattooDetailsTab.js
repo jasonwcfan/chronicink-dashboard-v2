@@ -98,7 +98,7 @@ class TattooDetailsTab extends Component {
                                 value={field.value}
                                 searchText={field.value || ''}
                                 key={field.id}
-                                dataSource={this.props.data.map((artist) => artist.name)}
+                                dataSource={this.props.artists.map((artist) => artist.name)}
                                 filter={(searchText, key) => {
                                     // Fuzzier search than the default
                                     const lowerCaseSearchText = searchText.toLowerCase();
@@ -146,11 +146,4 @@ class TattooDetailsTab extends Component {
     }
 }
 
-export default TattooDetailsTab = createContainer(({ params }) => {
-    const subscription = Meteor.subscribe('artist');
-
-    return {
-        subReady: subscription.ready(),
-        data: Artist.find().fetch()
-    }
-}, TattooDetailsTab);
+export default TattooDetailsTab;

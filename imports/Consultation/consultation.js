@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import Client from '../Client/client';
-import GCalendar from '../GoogleApi/GCalendar';
 
 function createDescription(data) {
     let description = '';
@@ -47,14 +46,14 @@ function createEventResources(form, client) {
 }
 
 Meteor.methods({
-    'consultationForm.findByClientID': function(clientID) {
+    'consultation.findByClientID': function(clientID) {
         const client = Client.findOne({_id: clientID});
-        const form = ConsultationForm.findOne({clientID: clientID});
+        const form = Consultation.findOne({clientID: clientID});
         return {client, form}
     },
-    'consultationForm.saveForm': function(form) {
+    'consultation.saveForm': function(form) {
         if (form.formID) {
-            ConsultationForm.update({_id: form.formID}, {
+            Consultation.update({_id: form.formID}, {
                 clientID: form.clientID,
                 fields: form.fields,
                 sessions: form.sessions,
@@ -62,22 +61,25 @@ Meteor.methods({
             });
             return form.formID;
         }
-        return ConsultationForm.insert({
+        return Consultation.insert({
             clientID: form.clientID,
             fields: form.fields,
             sessions: form.sessions,
             artist: form.artist
         });
     },
-    'consultationForm.submitToCalendar': function(form) {
-        const client = Client.findOne({_id: form.clientID});
-        // Build events resource and pass it to GCalendar.insertEvent()
-        const events = createEventResources(form, client);
-        console.log(form.artist);
-        events.forEach(function(event) {
-            GCalendar.insertEvent(event, form.artist.calendarID);
-        });
+    'consultation.submitToCalendar': function(form) {
+        if (Meteor.isServer) {
+            const client = Client.findOne({_id: form.clientID});
+            // Build events resource and pass it to GCalendar.insertEvent()
+            const events = createEventResources(form, client);
+            console.log(form.artist);
+            events.forEach(function(event) {
+                // GCalendar.insertEvent(event, form.artist.calendarID);
+                GCalendar.insertEvent(event, 'primary');
+            });
+        }
     }
 });
 
-export default ConsultationForm = new Mongo.Collection('consultationForm');
+export default Consultation = new Mongo.Collection('consultation');

@@ -77,7 +77,7 @@ const defaultFields = [
         id: 'colouring',
         label: 'Colouring',
         inputType: 'radio',
-        value: 'colour',
+        value: 'Colour',
         valid: true,
         required: true,
         items: [
