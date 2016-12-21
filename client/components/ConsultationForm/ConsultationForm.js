@@ -33,6 +33,19 @@ const style = {
 class ConsultationForm extends Component {
     constructor(props) {
         super(props);
+        this.state = (() => {
+            const state = {};
+            props.fields.forEach(function(field) {
+                state[field.id] = {
+                    value: field.value,
+                    valid: field.valid
+                }
+            });
+            return state;
+        })();
+
+        this._onFieldChange = this._onFieldChange.bind(this);
+        this._onSubmitSession = this._onSubmitSession.bind(this);
     }
 
     _handleSave() {
@@ -64,7 +77,21 @@ class ConsultationForm extends Component {
         )
     }
 
+    _onFieldChange(id, value, valid) {
+        this.setState({
+            [id]: {
+                value,
+                valid
+            }
+        })
+    }
+
+    _onSubmitSession() {
+
+    }
+
     render() {
+        console.log(this.state);
         return (
             <div>
                 <Tabs initialSelectedIndex={1} >
@@ -76,8 +103,7 @@ class ConsultationForm extends Component {
                                           artists={this.props.artists}
                                           subReady={this.props.artistSubReady}
                                           defaultArtist={this.props.artist}
-                                          onFieldChange={this.props.onFieldChange}
-                                          onArtistChange={this.props.onArtistChange}
+                                          onFieldChange={this._onFieldChange}
                         />
                     </Tab>
                     <Tab label='Booking'>

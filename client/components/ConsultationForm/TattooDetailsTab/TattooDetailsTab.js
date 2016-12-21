@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ValidatedTextField from '../../Inputs/ValidatedTextField';
@@ -108,7 +108,6 @@ class TattooDetailsTab extends Component {
                                 maxSearchResults={10}
                                 onNewRequest={(value) => {
                                     this.props.onFieldChange(field.id, value, true);
-                                    this.props.onArtistChange(value, this.props.data);
                                 }}
                             />
                         )
@@ -145,5 +144,25 @@ class TattooDetailsTab extends Component {
         )
     }
 }
+
+TattooDetailsTab.propTypes = {
+    fields: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.string.isRequired,
+        label: PropTypes.string,
+        inputType: PropTypes.string.isRequired,
+        value: PropTypes.any,
+        valid: PropTypes.bool.isRequired,
+        required: PropTypes.bool.isRequired
+    }).isRequired).isRequired,
+    artists: PropTypes.arrayOf(PropTypes.shape({
+        name: PropTypes.string,
+        calendarID: PropTypes.string
+    })),
+    subReady: PropTypes.bool,
+    defaultArtist: PropTypes.shape({
+        name: PropTypes.string,
+        calendarID: PropTypes.string
+    })
+};
 
 export default TattooDetailsTab;
