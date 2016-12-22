@@ -6,7 +6,7 @@ class ValidatedTextField extends Component {
         super(props);
         this.state = {
             errorText: null,
-            value: props.defaultvalue
+            value: props.defaultValue
         }
     }
 
