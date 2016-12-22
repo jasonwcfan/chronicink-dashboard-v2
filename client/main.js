@@ -4,10 +4,8 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { Router, Route, Link, browserHistory, IndexRoute, Redirect, withRouter} from 'react-router'
+import { Router, browserHistory } from 'react-router'
 import reducer from './reducers'
-import Login from './components/Login';
-import App from './components/app';
 import { LoggedInRoutes, LoggedOutRoutes } from './routes';
 
 const logger = createLogger();

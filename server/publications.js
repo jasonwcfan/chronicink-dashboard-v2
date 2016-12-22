@@ -15,3 +15,7 @@ Meteor.publish('artist', function() {
 Meteor.publish('consultation', function() {
     return Consultation.find({});
 });
+
+Meteor.publish('client', function() {
+    return Client.find({});
+});

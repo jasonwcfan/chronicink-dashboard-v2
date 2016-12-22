@@ -56,16 +56,14 @@ Meteor.methods({
             Consultation.update({_id: form.formID}, {
                 clientID: form.clientID,
                 fields: form.fields,
-                sessions: form.sessions,
-                artist: form.artist
+                sessions: form.sessions
             });
             return form.formID;
         }
         return Consultation.insert({
             clientID: form.clientID,
             fields: form.fields,
-            sessions: form.sessions,
-            artist: form.artist
+            sessions: form.sessions
         });
     },
     'consultation.submitToCalendar': function(form) {

@@ -8,7 +8,7 @@ import AppBar from 'material-ui/AppBar';
 import SideNavBar from './SideNavBar';
 import Menu from './Menu';
 import IntakeFormContainer from '../containers/IntakeFormContainer';
-import ConsultationFormContainer from '../containers/ConsultationFormContainer';
+import ConsultationForm from './ConsultationForm';
 import DashboardContainer from '../containers/DashboardContainer';
 
 injectTapEventPlugin();
@@ -39,7 +39,7 @@ class App extends Component {
                 case 'intakeform':
                     return <IntakeFormContainer />;
                 case 'consultationform':
-                    return <ConsultationFormContainer />;
+                    return <ConsultationForm clientID={this.props.location.query.clientID} />;
                 case 'dashboard':
                     return <DashboardContainer />;
                 default:

@@ -4,9 +4,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Artist from '../../../imports/Artist/artist';
 import Consultation from '../../../imports/Consultation/consultation';
+import Client from '../../../imports/Client/client';
 import TattooDetailsTab from './TattooDetailsTab';
 import BookingsTab from './BookingsTab';
 import ClientInfoTab from './ClientInfoTab';
+import defaultFields from '../../constants/defaultFields';
 
 const style = {
     container: {
@@ -34,14 +36,26 @@ class ConsultationForm extends Component {
     constructor(props) {
         super(props);
         this.state = (() => {
-            const state = {};
+            const state = {fields: {}, sessions: []};
             props.fields.forEach(function(field) {
-                state[field.id] = {
+                state.fields[field.id] = {
                     value: field.value,
                     valid: field.valid
                 }
             });
-            state.sessions = props.sessions;
+            if (props.form) {
+                state.sessions = props.form.sessions;
+                state.formID = props.form.formID;
+
+                props.form.fields.forEach(function(field) {
+                    if (state.fields.hasOwnProperty(field.id)) {
+                        state.fields[field.id] = {
+                            value: field.value,
+                            valid: field.valid
+                        }
+                    }
+                })
+            }
             return state;
         })();
 
@@ -50,14 +64,22 @@ class ConsultationForm extends Component {
     }
 
     _handleSave() {
+        console.log(this.state);
         const form = {
+            formID: this.state.formID,
             clientID: this.props.client._id,
-            formID: this.props.formID,
-            fields: this.props.fields,
-            sessions: this.props.sessions,
-            artist: this.props.artist
+            fields: this.state.fields,
+            sessions: this.state.sessions
         };
-        this.props.onSaveConsultationForm(form);
+        Meteor.call('consultation.saveForm', this.state, (err, formID) => {
+            if (err) {
+                console.log(err);
+            }
+            console.log('form saved: ' + formID);
+            this.setState({
+                formID
+            })
+        });
     }
 
     _handleSubmit() {
@@ -79,11 +101,13 @@ class ConsultationForm extends Component {
     }
 
     _onFieldChange(id, value, valid) {
+        const newFields = _.extend({}, this.state.fields);
+        newFields[id] = {
+            value,
+            valid
+        };
         this.setState({
-            [id]: {
-                value,
-                valid
-            }
+            fields: newFields
         })
     }
 
@@ -100,12 +124,14 @@ class ConsultationForm extends Component {
     }
 
     render() {
-        console.log(this.state);
         return (
             <div>
                 <Tabs initialSelectedIndex={1} >
                     <Tab label='Client Info'>
-                        <ClientInfoTab client={this.props.client} />
+                        <ClientInfoTab
+                            client={this.props.client}
+                            subReady={this.props.clientSubReady}
+                        />
                     </Tab>
                     <Tab label='Details'>
                         <TattooDetailsTab fields={this.props.fields} style={style.container}
@@ -134,36 +160,23 @@ class ConsultationForm extends Component {
 
 
 ConsultationForm.propTypes = {
-    fields: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        label: PropTypes.string,
-        inputType: PropTypes.string.isRequired,
-        value: PropTypes.any,
-        valid: PropTypes.bool.isRequired,
-        required: PropTypes.bool.isRequired
-    }).isRequired).isRequired,
-    sessions: PropTypes.arrayOf(PropTypes.shape({
-        sessionIndex: PropTypes.number,
-        sessionType: PropTypes.string,
-        date: PropTypes.object,
-        startTime: PropTypes.object,
-        endTime: PropTypes.object,
-    }).isRequired).isRequired,
-    isSaved: PropTypes.bool.isRequired,
-    savingForm: PropTypes.bool.isRequired,
-    formID: PropTypes.string,
+    form: PropTypes.object,
     client: PropTypes.object,
-    artist: PropTypes.object
+    artists: PropTypes.array
 };
 
-export default ConsultationForm = createContainer(({ params }) => {
+export default ConsultationForm = createContainer(({ clientID }) => {
     const artistSubscription = Meteor.subscribe('artist');
     const formSubscription = Meteor.subscribe('consultation');
+    const clientSubscription = Meteor.subscribe('client');
 
     return {
         artistSubReady: artistSubscription.ready(),
         formSubReady: formSubscription.ready(),
+        clientSubReady: clientSubscription.ready(),
         artists: Artist.find().fetch(),
-        // form: ConsultationForm.findOne({})
+        fields: defaultFields,
+        form: Consultation.findOne({}),
+        client: Client.findOne({_id: clientID})
     }
 }, ConsultationForm);
