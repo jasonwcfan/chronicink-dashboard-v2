@@ -8,6 +8,7 @@ import Client from '../../../imports/Client/client';
 import TattooDetailsTab from './TattooDetailsTab';
 import BookingsTab from './BookingsTab';
 import ClientInfoTab from './ClientInfoTab';
+import RecommendationsTab from './RecommendationsTab';
 import defaultFields from '../../constants/defaultFields';
 
 const style = {
@@ -151,6 +152,9 @@ class ConsultationForm extends Component {
                             label='Submit'
                             onTouchTap={this._handleSubmit.bind(this)}
                         />
+                    </Tab>
+                    <Tab label='Recommendation'>
+                        <RecommendationsTab />
                     </Tab>
                 </Tabs>
             </div>
