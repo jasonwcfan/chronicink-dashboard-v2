@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import IntakeList from './IntakeList';
+import ArtistStats from './ArtistStats';
 
 class Widget extends Component {
     constructor(props) {
@@ -9,7 +10,9 @@ class Widget extends Component {
     render() {
         switch(this.props.widget.id) {
             case 'intakeList':
-                return <IntakeList {...this.props} />
+                return <IntakeList {...this.props} />;
+            case 'artistStats':
+                return <ArtistStats {...this.props} />;
         }
     }
 }

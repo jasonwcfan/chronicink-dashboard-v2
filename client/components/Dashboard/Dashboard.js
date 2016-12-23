@@ -2,7 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import Widget from '../Widgets/Widget';
 
 const style = {
-    
+    container: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
+    widget: {
+        display: 'inline'
+    }
 };
 
 class Dashboard extends Component {
@@ -24,7 +30,7 @@ class Dashboard extends Component {
 
     render() {
         return (
-            <div>
+            <div style={style.container} >
                 {this._renderWidgets(this.props.widgets)}
             </div>
         );

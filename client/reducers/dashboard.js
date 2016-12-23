@@ -3,6 +3,10 @@ const defaultWidgets = [
     {
         id: 'intakeList',
         data: []
+    },
+    {
+        id: 'artistStats',
+        data: []
     }
 ];
 
