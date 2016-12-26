@@ -49,31 +49,62 @@ class ArtistStats extends Component {
         super(props);
 
         this.state = {
-            artistStats: []
-        }
+            artistStats: [],
+            timeFrame: 30
+        };
+
+        this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
+        this._handleRefreshArtistStats = this._handleRefreshArtistStats.bind(this);
     }
 
     componentWillReceiveProps(props) {
+        console.log(props);
         props.artists.forEach((artist) => {
-            this._handleFetchArtistStats(artist);
+            Meteor.call('artist.getBookedHours', artist.calendarID, this.state.timeFrame, (err, res) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.log(res);
+                this.setState({
+                    artistStats: this.state.artistStats.concat({
+                        calendarID: artist.calendarID,
+                        name: artist.name,
+                        bookedHours: res
+                    })
+                })
+            });
         })
     }
 
-    _handleFetchArtistStats(artist) {
-        Meteor.call('artist.getBookedHours', artist.calendarID, 90, (err, res) => {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            console.log(res);
-            this.setState({
-                artistStats: this.state.artistStats.concat({
-                    calendarID: artist.calendarID,
-                    name: artist.name,
-                    bookedHours: res
+
+    _handleRefreshArtistStats(timeFrame) {
+        this.props.artists.forEach((artist) => {
+            Meteor.call('artist.getBookedHours', artist.calendarID, timeFrame, (err, res) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                console.log(res);
+                const newArtistStats = this.state.artistStats.slice();
+                newArtistStats.forEach(function(artistStat) {
+                    if (artistStat.calendarID == artist.calendarID) {
+                        artistStat.bookedHours = res;
+                    }
+                });
+                this.setState({
+                    artistStats: newArtistStats
                 })
-            })
+            });
+        })
+    }
+
+    _handleChangeTimeFrame(newTimeFrame) {
+        this.setState({
+            timeFrame: newTimeFrame
         });
+
+        this._handleRefreshArtistStats(newTimeFrame);
     }
 
     _renderArtistStats() {
@@ -101,11 +132,36 @@ class ArtistStats extends Component {
                         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                         targetOrigin={{horizontal: 'right', vertical: 'top'}}
                     >
-                        <MenuItem primaryText='7 days' />
-                        <MenuItem primaryText='14 days' />
-                        <MenuItem primaryText='30 days' />
-                        <MenuItem primaryText='60 days' />
-                        <MenuItem primaryText='90 days' />
+                        <MenuItem
+                            primaryText='7 days'
+                            insetChildren={true}
+                            checked={this.state.timeFrame == 7}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 7)}
+                        />
+                        <MenuItem
+                            primaryText='14 days'
+                            insetChildren={true}
+                            checked={this.state.timeFrame == 14}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 14)}
+                        />
+                        <MenuItem
+                            primaryText='30 days'
+                            insetChildren={true}
+                            checked={this.state.timeFrame == 30}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 30)}
+                        />
+                        <MenuItem
+                            primaryText='60 days'
+                            insetChildren={true}
+                            checked={this.state.timeFrame == 60}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 60)}
+                        />
+                        <MenuItem
+                            primaryText='90 days'
+                            insetChildren={true}
+                            checked={this.state.timeFrame == 90}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 90)}
+                        />
                     </IconMenu>
                 </div>
                 <Divider />
