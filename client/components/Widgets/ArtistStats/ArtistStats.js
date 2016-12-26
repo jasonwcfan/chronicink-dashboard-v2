@@ -29,37 +29,51 @@ const style = {
     listItemLabel: {
         display: 'inline'
     },
-    listItemIconButton: {
+    listItemRightLabel: {
         position: 'absolute',
-        padding: 0,
-        height: 24,
-        width: 24,
-        right: 10,
-        bottom: 12
+        right: 10
     }
 };
 
 class ArtistStats extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            artistStats: []
+        }
     }
 
-    _handleClickArtist() {
-        Meteor.call('artist.getBookedHours', 'TestArtist', 90, function(err, res) {
+    componentWillReceiveProps(props) {
+        props.artists.forEach((artist) => {
+            this._handleFetchArtistStats(artist);
+        })
+    }
+
+    _handleFetchArtistStats(artist) {
+        Meteor.call('artist.getBookedHours', artist.calendarID, 90, (err, res) => {
             if (err) {
                 console.log(err);
                 return;
             }
             console.log(res);
+            this.setState({
+                artistStats: this.state.artistStats.concat({
+                    calendarID: artist.calendarID,
+                    name: artist.name,
+                    bookedHours: res
+                })
+            })
         });
     }
 
     _renderArtistStats() {
         if (this.props.subReady) {
-            return this.props.artists.map((artist) => (
-                <ListItem key={artist._id}>
-                    <div style={style.listItemContainer} onClick={this._handleClickArtist}>
-                        <div style={style.listItemLabel}>{artist.name}</div>
+            return this.state.artistStats.map((artistStat) => (
+                <ListItem key={artistStat.calendarID}>
+                    <div style={style.listItemContainer} >
+                        <div style={style.listItemLabel}>{artistStat.name}</div>
+                        <div style={style.listItemRightLabel}>{artistStat.bookedHours + ' hours booked'}</div>
                     </div>
                 </ListItem>
             ));
@@ -85,6 +99,7 @@ export default ArtistStats = createContainer(({ params }) => {
 
     return {
         subReady: subscription.ready(),
-        artists: Artist.find({}, {limit: 5}).fetch()
+        // Test by only using artists with a test calendar
+        artists: Artist.find({'testCalendar': true}, {limit: 5}).fetch()
     }
 }, ArtistStats);

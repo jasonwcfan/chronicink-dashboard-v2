@@ -2,11 +2,11 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 Meteor.methods({
-    'artist.getBookedHours': function(artistName, timeframe) {
+    'artist.getBookedHours': function(calendarID, timeframe) {
         // Timeframe given in days (e.g. 60 = 2 months)
         if (Meteor.isServer) {
             const getHours = Meteor.wrapAsync(GCalendar.getBookedHours);
-            return getHours('f59gej5v6rimvqccv8a79dikq0@group.calendar.google.com', 90);
+            return getHours(calendarID, 90);
         }
     }
 });
