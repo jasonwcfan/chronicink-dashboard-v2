@@ -44,11 +44,21 @@ class ArtistStats extends Component {
         super(props);
     }
 
+    _handleClickArtist() {
+        Meteor.call('artist.getBookedHours', 'TestArtist', 90, function(err, res) {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            console.log(res);
+        });
+    }
+
     _renderArtistStats() {
         if (this.props.subReady) {
             return this.props.artists.map((artist) => (
                 <ListItem key={artist._id}>
-                    <div style={style.listItemContainer}>
+                    <div style={style.listItemContainer} onClick={this._handleClickArtist}>
                         <div style={style.listItemLabel}>{artist.name}</div>
                     </div>
                 </ListItem>
