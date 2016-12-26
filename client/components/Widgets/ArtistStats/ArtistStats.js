@@ -3,23 +3,32 @@ import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
+import IconMenu from 'material-ui/IconMenu';
 import IconButton from 'material-ui/IconButton';
-import EditIcon from 'material-ui/svg-icons/content/create';
-import LinkWrapper from '../../UI/LinkWrapper';
+import MenuItem from 'material-ui/MenuItem';
+import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
 import Artist from '../../../../imports/Artist/artist';
 
 const style = {
-    intakeListContainer: {
+    widgetContainer: {
         width: 300,
         height: 600,
         margin: 20,
         borderStyle: 'solid',
         borderColor: Colors.grey600,
     },
+    headerContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
     header: {
-        margin: 10
+        marginLeft: 10
+    },
+    menuIcon: {
+        display: 'inline'
     },
     listItemContainer: {
         display: 'flex',
@@ -83,8 +92,22 @@ class ArtistStats extends Component {
 
     render() {
         return (
-            <Paper style={style.intakeListContainer} zDepth={3}>
-                <h3 style={style.header} >Artist Stats</h3>
+            <Paper style={style.widgetContainer} zDepth={3}>
+                <div style={style.headerContainer}>
+                    <h3 style={style.header} >Artist Stats</h3>
+                    <IconMenu
+                        style={style.menuIcon}
+                        iconButtonElement={<IconButton><MenuIcon /></IconButton>}
+                        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                    >
+                        <MenuItem primaryText='7 days' />
+                        <MenuItem primaryText='14 days' />
+                        <MenuItem primaryText='30 days' />
+                        <MenuItem primaryText='60 days' />
+                        <MenuItem primaryText='90 days' />
+                    </IconMenu>
+                </div>
                 <Divider />
                 <List>
                     {this._renderArtistStats()}
