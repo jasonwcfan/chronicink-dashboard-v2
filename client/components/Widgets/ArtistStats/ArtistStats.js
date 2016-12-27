@@ -60,28 +60,7 @@ class ArtistStats extends Component {
     }
 
     componentWillReceiveProps(props) {
-        props.artists.forEach((artist, idx) => {
-            const nextArtistStats = this.state.artistStats.slice();
-            nextArtistStats[idx] = {
-                calendarID: artist.calendarID,
-                name: artist.name,
-                hoursBooked: null,
-                loading: true
-            };
-
-            this.setState({
-                artistStats: nextArtistStats
-            });
-
-            Meteor.call('artist.getHoursBooked', artist.calendarID, this.state.timeFrame, (err, res) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                console.log(res);
-                this._handleReceiveArtistStats(artist, idx, res);
-            });
-        })
+        this._handleRefreshArtistStats(props.artists, 30);
     }
 
     _handleReceiveArtistStats(artist, artistIndex, hoursBooked) {
@@ -99,9 +78,10 @@ class ArtistStats extends Component {
     }
 
 
-    _handleRefreshArtistStats(timeFrame) {
-        this.props.artists.forEach((artist, idx) => {
-            const nextArtistStats = this.state.artistStats.slice();
+    _handleRefreshArtistStats(artists, timeFrame) {
+        const nextArtistStats = this.state.artistStats.slice();
+
+        artists.forEach((artist, idx) => {
             nextArtistStats[idx] = {
                 calendarID: artist.calendarID,
                 name: artist.name,
@@ -109,19 +89,18 @@ class ArtistStats extends Component {
                 loading: true
             };
 
-            this.setState({
-                artistStats: nextArtistStats
-            });
-
             Meteor.call('artist.getHoursBooked', artist.calendarID, timeFrame, (err, res) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
-                console.log(res);
                 this._handleReceiveArtistStats(artist, idx, res);
             });
-        })
+        });
+
+        this.setState({
+            artistStats: nextArtistStats
+        });
     }
 
     _handleChangeTimeFrame(newTimeFrame) {
@@ -129,7 +108,7 @@ class ArtistStats extends Component {
             timeFrame: newTimeFrame
         });
 
-        this._handleRefreshArtistStats(newTimeFrame);
+        this._handleRefreshArtistStats(this.props.artists, newTimeFrame);
     }
 
     _renderArtistStats() {
