@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
 Meteor.methods({
-    'artist.getBookedHours': function(calendarID, timeFrame) {
+    'artist.getHoursBooked': function(calendarID, timeFrame) {
         // Timeframe given in days (e.g. 60 = 2 months)
         if (Meteor.isServer) {
             const getHours = Meteor.wrapAsync(GCalendar.getBookedHours);

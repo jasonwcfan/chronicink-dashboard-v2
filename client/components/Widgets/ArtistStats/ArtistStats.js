@@ -4,9 +4,9 @@ import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
 import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
-import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import FlatButton from 'material-ui/FlatButton';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
 import Artist from '../../../../imports/Artist/artist';
@@ -33,7 +33,8 @@ const style = {
     listItemContainer: {
         display: 'flex',
         flexDirection: 'row',
-        width: '100%'
+        alignItems: 'space-between',
+        justifyContent: 'space-between'
     },
     listItemLabel: {
         display: 'inline'
@@ -59,28 +60,48 @@ class ArtistStats extends Component {
 
     componentWillReceiveProps(props) {
         console.log(props);
-        props.artists.forEach((artist) => {
-            Meteor.call('artist.getBookedHours', artist.calendarID, this.state.timeFrame, (err, res) => {
+        props.artists.forEach((artist, idx) => {
+            const nextArtistStats = this.state.artistStats.slice();
+            nextArtistStats[idx] = {
+                calendarID: artist.calendarID,
+                name: artist.name,
+                hoursBooked: null,
+                loading: true
+            };
+
+            this.setState({
+                artistStats: nextArtistStats
+            });
+
+            Meteor.call('artist.getHoursBooked', artist.calendarID, this.state.timeFrame, (err, res) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log(res);
-                this.setState({
-                    artistStats: this.state.artistStats.concat({
-                        calendarID: artist.calendarID,
-                        name: artist.name,
-                        bookedHours: res
-                    })
-                })
+                this._handleReceiveArtistStats(artist, idx, res);
             });
+        })
+    }
+
+    _handleReceiveArtistStats(artist, artistIndex, hoursBooked) {
+        const nextArtistStats = this.state.artistStats.slice();
+        nextArtistStats[artistIndex] = {
+            calendarID: artist.calendarID,
+            name: artist.name,
+            hoursBooked: hoursBooked,
+            loading: false
+        };
+
+        this.setState({
+            artistStats: nextArtistStats
         })
     }
 
 
     _handleRefreshArtistStats(timeFrame) {
         this.props.artists.forEach((artist) => {
-            Meteor.call('artist.getBookedHours', artist.calendarID, timeFrame, (err, res) => {
+            Meteor.call('artist.getHoursBooked', artist.calendarID, timeFrame, (err, res) => {
                 if (err) {
                     console.log(err);
                     return;
@@ -89,7 +110,7 @@ class ArtistStats extends Component {
                 const newArtistStats = this.state.artistStats.slice();
                 newArtistStats.forEach(function(artistStat) {
                     if (artistStat.calendarID == artist.calendarID) {
-                        artistStat.bookedHours = res;
+                        artistStat.hoursBooked = res;
                     }
                 });
                 this.setState({
@@ -113,13 +134,18 @@ class ArtistStats extends Component {
                 <ListItem key={artistStat.calendarID}>
                     <div style={style.listItemContainer} >
                         <div style={style.listItemLabel}>{artistStat.name}</div>
-                        <div style={style.listItemRightLabel}>{artistStat.bookedHours + ' hours booked'}</div>
+                        <div style={style.listItemRightLabel}>{artistStat.loading ?
+                            <CircularProgress
+                                size={16}
+                            />
+                            : artistStat.hoursBooked + ' hours booked'}</div>
                     </div>
                 </ListItem>
             ));
         }
         return null;
     }
+
 
     render() {
         return (
@@ -128,7 +154,7 @@ class ArtistStats extends Component {
                     <h3 style={style.header} >Artist Stats</h3>
                     <IconMenu
                         style={style.menuIcon}
-                        iconButtonElement={<IconButton><MenuIcon /></IconButton>}
+                        iconButtonElement={<FlatButton label={this.state.timeFrame + ' days'} />}
                         anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                         targetOrigin={{horizontal: 'right', vertical: 'top'}}
                     >
