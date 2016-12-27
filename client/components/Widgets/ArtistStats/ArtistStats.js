@@ -6,7 +6,8 @@ import { List, ListItem } from 'material-ui/List';
 import IconMenu from 'material-ui/IconMenu';
 import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
 import Artist from '../../../../imports/Artist/artist';
@@ -59,7 +60,6 @@ class ArtistStats extends Component {
     }
 
     componentWillReceiveProps(props) {
-        console.log(props);
         props.artists.forEach((artist, idx) => {
             const nextArtistStats = this.state.artistStats.slice();
             nextArtistStats[idx] = {
@@ -100,22 +100,26 @@ class ArtistStats extends Component {
 
 
     _handleRefreshArtistStats(timeFrame) {
-        this.props.artists.forEach((artist) => {
+        this.props.artists.forEach((artist, idx) => {
+            const nextArtistStats = this.state.artistStats.slice();
+            nextArtistStats[idx] = {
+                calendarID: artist.calendarID,
+                name: artist.name,
+                hoursBooked: null,
+                loading: true
+            };
+
+            this.setState({
+                artistStats: nextArtistStats
+            });
+
             Meteor.call('artist.getHoursBooked', artist.calendarID, timeFrame, (err, res) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
                 console.log(res);
-                const newArtistStats = this.state.artistStats.slice();
-                newArtistStats.forEach(function(artistStat) {
-                    if (artistStat.calendarID == artist.calendarID) {
-                        artistStat.hoursBooked = res;
-                    }
-                });
-                this.setState({
-                    artistStats: newArtistStats
-                })
+                this._handleReceiveArtistStats(artist, idx, res);
             });
         })
     }
@@ -154,9 +158,9 @@ class ArtistStats extends Component {
                     <h3 style={style.header} >Artist Stats</h3>
                     <IconMenu
                         style={style.menuIcon}
-                        iconButtonElement={<FlatButton label={this.state.timeFrame + ' days'} />}
-                        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                        iconButtonElement={<IconButton><MenuIcon /></IconButton>}
+                        anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                        targetOrigin={{horizontal: 'left', vertical: 'top'}}
                     >
                         <MenuItem
                             primaryText='7 days'
