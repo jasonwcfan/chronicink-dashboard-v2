@@ -176,7 +176,7 @@ export default ConsultationForm = createContainer(({ clientID }) => {
         clientSubReady: clientSubscription.ready(),
         artists: Artist.find().fetch(),
         fields: defaultFields,
-        form: Consultation.findOne({}),
+        form: Consultation.findOne({clientID: clientID}),
         client: Client.findOne({_id: clientID})
     }
 }, ConsultationForm);
