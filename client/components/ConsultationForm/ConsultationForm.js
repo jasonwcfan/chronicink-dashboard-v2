@@ -41,22 +41,10 @@ class ConsultationForm extends Component {
             props.fields.forEach(function(field) {
                 state.fields[field.id] = {
                     value: field.value,
-                    valid: field.valid
+                    valid: field.valid,
+                    label: field.label
                 }
             });
-            if (props.form) {
-                state.sessions = props.form.sessions;
-                state.formID = props.form.formID;
-
-                props.form.fields.forEach(function(field) {
-                    if (state.fields.hasOwnProperty(field.id)) {
-                        state.fields[field.id] = {
-                            value: field.value,
-                            valid: field.valid
-                        }
-                    }
-                })
-            }
             return state;
         })();
 
@@ -75,7 +63,6 @@ class ConsultationForm extends Component {
     }
 
     _handleSave() {
-        console.log(this.state);
         const form = {
             formID: this.state.formID,
             clientID: this.props.client._id,
@@ -96,9 +83,8 @@ class ConsultationForm extends Component {
     _handleSubmit() {
         const form = {
             clientID: this.props.client._id,
-            fields: this.props.fields,
-            sessions: this.props.sessions,
-            artist: this.props.artist
+            fields: this.state.fields,
+            sessions: this.state.sessions,
         };
         Meteor.call('consultation.submitToCalendar', form);
     }
@@ -113,10 +99,8 @@ class ConsultationForm extends Component {
 
     _onFieldChange(id, value, valid) {
         const newFields = _.extend({}, this.state.fields);
-        newFields[id] = {
-            value,
-            valid
-        };
+        newFields[id].value = value;
+        newFields[id].valid = valid;
         this.setState({
             fields: newFields
         })
@@ -135,7 +119,6 @@ class ConsultationForm extends Component {
     }
 
     render() {
-        console.log(this.state.fields);
         return (
             <div>
                 <Tabs initialSelectedIndex={1} >

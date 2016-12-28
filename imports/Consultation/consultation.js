@@ -16,15 +16,8 @@ function createDescription(data) {
 }
 
 function createEventResources(form, client) {
-    const data = {};
     const sessions = form.sessions;
     const events = [];
-    form.fields.map((field) => {
-        data[field.id] = {
-            value: field.value,
-            label: field.label
-        };
-    });
 
     // TODO:
     sessions.map((session) => {
@@ -36,7 +29,7 @@ function createEventResources(form, client) {
         event.end = {
             dateTime: session.endTime
         };
-        event.description = createDescription(data);
+        event.description = createDescription(form.fields);
         event.location = `${client.primaryPhoneNumber.value}/${client.email.value}`;
 
         events.push(event);
@@ -71,7 +64,6 @@ Meteor.methods({
             const client = Client.findOne({_id: form.clientID});
             // Build events resource and pass it to GCalendar.insertEvent()
             const events = createEventResources(form, client);
-            console.log(form.artist);
             events.forEach(function(event) {
                 // GCalendar.insertEvent(event, form.artist.calendarID);
                 GCalendar.insertEvent(event, 'primary');
