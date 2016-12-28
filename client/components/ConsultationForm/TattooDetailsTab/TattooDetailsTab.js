@@ -34,17 +34,17 @@ const style = {
 class TattooDetailsTab extends Component {
     constructor(props) {
         super(props);
-        this._renderFields = this._renderFields.bind(this);
+        this._renderForm = this._renderForm.bind(this);
     }
     
-    _renderFields(fields) {
+    _renderForm(fields) {
         return fields.map((field) => {
             switch (field.inputType) {
                 case 'textField':
                     return (
                         <ValidatedTextField
                             style={style.textField}
-                            defaultValue={field.value}
+                            defaultValue={this.props.formValues[field.id].value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
@@ -56,7 +56,7 @@ class TattooDetailsTab extends Component {
                     return (
                         <ValidatedTextField
                             style={style.textField}
-                            defaultValue={field.value}
+                            defaultValue={this.props.formValues[field.id].value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
@@ -73,7 +73,7 @@ class TattooDetailsTab extends Component {
                             <RadioButtonGroup
                                 style={style.group}
                                 name={field.id}
-                                valueSelected={field.value}
+                                valueSelected={this.props.formValues[field.id].value}
                                 onChange={(event, value) => {
                                     this.props.onFieldChange(field.id, value, true)
                                 }}
@@ -96,7 +96,7 @@ class TattooDetailsTab extends Component {
                                 floatingLabelText={field.label}
                                 style={style.autoComplete}
                                 value={field.value}
-                                searchText={field.value || ''}
+                                searchText={this.props.formValues[field.id].value || ''}
                                 key={field.id}
                                 dataSource={this.props.artists.map((artist) => artist.name)}
                                 filter={(searchText, key) => {
@@ -117,7 +117,7 @@ class TattooDetailsTab extends Component {
                             floatingLabelText={field.label}
                             style={style.autoComplete}
                             value={field.value}
-                            searchText={field.value || ''}
+                            searchText={this.props.formValues[field.id].value || ''}
                             key={field.id}
                             dataSource={field.items.map((item) => item.label)}
                             filter={(searchText, key) => {
@@ -139,14 +139,14 @@ class TattooDetailsTab extends Component {
     render() {
         return (
             <div style={this.props.style}>
-                {this._renderFields(this.props.fields)}
+                {this._renderForm(this.props.formTemplate)}
             </div>
         )
     }
 }
 
 TattooDetailsTab.propTypes = {
-    fields: PropTypes.arrayOf(PropTypes.shape({
+    formTemplate: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         label: PropTypes.string,
         inputType: PropTypes.string.isRequired,
@@ -154,6 +154,7 @@ TattooDetailsTab.propTypes = {
         valid: PropTypes.bool.isRequired,
         required: PropTypes.bool.isRequired
     }).isRequired).isRequired,
+    formValues: PropTypes.object,
     artists: PropTypes.arrayOf(PropTypes.shape({
         name: PropTypes.string,
         calendarID: PropTypes.string

@@ -64,6 +64,16 @@ class ConsultationForm extends Component {
         this._onCreateSession = this._onCreateSession.bind(this);
     }
 
+    componentWillReceiveProps(props) {
+        if (props.form) {
+            this.setState({
+                fields: props.form.fields,
+                formID: props.form._id,
+                sessions: props.form.sessions
+            })
+        }
+    }
+
     _handleSave() {
         console.log(this.state);
         const form = {
@@ -72,7 +82,7 @@ class ConsultationForm extends Component {
             fields: this.state.fields,
             sessions: this.state.sessions
         };
-        Meteor.call('consultation.saveForm', this.state, (err, formID) => {
+        Meteor.call('consultation.saveForm', form, (err, formID) => {
             if (err) {
                 console.log(err);
             }
@@ -125,6 +135,7 @@ class ConsultationForm extends Component {
     }
 
     render() {
+        console.log(this.state.fields);
         return (
             <div>
                 <Tabs initialSelectedIndex={1} >
@@ -135,7 +146,9 @@ class ConsultationForm extends Component {
                         />
                     </Tab>
                     <Tab label='Details'>
-                        <TattooDetailsTab fields={this.props.fields} style={style.container}
+                        <TattooDetailsTab formTemplate={this.props.fields}
+                                          formValues={this.state.fields}
+                                          style={style.container}
                                           artists={this.props.artists}
                                           subReady={this.props.artistSubReady}
                                           defaultArtist={this.props.artist}
