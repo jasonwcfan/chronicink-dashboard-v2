@@ -121,7 +121,7 @@ export default defaultFields = [
     {
         id: 'artist',
         label: 'Artist',
-        inputType: 'autocomplete',
+        inputType: 'artistSelect',
         value: '',
         valid: false,
         required: true,

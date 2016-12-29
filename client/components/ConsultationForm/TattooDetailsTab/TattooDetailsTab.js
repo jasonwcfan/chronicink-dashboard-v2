@@ -3,6 +3,8 @@ import { createContainer } from 'meteor/react-meteor-data';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ValidatedTextField from '../../Inputs/ValidatedTextField';
 import AutoComplete from 'material-ui/AutoComplete';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import Artist from '../../../../imports/Artist/artist';
 
 const style = {
@@ -15,6 +17,9 @@ const style = {
         display: 'block',
         marginLeft: 5,
         marginRight: 5
+    },
+    dropdown: {
+        marginLeft: 5
     },
     radioGroup: {
         display: 'flex',
@@ -90,28 +95,6 @@ class TattooDetailsTab extends Component {
                         </div>
                     );
                 case 'autocomplete':
-                    if (field.id == 'artist' && this.props.subReady) {
-                        return (
-                            <AutoComplete
-                                floatingLabelText={field.label}
-                                style={style.autoComplete}
-                                value={field.value}
-                                searchText={this.props.formValues[field.id].value || ''}
-                                key={field.id}
-                                dataSource={this.props.artists.map((artist) => artist.name)}
-                                filter={(searchText, key) => {
-                                    // Fuzzier search than the default
-                                    const lowerCaseSearchText = searchText.toLowerCase();
-                                    const lowerCaseKey = key.toLowerCase();
-                                    return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
-                                }}
-                                maxSearchResults={10}
-                                onNewRequest={(value) => {
-                                    this.props.onFieldChange(field.id, value, true);
-                                }}
-                            />
-                        )
-                    }
                     return (
                         <AutoComplete
                             floatingLabelText={field.label}
@@ -132,6 +115,33 @@ class TattooDetailsTab extends Component {
                             }}
                         />
                     );
+                case 'artistSelect':
+                    function artistSort(a, b) {
+                        const nameA = a.name.toLowerCase();
+                        const nameB = b.name.toLowerCase();
+                        if (nameA < nameB) {
+                            return -1;
+                        }
+                        if (nameB < nameA) {
+                            return 1;
+                        }
+                        return 0
+                    }
+                    return (
+                        <SelectField
+                            floatingLabelText={field.label}
+                            style={style.dropdown}
+                            value={this.props.formValues[field.id].value || ''}
+                            key={field.id}
+                            onChange={(event, index, value) => {
+                                this.props.onFieldChange(field.id, value, true)
+                             }}
+                        >
+                            {this.props.artists.slice().sort(artistSort).map((artist) => (
+                                <MenuItem key={artist.calendarID} value={artist.calendarID} primaryText={artist.name} />
+                            ))}
+                        </SelectField>
+                    )
             }
         });
     }

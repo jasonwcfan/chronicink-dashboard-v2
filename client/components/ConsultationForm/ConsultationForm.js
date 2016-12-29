@@ -98,6 +98,7 @@ class ConsultationForm extends Component {
     }
 
     _onFieldChange(id, value, valid) {
+        console.log(id, value);
         const newFields = _.extend({}, this.state.fields);
         newFields[id].value = value;
         newFields[id].valid = valid;
