@@ -5,7 +5,7 @@ import ValidatedTextField from '../../Inputs/ValidatedTextField';
 import AutoComplete from 'material-ui/AutoComplete';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import Artist from '../../../../imports/Artist/artist';
+import { ArtistSelector } from '../../Inputs';
 
 const style = {
     textField: {
@@ -95,12 +95,13 @@ class TattooDetailsTab extends Component {
                         </div>
                     );
                 case 'autocomplete':
+                    const fieldValue = this.props.formValues[field.id].value;
                     return (
                         <AutoComplete
                             floatingLabelText={field.label}
                             style={style.autoComplete}
-                            value={field.value}
-                            searchText={this.props.formValues[field.id].value || ''}
+                            searchText={ fieldValue || ''}
+                            errorText={fieldValue.length == 0 ? `${field.label} is required` : null}
                             key={field.id}
                             dataSource={field.items.map((item) => item.label)}
                             filter={(searchText, key) => {
@@ -116,31 +117,15 @@ class TattooDetailsTab extends Component {
                         />
                     );
                 case 'artistSelect':
-                    function artistSort(a, b) {
-                        const nameA = a.name.toLowerCase();
-                        const nameB = b.name.toLowerCase();
-                        if (nameA < nameB) {
-                            return -1;
-                        }
-                        if (nameB < nameA) {
-                            return 1;
-                        }
-                        return 0
-                    }
                     return (
-                        <SelectField
-                            floatingLabelText={field.label}
+                        <ArtistSelector
                             style={style.dropdown}
-                            value={this.props.formValues[field.id].value || ''}
+                            onFieldChange={this.props.onFieldChange}
                             key={field.id}
-                            onChange={(event, index, value) => {
-                                this.props.onFieldChange(field.id, value, true)
-                             }}
-                        >
-                            {this.props.artists.slice().sort(artistSort).map((artist) => (
-                                <MenuItem key={artist.calendarID} value={artist.calendarID} primaryText={artist.name} />
-                            ))}
-                        </SelectField>
+                            artists={this.props.artists}
+                            fieldTemplate={field}
+                            fieldValue={this.props.formValues[field.id]}
+                        />
                     )
             }
         });

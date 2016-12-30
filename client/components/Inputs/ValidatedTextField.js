@@ -17,7 +17,7 @@ class ValidatedTextField extends Component {
     }
 
     _handleChange(event) {
-        if (event.target.value == '' && this.props.required) {
+        if (event.target.value.length == 0 && this.props.required) {
             this.setState({
                 errorText: this.props.floatingLabelText + ' is required',
                 value: event.target.value
