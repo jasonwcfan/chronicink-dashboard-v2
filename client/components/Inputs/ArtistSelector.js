@@ -20,7 +20,6 @@ class ArtistSelector extends Component {
     }
 
     render() {
-        console.log(this.props.fieldTemplate.id);
         return (
             <SelectField
                 floatingLabelText={this.props.fieldTemplate.label}

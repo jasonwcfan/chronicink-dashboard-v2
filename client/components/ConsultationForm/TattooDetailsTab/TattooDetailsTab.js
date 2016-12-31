@@ -3,9 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ValidatedTextField from '../../Inputs/ValidatedTextField';
 import AutoComplete from 'material-ui/AutoComplete';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import { ArtistSelector } from '../../Inputs';
+import { ArtistSelector, ValidatedAutoComplete } from '../../Inputs';
 
 const style = {
     textField: {
@@ -97,23 +95,13 @@ class TattooDetailsTab extends Component {
                 case 'autocomplete':
                     const fieldValue = this.props.formValues[field.id].value;
                     return (
-                        <AutoComplete
-                            floatingLabelText={field.label}
+                        <ValidatedAutoComplete
                             style={style.autoComplete}
-                            searchText={ fieldValue || ''}
-                            errorText={fieldValue.length == 0 ? `${field.label} is required` : null}
                             key={field.id}
+                            fieldTemplate={field}
+                            fieldValue={this.props.formValues[field.id]}
                             dataSource={field.items.map((item) => item.label)}
-                            filter={(searchText, key) => {
-                                // Fuzzier search than the default
-                                const lowerCaseSearchText = searchText.toLowerCase();
-                                const lowerCaseKey = key.toLowerCase();
-                                return lowerCaseKey.indexOf(lowerCaseSearchText) > -1;
-                            }}
-                            maxSearchResults={10}
-                            onNewRequest={(value) => {
-                                this.props.onFieldChange(field.id, value, value != '')
-                            }}
+                            onFieldChange={this.props.onFieldChange}
                         />
                     );
                 case 'artistSelect':
