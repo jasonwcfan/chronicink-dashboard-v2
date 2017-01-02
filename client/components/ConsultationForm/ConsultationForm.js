@@ -29,7 +29,10 @@ class ConsultationForm extends Component {
     constructor(props) {
         super(props);
         this.state = (() => {
-            const state = {fields: {}, sessions: []};
+            const state = {fields: {
+                isSaved: false,
+                isSubmitted: false
+            }, sessions: []};
             props.fields.forEach(function(field) {
                 state.fields[field.id] = {
                     value: field.value,
@@ -68,7 +71,8 @@ class ConsultationForm extends Component {
             }
             console.log('form saved: ' + formID);
             this.setState({
-                formID
+                formID,
+                isSaved: true
             })
         });
     }
@@ -99,12 +103,14 @@ class ConsultationForm extends Component {
         newFields[id].value = value;
         newFields[id].valid = valid;
         this.setState({
-            fields: newFields
+            fields: newFields,
+            isSaved: false
         })
     }
 
     _onCreateSession(session) {
         this.setState({
+            isSaved: false,
             sessions: this.state.sessions.concat({
                 sessionIndex: this.state.sessions.length,
                 sessionType: session.sessionType,
@@ -138,7 +144,7 @@ class ConsultationForm extends Component {
                     <Tab label='Booking'>
                         <BookingsTab style={style.container} sessions={this.state.sessions}
                                      onSubmitSession={this._onCreateSession}/>
-                        {this._getSaveButton(this.props.isSaved)}
+                        {this._getSaveButton(this.state.isSaved)}
                         <SubmitErrorDialog
                             handleSubmit={this._handleSubmit}
                             fieldValues={this.state.fields}
