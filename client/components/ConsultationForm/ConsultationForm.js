@@ -9,6 +9,7 @@ import TattooDetailsTab from './TattooDetailsTab';
 import BookingsTab from './BookingsTab';
 import ClientInfoTab from './ClientInfoTab';
 import RecommendationsTab from './RecommendationsTab';
+import SubmitErrorDialog from './SubmitErrorDialog';
 import defaultFields from '../../constants/defaultFields';
 
 const style = {
@@ -17,15 +18,6 @@ const style = {
     },
     navButton: {
         margin: 10
-    },
-    finishedStepContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    finishedStepNavButtons: {
-        display: 'inline'
     },
     linearProgressContainer: {
         paddingBottom: 10,
@@ -50,6 +42,7 @@ class ConsultationForm extends Component {
 
         this._onFieldChange = this._onFieldChange.bind(this);
         this._onCreateSession = this._onCreateSession.bind(this);
+        this._handleSubmit = this._handleSubmit.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -86,8 +79,14 @@ class ConsultationForm extends Component {
             fields: this.state.fields,
             sessions: this.state.sessions,
         };
-        console.log(this.state);
-        // Meteor.call('consultation.submitToCalendar', form);
+
+        Object.keys(form.fields).forEach(function(key) {
+            if (!form.fields[key].valid) {
+                console.log(form.fields[key].label);
+            }
+        });
+
+        Meteor.call('consultation.submitToCalendar', form);
     }
 
     _getSaveButton(isSaved) {
@@ -143,11 +142,10 @@ class ConsultationForm extends Component {
                         <BookingsTab style={style.container} sessions={this.state.sessions}
                                      onSubmitSession={this._onCreateSession}/>
                         {this._getSaveButton(this.props.isSaved)}
-                        <RaisedButton
-                            style={style.navButton}
-                            secondary={true}
-                            label='Submit'
-                            onTouchTap={this._handleSubmit.bind(this)}
+                        <SubmitErrorDialog
+                            handleSubmit={this._handleSubmit}
+                            fieldValues={this.state.fields}
+                            sessions={this.state.sessions}
                         />
                     </Tab>
                     <Tab label='Recommendation'>

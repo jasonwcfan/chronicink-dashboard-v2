@@ -36,6 +36,7 @@ class ValidatedAutoComplete extends Component {
                 maxSearchResults={10}
                 onNewRequest={(value) => {
                                 this.props.onFieldChange(this.props.fieldTemplate.id, value, !this.state.errorText)
+                                this._handleUpdateInput(value);
                             }}
                 onUpdateInput={this._handleUpdateInput}
                 onBlur={(event) => {
