@@ -45,6 +45,8 @@ Meteor.methods({
         return {client, form}
     },
     'consultation.saveForm': function(form) {
+        console.log('saving');
+        console.log(form);
         if (form.formID) {
             Consultation.update({_id: form.formID}, {
                 clientID: form.clientID,
@@ -69,6 +71,7 @@ Meteor.methods({
                 GCalendar.insertEvent(event, 'primary');
             });
         }
+        Meteor.call('consultation.saveForm', form);
     }
 });
 

@@ -75,18 +75,15 @@ class ConsultationForm extends Component {
 
     _handleSubmit() {
         const form = {
+            formID: this.state.formID,
             clientID: this.props.client._id,
             fields: this.state.fields,
             sessions: this.state.sessions,
         };
 
-        Object.keys(form.fields).forEach(function(key) {
-            if (!form.fields[key].valid) {
-                console.log(form.fields[key].label);
-            }
-        });
+        Meteor.call('consultation.submitToCalendar', form, (err, res) => {
 
-        Meteor.call('consultation.submitToCalendar', form);
+        });
     }
 
     _getSaveButton(isSaved) {
