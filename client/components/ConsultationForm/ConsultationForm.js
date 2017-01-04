@@ -33,7 +33,8 @@ class ConsultationForm extends Component {
                 fields: {},
                 sessions: [],
                 isSaved: false,
-                isSubmitted: false
+                isSubmitted: false,
+                errorMessages: []
             };
 
             props.fields.forEach(function(field) {
@@ -91,6 +92,10 @@ class ConsultationForm extends Component {
         Meteor.call('consultation.submitToCalendar', form, (err, res) => {
             if (err) {
                 console.log(err);
+
+                this.setState({
+                    errorMessages: [...this.state.errorMessages, 'There was a problem saving the appointments to the calendar']
+                })
             } else {
                 console.log(res);
                 this.setState({
@@ -112,9 +117,13 @@ class ConsultationForm extends Component {
         const newFields = _.extend({}, this.state.fields);
         newFields[id].value = value;
         newFields[id].valid = valid;
+
+        // Reset buttons and errors since something was changed
         this.setState({
             fields: newFields,
-            isSaved: false
+            isSaved: false,
+            isSubmitted: false,
+            errorMessages: []
         })
     }
 
@@ -160,6 +169,7 @@ class ConsultationForm extends Component {
                             fieldValues={this.state.fields}
                             sessions={this.state.sessions}
                             isSubmitted={this.state.isSubmitted}
+                            errorMessages={this.state.errorMessages}
                         />
                     </Tab>
                     <Tab label='Recommendation'>

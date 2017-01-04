@@ -21,9 +21,20 @@ class SubmitErrorDialog extends Component {
         this._handleClickSubmit = this._handleClickSubmit.bind(this);
     }
 
+    componentWillReceiveProps(props) {
+        if (props.errorMessages.length > 0) {
+            this.setState({
+                open: true,
+                errors: props.errorMessages
+            })
+        }
+    }
+
     _handleClose() {
+        console.log(this.state.errors);
         this.setState({
-            open: false
+            open: false,
+            errors: []
         })
     }
 
@@ -42,7 +53,6 @@ class SubmitErrorDialog extends Component {
         }
 
         if (errors.length > 0) {
-            console.log(errors);
             this.setState({
                 open: true,
                 errors
@@ -73,7 +83,7 @@ class SubmitErrorDialog extends Component {
                         />
                     }
                 >
-                    {this.state.errors.map((error) => <p style={{color: 'red'}}>{`- ${error}`}</p>)}
+                    {this.state.errors.map((error, idx) => <p key={idx} style={{color: 'red'}}>{`- ${error}`}</p>)}
                 </Dialog>
             </div>
         )
@@ -83,7 +93,8 @@ class SubmitErrorDialog extends Component {
 SubmitErrorDialog.propTypes = {
     fieldValues: PropTypes.object,
     sessions: PropTypes.array,
-    isSubmitted: PropTypes.bool
+    isSubmitted: PropTypes.bool,
+    errorMessages: PropTypes.array
 };
 
 export default SubmitErrorDialog;
