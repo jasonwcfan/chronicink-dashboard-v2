@@ -57,6 +57,7 @@ class SubmitErrorDialog extends Component {
             <div style={style.container}>
                 <RaisedButton
                     secondary={true}
+                    disabled={this.props.isSubmitted}
                     label='Submit'
                     onTouchTap={this._handleClickSubmit}
                 />
@@ -81,7 +82,8 @@ class SubmitErrorDialog extends Component {
 
 SubmitErrorDialog.propTypes = {
     fieldValues: PropTypes.object,
-    sessions: PropTypes.array
+    sessions: PropTypes.array,
+    isSubmitted: PropTypes.bool
 };
 
 export default SubmitErrorDialog;

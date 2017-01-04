@@ -29,10 +29,13 @@ class ConsultationForm extends Component {
     constructor(props) {
         super(props);
         this.state = (() => {
-            const state = {fields: {
+            const state = {
+                fields: {},
+                sessions: [],
                 isSaved: false,
                 isSubmitted: false
-            }, sessions: []};
+            };
+
             props.fields.forEach(function(field) {
                 state.fields[field.id] = {
                     value: field.value,
@@ -86,7 +89,14 @@ class ConsultationForm extends Component {
         };
 
         Meteor.call('consultation.submitToCalendar', form, (err, res) => {
-
+            if (err) {
+                console.log(err);
+            } else {
+                console.log(res);
+                this.setState({
+                    isSubmitted: true
+                })
+            }
         });
     }
 
@@ -149,6 +159,7 @@ class ConsultationForm extends Component {
                             handleSubmit={this._handleSubmit}
                             fieldValues={this.state.fields}
                             sessions={this.state.sessions}
+                            isSubmitted={this.state.isSubmitted}
                         />
                     </Tab>
                     <Tab label='Recommendation'>

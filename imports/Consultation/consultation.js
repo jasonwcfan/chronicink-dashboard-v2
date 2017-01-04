@@ -45,8 +45,6 @@ Meteor.methods({
         return {client, form}
     },
     'consultation.saveForm': function(form) {
-        console.log('saving');
-        console.log(form);
         if (form.formID) {
             Consultation.update({_id: form.formID}, {
                 clientID: form.clientID,
@@ -62,16 +60,21 @@ Meteor.methods({
         });
     },
     'consultation.submitToCalendar': function(form) {
+        Meteor.call('consultation.saveForm', form);
+
         if (Meteor.isServer) {
             const client = Client.findOne({_id: form.clientID});
             // Build events resource and pass it to GCalendar.insertEvent()
             const events = createEventResources(form, client);
+            const responses = [];
+
+            // Push events to calendar, keep track of errors/responses
             events.forEach(function(event) {
-                // GCalendar.insertEvent(event, form.artist.calendarID);
-                GCalendar.insertEvent(event, 'primary');
+                const insertEvent = Meteor.wrapAsync(GCalendar.insertEvent);
+                responses.push(insertEvent(event, 'primary'));
             });
+            return responses;
         }
-        Meteor.call('consultation.saveForm', form);
     }
 });
 

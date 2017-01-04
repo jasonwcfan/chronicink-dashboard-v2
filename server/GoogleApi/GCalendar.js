@@ -13,17 +13,13 @@ const oauth2Client = new authFactory.OAuth2(clientID, clientSecret, redirectURL)
 const calendar = google.calendar('v3');
 
 GCalendar = {
-    insertEvent: function (event, calendarID) {
+    insertEvent: function (event, calendarID, callback) {
 
         oauth2Client.setCredentials({
             access_token: Meteor.user().services.google.accessToken,
             refresh_token: Meteor.user().services.google.refreshToken,
             expiry_date: Meteor.user().services.google.expiresAt
         });
-
-        const testStart = new Date();
-        const testEnd = new Date();
-        testEnd.setHours(20);
 
         calendar.events.insert({
             auth: oauth2Client,
@@ -32,17 +28,13 @@ GCalendar = {
 
         }, function(err, res) {
             if (err) {
-                console.log(err);
+                console.log('throwing error!');
+                callback(err, null);
                 return;
             }
-            // console.log(res);
+            callback(null, res);
         });
 
-        // HTTP.call(
-        //     'POST',
-        //     `https://www.googleapis.com/calendar/v3/calendars/${encodeURI(artist.calendarID)}/events`,
-        //     {data: event}
-        // )
     },
     getBookedHours: function(calendarID, timeframe, callback) {
         const timeMin = new Moment();
