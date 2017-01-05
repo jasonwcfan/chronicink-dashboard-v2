@@ -20,14 +20,14 @@ class MedicalConditionsChecklist extends Component {
         super(props);
     }
 
-    _handleChange(event) {
-        this.props.onToggleMedicalCondition(event.target.name);
+    _handleChange(idx, event) {
+        this.props.onToggleMedicalCondition(idx, event.target.name);
     }
     
     _renderConditionsList(medicalConditions) {
-        return medicalConditions.map((condition) => {
+        return medicalConditions.map((condition, idx) => {
             return (
-                <Checkbox style={style.item} name={condition.id} key={condition.id} label={condition.id} checked={condition.value} onCheck={this._handleChange.bind(this)} />
+                <Checkbox style={style.item} name={condition.id} key={condition.id} label={condition.id} checked={condition.value} onCheck={this._handleChange.bind(this, idx)} />
             )
         })
     }

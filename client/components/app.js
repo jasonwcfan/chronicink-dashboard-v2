@@ -7,7 +7,7 @@ import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import SideNavBar from './SideNavBar';
 import Menu from './Menu';
-import IntakeFormContainer from '../containers/IntakeFormContainer';
+import IntakeForm from './IntakeForm';
 import ConsultationForm from './ConsultationForm';
 import DashboardContainer from '../containers/DashboardContainer';
 
@@ -37,7 +37,7 @@ class App extends Component {
         if (activeApp) {
             switch (activeApp.toLowerCase()) {
                 case 'intakeform':
-                    return <IntakeFormContainer />;
+                    return <IntakeForm clientID={this.props.location.query.clientID} />;
                 case 'consultationform':
                     return <ConsultationForm clientID={this.props.location.query.clientID} />;
                 case 'dashboard':

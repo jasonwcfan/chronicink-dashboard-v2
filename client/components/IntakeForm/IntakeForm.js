@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { createContainer } from 'react-meteor-data';
 import RaisedButton from 'material-ui/RaisedButton';
 import {
     Step,
@@ -6,9 +7,14 @@ import {
     StepLabel,
 } from 'material-ui/Stepper';
 import LinearProgress from 'material-ui/LinearProgress';
+import defaultFields from '../../constants/defaultIntakeFormFields';
+import medicalConditions from '../../constants/medicalConditions';
+import disclaimerAgreements from '../../constants/defaultDisclaimerAgreements';
 import ClientInfoStep from './ClientInfoStep';
 import AgreementStep from './AgreementStep';
 import FinishedStep from './FinishedStep';
+import Intake from '../../../imports/Intake/intake';
+import Client from '../../../imports/Client/client';
 
 const style = {
     container: {
@@ -35,51 +41,131 @@ const style = {
 class IntakeForm extends Component {
     constructor(props) {
         super(props);
+
+        this.state = (() => {
+            const state = {
+                fields: {},
+                medicalConditions: props.medicalConditions,
+                disclaimerAgreements: props.disclaimerAgreements,
+                isSaved: false,
+                isSaving: false,
+                formID: null,
+                errorMessages: [],
+                stepIndex: 0
+            };
+
+            props.formTemplate.forEach(function(field) {
+                state.fields[field.id] = {
+                    value: field.value,
+                    id: field.id,
+                    valid: field.valid,
+                    label: field.label
+                }
+            });
+            return state;
+        })();
+
+        this._handleFieldChange = this._handleFieldChange.bind(this);
+        this._handleToggleMedicalCondition = this._handleToggleMedicalCondition.bind(this);
+        this._handleToggleAgreement = this._handleToggleAgreement.bind(this);
+        this._handleSubmit = this._handleSubmit.bind(this);
+        this._incrementStep = this._incrementStep.bind(this);
+        this._decrementStep = this._decrementStep.bind(this);
     }
 
     _handleSubmit() {
         const form = {
-            fields: this.props.fields,
-            agreements: this.props.agreements,
-            medicalConditions: this.props.medicalConditions
+            fields: this.state.fields,
+            agreements: this.state.disclaimerAgreements,
+            medicalConditions: this.state.medicalConditions
         };
-        this.props.onSubmitIntakeForm(form);
+        Meteor.call('intake.insertForm', form);
     }
 
-    _getSubmitButton(isSaved) {
+    _handleFieldChange(id, value, valid) {
+        console.log(valid);
+        const newFields = _.extend({}, this.state.fields);
+        newFields[id].value = value;
+        newFields[id].valid = valid;
+
+        this.setState({
+            fields: newFields,
+            isSaved: false,
+            errorMessages: []
+        })
+    }
+
+    _handleToggleMedicalCondition(idx, condition) {
+        const newConditions = [...this.state.medicalConditions];
+        newConditions[idx].value = !newConditions[idx].value;
+
+        this.setState({
+            medicalConditions: newConditions
+        })
+    }
+
+    _handleToggleAgreement(idx) {
+        const newAgreements = [...this.state.disclaimerAgreements];
+        newAgreements[idx].value = !newAgreements[idx].value;
+
+        this.setState({
+            disclaimerAgreements: newAgreements
+        })
+    }
+
+    _renderSubmitButton(isSaved) {
         return (isSaved ?
                 <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true} /> :
-                <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this._handleSubmit.bind(this)} />
+                <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this._handleSubmit} />
         )
     }
 
-    _getStepContent(stepIndex) {
+    _incrementStep() {
+        this.setState({
+            stepIndex: this.state.stepIndex < 2 ? this.state.stepIndex + 1 : 2
+        })
+    }
+
+    _decrementStep() {
+        this.setState({
+            stepIndex: this.state.stepIndex > 0 ? this.state.stepIndex - 1 : 0
+        })
+    }
+
+    _renderStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
                 return (
                     <div>
-                        <ClientInfoStep onFieldChange={this.props.onFieldChange} fields={this.props.fields} onToggleMedicalCondition={this.props.onToggleMedicalCondition} medicalConditions={this.props.medicalConditions} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
+                        <ClientInfoStep
+                            onFieldChange={this._handleFieldChange}
+                            formTemplate={this.props.formTemplate}
+                            formValues={this.state.fields}
+                            onToggleMedicalCondition={this._handleToggleMedicalCondition}
+                            medicalConditions={this.state.medicalConditions} />
+                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._incrementStep} />
                     </div>
                 );
             case 1:
                 return (
                     <div>
-                        <AgreementStep onToggleAgreement={this.props.onToggleAgreement} agreements={this.props.agreements} />
-                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this.props.onClickNextStep} />
+                        <AgreementStep
+                            onToggleAgreement={this._handleToggleAgreement}
+                            agreements={this.state.disclaimerAgreements} />
+                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
+                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._incrementStep} />
                     </div>
                 );
             case 2:
                 return (
                     <div style={style.finishedStepContainer}>
-                        <FinishedStep onSubmitIntake={this.props.onSubmitIntake} onClickPreviousStep={this.props.onClickPreviousStep} />
+                        <FinishedStep />
                         <div style={style.finishedStepNavButtons}>
-                            <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.onClickPreviousStep} />
-                            {this._getSubmitButton(this.props.isSaved)}
+                            <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
+                            {this._renderSubmitButton(this.state.isSaved)}
                         </div>
 
-                        {this.props.savingForm ?
+                        {this.state.savingForm ?
                             <div style={style.linearProgressContainer}>
                                 <LinearProgress mode="indeterminate" />
                             </div> :
@@ -94,7 +180,7 @@ class IntakeForm extends Component {
     render() {
         return (
             <div>
-                <Stepper activeStep={this.props.stepIndex}>
+                <Stepper activeStep={this.state.stepIndex}>
                     <Step>
                         <StepLabel>Personal Information</StepLabel>
                     </Step>
@@ -103,7 +189,7 @@ class IntakeForm extends Component {
                     </Step>
                 </Stepper>
                 <div style={style.container}>
-                    {this._getStepContent(this.props.stepIndex)}
+                    {this._renderStepContent(this.state.stepIndex)}
                 </div>
             </div>
         );
@@ -111,7 +197,7 @@ class IntakeForm extends Component {
 }
 
 IntakeForm.propTypes = {
-    fields: PropTypes.arrayOf(PropTypes.shape({
+    formTemplate: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.string.isRequired,
         label: PropTypes.string,
         inputType: PropTypes.string.isRequired,
@@ -119,14 +205,29 @@ IntakeForm.propTypes = {
         valid: PropTypes.bool.isRequired,
         required: PropTypes.bool.isRequired
     }).isRequired).isRequired,
-    medicalConditions: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        value: PropTypes.bool.isRequired
-    }).isRequired).isRequired,
-    stepIndex: PropTypes.number.isRequired,
-    isSaved: PropTypes.bool.isRequired,
-    savingForm: PropTypes.bool.isRequired,
-    formID: PropTypes.string
+    form: PropTypes.object
+    // stepIndex: PropTypes.number.isRequired,
+    // isSaved: PropTypes.bool.isRequired,
+    // savingForm: PropTypes.bool.isRequired,
+    // formID: PropTypes.string
 };
 
-export default IntakeForm;
+export default IntakeForm = createContainer(({ clientID }) => {
+    const formSubscription = Meteor.subscribe('intake');
+    const clientSubscription = Meteor.subscribe('client');
+
+    return {
+        formSubReady: formSubscription.ready(),
+        clientSubReady: clientSubscription.ready(),
+        form: Intake.findOne({clientID: clientID}),
+        client: clientID ? Client.findOne({_id: clientID}) : null,
+        formTemplate: defaultFields,
+        medicalConditions: medicalConditions.map((condition) => {
+            return {
+                id: condition,
+                value: false
+            }
+        }),
+        disclaimerAgreements
+    }
+}, IntakeForm);

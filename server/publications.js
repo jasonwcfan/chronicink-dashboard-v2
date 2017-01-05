@@ -1,11 +1,11 @@
 import { Meteor } from 'meteor/meteor';
-import IntakeForm from '../imports/IntakeForm/intakeForm';
+import Intake from '../imports/Intake/intake';
 import Consultation from '../imports/Consultation/consultation';
 import Client from '../imports/Client/client';
 import Artist from '../imports/Artist/artist';
 
-Meteor.publish('intakeForm', function() {
-    return IntakeForm.find({});
+Meteor.publish('intake', function() {
+    return Intake.find({});
 });
 
 Meteor.publish('artist', function() {

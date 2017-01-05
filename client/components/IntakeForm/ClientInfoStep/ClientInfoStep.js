@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import TextField from 'material-ui/TextField';
-import DatePicker from 'material-ui/DatePicker';
 import MedicalConditionsChecklist from './MedicalConditionsChecklist';
 import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../../Inputs';
 
@@ -31,7 +29,7 @@ class ClientInfoStep extends Component {
                     return (
                         <ValidatedTextField 
                             style={style.textField}
-                            defaultValue={field.value}
+                            defaultValue={this.props.formValues[field.id].value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
@@ -43,7 +41,7 @@ class ClientInfoStep extends Component {
                     return (
                         <CountrySelector
                             style={style.selector}
-                            defaultValue={field.value}
+                            defaultValue={this.props.formValues[field.id].value}
                             name={field.id}
                             key={field.id}
                             onFieldChange={this.props.onFieldChange}
@@ -54,7 +52,7 @@ class ClientInfoStep extends Component {
                     return (
                         <RegionSelector
                             style={style.selector}
-                            value={field.value}
+                            value={this.props.formValues[field.id].value}
                             name={field.id}
                             key={field.id}
                             onFieldChange={this.props.onFieldChange}
@@ -65,7 +63,7 @@ class ClientInfoStep extends Component {
                     return (
                         <ValidatedDatePicker
                             style={style.datePicker}
-                            defaultDate={field.value}
+                            defaultDate={this.props.formValues[field.id].value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
@@ -80,7 +78,7 @@ class ClientInfoStep extends Component {
     render() {
         return (
             <div>
-                {this._renderFields(this.props.fields)}
+                {this._renderFields(this.props.formTemplate)}
                 <h2>Medical Conditions</h2><br />
                 <MedicalConditionsChecklist medicalConditions={this.props.medicalConditions} onToggleMedicalCondition={this.props.onToggleMedicalCondition}/>
             </div>

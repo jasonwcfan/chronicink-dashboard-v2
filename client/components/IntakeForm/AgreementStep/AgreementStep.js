@@ -10,7 +10,10 @@ const style = {
 class AgreementStep extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
+    }
+
+    _handleChange(idx) {
+        this.props.onToggleAgreement(idx);
     }
 
     render() {
@@ -41,27 +44,16 @@ class AgreementStep extends Component {
 
                             <h4>UNDER 18 POLICY</h4>
                             If you are under 18 years old (for tattooing) or 17 years old (for piercing), we ask that you bring your Parent or Legal Guardian along to fill out the form below at the time of booking. The Parent or Guardian must be present when you are receiving your tattoo/piercing and present government issued identification.
-                <Checkbox
-                    style={style.item}
-                    label="I have read and accept the disclaimer"
-                    name='acceptDisclaimer'
-                    checked={this.props.agreements[0].value}
-                    onCheck={(event) => {this.props.onToggleAgreement(event.target.name)}}
-                />
-                <Checkbox
-                    style={style.item}
-                    label="Yes, I would like to leave a deposit"
-                    name='acceptDeposit'
-                    checked={this.props.agreements[1].value}
-                    onCheck={(event) => {this.props.onToggleAgreement(event.target.name)}}
-                />
-                <Checkbox
-                    style={style.item}
-                    label="I would like to subscribe to the newsletter"
-                    name='acceptNewsletter'
-                    checked={this.props.agreements[2].value}
-                    onCheck={(event) => {this.props.onToggleAgreement(event.target.name)}}
-                />
+                {this.props.agreements.map((agreement, idx) => (
+                    <Checkbox
+                        style={style.item}
+                        key={agreement.id}
+                        label={agreement.label}
+                        name={agreement.id}
+                        checked={agreement.value}
+                        onCheck={this._handleChange.bind(this, idx)}
+                    />
+                ))}
             </div>
         );
     }

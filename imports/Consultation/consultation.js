@@ -53,6 +53,7 @@ Meteor.methods({
             });
             return form.formID;
         }
+        
         return Consultation.insert({
             clientID: form.clientID,
             fields: form.fields,

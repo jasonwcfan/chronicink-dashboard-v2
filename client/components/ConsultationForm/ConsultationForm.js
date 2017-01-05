@@ -10,7 +10,7 @@ import BookingsTab from './BookingsTab';
 import ClientInfoTab from './ClientInfoTab';
 import RecommendationsTab from './RecommendationsTab';
 import SubmitErrorDialog from './SubmitErrorDialog';
-import defaultFields from '../../constants/defaultFields';
+import defaultFields from '../../constants/defaultConsultationFormFields';
 
 const style = {
     container: {

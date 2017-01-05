@@ -3,14 +3,7 @@ import { Mongo } from 'meteor/mongo';
 
 Meteor.methods({
     'client.insert': function(form) {
-        const clientInfo = {};
-        form.fields.forEach(function(field) {
-            clientInfo[field.id] = {
-                label: field.label,
-                type: field.inputType,
-                value: field.value
-            };
-        });
+        const clientInfo = {...form.fields};
         clientInfo.conditions = form.medicalConditions.map((condition) => {
             if (condition.value) {
                 return condition.id;

@@ -21,14 +21,11 @@ class ClientInfoTab extends Component {
                 return (<ListItem key={key} primaryText={conditionsString} secondaryText='Medical Conditions' />)
             } else if (property.label) {
                 // Otherwise, this property is a regular field, generate a ListItem for it
-                switch (property.type) {
-                    case 'textBox':
-                    case 'textField':
-                    case 'region':
-                    case 'country':
-                        return (<ListItem key={key} primaryText={property.value} secondaryText={property.label} />);
-                    case 'date':
+                switch (property.id) {
+                    case 'dateOfBirth':
                         return (<ListItem key={key} primaryText={Moment(property.value).format('MMMM Do YYYY')} secondaryText={property.label} />);
+                    default:
+                        return (<ListItem key={key} primaryText={property.value} secondaryText={property.label} />);
                 }
             }
         })

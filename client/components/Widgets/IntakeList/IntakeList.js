@@ -8,7 +8,7 @@ import EditIcon from 'material-ui/svg-icons/content/create';
 import LinkWrapper from '../../UI/LinkWrapper';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
-import IntakeForm from '../../../../imports/IntakeForm/intakeForm';
+import Intake from '../../../../imports/Intake/intake';
 
 const style = {
     intakeListContainer: {
@@ -85,10 +85,10 @@ class IntakeList extends Component {
 }
 
 export default IntakeList = createContainer(({ params }) => {
-    const subscription = Meteor.subscribe('intakeForm');
+    const subscription = Meteor.subscribe('intake');
 
     return {
         subReady: subscription.ready(),
-        data: IntakeForm.find().fetch()
+        data: Intake.find().fetch()
     }
 }, IntakeList);
