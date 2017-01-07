@@ -68,6 +68,7 @@ class ClientInfoStep extends Component {
                             key={field.id}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
+                            required={field.required}
                         />
 
                     );

@@ -28,7 +28,7 @@ export default defaultIntakeFormFields = [
         label: 'Address Line 2',
         inputType: 'textField',
         value: '',
-        valid: false,
+        valid: true,
         required: false
     },
     {
@@ -44,7 +44,7 @@ export default defaultIntakeFormFields = [
         label: 'Country',
         inputType: 'country',
         value: 'Canada',
-        valid: false,
+        valid: true,
         required: true
     },
     {
@@ -60,7 +60,7 @@ export default defaultIntakeFormFields = [
         label: 'Postal Code',
         inputType: 'textField',
         value: '',
-        valid: false,
+        valid: true,
         required: false
     },
     {
@@ -84,7 +84,7 @@ export default defaultIntakeFormFields = [
         label: 'Additional Phone Number',
         inputType: 'textField',
         value: '',
-        valid: false,
+        valid: true,
         required: false
     },
     {

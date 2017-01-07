@@ -48,7 +48,7 @@ class AgreementStep extends Component {
                     <Checkbox
                         style={style.item}
                         key={agreement.id}
-                        label={agreement.label}
+                        label={agreement.label + (agreement.required ? ' *' : '')}
                         name={agreement.id}
                         checked={agreement.value}
                         onCheck={this._handleChange.bind(this, idx)}

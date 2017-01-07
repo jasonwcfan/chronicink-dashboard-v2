@@ -16,13 +16,13 @@ class RequiredTextField extends Component {
                 <DatePicker
                     style={this.props.style}
                     defaultDate={this.props.defaultDate}
-                    floatingLabelText={this.props.floatingLabelText}
+                    floatingLabelText={this.props.floatingLabelText + (this.props.required ? ' *' : '')}
                     onChange={this._handleChange.bind(this)}
                 />
                 :
                 <DatePicker
                     style={this.props.style}
-                    floatingLabelText={this.props.floatingLabelText}
+                    floatingLabelText={this.props.floatingLabelText + (this.props.required ? ' *' : '')}
                     onChange={this._handleChange.bind(this)}
                 />
 

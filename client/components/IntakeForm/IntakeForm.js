@@ -29,9 +29,6 @@ const style = {
         justifyContent: 'center',
         alignItems: 'center'
     },
-    finishedStepNavButtons: {
-        display: 'inline'
-    },
     linearProgressContainer: {
         paddingBottom: 10,
         width: '95%'
@@ -50,7 +47,6 @@ class IntakeForm extends Component {
                 isSaved: false,
                 isSaving: false,
                 formID: null,
-                errorMessages: [],
                 stepIndex: 0
             };
 
@@ -83,15 +79,13 @@ class IntakeForm extends Component {
     }
 
     _handleFieldChange(id, value, valid) {
-        console.log(valid);
         const newFields = _.extend({}, this.state.fields);
         newFields[id].value = value;
         newFields[id].valid = valid;
 
         this.setState({
             fields: newFields,
-            isSaved: false,
-            errorMessages: []
+            isSaved: false
         })
     }
 
@@ -111,13 +105,6 @@ class IntakeForm extends Component {
         this.setState({
             disclaimerAgreements: newAgreements
         })
-    }
-
-    _renderSubmitButton(isSaved) {
-        return (isSaved ?
-                <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true} /> :
-                <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this._handleSubmit} />
-        )
     }
 
     _incrementStep() {
@@ -159,11 +146,12 @@ class IntakeForm extends Component {
             case 2:
                 return (
                     <div style={style.finishedStepContainer}>
-                        <FinishedStep />
-                        <div style={style.finishedStepNavButtons}>
-                            <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
-                            {this._renderSubmitButton(this.state.isSaved)}
-                        </div>
+                        <FinishedStep
+                            fields={this.state.fields}
+                            disclaimerAgreements={this.state.disclaimerAgreements}
+                            decrementStep={this._decrementStep}
+                            isSaved={this.state.isSaved}
+                        />
 
                         {this.state.savingForm ?
                             <div style={style.linearProgressContainer}>
