@@ -3,6 +3,7 @@ import { Mongo } from 'meteor/mongo';
 
 Meteor.methods({
     'intake.insertForm': function(form) {
+        console.log('inserting');
         Meteor.call('client.insert', form, function(error, clientID) {
             if (error) {
                 console.log(error);

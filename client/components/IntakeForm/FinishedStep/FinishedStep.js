@@ -55,7 +55,7 @@ class FinishedStep extends Component {
                     <h2>Finished!</h2>
                     <p>Thank you for taking the time to fill out our form!</p>
                 </div>
-            );
+            )
         }
 
         return (
@@ -63,13 +63,13 @@ class FinishedStep extends Component {
                 <h2>Form Incomplete</h2>
                 <p>There are some problems with the form. Please fix them before submitting</p>
             </div>
-        );
+        )
     }
 
     _renderSubmitButton() {
         return (this.props.isSaved ?
                 <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true} /> :
-                <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this._handleSubmit} />
+                <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this.props.handleSubmit} />
         )
     }
 

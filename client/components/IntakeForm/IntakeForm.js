@@ -75,6 +75,7 @@ class IntakeForm extends Component {
             agreements: this.state.disclaimerAgreements,
             medicalConditions: this.state.medicalConditions
         };
+        console.log('submitting');
         Meteor.call('intake.insertForm', form);
     }
 
@@ -150,6 +151,7 @@ class IntakeForm extends Component {
                             fields={this.state.fields}
                             disclaimerAgreements={this.state.disclaimerAgreements}
                             decrementStep={this._decrementStep}
+                            handleSubmit={this._handleSubmit}
                             isSaved={this.state.isSaved}
                         />
 
