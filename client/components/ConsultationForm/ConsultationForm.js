@@ -132,7 +132,7 @@ class ConsultationForm extends Component {
             isSaved: false,
             sessions: this.state.sessions.concat({
                 sessionIndex: this.state.sessions.length,
-                sessionType: session.sessionType,
+                sessionType: session.type,
                 date: session.date,
                 startTime: session.startTime,
                 endTime: session.endTime

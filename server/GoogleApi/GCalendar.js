@@ -70,7 +70,7 @@ GCalendar = {
                 const eventLength = endTime.diff(startTime, 'hours');
                 bookedHours += eventLength;
             });
-            console.log('total hours: ' + bookedHours);
+            
             callback(null, bookedHours);
         })
     }

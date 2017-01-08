@@ -98,6 +98,7 @@ class TattooDetailsTab extends Component {
                         <ValidatedAutoComplete
                             style={style.autoComplete}
                             key={field.id}
+                            required={field.required}
                             fieldTemplate={field}
                             fieldValue={this.props.formValues[field.id]}
                             dataSource={field.items.map((item) => item.label)}

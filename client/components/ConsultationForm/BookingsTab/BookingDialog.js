@@ -3,25 +3,21 @@ import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 const style = {
     container: {
         display: 'inline-block',
         margin: 10
     },
-    datePicker: {
-        display: 'block',
-        marginLeft: 5,
-        marginRight: 5,
+    dialogHeader: {
+        textAlign: 'center'
     },
-    timePicker: {
-        display: 'inline-block',
-        marginLeft: 5,
-        marginRight: 5,
-    },
-    textFieldStyle: {
-        borderBottomWidth: 100,
-        borderColor: 'red'
+    dialogBody: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
     },
 };
 
@@ -30,7 +26,7 @@ class BookingDialog extends Component {
         super();
         this.state = {
             open: false,
-            sessionType: 'Session',
+            appointmentType: '',
             date: null,
             startTime: null,
             endTime: null
@@ -44,11 +40,15 @@ class BookingDialog extends Component {
     _handleClose() {
         this.setState({
             open: false,
-            sessionType: 'Session',
+            appointmentType: '',
             date: null,
             startTime: null,
             endTime: null
         });
+    }
+
+    _handleChangeSessionType() {
+
     }
 
     _handleSubmitSession() {
@@ -62,7 +62,7 @@ class BookingDialog extends Component {
         }
 
         this.props.onSubmitSession({
-            sessionType: this.state.sessionType,
+            type: this.state.appointmentType,
             date,
             startTime,
             endTime,
@@ -74,7 +74,7 @@ class BookingDialog extends Component {
     render() {
         const actions = [
             <RaisedButton
-                label="Ok"
+                label='Ok'
                 primary={true}
                 onTouchTap={this._handleSubmitSession.bind(this)}
             />
@@ -82,31 +82,41 @@ class BookingDialog extends Component {
 
         return (
             <div style={style.container}>
-                <RaisedButton style={style.dialogButton} label="Create New Booking" onTouchTap={this._handleOpen.bind(this)} />
+                <RaisedButton style={style.dialogButton} label='Create New Booking' onTouchTap={this._handleOpen.bind(this)} />
                 <Dialog
-                    title="New Booking"
+                    title='New Booking'
+                    titleStyle={style.dialogHeader}
                     actions={actions}
                     modal={false}
                     open={this.state.open}
                     onRequestClose={this._handleClose.bind(this)} >
+                    <div style={style.dialogBody}>
+                        <SelectField
+                            floatingLabelText='Type'
+                            style={style.field}
+                            value={this.state.appointmentType}
+                            onChange={(event, key, appointmentType) => {this.setState({appointmentType})}}
+                        >
+                            <MenuItem value='Session' primaryText='Session' />
+                            <MenuItem value='Presentation' primaryText='Presentation' />
+                            <MenuItem value='Consultation' primaryText='Consultation' />
+                        </SelectField>
                         <DatePicker
-                            style={style.datePicker}
-                            textFieldStyle={style.textFieldStyle}
-                            floatingLabelText="Date"
+                            style={style.field}
+                            floatingLabelText='Date'
                             onChange={(_, date) => {this.setState({date})}}
                         />
                         <TimePicker
-                            style={style.timePicker}
-                            textFieldStyle={style.textFieldStyle}
-                            floatingLabelText="Start Time"
+                            style={style.field}
+                            floatingLabelText='Start Time'
                             onChange={(_, startTime) => {this.setState({startTime})}}
                         />
                         <TimePicker
-                            style={style.timePicker}
-                            textFieldStyle={style.textFieldStyle}
-                            floatingLabelText="End Time"
+                            style={style.field}
+                            floatingLabelText='End Time'
                             onChange={(_, endTime) => {this.setState({endTime})}}
                         />
+                    </div>
                 </Dialog>
             </div>
         )
