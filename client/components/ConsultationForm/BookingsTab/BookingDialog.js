@@ -29,7 +29,8 @@ class BookingDialog extends Component {
             appointmentType: '',
             date: null,
             startTime: null,
-            endTime: null
+            endTime: null,
+            errorMessage: null
         }
     }
 
@@ -43,7 +44,8 @@ class BookingDialog extends Component {
             appointmentType: '',
             date: null,
             startTime: null,
-            endTime: null
+            endTime: null,
+            errorMessage: null
         });
     }
 
@@ -55,6 +57,20 @@ class BookingDialog extends Component {
         const date = this.state.date;
         const startTime = this.state.startTime;
         const endTime = this.state.endTime;
+
+        if (!date || !startTime || !endTime || this.state.appointmentType.length == 0) {
+            this.setState({
+                errorMessage: 'Some fields are incomplete'
+            });
+            return;
+        }
+
+        if (endTime < startTime) {
+            this.setState({
+                errorMessage: 'The end time of an appointment cannot be before the start time'
+            });
+            return;
+        }
 
         if (date && startTime && endTime) {
             startTime.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
@@ -116,6 +132,9 @@ class BookingDialog extends Component {
                             floatingLabelText='End Time'
                             onChange={(_, endTime) => {this.setState({endTime})}}
                         />
+                        <p style={{color: 'red'}}>
+                            {this.state.errorMessage}
+                        </p>
                     </div>
                 </Dialog>
             </div>
