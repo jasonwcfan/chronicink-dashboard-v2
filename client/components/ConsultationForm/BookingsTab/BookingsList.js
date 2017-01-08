@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
-import BookingsSheet from '../../UI/BookingsSheet';
+import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
+import IconButton from 'material-ui/IconButton';
 import BookingDialog from './BookingDialog';
 import moment from 'moment';
 
@@ -11,13 +12,19 @@ class BookingsList extends Component {
     }
 
     _renderSessions(sessions) {
-        return sessions.map((session) =>
-            <ListItem
-                primaryText={session.sessionType + ' ' + (session.sessionIndex + 1)}
-                secondaryText={moment(session.date).format('MMM Do YYYY: ') + moment(session.startTime).format('h:mm A') + ' to ' + moment(session.endTime).format('h:mm A')}
-                key={session.sessionIndex}
-            />
-        )
+        return sessions.map((session, idx) => {
+            const _handleDeleteBooking = (event) => {
+                this.props.deleteBooking(idx);
+            };
+            return (
+                <ListItem
+                    primaryText={session.sessionType + ' ' + (idx + 1)}
+                    secondaryText={moment(session.date).format('MMM Do YYYY: ') + moment(session.startTime).format('h:mm A') + ' to ' + moment(session.endTime).format('h:mm A')}
+                    key={idx}
+                    rightIconButton={<IconButton onClick={_handleDeleteBooking}><DeleteIcon /></IconButton>}
+                />
+            )
+        })
     }
 
     render() {

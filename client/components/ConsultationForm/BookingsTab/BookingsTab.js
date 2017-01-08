@@ -28,7 +28,7 @@ class BookingsTab extends Component {
         return (
             <div style={this.props.style}>
                 <h2>Bookings</h2>
-                <BookingsList sessions={this.props.sessions} onSubmitSession={this.props.onSubmitSession} />
+                <BookingsList sessions={this.props.sessions} deleteBooking={this.props.deleteBooking} onSubmitSession={this.props.onSubmitSession} />
             </div>
         )
     }

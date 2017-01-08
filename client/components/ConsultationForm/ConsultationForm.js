@@ -50,6 +50,7 @@ class ConsultationForm extends Component {
         this._onFieldChange = this._onFieldChange.bind(this);
         this._onCreateSession = this._onCreateSession.bind(this);
         this._handleSubmit = this._handleSubmit.bind(this);
+        this._onDeleteBooking = this._onDeleteBooking.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -140,6 +141,15 @@ class ConsultationForm extends Component {
         })
     }
 
+    _onDeleteBooking(index) {
+        const newSessions = this.state.sessions.slice(0);
+        newSessions.splice(index, 1);
+        this.setState({
+            isSaved: false,
+            sessions: newSessions
+        })
+    }
+
     render() {
         return (
             <div>
@@ -161,8 +171,11 @@ class ConsultationForm extends Component {
                         />
                     </Tab>
                     <Tab label='Booking'>
-                        <BookingsTab style={style.container} sessions={this.state.sessions}
-                                     onSubmitSession={this._onCreateSession}/>
+                        <BookingsTab style={style.container}
+                                     sessions={this.state.sessions}
+                                     onSubmitSession={this._onCreateSession}
+                                     deleteBooking={this._onDeleteBooking}
+                        />
                         {this._getSaveButton(this.state.isSaved)}
                         <SubmitErrorDialog
                             handleSubmit={this._handleSubmit}
