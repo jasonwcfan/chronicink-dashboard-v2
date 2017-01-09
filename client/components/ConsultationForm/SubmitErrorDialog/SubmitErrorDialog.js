@@ -48,7 +48,7 @@ class SubmitErrorDialog extends Component {
             }
         });
 
-        if (this.props.sessions.length == 0) {
+        if (this.props.bookings.length == 0) {
             errors.push('There should be at least 1 session to book')
         }
 
@@ -92,7 +92,7 @@ class SubmitErrorDialog extends Component {
 
 SubmitErrorDialog.propTypes = {
     fieldValues: PropTypes.object,
-    sessions: PropTypes.array,
+    bookings: PropTypes.array,
     isSubmitted: PropTypes.bool,
     errorMessages: PropTypes.array
 };

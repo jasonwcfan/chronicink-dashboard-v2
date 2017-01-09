@@ -16,18 +16,18 @@ function createDescription(data) {
 }
 
 function createEventResources(form, client) {
-    const sessions = form.sessions;
+    const bookings = form.bookings;
     const events = [];
 
     // TODO:
-    sessions.map((session) => {
+    bookings.map((booking) => {
         const event = { kind: 'calendar#event' };
-        event.summary = `${client.firstName.value} ${client.lastName.value} [${session.sessionType} ${session.sessionIndex + 1}]`;
+        event.summary = `${client.firstName.value} ${client.lastName.value} [${booking.bookingType} ${booking.bookingIndex + 1}]`;
         event.start = {
-            dateTime: session.startTime
+            dateTime: booking.startTime
         };
         event.end = {
-            dateTime: session.endTime
+            dateTime: booking.endTime
         };
         event.description = createDescription(form.fields);
         event.location = `${client.primaryPhoneNumber.value}/${client.email.value}`;
@@ -49,7 +49,7 @@ Meteor.methods({
             Consultation.update({_id: form.formID}, {
                 clientID: form.clientID,
                 fields: form.fields,
-                sessions: form.sessions
+                bookings: form.bookings
             });
             return form.formID;
         }
@@ -57,7 +57,7 @@ Meteor.methods({
         return Consultation.insert({
             clientID: form.clientID,
             fields: form.fields,
-            sessions: form.sessions
+            bookings: form.bookings
         });
     },
     'consultation.submitToCalendar': function(form) {

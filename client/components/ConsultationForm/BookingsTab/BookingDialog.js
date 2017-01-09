@@ -49,11 +49,11 @@ class BookingDialog extends Component {
         });
     }
 
-    _handleChangeSessionType() {
+    _handleChangeBookingType() {
 
     }
 
-    _handleSubmitSession() {
+    _handleSubmitBooking() {
         const date = this.state.date;
         const startTime = this.state.startTime;
         const endTime = this.state.endTime;
@@ -77,7 +77,7 @@ class BookingDialog extends Component {
             endTime.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
         }
 
-        this.props.onSubmitSession({
+        this.props.onSubmitBooking({
             type: this.state.appointmentType,
             date,
             startTime,
@@ -92,7 +92,7 @@ class BookingDialog extends Component {
             <RaisedButton
                 label='Ok'
                 primary={true}
-                onTouchTap={this._handleSubmitSession.bind(this)}
+                onTouchTap={this._handleSubmitBooking.bind(this)}
             />
         ];
 

@@ -31,7 +31,7 @@ class ConsultationForm extends Component {
         this.state = (() => {
             const state = {
                 fields: {},
-                sessions: [],
+                bookings: [],
                 isSaved: false,
                 isSubmitted: false,
                 errorMessages: []
@@ -48,7 +48,7 @@ class ConsultationForm extends Component {
         })();
 
         this._onFieldChange = this._onFieldChange.bind(this);
-        this._onCreateSession = this._onCreateSession.bind(this);
+        this._onCreateBooking = this._onCreateBooking.bind(this);
         this._handleSubmit = this._handleSubmit.bind(this);
         this._onDeleteBooking = this._onDeleteBooking.bind(this);
     }
@@ -58,7 +58,7 @@ class ConsultationForm extends Component {
             this.setState({
                 fields: props.form.fields,
                 formID: props.form._id,
-                sessions: props.form.sessions
+                bookings: props.form.bookings
             })
         }
     }
@@ -68,7 +68,7 @@ class ConsultationForm extends Component {
             formID: this.state.formID,
             clientID: this.props.client._id,
             fields: this.state.fields,
-            sessions: this.state.sessions
+            bookings: this.state.bookings
         };
         Meteor.call('consultation.saveForm', form, (err, formID) => {
             if (err) {
@@ -87,7 +87,7 @@ class ConsultationForm extends Component {
             formID: this.state.formID,
             clientID: this.props.client._id,
             fields: this.state.fields,
-            sessions: this.state.sessions,
+            bookings: this.state.bookings,
         };
 
         Meteor.call('consultation.submitToCalendar', form, (err, res) => {
@@ -128,25 +128,25 @@ class ConsultationForm extends Component {
         })
     }
 
-    _onCreateSession(session) {
+    _onCreateBooking(booking) {
         this.setState({
             isSaved: false,
-            sessions: this.state.sessions.concat({
-                sessionIndex: this.state.sessions.length,
-                sessionType: session.type,
-                date: session.date,
-                startTime: session.startTime,
-                endTime: session.endTime
+            bookings: this.state.bookings.concat({
+                bookingIndex: this.state.bookings.length,
+                bookingType: booking.type,
+                date: booking.date,
+                startTime: booking.startTime,
+                endTime: booking.endTime
             })
         })
     }
 
     _onDeleteBooking(index) {
-        const newSessions = this.state.sessions.slice(0);
-        newSessions.splice(index, 1);
+        const newBookings = this.state.bookings.slice(0);
+        newBookings.splice(index, 1);
         this.setState({
             isSaved: false,
-            sessions: newSessions
+            bookings: newBookings
         })
     }
 
@@ -172,15 +172,15 @@ class ConsultationForm extends Component {
                     </Tab>
                     <Tab label='Booking'>
                         <BookingsTab style={style.container}
-                                     sessions={this.state.sessions}
-                                     onSubmitSession={this._onCreateSession}
+                                     bookings={this.state.bookings}
+                                     onSubmitBooking={this._onCreateBooking}
                                      deleteBooking={this._onDeleteBooking}
                         />
                         {this._getSaveButton(this.state.isSaved)}
                         <SubmitErrorDialog
                             handleSubmit={this._handleSubmit}
                             fieldValues={this.state.fields}
-                            sessions={this.state.sessions}
+                            bookings={this.state.bookings}
                             isSubmitted={this.state.isSubmitted}
                             errorMessages={this.state.errorMessages}
                         />

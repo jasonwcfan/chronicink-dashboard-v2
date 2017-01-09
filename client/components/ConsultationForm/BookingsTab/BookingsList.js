@@ -11,15 +11,15 @@ class BookingsList extends Component {
         super();
     }
 
-    _renderSessions(sessions) {
-        return sessions.map((session, idx) => {
+    _renderBookings(bookings) {
+        return bookings.map((booking, idx) => {
             const _handleDeleteBooking = (event) => {
                 this.props.deleteBooking(idx);
             };
             return (
                 <ListItem
-                    primaryText={session.sessionType + ' ' + (idx + 1)}
-                    secondaryText={moment(session.date).format('MMM Do YYYY: ') + moment(session.startTime).format('h:mm A') + ' to ' + moment(session.endTime).format('h:mm A')}
+                    primaryText={booking.bookingType + ' ' + (idx + 1)}
+                    secondaryText={moment(booking.date).format('MMM Do YYYY: ') + moment(booking.startTime).format('h:mm A') + ' to ' + moment(booking.endTime).format('h:mm A')}
                     key={idx}
                     rightIconButton={<IconButton onClick={_handleDeleteBooking}><DeleteIcon /></IconButton>}
                 />
@@ -37,7 +37,7 @@ class BookingsList extends Component {
             },
             listContainer: {
                 backgroundColor: '#404040',
-                height: this.props.sessions.length * 72 || 144,
+                height: this.props.bookings.length * 72 || 144,
                 overflow: 'hidden',
             },
             dialogContainer: {
@@ -52,10 +52,10 @@ class BookingsList extends Component {
         return (
             <Paper style={style.root} zDepth={5}>
                 <List style={style.listContainer}>
-                    {this._renderSessions(this.props.sessions)}
+                    {this._renderBookings(this.props.bookings)}
                 </List>
                 <div style={style.dialogContainer}>
-                    <BookingDialog onSubmitSession={this.props.onSubmitSession} />
+                    <BookingDialog onSubmitBooking={this.props.onSubmitBooking} />
                 </div>
             </Paper>
         )
