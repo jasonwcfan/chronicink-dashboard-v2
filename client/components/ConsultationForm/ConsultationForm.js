@@ -128,15 +128,25 @@ class ConsultationForm extends Component {
         })
     }
 
-    _onCreateBooking(booking) {
+    _onCreateBooking(newBooking) {
+        let bookingNum = 1;
+
+        this.state.bookings.forEach(function(booking) {
+            console.log(booking);
+            console.log(newBooking.type);
+            if (booking.type == newBooking.type) {
+                bookingNum++;
+            }
+        });
+
         this.setState({
             isSaved: false,
             bookings: this.state.bookings.concat({
-                bookingIndex: this.state.bookings.length,
-                bookingType: booking.type,
-                date: booking.date,
-                startTime: booking.startTime,
-                endTime: booking.endTime
+                bookingNum,
+                type: newBooking.type,
+                date: newBooking.date,
+                startTime: newBooking.startTime,
+                endTime: newBooking.endTime
             })
         })
     }

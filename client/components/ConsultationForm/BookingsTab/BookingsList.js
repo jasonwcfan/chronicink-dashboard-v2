@@ -18,7 +18,7 @@ class BookingsList extends Component {
             };
             return (
                 <ListItem
-                    primaryText={booking.bookingType + ' ' + (idx + 1)}
+                    primaryText={booking.type + ' ' + (booking.bookingNum)}
                     secondaryText={moment(booking.date).format('MMM Do YYYY: ') + moment(booking.startTime).format('h:mm A') + ' to ' + moment(booking.endTime).format('h:mm A')}
                     key={idx}
                     rightIconButton={<IconButton onClick={_handleDeleteBooking}><DeleteIcon /></IconButton>}

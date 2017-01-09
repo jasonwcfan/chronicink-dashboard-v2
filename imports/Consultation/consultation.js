@@ -22,7 +22,7 @@ function createEventResources(form, client) {
     // TODO:
     bookings.map((booking) => {
         const event = { kind: 'calendar#event' };
-        event.summary = `${client.firstName.value} ${client.lastName.value} [${booking.bookingType} ${booking.bookingIndex + 1}]`;
+        event.summary = `${client.firstName.value} ${client.lastName.value} [${booking.type} ${booking.bookingNum}]`;
         event.start = {
             dateTime: booking.startTime
         };
