@@ -2,6 +2,7 @@ import { HTTP } from 'meteor/http';
 import google from 'googleapis';
 import googleAuth from 'google-auth-library';
 import Moment from 'moment';
+import btoa from 'btoa';
 
 const clientSecret = Meteor.settings.google.client_secret;
 const clientID = Meteor.settings.google.client_id;
@@ -11,6 +12,7 @@ const authFactory = new googleAuth();
 const oauth2Client = new authFactory.OAuth2(clientID, clientSecret, redirectURL);
 
 const calendar = google.calendar('v3');
+const gmail = google.gmail('v1');
 
 GCalendar = {
     insertEvent: function (event, calendarID, callback) {
@@ -75,3 +77,43 @@ GCalendar = {
         })
     }
 };
+
+GMail = {
+    sendEmail: function(recipient, subject, body) {
+        console.log(recipient);
+        console.log(subject);
+        const base64EncodedEmail = encodeEmail(recipient, subject, body);
+
+        oauth2Client.setCredentials({
+            access_token: Meteor.user().services.google.accessToken,
+            refresh_token: Meteor.user().services.google.refreshToken,
+            expiry_date: Meteor.user().services.google.expiresAt
+        });
+
+        gmail.users.messages.send({
+            auth: oauth2Client,
+            userId: 'me',
+            resource: {
+                raw: base64EncodedEmail
+            }
+        }, function(err, response) {
+            if (err) {
+                console.log('The API returned an error: ' + err);
+            } else {
+                console.log('Email successfully sent');
+            }
+        });
+    }
+};
+
+function encodeEmail(recipient, subject, body) {
+    var str = ["Content-Type: text/plain; charset=\"UTF-8\"\n",
+        "MIME-Version: 1.0\n",
+        "Content-Transfer-Encoding: 7bit\n",
+        "to: ", recipient, "\n",
+        "from: ", "me", "\n",
+        "subject: ", subject, "\n\n",
+        body
+    ].join('');
+    return btoa(str);
+}

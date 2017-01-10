@@ -125,6 +125,7 @@ class BookingDialog extends Component {
                         <TimePicker
                             style={style.field}
                             floatingLabelText='Start Time'
+                            defaultTime={new Date(null, null, null, 12, 0, 0, 0)}
                             onChange={(_, startTime) => {this.setState({startTime})}}
                         />
                         <TimePicker

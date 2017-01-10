@@ -5,6 +5,7 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "btoa": "^1.1.2",
     "fs": "0.0.1-security",
     "google-auth-library": "^0.9.10",
     "googleapis": "^14.2.0",

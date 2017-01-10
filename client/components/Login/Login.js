@@ -7,7 +7,7 @@ class Login extends Component {
 
     _handleLogin() {
         Meteor.loginWithGoogle({
-            requestPermissions: ['https://www.googleapis.com/auth/calendar'],
+            requestPermissions: ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/gmail.send'],
             requestOfflineToken: true
         }, (err) => {
             if (err) {
