@@ -19,7 +19,7 @@ export default defaultConsultationFormFields = [
     },
     {
         id: 'customTattoo',
-        label: 'Is this a custom Tattoo?',
+        label: 'Custom Tattoo?',
         inputType: 'radio',
         value: 'yes',
         valid: true,
@@ -34,7 +34,7 @@ export default defaultConsultationFormFields = [
     },
     {
         id: 'coverup',
-        label: 'Is this a coverup?',
+        label: 'Coverup?',
         inputType: 'radio',
         value: 'no',
         valid: true,
