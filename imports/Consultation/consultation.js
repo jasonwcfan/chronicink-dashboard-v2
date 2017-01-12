@@ -170,6 +170,7 @@ Meteor.methods({
             // });
 
             Meteor.call('consultation.sendEmail', client, form);
+            Meteor.call('intake.markConsultationCompleted', form.clientID);
             return responses;
         }
     },

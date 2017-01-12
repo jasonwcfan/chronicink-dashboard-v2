@@ -25,6 +25,15 @@ Meteor.methods({
                 });
             }
         });
+    },
+    'intake.markConsultationCompleted': function(clientID) {
+        Intake.update({clientID}, {$set: {consultPending: false}}, function(err, res) {
+            if (err) {
+                console.log(err);
+                return err;
+            }
+            return res;
+        });
     }
 });
 

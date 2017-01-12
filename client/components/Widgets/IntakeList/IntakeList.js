@@ -50,23 +50,28 @@ class IntakeList extends Component {
 
     _renderIntakeList() {
         if (this.props.subReady) {
-            return this.props.data.map((form) => (
-                <ListItem key={form._id}>
-                    <div style={style.listItemContainer}>
-                        <div style={style.listItemLabel}>{form.clientName}</div>
-                        <LinkWrapper to={{pathname: '/app/consultationform', query: {clientID: form.clientID}}}>
-                            <IconButton
-                                style={style.listItemIconButton}
-                                tooltip='Start Consultation'
-                                tooltipPosition='top-right'
-                                onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
-                            >
-                                <EditIcon />
-                            </IconButton>
-                        </LinkWrapper>
-                    </div>
-                </ListItem>
-            ));
+            return this.props.data.map((form) => {
+                if (form.consultPending) {
+                    return (
+                        <ListItem key={form._id}>
+                        <div style={style.listItemContainer}>
+                            <div style={style.listItemLabel}>{form.clientName}</div>
+                            <LinkWrapper to={{pathname: '/app/consultationform', query: {clientID: form.clientID}}}>
+                                <IconButton
+                                    style={style.listItemIconButton}
+                                    tooltip='Start Consultation'
+                                    tooltipPosition='top-right'
+                                    onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                            </LinkWrapper>
+                        </div>
+                    </ListItem>
+                    );
+                }
+                return null;
+            });
         }
         return null;
     }

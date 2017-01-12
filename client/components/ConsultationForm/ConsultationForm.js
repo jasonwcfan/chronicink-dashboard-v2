@@ -4,6 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Artist from '../../../imports/Artist/artist';
 import Consultation from '../../../imports/Consultation/consultation';
+import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
 import TattooDetailsTab from './TattooDetailsTab';
 import BookingsTab from './BookingsTab';
@@ -215,11 +216,13 @@ export default ConsultationForm = createContainer(({ clientID }) => {
     const artistSubscription = Meteor.subscribe('artist');
     const formSubscription = Meteor.subscribe('consultation');
     const clientSubscription = Meteor.subscribe('client');
+    const intakeSubscription = Meteor.subscribe('intake');
 
     return {
         artistSubReady: artistSubscription.ready(),
         formSubReady: formSubscription.ready(),
         clientSubReady: clientSubscription.ready(),
+        intakeSubReady: intakeSubscription.ready(),
         artists: Artist.find().fetch(),
         fields: defaultFields,
         form: Consultation.findOne({clientID: clientID}),
