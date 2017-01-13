@@ -37,9 +37,6 @@ const style = {
         alignItems: 'space-between',
         justifyContent: 'space-between'
     },
-    listItemLabel: {
-        display: 'inline'
-    },
     listItemRightLabel: {
         position: 'absolute',
         right: 10
@@ -114,9 +111,8 @@ class ArtistStats extends Component {
     _renderArtistStats() {
         if (this.props.subReady) {
             return this.state.artistStats.map((artistStat) => (
-                <ListItem key={artistStat.calendarID}>
+                <ListItem key={artistStat.calendarID} primaryText={artistStat.name}>
                     <div style={style.listItemContainer} >
-                        <div style={style.listItemLabel}>{artistStat.name}</div>
                         <div style={style.listItemRightLabel}>{artistStat.loading ?
                             <CircularProgress
                                 size={16}

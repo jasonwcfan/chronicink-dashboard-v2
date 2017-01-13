@@ -26,14 +26,24 @@ Meteor.methods({
             }
         });
     },
-    'intake.markConsultationCompleted': function(clientID) {
-        Intake.update({clientID}, {$set: {consultPending: false}}, function(err, res) {
-            if (err) {
-                console.log(err);
-                return err;
-            }
-            return res;
-        });
+    'intake.markConsultationCompleted': function(clientID, intakeID) {
+        if(intakeID) {
+            Intake.update({_id: intakeID}, {$set: {consultPending: false}}, function(err, res) {
+                if (err) {
+                    console.log(err);
+                    return err;
+                }
+                return res;
+            });
+        } else {
+            Intake.update({clientID}, {$set: {consultPending: false}}, function(err, res) {
+                if (err) {
+                    console.log(err);
+                    return err;
+                }
+                return res;
+            });
+        }
     }
 });
 

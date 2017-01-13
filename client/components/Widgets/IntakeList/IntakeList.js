@@ -4,7 +4,12 @@ import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
 import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
 import EditIcon from 'material-ui/svg-icons/content/create';
+import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
+import CheckIcon from 'material-ui/svg-icons/action/done';
 import LinkWrapper from '../../UI/LinkWrapper';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
@@ -18,15 +23,15 @@ const style = {
         borderStyle: 'solid',
         borderColor: Colors.grey600,
     },
-    header: {
-        margin: 10
-    },
-    listItemContainer: {
+    headerContainer: {
         display: 'flex',
-        flexDirection: 'row',
-        width: '100%'
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
-    listItemLabel: {
+    header: {
+        marginLeft: 10
+    },
+    menuIcon: {
         display: 'inline'
     },
     listItemIconButton: {
@@ -42,10 +47,18 @@ const style = {
 class IntakeList extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            inDeleteMode: false
+        }
     }
 
     _handleListIconPressed(clientID) {
         this.props.primaryWidgetAction('intakeList', startConsultation, [clientID]);
+    }
+
+    _handleDeleteFromIntakeList(intakeID) {
+        Meteor.call('intake.markConsultationCompleted', null, intakeID);
     }
 
     _renderIntakeList() {
@@ -53,21 +66,31 @@ class IntakeList extends Component {
             return this.props.data.map((form) => {
                 if (form.consultPending) {
                     return (
-                        <ListItem key={form._id}>
-                        <div style={style.listItemContainer}>
-                            <div style={style.listItemLabel}>{form.clientName}</div>
-                            <LinkWrapper to={{pathname: '/app/consultationform', query: {clientID: form.clientID}}}>
+                        <ListItem
+                            key={form._id}
+                            primaryText={form.clientName}
+                        >
+                            {this.state.inDeleteMode ?
                                 <IconButton
                                     style={style.listItemIconButton}
-                                    tooltip='Start Consultation'
                                     tooltipPosition='top-right'
-                                    onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
+                                    onTouchTap={this._handleDeleteFromIntakeList.bind(this, form._id)}
                                 >
-                                    <EditIcon />
+                                    <DeleteIcon />
                                 </IconButton>
-                            </LinkWrapper>
-                        </div>
-                    </ListItem>
+                                :
+                                <LinkWrapper to={{pathname: '/app/consultationform', query: {clientID: form.clientID}}}>
+                                    <IconButton
+                                        style={style.listItemIconButton}
+                                        tooltip='Start Consultation'
+                                        tooltipPosition='top-right'
+                                        onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
+                                    >
+                                        <EditIcon />
+                                    </IconButton>
+                                </LinkWrapper>
+                            }
+                        </ListItem>
                     );
                 }
                 return null;
@@ -79,7 +102,28 @@ class IntakeList extends Component {
     render() {
         return (
             <Paper style={style.intakeListContainer} zDepth={3}>
-                <h3 style={style.header} >Intake List</h3>
+                <div style={style.headerContainer}>
+                    <h3 style={style.header} >Intake List</h3>
+                    {this.state.inDeleteMode ?
+                        <IconButton
+                            onTouchTap={() => {this.setState({inDeleteMode: false})}}
+                        >
+                            <CheckIcon />
+                        </IconButton>
+                        :
+                        <IconMenu
+                            style={style.menuIcon}
+                            iconButtonElement={<IconButton><MenuIcon /></IconButton>}
+                            anchorOrigin={{horizontal: 'left', vertical: 'top'}}
+                            targetOrigin={{horizontal: 'left', vertical: 'top'}}
+                        >
+                            <MenuItem
+                                primaryText='Delete Items'
+                                onTouchTap={() => {this.setState({inDeleteMode: true})}}
+                            />
+                        </IconMenu>
+                    }
+                </div>
                 <Divider />
                 <List>
                     {this._renderIntakeList()}
