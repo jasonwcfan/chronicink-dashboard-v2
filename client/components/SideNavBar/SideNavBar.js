@@ -19,9 +19,8 @@ class SideNavBar extends Component {
             <Paper style={this.props.style} >
                 <Menu>
                     <Divider />
-                    <LinkWrapper to='/app/dashboard'><MenuItem name='dashboard'>Dashboard</MenuItem></LinkWrapper>
-                    <LinkWrapper to='/app/intakeform'><MenuItem name='intakeForm' >Intake Form</MenuItem></LinkWrapper>
-                    <LinkWrapper to='/app/consultationform'><MenuItem name='consultationForm' >Consultation Form</MenuItem></LinkWrapper>
+                    <LinkWrapper to='/dashboard'><MenuItem name='dashboard'>Dashboard</MenuItem></LinkWrapper>
+                    <LinkWrapper to='/intakeform'><MenuItem name='intakeForm' >Intake Form</MenuItem></LinkWrapper>
                     <Divider />
                 </Menu>
             </Paper>

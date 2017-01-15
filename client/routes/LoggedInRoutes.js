@@ -4,8 +4,7 @@ import App from '../components/app';
 
 export default LoggedInRoutes = (
     <Route path='/'>
-        <IndexRedirect to='app/dashboard' />
-        <Route path='app/:appname' component={App}/>
-        <Redirect from='/*' to='app/dashboard'/>
+        <IndexRedirect to='/dashboard' />
+        <Route path='/:appname' component={App}/>
     </Route>
 )

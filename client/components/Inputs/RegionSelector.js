@@ -21,7 +21,6 @@ const style = {
 class RegionSelector extends Component {
     constructor(props) {
         super(props);
-        console.log(props.value);
     }
 
     _getRegionsList(country) {

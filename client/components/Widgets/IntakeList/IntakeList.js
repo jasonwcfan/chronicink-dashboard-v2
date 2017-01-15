@@ -87,7 +87,7 @@ class IntakeList extends Component {
                                     <DeleteIcon />
                                 </IconButton>
                                 :
-                                <LinkWrapper to={{pathname: '/app/consultationform', query: {clientID: form.clientID}}}>
+                                <LinkWrapper to={{pathname: '/consultationform', query: {clientID: form.clientID}}}>
                                     <IconButton
                                         style={style.listItemIconButton}
                                         tooltip='Start Consultation'
