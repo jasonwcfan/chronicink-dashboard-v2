@@ -13,7 +13,7 @@ Meteor.methods({
                     agreements: form.agreements,
                     fields: form.fields,
                     medicalConditions: form.medicalConditions,
-                    consultPending: true,
+                    bookingPending: true,
                     clientName: form.fields.firstName.value + ' ' + form.fields.lastName.value,
                     clientID
                 }, function (error, formID) {
@@ -26,9 +26,9 @@ Meteor.methods({
             }
         });
     },
-    'intake.markConsultationCompleted': function(clientID, intakeID) {
+    'intake.markBookingCompleted': function(clientID, intakeID) {
         if(intakeID) {
-            Intake.update({_id: intakeID}, {$set: {consultPending: false}}, function(err, res) {
+            Intake.update({_id: intakeID}, {$set: {bookingPending: false}}, function(err, res) {
                 if (err) {
                     console.log(err);
                     return err;
@@ -36,7 +36,7 @@ Meteor.methods({
                 return res;
             });
         } else {
-            Intake.update({clientID}, {$set: {consultPending: false}}, function(err, res) {
+            Intake.update({clientID}, {$set: {bookingPending: false}}, function(err, res) {
                 if (err) {
                     console.log(err);
                     return err;
@@ -60,9 +60,9 @@ IntakeSchema = new SimpleSchema({
         type: [Object],
         label: "Agreements"
     },
-    consultPending: {
+    bookingPending: {
         type: Boolean,
-        label: "Whether this intake is waiting for a consult"
+        label: "Whether the booking for this intake has been completed"
     },
     clientID: {
         type: String,

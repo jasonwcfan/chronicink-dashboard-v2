@@ -133,14 +133,14 @@ function createArtistEmail(artist, client, form) {
 }
 
 Meteor.methods({
-    'consultation.findByClientID': function(clientID) {
+    'booking.findByClientID': function(clientID) {
         const client = Client.findOne({_id: clientID});
-        const form = Consultation.findOne({clientID: clientID});
+        const form = Booking.findOne({clientID: clientID});
         return {client, form}
     },
-    'consultation.saveForm': function(form) {
+    'booking.saveForm': function(form) {
         if (form.formID) {
-            Consultation.update({_id: form.formID}, {
+            Booking.update({_id: form.formID}, {
                 clientID: form.clientID,
                 fields: form.fields,
                 bookings: form.bookings
@@ -148,14 +148,14 @@ Meteor.methods({
             return form.formID;
         }
         
-        return Consultation.insert({
+        return Booking.insert({
             clientID: form.clientID,
             fields: form.fields,
             bookings: form.bookings
         });
     },
-    'consultation.submitToCalendar': function(form) {
-        Meteor.call('consultation.saveForm', form);
+    'booking.submitToCalendar': function(form) {
+        Meteor.call('booking.saveForm', form);
 
         if (Meteor.isServer) {
             const client = Client.findOne({_id: form.clientID});
@@ -169,12 +169,12 @@ Meteor.methods({
             //     responses.push(insertEvent(event, 'primary'));
             // });
 
-            Meteor.call('consultation.sendEmail', client, form);
-            Meteor.call('intake.markConsultationCompleted', form.clientID);
+            Meteor.call('booking.sendEmail', client, form);
+            Meteor.call('intake.markBookingCompleted', form.clientID);
             return responses;
         }
     },
-    'consultation.sendEmail': function(client, form) {
+    'booking.sendEmail': function(client, form) {
         const artist = Artist.findOne({calendarID: form.fields.artist.value});
 
         const clientEmailBody = createClientEmail(artist, client, form);
@@ -188,4 +188,4 @@ Meteor.methods({
     }
 });
 
-export default Consultation = new Mongo.Collection('consultation');
+export default Booking = new Mongo.Collection('booking');

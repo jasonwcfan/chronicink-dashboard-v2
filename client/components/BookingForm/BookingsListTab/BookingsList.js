@@ -3,7 +3,7 @@ import { List, ListItem } from 'material-ui/List';
 import Paper from 'material-ui/Paper';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import IconButton from 'material-ui/IconButton';
-import BookingDialog from './BookingDialog';
+import NewBookingDialog from './NewBookingDialog';
 import moment from 'moment';
 
 class BookingsList extends Component {
@@ -55,7 +55,7 @@ class BookingsList extends Component {
                     {this._renderBookings(this.props.bookings)}
                 </List>
                 <div style={style.dialogContainer}>
-                    <BookingDialog onSubmitBooking={this.props.onSubmitBooking} />
+                    <NewBookingDialog onSubmitBooking={this.props.onSubmitBooking} />
                 </div>
             </Paper>
         )

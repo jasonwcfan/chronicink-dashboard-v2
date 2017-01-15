@@ -1,4 +1,4 @@
 import intakeListChanged from './intakeListChanged';
-import startConsultation from './startConsultation';
+import startBooking from './startBooking';
 
-export { intakeListChanged, startConsultation };
+export { intakeListChanged, startBooking };

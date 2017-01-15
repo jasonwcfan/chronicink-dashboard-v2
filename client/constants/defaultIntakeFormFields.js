@@ -49,7 +49,7 @@ export default defaultIntakeFormFields = [
     },
     {
         id: 'region',
-        label: 'Province',
+        label: 'Province/State/Region',
         inputType: 'region',
         value: '',
         valid: false,

@@ -3,15 +3,15 @@ import { createContainer } from 'meteor/react-meteor-data';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Artist from '../../../imports/Artist/artist';
-import Consultation from '../../../imports/Consultation/consultation';
+import Booking from '../../../imports/Booking/booking';
 import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
 import TattooDetailsTab from './TattooDetailsTab';
-import BookingsTab from './BookingsTab';
+import BookingsListTab from './BookingsListTab';
 import ClientInfoTab from './ClientInfoTab';
 import RecommendationsTab from './RecommendationsTab';
 import SubmitErrorDialog from './SubmitErrorDialog';
-import defaultFields from '../../constants/defaultConsultationFormFields';
+import defaultFields from '../../constants/defaultBookingFormFields';
 
 const style = {
     container: {
@@ -26,7 +26,7 @@ const style = {
     }
 };
 
-class ConsultationForm extends Component {
+class BookingForm extends Component {
     constructor(props) {
         super(props);
         this.state = (() => {
@@ -71,7 +71,7 @@ class ConsultationForm extends Component {
             fields: this.state.fields,
             bookings: this.state.bookings
         };
-        Meteor.call('consultation.saveForm', form, (err, formID) => {
+        Meteor.call('booking.saveForm', form, (err, formID) => {
             if (err) {
                 console.log(err);
             }
@@ -91,7 +91,7 @@ class ConsultationForm extends Component {
             bookings: this.state.bookings,
         };
 
-        Meteor.call('consultation.submitToCalendar', form, (err, res) => {
+        Meteor.call('booking.submitToCalendar', form, (err, res) => {
             if (err) {
                 console.log(err);
 
@@ -181,8 +181,8 @@ class ConsultationForm extends Component {
                                           onFieldChange={this._onFieldChange}
                         />
                     </Tab>
-                    <Tab label='Booking'>
-                        <BookingsTab style={style.container}
+                    <Tab label='Sessions'>
+                        <BookingsListTab style={style.container}
                                      bookings={this.state.bookings}
                                      onSubmitBooking={this._onCreateBooking}
                                      deleteBooking={this._onDeleteBooking}
@@ -206,15 +206,15 @@ class ConsultationForm extends Component {
 }
 
 
-ConsultationForm.propTypes = {
+BookingForm.propTypes = {
     form: PropTypes.object,
     client: PropTypes.object,
     artists: PropTypes.array
 };
 
-export default ConsultationForm = createContainer(({ clientID }) => {
+export default BookingForm = createContainer(({ clientID }) => {
     const artistSubscription = Meteor.subscribe('artist');
-    const formSubscription = Meteor.subscribe('consultation');
+    const formSubscription = Meteor.subscribe('booking');
     const clientSubscription = Meteor.subscribe('client');
     const intakeSubscription = Meteor.subscribe('intake');
 
@@ -225,7 +225,7 @@ export default ConsultationForm = createContainer(({ clientID }) => {
         intakeSubReady: intakeSubscription.ready(),
         artists: Artist.find().fetch(),
         fields: defaultFields,
-        form: Consultation.findOne({clientID: clientID}),
+        form: Booking.findOne({clientID: clientID}),
         client: Client.findOne({_id: clientID})
     }
-}, ConsultationForm);
+}, BookingForm);

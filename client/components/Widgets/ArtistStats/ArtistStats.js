@@ -8,7 +8,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
+import { startBooking } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
 import Artist from '../../../../imports/Artist/artist';
 

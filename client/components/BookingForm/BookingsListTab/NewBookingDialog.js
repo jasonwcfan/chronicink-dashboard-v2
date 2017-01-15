@@ -21,7 +21,7 @@ const style = {
     },
 };
 
-class BookingDialog extends Component {
+class NewBookingDialog extends Component {
     constructor() {
         super();
         this.state = {
@@ -143,4 +143,4 @@ class BookingDialog extends Component {
     }
 }
 
-export default BookingDialog;
+export default NewBookingDialog;

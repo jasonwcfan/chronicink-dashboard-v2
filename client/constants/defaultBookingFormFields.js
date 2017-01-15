@@ -1,7 +1,7 @@
 import styles from './styles';
 import placements from './placements';
 
-export default defaultConsultationFormFields = [
+export default defaultBookingFormFields = [
     {
         id: 'studioLocation',
         label: 'Studio location',

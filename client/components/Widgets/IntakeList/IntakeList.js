@@ -11,7 +11,7 @@ import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import CheckIcon from 'material-ui/svg-icons/action/done';
 import LinkWrapper from '../../UI/LinkWrapper';
-import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
+import { startBooking } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
 import Intake from '../../../../imports/Intake/intake';
 
@@ -62,17 +62,17 @@ class IntakeList extends Component {
     }
 
     _handleListIconPressed(clientID) {
-        this.props.primaryWidgetAction('intakeList', startConsultation, [clientID]);
+        this.props.primaryWidgetAction('intakeList', startBooking, [clientID]);
     }
 
     _handleDeleteFromIntakeList(intakeID) {
-        Meteor.call('intake.markConsultationCompleted', null, intakeID);
+        Meteor.call('intake.markBookingCompleted', null, intakeID);
     }
 
     _renderIntakeList() {
         if (this.props.subReady) {
             return this.props.data.map((form) => {
-                if (form.consultPending) {
+                if (form.bookingPending) {
                     return (
                         <ListItem
                             key={form._id}
@@ -87,10 +87,10 @@ class IntakeList extends Component {
                                     <DeleteIcon />
                                 </IconButton>
                                 :
-                                <LinkWrapper to={{pathname: '/consultationform', query: {clientID: form.clientID}}}>
+                                <LinkWrapper to={{pathname: '/booking', query: {clientID: form.clientID}}}>
                                     <IconButton
                                         style={style.listItemIconButton}
-                                        tooltip='Start Consultation'
+                                        tooltip='Create Booking'
                                         tooltipPosition='top-right'
                                         onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
                                     >

@@ -19,7 +19,7 @@ const style = {
     }
 };
 
-class BookingsTab extends Component {
+class BookingsListTab extends Component {
     constructor() {
         super();
     }
@@ -27,11 +27,11 @@ class BookingsTab extends Component {
     render() {
         return (
             <div style={this.props.style}>
-                <h2>Bookings</h2>
+                <h2>Sessions</h2>
                 <BookingsList bookings={this.props.bookings} deleteBooking={this.props.deleteBooking} onSubmitBooking={this.props.onSubmitBooking} />
             </div>
         )
     }
 }
 
-export default BookingsTab;
+export default BookingsListTab;
