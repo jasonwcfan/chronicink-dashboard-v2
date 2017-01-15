@@ -18,13 +18,15 @@ import Intake from '../../../../imports/Intake/intake';
 const style = {
     intakeListContainer: {
         width: 300,
-        height: 600,
+        display: 'flex',
+        flexDirection: 'column',
         margin: 20,
         borderStyle: 'solid',
-        borderColor: Colors.grey600,
+        borderColor: Colors.grey600
     },
     headerContainer: {
         display: 'flex',
+        minHeight: 50,
         alignItems: 'center',
         justifyContent: 'space-between'
     },
@@ -33,6 +35,12 @@ const style = {
     },
     menuIcon: {
         display: 'inline'
+    },
+    intakeList: {
+        maxHeight: '70vh',
+        minHeight: 600,
+        overflow: 'auto',
+        overflowX: 'hidden'
     },
     listItemIconButton: {
         position: 'absolute',
@@ -125,7 +133,7 @@ class IntakeList extends Component {
                     }
                 </div>
                 <Divider />
-                <List>
+                <List style={style.intakeList}>
                     {this._renderIntakeList()}
                 </List>
             </Paper>
@@ -138,6 +146,6 @@ export default IntakeList = createContainer(({ params }) => {
 
     return {
         subReady: subscription.ready(),
-        data: Intake.find().fetch()
+        data: Intake.find({}, {limit: 30}).fetch()
     }
 }, IntakeList);

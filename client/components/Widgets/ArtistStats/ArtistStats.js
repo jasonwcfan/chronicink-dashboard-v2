@@ -15,13 +15,15 @@ import Artist from '../../../../imports/Artist/artist';
 const style = {
     widgetContainer: {
         width: 300,
-        height: 600,
+        display: 'flex',
+        flexDirection: 'column',
         margin: 20,
         borderStyle: 'solid',
-        borderColor: Colors.grey600,
+        borderColor: Colors.grey600
     },
     headerContainer: {
         display: 'flex',
+        minHeight: 50,
         alignItems: 'center',
         justifyContent: 'space-between'
     },
@@ -30,6 +32,12 @@ const style = {
     },
     menuIcon: {
         display: 'inline'
+    },
+    list: {
+        maxHeight: '70vh',
+        minHeight: 600,
+        overflow: 'auto',
+        overflowX: 'hidden'
     },
     listItemContainer: {
         display: 'flex',
@@ -170,7 +178,7 @@ class ArtistStats extends Component {
                     </IconMenu>
                 </div>
                 <Divider />
-                <List>
+                <List style={style.list}>
                     {this._renderArtistStats()}
                 </List>
             </Paper>
