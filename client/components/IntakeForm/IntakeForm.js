@@ -76,7 +76,15 @@ class IntakeForm extends Component {
             medicalConditions: this.state.medicalConditions
         };
         console.log('submitting');
-        Meteor.call('intake.insertForm', form);
+        Meteor.call('intake.insertForm', form, (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                this.setState({
+                    isSaved: true
+                })
+            }
+        });
     }
 
     _handleFieldChange(id, value, valid) {
@@ -120,6 +128,13 @@ class IntakeForm extends Component {
         })
     }
 
+    _renderSubmitButton() {
+        return (this.props.isSaved ?
+                <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true} /> :
+                <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this.props.handleSubmit} />
+        )
+    }
+
     _renderStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
@@ -142,6 +157,7 @@ class IntakeForm extends Component {
                             agreements={this.state.disclaimerAgreements} />
                         <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
                         <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._incrementStep} />
+                        {}
                     </div>
                 );
             case 2:
