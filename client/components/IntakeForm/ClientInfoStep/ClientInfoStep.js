@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import MedicalConditionsChecklist from './MedicalConditionsChecklist';
 import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../../Inputs';
 
@@ -57,6 +57,7 @@ class ClientInfoStep extends Component {
                             key={field.id}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
+                            selectedCountry={this.props.formValues.country.value}
                         />
                     );
                 case 'date':
@@ -88,5 +89,10 @@ class ClientInfoStep extends Component {
     }
 }
 
+ClientInfoStep.propTypes = {
+    formTemplate: PropTypes.array,
+    formValues: PropTypes.object,
+    medicalConditions: PropTypes.array
+};
 
 export default ClientInfoStep;

@@ -57,7 +57,7 @@ export default defaultIntakeFormFields = [
     },
     {
         id: 'postalCode',
-        label: 'Postal Code',
+        label: 'Postal/ZIP Code',
         inputType: 'textField',
         value: '',
         valid: true,

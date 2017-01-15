@@ -41,7 +41,7 @@ class CountrySelector extends Component {
                     // https://github.com/callemall/material-ui/issues/1151
                     float: 'left'
                 }}
-                floatingLabelText='Country'
+                floatingLabelText='Country *'
                 value={this.state.value}
                 searchText={this.props.defaultValue || 'Canada'}
                 onNewRequest={this._handleNewRequest.bind(this)}
