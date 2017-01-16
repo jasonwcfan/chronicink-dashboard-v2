@@ -177,7 +177,7 @@ Meteor.methods({
             // Push events to calendar, keep track of errors/responses
             events.forEach(function(event) {
                 const insertEvent = Meteor.wrapAsync(GCalendar.insertEvent);
-                responses.push(insertEvent(event, form.artist.value));
+                responses.push(insertEvent(event, form.fields.artist.value));
             });
 
             Meteor.call('booking.sendEmail', client, form);
