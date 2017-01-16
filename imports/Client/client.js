@@ -4,6 +4,7 @@ import { Mongo } from 'meteor/mongo';
 Meteor.methods({
     'client.insert': function(form) {
         const clientInfo = {...form.fields};
+        clientInfo.cancellationAvailability = form.cancellationAvailability;
         clientInfo.conditions = form.medicalConditions.map((condition) => {
             if (condition.value) {
                 return condition.id;

@@ -44,6 +44,36 @@ class IntakeForm extends Component {
                 fields: {},
                 medicalConditions: props.medicalConditions,
                 disclaimerAgreements: props.disclaimerAgreements,
+                cancellationAvailability: {
+                    monday: {
+                        afternoon: false,
+                        evening: false
+                    },
+                    tuesday: {
+                        afternoon: false,
+                        evening: false
+                    },
+                    wednesday: {
+                        afternoon: false,
+                        evening: false
+                    },
+                    thursday: {
+                        afternoon: false,
+                        evening: false
+                    },
+                    friday: {
+                        afternoon: false,
+                        evening: false
+                    },
+                    saturday: {
+                        afternoon: false,
+                        evening: false
+                    },
+                    sunday: {
+                        afternoon: false,
+                        evening: false
+                    }
+                },
                 isSaved: false,
                 isSaving: false,
                 formID: null,
@@ -67,13 +97,15 @@ class IntakeForm extends Component {
         this._handleSubmit = this._handleSubmit.bind(this);
         this._incrementStep = this._incrementStep.bind(this);
         this._decrementStep = this._decrementStep.bind(this);
+        this._handleToggleCancellationAvailability = this._handleToggleCancellationAvailability.bind(this);
     }
 
     _handleSubmit() {
         const form = {
             fields: this.state.fields,
             agreements: this.state.disclaimerAgreements,
-            medicalConditions: this.state.medicalConditions
+            medicalConditions: this.state.medicalConditions,
+            cancellationAvailability: this.state.cancellationAvailability
         };
         console.log('submitting');
         Meteor.call('intake.insertForm', form, (err, res) => {
@@ -113,6 +145,16 @@ class IntakeForm extends Component {
 
         this.setState({
             disclaimerAgreements: newAgreements
+        })
+    }
+
+    _handleToggleCancellationAvailability(day, time, value) {
+        const newCancellationAvailability = {...this.state.cancellationAvailability};
+        console.log(day);
+        newCancellationAvailability[day][time] = value;
+        console.log(newCancellationAvailability);
+        this.setState({
+            cancellationAvailability: newCancellationAvailability
         })
     }
 
@@ -169,6 +211,8 @@ class IntakeForm extends Component {
                             decrementStep={this._decrementStep}
                             handleSubmit={this._handleSubmit}
                             isSaved={this.state.isSaved}
+                            cancellationAvailability={this.state.cancellationAvailability}
+                            onToggleCancellationAvailability={this._handleToggleCancellationAvailability}
                         />
 
                         {this.state.savingForm ?

@@ -13,6 +13,7 @@ Meteor.methods({
                     agreements: form.agreements,
                     fields: form.fields,
                     medicalConditions: form.medicalConditions,
+                    cancellationAvailability: form.cancellationAvailability,
                     bookingPending: true,
                     clientName: form.fields.firstName.value + ' ' + form.fields.lastName.value,
                     clientID
