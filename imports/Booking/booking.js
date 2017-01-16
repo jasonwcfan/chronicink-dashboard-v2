@@ -10,6 +10,9 @@ function createDescription(data) {
         if (!data.hasOwnProperty(key)) {
             continue;
         }
+        if (key == 'artist') {
+            continue;
+        }
         description = description + data[key].label + ':\n\t' + data[key].value + '\n';
     }
 
@@ -174,7 +177,7 @@ Meteor.methods({
             // Push events to calendar, keep track of errors/responses
             events.forEach(function(event) {
                 const insertEvent = Meteor.wrapAsync(GCalendar.insertEvent);
-                responses.push(insertEvent(event, 'primary'));
+                responses.push(insertEvent(event, form.artist.value));
             });
 
             Meteor.call('booking.sendEmail', client, form);
