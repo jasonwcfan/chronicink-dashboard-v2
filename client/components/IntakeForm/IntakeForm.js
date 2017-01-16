@@ -97,6 +97,7 @@ class IntakeForm extends Component {
         this._handleSubmit = this._handleSubmit.bind(this);
         this._incrementStep = this._incrementStep.bind(this);
         this._decrementStep = this._decrementStep.bind(this);
+        this._resetStep = this._resetStep.bind(this);
         this._handleToggleCancellationAvailability = this._handleToggleCancellationAvailability.bind(this);
     }
 
@@ -168,6 +169,12 @@ class IntakeForm extends Component {
         })
     }
 
+    _resetStep() {
+        this.setState({
+            stepIndex: 0
+        })
+    }
+
     _renderSubmitButton() {
         return (this.props.isSaved ?
                 <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true} /> :
@@ -206,7 +213,7 @@ class IntakeForm extends Component {
                         <FinishedStep
                             fields={this.state.fields}
                             disclaimerAgreements={this.state.disclaimerAgreements}
-                            decrementStep={this._decrementStep}
+                            resetStep={this._resetStep}
                             handleSubmit={this._handleSubmit}
                             isSaved={this.state.isSaved}
                             cancellationAvailability={this.state.cancellationAvailability}
@@ -233,7 +240,10 @@ class IntakeForm extends Component {
                         <StepLabel>Personal Information</StepLabel>
                     </Step>
                     <Step>
-                        <StepLabel>Agreement</StepLabel>
+                        <StepLabel>Disclaimer</StepLabel>
+                    </Step>
+                    <Step>
+                        <StepLabel>Submit</StepLabel>
                     </Step>
                 </Stepper>
                 <div style={style.container}>

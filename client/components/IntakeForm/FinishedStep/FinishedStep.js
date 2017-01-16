@@ -124,7 +124,7 @@ class FinishedStep extends Component {
             <div>
                 {this._renderMessage()}
                 <div style={style.navButtonsGroup}>
-                    <RaisedButton style={style.navButton} label="Previous" onTouchTap={this.props.decrementStep} />
+                    <RaisedButton style={style.navButton} label="Go Back" onTouchTap={this.props.resetStep} />
                     {this.state.formIsValid ? this._renderSubmitButton() : null}
                 </div>
             </div>
