@@ -58,46 +58,28 @@ class FinishedStep extends Component {
     }
 
     _renderMessage() {
-        // if (this.state.formIsValid) {
-        //     return (
-        //         <div>
-        //             <h2>Almost done!</h2>
-        //             <p>
-        //                 Thank you for taking the time to fill out our form. Sometimes, we will have last minute openings
-        //                 when someone else cancels. If you would like to be notified in case space opens up, please tell
-        //                 us when you would typically be free to come in for a last minute appointment.
-        //             </p>
-        //         </div>
-        //     )
-        // }
-        //
-        // return (
-        //     <div>
-        //         <h2>Form Incomplete</h2>
-        //         <p>There are some problems with the form. Please fix them before moving on</p>
-        //     </div>
-        // )
-        return (
-            <div>
-                <h2 style={{textAlign: 'center'}}>Almost done!</h2>
-                <p>
-                    Thank you for taking the time to fill out our form.
-                </p>
-                <p>
-                    Sometimes, we will have last minute openings when there is a cancellation, so we may be able to get
-                    started on your piece earlier than expected.
-                </p>
-                <p>
-                    If you would like to be notified in case space opens
-                    up, please let us know what times you are typically available to come in, and we will give you a
-                    call if some someone else gives up their spot.
-                </p>
-                <div style={style.weekDaysContainer}>
-                    {weekDays.map((day) => {
-                        const availability = this.props.cancellationAvailability[day.toLowerCase()];
-                        return (
-                            <div style={style.weekDay}>
-                                <h3>{day}</h3>
+        if (this.state.formIsValid) {
+            return (
+                <div>
+                    <h2 style={{textAlign: 'center'}}>Almost done!</h2>
+                    <p>
+                        Thank you for taking the time to fill out our form.
+                    </p>
+                    <p>
+                        Sometimes, we will have last minute openings when there is a cancellation, so we may be able to get
+                        started on your piece earlier than expected.
+                    </p>
+                    <p>
+                        If you would like to be notified in case space opens
+                        up, please let us know what times you are typically available to come in, and we will give you a
+                        call if some someone else gives up their spot.
+                    </p>
+                    <div style={style.weekDaysContainer}>
+                        {weekDays.map((day) => {
+                            const availability = this.props.cancellationAvailability[day.toLowerCase()];
+                            return (
+                                <div style={style.weekDay}>
+                                    <h3>{day}</h3>
                                     <Checkbox
                                         label='Afternoon (12 - 5)'
                                         name='afternoon'
@@ -110,10 +92,18 @@ class FinishedStep extends Component {
                                         checked={availability.evening}
                                         onCheck={this._handleChange.bind(this, day)}
                                     />
-                            </div>
-                        )
-                    })}
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
+            )
+        }
+
+        return (
+            <div>
+                <h2>Form Incomplete</h2>
+                <p>There are some problems with the form. Please fix them before moving on</p>
             </div>
         )
     }

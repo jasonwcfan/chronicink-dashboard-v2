@@ -15,6 +15,7 @@ const style = {
     textField: {
         marginLeft: 5,
         marginRight: 5,
+        float: 'left'
     }
 };
 
@@ -52,7 +53,11 @@ class RegionSelector extends Component {
     }
 
     _handleChange(event, index, value) {
-        this.props.onFieldChange(this.props.name, value, true);
+        if (this.props.selectedCountry == 'Canada' || this.props.selectedCountry == 'United States') {
+            this.props.onFieldChange(this.props.name, value, value.length > 0);
+        } else {
+            this.props.onFieldChange(this.props.name, value, true);
+        }
     }
 
     render() {

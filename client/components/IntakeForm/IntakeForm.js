@@ -120,7 +120,7 @@ class IntakeForm extends Component {
     }
 
     _handleFieldChange(id, value, valid) {
-        const newFields = _.extend({}, this.state.fields);
+        const newFields = {...this.state.fields};
         newFields[id].value = value;
         newFields[id].valid = valid;
 
@@ -150,9 +150,7 @@ class IntakeForm extends Component {
 
     _handleToggleCancellationAvailability(day, time, value) {
         const newCancellationAvailability = {...this.state.cancellationAvailability};
-        console.log(day);
         newCancellationAvailability[day][time] = value;
-        console.log(newCancellationAvailability);
         this.setState({
             cancellationAvailability: newCancellationAvailability
         })

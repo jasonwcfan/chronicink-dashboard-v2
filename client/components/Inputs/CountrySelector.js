@@ -29,6 +29,12 @@ class CountrySelector extends Component {
             });
             this.props.onFieldChange(this.props.name, request, true);
         }
+
+        if (request == 'Canada' || request == 'United States') {
+            this.props.onFieldChange('region', '', false);
+        } else {
+            this.props.onFieldChange('region', '', true);
+        }
     }
 
     render() {
