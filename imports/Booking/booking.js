@@ -20,6 +20,8 @@ function createEventResources(form, client) {
     const bookings = form.bookings;
     const events = [];
 
+    console.log(form);
+
     // TODO:
     bookings.map((booking) => {
         const event = { kind: 'calendar#event' };
@@ -32,6 +34,12 @@ function createEventResources(form, client) {
         };
         event.description = createDescription(form.fields);
         event.location = `${client.primaryPhoneNumber.value}/${client.email.value}`;
+        event.extendedProperties= {
+            private: {
+                bookingID: form.formID,
+                clientID: form.clientID
+            }
+        };
 
         events.push(event);
     });
@@ -164,10 +172,10 @@ Meteor.methods({
             const responses = [];
 
             // Push events to calendar, keep track of errors/responses
-            // events.forEach(function(event) {
-            //     const insertEvent = Meteor.wrapAsync(GCalendar.insertEvent);
-            //     responses.push(insertEvent(event, 'primary'));
-            // });
+            events.forEach(function(event) {
+                const insertEvent = Meteor.wrapAsync(GCalendar.insertEvent);
+                responses.push(insertEvent(event, 'primary'));
+            });
 
             Meteor.call('booking.sendEmail', client, form);
             Meteor.call('intake.markBookingCompleted', form.clientID);
@@ -179,7 +187,6 @@ Meteor.methods({
 
         const clientEmailBody = createClientEmail(artist, client, form);
         const artistEmailBody = createArtistEmail(artist, client, form);
-        console.log(artistEmailBody);
 
         GMail.sendEmail(client.email.value, 'Upcoming Tattoo Details', clientEmailBody);
         artist.emails.forEach(function(email) {
