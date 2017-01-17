@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'react-meteor-data';
+import { withRouter } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 import {
     Step,
@@ -25,6 +26,7 @@ const style = {
     },
     finishedStepContainer: {
         display: 'flex',
+        minHeight: 500,
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
@@ -108,13 +110,18 @@ class IntakeForm extends Component {
             medicalConditions: this.state.medicalConditions,
             cancellationAvailability: this.state.cancellationAvailability
         };
+        this.setState({
+            isSaving: true
+        });
         console.log('submitting');
         Meteor.call('intake.insertForm', form, (err, res) => {
             if (err) {
                 console.log(err);
             } else {
                 this.setState({
-                    isSaved: true
+                    isSaving: false,
+                    isSaved: true,
+                    stepIndex: 3
                 })
             }
         });
@@ -175,13 +182,6 @@ class IntakeForm extends Component {
         })
     }
 
-    _renderSubmitButton() {
-        return (this.props.isSaved ?
-                <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true} /> :
-                <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this.props.handleSubmit} />
-        )
-    }
-
     _renderStepContent(stepIndex) {
         switch (stepIndex) {
             case 0:
@@ -215,7 +215,7 @@ class IntakeForm extends Component {
                             disclaimerAgreements={this.state.disclaimerAgreements}
                             resetStep={this._resetStep}
                             handleSubmit={this._handleSubmit}
-                            isSaved={this.state.isSaved}
+                            isSaving={this.state.isSaving}
                             cancellationAvailability={this.state.cancellationAvailability}
                             onToggleCancellationAvailability={this._handleToggleCancellationAvailability}
                         />
@@ -227,6 +227,13 @@ class IntakeForm extends Component {
                             null
                         }
 
+                    </div>
+                );
+            case 3:
+                return (
+                    <div style={style.finishedStepContainer}>
+                        <h2>Thank you for choosing Chronic Ink!</h2>
+                        <p>If you are in the shop, please let a staff member know that you've completed the form. Otherwise, we will be in touch shortly.</p>
                     </div>
                 );
         }
@@ -265,7 +272,6 @@ IntakeForm.propTypes = {
     }).isRequired).isRequired,
     form: PropTypes.object
     // stepIndex: PropTypes.number.isRequired,
-    // isSaved: PropTypes.bool.isRequired,
     // savingForm: PropTypes.bool.isRequired,
     // formID: PropTypes.string
 };
@@ -288,4 +294,4 @@ export default IntakeForm = createContainer(({ clientID }) => {
         }),
         disclaimerAgreements
     }
-}, IntakeForm);
+}, withRouter(IntakeForm));

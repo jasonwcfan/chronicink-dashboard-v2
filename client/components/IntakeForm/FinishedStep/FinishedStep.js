@@ -78,7 +78,7 @@ class FinishedStep extends Component {
                         {weekDays.map((day) => {
                             const availability = this.props.cancellationAvailability[day.toLowerCase()];
                             return (
-                                <div style={style.weekDay}>
+                                <div style={style.weekDay} key={day}>
                                     <h3>{day}</h3>
                                     <Checkbox
                                         label='Afternoon (12 - 5)'
@@ -109,8 +109,8 @@ class FinishedStep extends Component {
     }
 
     _renderSubmitButton() {
-        return (this.props.isSaved ?
-                <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true} /> :
+        return (this.props.isSaving ?
+                <RaisedButton style={style.navButton} primary={true} label='Saving...' disabled={true} /> :
                 <RaisedButton style={style.navButton} primary={true} label='Submit' onTouchTap={this.props.handleSubmit} />
         )
     }
@@ -135,7 +135,7 @@ class FinishedStep extends Component {
 FinishedStep.propTypes = {
     fields: PropTypes.object,
     disclaimerAgreements: PropTypes.array,
-    isSaved: PropTypes.bool,
+    isSaving: PropTypes.bool,
     cancellationAvailability: PropTypes.object
 };
 
