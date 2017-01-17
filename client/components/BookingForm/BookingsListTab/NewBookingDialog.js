@@ -28,8 +28,8 @@ class NewBookingDialog extends Component {
             open: false,
             appointmentType: '',
             date: null,
-            startTime: null,
-            endTime: null,
+            startTime: new Date(null, null, null, 12, 0, 0, 0),
+            endTime: new Date(null, null, null, 13, 0, 0, 0),
             errorMessage: null
         }
     }
@@ -131,6 +131,7 @@ class NewBookingDialog extends Component {
                         <TimePicker
                             style={style.field}
                             floatingLabelText='End Time'
+                            defaultTime={new Date(null, null, null, 13, 0, 0, 0)}
                             onChange={(_, endTime) => {this.setState({endTime})}}
                         />
                         <p style={{color: 'red'}}>
