@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const style = {
     container: {
@@ -19,6 +20,7 @@ class SubmitErrorDialog extends Component {
 
         this._handleClose = this._handleClose.bind(this);
         this._handleClickSubmit = this._handleClickSubmit.bind(this);
+        this._renderSubmitButton = this._renderSubmitButton.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -62,15 +64,31 @@ class SubmitErrorDialog extends Component {
         }
     }
 
+    _renderSubmitButton() {
+        if (this.props.isSubmitting) {
+            return (
+                <CircularProgress
+                    style={{
+                        marginLeft: 28
+                    }}
+                    size={16}
+                />
+            )
+        }
+        return (
+            <RaisedButton
+                secondary={true}
+                disabled={this.props.isSubmitted}
+                label={this.props.isSubmitted ? 'Done' : 'Submit'}
+                onTouchTap={this._handleClickSubmit}
+            />
+        )
+    }
+
     render() {
         return (
             <div style={style.container}>
-                <RaisedButton
-                    secondary={true}
-                    disabled={this.props.isSubmitted}
-                    label='Submit'
-                    onTouchTap={this._handleClickSubmit}
-                />
+                {this._renderSubmitButton()}
                 <Dialog
                     title='Form Errors'
                     open={this.state.open}
@@ -94,6 +112,7 @@ SubmitErrorDialog.propTypes = {
     fieldValues: PropTypes.object,
     bookings: PropTypes.array,
     isSubmitted: PropTypes.bool,
+    isSubmitting: PropTypes.bool,
     errorMessages: PropTypes.array
 };
 

@@ -34,6 +34,7 @@ class BookingForm extends Component {
                 fields: {},
                 bookings: [],
                 isSaved: false,
+                isSubmitting: false,
                 isSubmitted: false,
                 errorMessages: []
             };
@@ -91,6 +92,10 @@ class BookingForm extends Component {
             bookings: this.state.bookings,
         };
 
+        this.setState({
+            isSubmitting: true
+        });
+
         Meteor.call('booking.submitToCalendar', form, (err, res) => {
             if (err) {
                 console.log(err);
@@ -101,7 +106,8 @@ class BookingForm extends Component {
             } else {
                 console.log(res);
                 this.setState({
-                    isSubmitted: true
+                    isSubmitted: true,
+                    isSubmitting: false
                 })
             }
         });
@@ -192,6 +198,7 @@ class BookingForm extends Component {
                             handleSubmit={this._handleSubmit}
                             fieldValues={this.state.fields}
                             bookings={this.state.bookings}
+                            isSubmitting={this.state.isSubmitting}
                             isSubmitted={this.state.isSubmitted}
                             errorMessages={this.state.errorMessages}
                         />
