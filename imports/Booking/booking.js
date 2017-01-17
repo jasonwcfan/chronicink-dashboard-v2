@@ -23,8 +23,6 @@ function createEventResources(form, client) {
     const bookings = form.bookings;
     const events = [];
 
-    console.log(form);
-
     // TODO:
     bookings.map((booking) => {
         const event = { kind: 'calendar#event' };
@@ -69,8 +67,8 @@ function createClientEmail(artist, client, form) {
         `that you have appointments booked with ${artist.name} for the following dates:\n`;
 
     form.bookings.forEach(function(booking) {
-        const startTime = Moment(booking.startTime);
-        const endTime = Moment(booking.endTime);
+        const startTime = Moment(booking.startTime).utcOffset(-5);
+        const endTime = Moment(booking.endTime).utcOffset(-5);
         body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')}\n`;
     });
 
@@ -82,25 +80,28 @@ function createClientEmail(artist, client, form) {
     body += `\tArtist: ${artist.name}\n`;
     body += `\tRate: ${getRateString(form.fields.rateType.value, form.fields.rate.value)}\n`;
 
-    body += '\nPlease reply directly to this email if you have any questions, and we\'ll get back to you as soon as we can!';
+    body += '\nPlease reply directly to this email if you have any questions, and we\'ll get back to you as soon as we can!\n\n' +
+    'Thank you for booking with us!\n\t- The Chronic Ink Family';
 
-    body += '\n\nDISCLAIMER:\n\nDEPOSIT STRUCTURE\n\nSmall – $80\nMedium – $150\nLarge – $350\n\nSmall to Medium tattoos are ' +
+    body += '\n\n----------------------';
+
+    body += '\n\nDISCLAIMER:\n\nDeposit Structure\n\nSmall – $80\nMedium – $150\nLarge – $350\n\nSmall to Medium tattoos are ' +
         'priced uniquely by the tattoo. Small to Medium tattoos are estimated to require less than 4 hours ' +
         'for completion. Large pieces are priced by the hour or by a day rate.* Large tattoos are estimated to ' +
         'require more than 4 hours for completion. *Day rates only apply to large tattoos. Day rates are fixed rates ' +
         'for an entire day of tattooing from an artist because some artists prefer to work on a day rate so they don’t ' +
-        'feel the pressure of time. Think of it as hiring a photographer for a day of work.\n\nRIGHT OF REFUSAL\nWe ' +
+        'feel the pressure of time. Think of it as hiring a photographer for a day of work.\n\nRight of Refusal\nWe ' +
         'reserve the right to refuse a tattoo at any point prior to the start of a tattoo. Deposits will be refunded ' +
         'if a sketch has not been drawn. We will only refuse a tattoo if we feel we cannot do the best artwork on a ' +
         'tattoo. Yes, this sounds subjective but we are in the business of doing tattoos, not to refuse them, and we hope ' +
         'our expertise will enable us to make sound judgements. This is the last thing we want to do and we realize you ' +
-        'have to trust us, so we will do our best to make you proud.\n\nREFUNDS\nDeposits are non-refundable.\n\nCHANGE OF ' +
-        'IDEA\nWe will require a 2nd deposit if you change your idea after a sketch has been done. The 1st deposit will be ' +
-        'voided and the price for the 2nd deposit will be the same as the 1st deposit.\n\nRESCHEDULING\nWe require 72 hours ' +
-        'notice for rescheduling or the deposit will be forfeited.\n\nTOUCH UP POLICY\nWe guarantee the quality of all of our ' +
+        'have to trust us, so we will do our best to make you proud.\n\nRefunds\nDeposits are non-refundable.\n\nChange of Idea' +
+        '\nWe will require a 2nd deposit if you change your idea after a sketch has been done. The 1st deposit will be ' +
+        'voided and the price for the 2nd deposit will be the same as the 1st deposit.\n\nRescheduling\nWe require 72 hours ' +
+        'notice for rescheduling or the deposit will be forfeited.\n\nTouch Up Policy\nWe guarantee the quality of all of our ' +
         'tattoos, except for tattoos on the hands, fingers, and feet (please ask our staff for an explanation). Our ' +
         'guarantee covers all ink loss caused during the healing process, and thus is good for 90 days after your final ' +
-        'session. Please follow our aftercare instructions for best results.\n\nUNDER 18 POLICY\nIf you are under 18 years ' +
+        'session. Please follow our aftercare instructions for best results.\n\nUnder 18 Policy\nIf you are under 18 years ' +
         'old (for tattooing) or 17 years old (for piercing), we ask that you bring your Parent or Legal Guardian along to ' +
         'fill out the form below at the time of booking. The Parent or Guardian must be present when you are receiving your ' +
         'tattoo\/piercing and present government issued identification.';
@@ -114,8 +115,8 @@ function createArtistEmail(artist, client, form) {
         `that you have appointments with ${client.firstName.value} ${client.lastName.value} for the following dates:\n`;
 
     form.bookings.forEach(function(booking) {
-        const startTime = Moment(booking.startTime);
-        const endTime = Moment(booking.endTime);
+        const startTime = Moment(booking.startTime).utcOffset(-5);
+        const endTime = Moment(booking.endTime).utcOffset(-5);
         body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')}\n`;
     });
 

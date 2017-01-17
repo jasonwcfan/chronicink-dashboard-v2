@@ -8,7 +8,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import { startBooking } from '../../../actions/Dashboard/Widgets/IntakeList';
+import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
 import Artist from '../../../../imports/Artist/artist';
 
@@ -192,6 +192,6 @@ export default ArtistStats = createContainer(({ params }) => {
     return {
         subReady: subscription.ready(),
         // Test by only using artists with a test calendar
-        artists: Artist.find({'testCalendar': true}, {limit: 5}).fetch()
+        artists: Artist.find({}, ).fetch()
     }
 }, ArtistStats);

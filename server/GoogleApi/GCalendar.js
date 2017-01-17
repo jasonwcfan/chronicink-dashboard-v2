@@ -67,10 +67,12 @@ GCalendar = {
             let bookedHours = 0;
 
             res.items.forEach(function(event) {
-                const startTime = Moment(event.start.dateTime);
-                const endTime = Moment(event.end.dateTime);
-                const eventLength = endTime.diff(startTime, 'hours');
-                bookedHours += eventLength;
+                if (event.start && event.end) {
+                    const startTime = Moment(event.start.dateTime);
+                    const endTime = Moment(event.end.dateTime);
+                    const eventLength = endTime.diff(startTime, 'hours');
+                    bookedHours += eventLength;
+                }
             });
             
             callback(null, bookedHours);
