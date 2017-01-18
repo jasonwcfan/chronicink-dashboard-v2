@@ -8,9 +8,9 @@ const style = {
 
 class LinkWrapper extends Component {
     render() {
-        return ( this.props.external ?
+        return ( this.props.url ?
                 <div>
-                    <a target='_blank' href={this.props.to} style={style}>{this.props.children}</a>
+                    <a target='_blank' href={this.props.url} style={style}>{this.props.children}</a>
                 </div> :
                 <div>
                     <Link to={this.props.to} style={style} >{this.props.children}</Link>
@@ -20,8 +20,8 @@ class LinkWrapper extends Component {
 }
 
 LinkWrapper.propTypes = {
-    to: PropTypes.string,
-    external: PropTypes.bool
+    to: PropTypes.object,
+    url: PropTypes.string
 };
 
 export default LinkWrapper;

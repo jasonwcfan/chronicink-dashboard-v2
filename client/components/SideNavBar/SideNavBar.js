@@ -21,6 +21,10 @@ const style = {
         top: 64,
         bottom: 0
     },
+    link: {
+        height: 100,
+        width: 100
+    }
 };
 
 class SideNavBar extends Component {
@@ -37,26 +41,41 @@ class SideNavBar extends Component {
             <Paper style={style.sideNavBarContainer} >
                 <List style={style.menuList}>
                     <Divider />
-                    <LinkWrapper to='/dashboard'><ListItem name='dashboard' leftIcon={<DashboardIcon />}>Dashboard</ListItem></LinkWrapper>
-                    <LinkWrapper to='/intakeform'><ListItem name='intakeForm' leftIcon={<IntakeIcon />}>Intake Form</ListItem></LinkWrapper>
+                    <LinkWrapper url='/dashboard'><ListItem name='dashboard' leftIcon={<DashboardIcon />}>Dashboard</ListItem></LinkWrapper>
+                    <LinkWrapper url='/intakeform'><ListItem name='intakeForm' leftIcon={<IntakeIcon />}>Intake Form</ListItem></LinkWrapper>
                     <ListItem
                         primaryTogglesNestedList={true}
                         leftIcon={<FormsIcon />}
+                        primaryText='Front Desk Forms'
                         nestedItems={[
-                            <LinkWrapper
-                                to='https://docs.google.com/forms/d/e/1FAIpQLSfngr-wkl007bJo1dVQtjHy4GkHwToXOKpOKxEb_ZJRKW6SXw/viewform'
-                                external={true}
-                            >
-                                <ListItem name='managerChecklist' primaryText='Manager Checklist' leftIcon={<ChecklistIcon />} />
-                            </LinkWrapper>,
-                            <LinkWrapper
-                                to='https://docs.google.com/forms/d/e/1FAIpQLSc8Oseu3nb8fdnQVX2STdoSfZttefY2MuWMU_gtfXRtcGdUnA/viewform?c=0&w=1'
-                                external={true}
-                            >
-                                <ListItem name='openCloseForm' primaryText='Open/Close Form' leftIcon={<StoreIcon />} />
-                            </LinkWrapper>
+                            <ListItem
+                                name='managerChecklist'
+                                key={1}
+                                primaryText='Manager Checklist'
+                                leftIcon={<ChecklistIcon />}
+                                onTouchTap={() => {window.open('https://docs.google.com/forms/d/e/1FAIpQLSfngr-wkl007bJo1dVQtjHy4GkHwToXOKpOKxEb_ZJRKW6SXw/viewform', '_blank')}}
+                            />,
+                            <ListItem
+                                name='openCloseForm'
+                                key={2}
+                                primaryText='Open/Close Form'
+                                leftIcon={<StoreIcon />}
+                                onTouchTap={() => {window.open('https://docs.google.com/forms/d/e/1FAIpQLSc8Oseu3nb8fdnQVX2STdoSfZttefY2MuWMU_gtfXRtcGdUnA/viewform?c=0&w=1', '_blank')}}
+                            />
+                            // <LinkWrapper
+                            //     to='https://docs.google.com/forms/d/e/1FAIpQLSfngr-wkl007bJo1dVQtjHy4GkHwToXOKpOKxEb_ZJRKW6SXw/viewform'
+                            //     external={true}
+                            // >
+                            //     <ListItem name='managerChecklist' primaryText='Manager Checklist' leftIcon={<ChecklistIcon />} />
+                            // </LinkWrapper>,
+                            // <LinkWrapper
+                            //     to='https://docs.google.com/forms/d/e/1FAIpQLSc8Oseu3nb8fdnQVX2STdoSfZttefY2MuWMU_gtfXRtcGdUnA/viewform?c=0&w=1'
+                            //     external={true}
+                            // >
+                            //     <ListItem name='openCloseForm' primaryText='Open/Close Form' leftIcon={<StoreIcon />} />
+                            // </LinkWrapper>
                         ]}
-                    >Manager Forms</ListItem>
+                    />
                     <Divider />
                 </List>
             </Paper>
