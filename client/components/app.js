@@ -19,9 +19,6 @@ const style = {
     },
     appContainer: {
         width: '100%'
-    },
-    sideNavBar: {
-        width: 240
     }
 };
 
@@ -71,7 +68,7 @@ class App extends Component {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <div style={style.window}>
-                    {this.props.params.appname == 'intakeform' ? null : <SideNavBar style={style.sideNavBar} onChangeApp={this.props.onChangeApp} />}
+                    {this.props.params.appname == 'intakeform' ? null : <SideNavBar onChangeApp={this.props.onChangeApp} />}
                     <Paper style={style.appContainer} zDepth={4}>
                         <AppBar
                             title={this._getAppName(this.props.params.appname)}

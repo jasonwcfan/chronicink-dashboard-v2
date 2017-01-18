@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
 
 const style = {
@@ -8,12 +8,20 @@ const style = {
 
 class LinkWrapper extends Component {
     render() {
-        return (
-            <div>
-                <Link to={this.props.to} style={style} >{this.props.children}</Link>
-            </div>
+        return ( this.props.external ?
+                <div>
+                    <a target='_blank' href={this.props.to} style={style}>{this.props.children}</a>
+                </div> :
+                <div>
+                    <Link to={this.props.to} style={style} >{this.props.children}</Link>
+                </div>
         );
     }
 }
+
+LinkWrapper.propTypes = {
+    to: PropTypes.string,
+    external: PropTypes.bool
+};
 
 export default LinkWrapper;
