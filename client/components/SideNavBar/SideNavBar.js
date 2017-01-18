@@ -62,18 +62,6 @@ class SideNavBar extends Component {
                                 leftIcon={<StoreIcon />}
                                 onTouchTap={() => {window.open('https://docs.google.com/forms/d/e/1FAIpQLSc8Oseu3nb8fdnQVX2STdoSfZttefY2MuWMU_gtfXRtcGdUnA/viewform?c=0&w=1', '_blank')}}
                             />
-                            // <LinkWrapper
-                            //     to='https://docs.google.com/forms/d/e/1FAIpQLSfngr-wkl007bJo1dVQtjHy4GkHwToXOKpOKxEb_ZJRKW6SXw/viewform'
-                            //     external={true}
-                            // >
-                            //     <ListItem name='managerChecklist' primaryText='Manager Checklist' leftIcon={<ChecklistIcon />} />
-                            // </LinkWrapper>,
-                            // <LinkWrapper
-                            //     to='https://docs.google.com/forms/d/e/1FAIpQLSc8Oseu3nb8fdnQVX2STdoSfZttefY2MuWMU_gtfXRtcGdUnA/viewform?c=0&w=1'
-                            //     external={true}
-                            // >
-                            //     <ListItem name='openCloseForm' primaryText='Open/Close Form' leftIcon={<StoreIcon />} />
-                            // </LinkWrapper>
                         ]}
                     />
                     <Divider />

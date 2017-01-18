@@ -10,8 +10,11 @@ class Menu extends Component {
     }
 
     logOut() {
-        Meteor.logout();
-        window.location.reload();
+        Meteor.logout(function(err) {
+            if (!err) {
+                window.location.reload();
+            }
+        });
     }
 
     render() {
