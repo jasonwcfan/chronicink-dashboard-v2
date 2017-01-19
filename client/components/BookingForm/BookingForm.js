@@ -5,7 +5,6 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import Artist from '../../../imports/Artist/artist';
 import Booking from '../../../imports/Booking/booking';
 import Intake from '../../../imports/Intake/intake';
-import Client from '../../../imports/Client/client';
 import TattooDetailsTab from './TattooDetailsTab';
 import BookingsListTab from './BookingsListTab';
 import ClientInfoTab from './ClientInfoTab';
@@ -68,7 +67,7 @@ class BookingForm extends Component {
     _handleSave() {
         const form = {
             formID: this.state.formID,
-            clientID: this.props.client._id,
+            clientID: this.props.clientID,
             fields: this.state.fields,
             bookings: this.state.bookings
         };
@@ -87,7 +86,7 @@ class BookingForm extends Component {
     _handleSubmit() {
         const form = {
             formID: this.state.formID,
-            clientID: this.props.client._id,
+            clientID: this.props.clientID,
             fields: this.state.fields,
             bookings: this.state.bookings,
         };
@@ -173,8 +172,8 @@ class BookingForm extends Component {
                 <Tabs initialSelectedIndex={1} >
                     <Tab label='Client Info'>
                         <ClientInfoTab
-                            client={this.props.client}
-                            subReady={this.props.clientSubReady}
+                            intake={this.props.intake}
+                            subReady={this.props.intakeSubReady}
                         />
                     </Tab>
                     <Tab label='Details'>
@@ -222,17 +221,16 @@ BookingForm.propTypes = {
 export default BookingForm = createContainer(({ clientID }) => {
     const artistSubscription = Meteor.subscribe('artist');
     const formSubscription = Meteor.subscribe('booking');
-    const clientSubscription = Meteor.subscribe('client');
     const intakeSubscription = Meteor.subscribe('intake');
 
     return {
         artistSubReady: artistSubscription.ready(),
         formSubReady: formSubscription.ready(),
-        clientSubReady: clientSubscription.ready(),
         intakeSubReady: intakeSubscription.ready(),
         artists: Artist.find().fetch(),
         fields: defaultFields,
         form: Booking.findOne({clientID: clientID}),
-        client: Client.findOne({_id: clientID})
+        intake: Intake.findOne({clientID: clientID}, {sort: {natural: -1}}),
+        clientID
     }
 }, BookingForm);

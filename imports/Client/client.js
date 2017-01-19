@@ -3,7 +3,10 @@ import { Mongo } from 'meteor/mongo';
 
 Meteor.methods({
     'client.insert': function(form) {
-        const clientInfo = {...form.fields};
+        const clientInfo = {};
+        Object.keys(form.fields).forEach((key) => {
+            clientInfo[key] = form.fields[key].value
+        });
         clientInfo.cancellationAvailability = form.cancellationAvailability;
         clientInfo.conditions = form.medicalConditions.map((condition) => {
             if (condition.value) {

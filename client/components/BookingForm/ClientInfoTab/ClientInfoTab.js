@@ -8,34 +8,38 @@ class ClientInfoTab extends Component {
         super(props);
     }
 
-    _renderClientInfo(client) {
-        return Object.keys(client).map((key) => {
-            const property = client[key];
-            if (key == 'conditions') {
-                // If this property is a list of conditions, construct a string to represent it
-                let conditionsString = '';
-                property.forEach(function(condition, i) {
-                    conditionsString += i < property.length - 1 ? condition + ', ': condition;
+    _renderClientInfo(intake) {
+        const clientInfo = [];
+        let conditionsString = '';
 
-                });
-                return (<ListItem key={key} primaryText={conditionsString} secondaryText='Medical Conditions' />)
-            } else if (property.label) {
-                // Otherwise, this property is a regular field, generate a ListItem for it
-                switch (property.id) {
-                    case 'dateOfBirth':
-                        return (<ListItem key={key} primaryText={Moment(property.value).format('MMMM Do YYYY')} secondaryText={property.label} />);
-                    default:
-                        return (<ListItem key={key} primaryText={property.value} secondaryText={property.label} />);
-                }
+        Object.keys(intake.fields).forEach((key, idx) => {
+            const property = intake.fields[key];
+            switch (property.id) {
+                case 'dateOfBirth':
+                    clientInfo.push(<ListItem key={idx} primaryText={Moment(property.value).format('MMMM Do YYYY')} secondaryText={property.label} />);
+                    break;
+                default:
+                    clientInfo.push(<ListItem key={idx} primaryText={property.value} secondaryText={property.label} />);
             }
-        })
+        });
+
+        intake.medicalConditions.forEach(function(condition) {
+            if (condition.value == true) {
+                conditionsString += condition.id + ', ';
+            }
+        });
+        conditionsString = conditionsString.slice(0, -2);
+        
+        clientInfo.push(<ListItem key={Object.keys(intake.fields).length} primaryText={conditionsString} secondaryText='Medical Conditions' />);
+
+        return clientInfo;
     }
 
     render() {
         return (
             <div>{this.props.subReady ?
                 <List>
-                    {this.props.client? this._renderClientInfo(this.props.client) : 'No client set'}
+                    {this.props.intake? this._renderClientInfo(this.props.intake) : 'No client set'}
                 </List>
                 : null
             }
@@ -46,7 +50,7 @@ class ClientInfoTab extends Component {
 }
 
 ClientInfoTab.PropTypes = {
-    client: PropTypes.object
+    intake: PropTypes.object
 };
 
 export default ClientInfoTab;
