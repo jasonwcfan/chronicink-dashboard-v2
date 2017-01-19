@@ -29,7 +29,7 @@ class ClientInfoTab extends Component {
             }
         });
         conditionsString = conditionsString.slice(0, -2);
-        
+
         clientInfo.push(<ListItem key={Object.keys(intake.fields).length} primaryText={conditionsString} secondaryText='Medical Conditions' />);
 
         return clientInfo;

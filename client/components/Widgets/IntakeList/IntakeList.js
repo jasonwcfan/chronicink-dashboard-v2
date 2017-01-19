@@ -91,7 +91,7 @@ class IntakeList extends Component {
                                     <IconButton
                                         style={style.listItemIconButton}
                                         tooltip='Create Booking'
-                                        tooltipPosition='top-right'
+                                        tooltipPosition='top-left'
                                         onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
                                     >
                                         <EditIcon />
