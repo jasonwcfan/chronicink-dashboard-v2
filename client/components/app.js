@@ -33,8 +33,6 @@ class App extends Component {
         const activeApp = this.props.params.appname;
         if (activeApp) {
             switch (activeApp.toLowerCase()) {
-                case 'intakeform':
-                    return <IntakeForm clientID={this.props.location.query.clientID} />;
                 case 'booking':
                     return <BookingForm clientID={this.props.location.query.clientID} />;
                 case 'dashboard':
@@ -50,8 +48,6 @@ class App extends Component {
     _getAppName(activeApp) {
         if (activeApp) {
             switch (activeApp.toLowerCase()) {
-                case 'intakeform':
-                    return 'Intake Form';
                 case 'booking':
                     return 'Booking';
                 case 'dashboard':
@@ -68,7 +64,7 @@ class App extends Component {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <div style={style.window}>
-                    {this.props.params.appname == 'intakeform' ? null : <SideNavBar onChangeApp={this.props.onChangeApp} />}
+                    <SideNavBar onChangeApp={this.props.onChangeApp} />
                     <Paper style={style.appContainer} zDepth={4}>
                         <AppBar
                             title={this._getAppName(this.props.params.appname)}
