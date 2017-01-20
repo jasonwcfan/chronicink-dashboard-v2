@@ -1,7 +1,7 @@
 module.exports = {
   servers: {
     one: {
-      host: 'vps113216.vps.ovh.ca',
+      host: 'dashboard.chronicinktattoo.com',
       username: 'jason',
       // pem:
       password: 'Shift123!'
@@ -19,7 +19,7 @@ module.exports = {
       serverOnly: true,
     },
     env: {
-      ROOT_URL: 'http://vps113216.vps.ovh.ca',
+      ROOT_URL: 'http://dashboard.chronicinktattoo.com',
       MONGO_URL: 'mongodb://localhost/meteor'
     },
 
