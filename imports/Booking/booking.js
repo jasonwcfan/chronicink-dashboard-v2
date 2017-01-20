@@ -26,7 +26,7 @@ function createEventResources(form, client) {
     // TODO:
     bookings.map((booking) => {
         const event = { kind: 'calendar#event' };
-        event.summary = `${client.firstName.value} ${client.lastName.value} [${booking.type} ${booking.bookingNum}]`;
+        event.summary = `${client.firstName} ${client.lastName} [${booking.type} ${booking.bookingNum}]`;
         event.start = {
             dateTime: booking.startTime
         };
@@ -34,7 +34,7 @@ function createEventResources(form, client) {
             dateTime: booking.endTime
         };
         event.description = createDescription(form.fields);
-        event.location = `${client.primaryPhoneNumber.value}/${client.email.value}`;
+        event.location = `${client.primaryPhoneNumber}/${client.email}`;
         event.extendedProperties= {
             private: {
                 bookingID: form.formID,
@@ -63,8 +63,8 @@ function getRateString(rateType, rate) {
 
 function createClientEmail(artist, client, form) {
 
-    let body = `Hi ${client.firstName.value}!\n\nThis is Chronic Ink Tattoos, we wanted to send you a friendly reminder ` +
-        `that you have appointments booked with ${artist.name} for the following dates:\n`;
+    let body = `Hi ${client.firstName}!\n\nThis is Chronic Ink Tattoos, we wanted to send you a friendly reminder ` +
+        `that you have appointments booked with ${artist} for the following dates:\n`;
 
     form.bookings.forEach(function(booking) {
         const startTime = Moment(booking.startTime).utcOffset(-5);
@@ -112,7 +112,7 @@ function createClientEmail(artist, client, form) {
 
 function createArtistEmail(artist, client, form) {
     let body = `Hi ${artist.name}!\n\nThis is a friendly reminder ` +
-        `that you have appointments with ${client.firstName.value} ${client.lastName.value} for the following dates:\n`;
+        `that you have appointments with ${client.firstName} ${client.lastName} for the following dates:\n`;
 
     form.bookings.forEach(function(booking) {
         const startTime = Moment(booking.startTime).utcOffset(-5);
@@ -135,11 +135,11 @@ function createArtistEmail(artist, client, form) {
     });
 
     body += '\n\nSome info about your client:';
-    body += `\n\tName: ${client.firstName.value} ${client.lastName.value}`;
-    body += `\n\tEmail: ${client.email.value}`;
-    body += `\n\tPhone Number: ${client.primaryPhoneNumber.value}`;
-    body += client.secondaryPhoneNumber.value.length > 0 ? `\tAlternate Phone Number: ${client.secondaryPhoneNumber.value}` : '';
-    body += `\n\tDate of Birth: ${Moment(client.dateOfBirth.value).format('MMMM Do YYYY')}`;
+    body += `\n\tName: ${client.firstName} ${client.lastName}`;
+    body += `\n\tEmail: ${client.email}`;
+    body += `\n\tPhone Number: ${client.primaryPhoneNumber}`;
+    body += client.secondaryPhoneNumber.length > 0 ? `\tAlternate Phone Number: ${client.secondaryPhoneNumber}` : '';
+    body += `\n\tDate of Birth: ${Moment(client.dateOfBirth).format('MMMM Do YYYY')}`;
 
     return body;
 }
@@ -192,9 +192,9 @@ Meteor.methods({
         const clientEmailBody = createClientEmail(artist, client, form);
         const artistEmailBody = createArtistEmail(artist, client, form);
 
-        GMail.sendEmail(client.email.value, 'Upcoming Tattoo Details', clientEmailBody);
+        GMail.sendEmail(client.email, 'Upcoming Tattoo Details', clientEmailBody);
         artist.emails.forEach(function(email) {
-            GMail.sendEmail(email, `New Booking - ${client.firstName.value} ${client.lastName.value} - ${Moment(form.bookings[0].startTime).format('MMMM YYYY')}`, artistEmailBody);
+            GMail.sendEmail(email, `New Booking - ${client.firstName} ${client.lastName} - ${Moment(form.bookings[0].startTime).format('MMMM YYYY')}`, artistEmailBody);
         })
     }
 });
