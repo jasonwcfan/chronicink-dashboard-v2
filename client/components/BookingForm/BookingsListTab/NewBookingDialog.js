@@ -28,29 +28,27 @@ class NewBookingDialog extends Component {
             open: false,
             appointmentType: '',
             date: null,
-            startTime: new Date(null, null, null, 12, 0, 0, 0),
-            endTime: new Date(null, null, null, 13, 0, 0, 0),
+            startTime: null,
+            endTime: null,
             errorMessage: null
         }
     }
 
     _handleOpen() {
-        this.setState({open: true});
-    }
-
-    _handleClose() {
         this.setState({
-            open: false,
+            open: true,
             appointmentType: '',
             date: null,
-            startTime: null,
-            endTime: null,
+            startTime: new Date(null, null, null, 12, 0, 0, 0),
+            endTime: new Date(null, null, null, 13, 0, 0, 0),
             errorMessage: null
         });
     }
 
-    _handleChangeBookingType() {
-
+    _handleClose() {
+        this.setState({
+            open: false
+        });
     }
 
     _handleSubmitBooking() {
