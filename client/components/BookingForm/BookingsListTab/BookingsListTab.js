@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import ValidatedTextField from '../../Inputs/ValidatedTextField';
 import BookingsList from './BookingsList';
 
 
@@ -29,9 +30,20 @@ class BookingsListTab extends Component {
             <div style={this.props.style}>
                 <h2>Sessions</h2>
                 <BookingsList bookings={this.props.bookings} deleteBooking={this.props.deleteBooking} onSubmitBooking={this.props.onSubmitBooking} />
+                <ValidatedTextField
+                    name='bookedBy'
+                    defaultValue={this.props.bookedBy}
+                    floatingLabelText='Booked by...'
+                    onFieldChange={this.props.setBookedBy}
+                    required={true}
+                />
             </div>
         )
     }
 }
+
+BookingsListTab.propTypes = {
+    bookedBy: PropTypes.string
+};
 
 export default BookingsListTab;

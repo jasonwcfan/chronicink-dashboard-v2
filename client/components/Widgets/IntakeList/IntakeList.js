@@ -146,6 +146,6 @@ export default IntakeList = createContainer(({ params }) => {
 
     return {
         subReady: subscription.ready(),
-        data: Intake.find({}, {limit: 30}).fetch()
+        data: Intake.find({}).fetch()
     }
 }, IntakeList);

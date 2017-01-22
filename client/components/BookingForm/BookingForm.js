@@ -31,6 +31,7 @@ class BookingForm extends Component {
         this.state = (() => {
             const state = {
                 fields: {},
+                bookedBy: '',
                 bookings: [],
                 isSaved: false,
                 isSubmitting: false,
@@ -52,6 +53,7 @@ class BookingForm extends Component {
         this._onCreateBooking = this._onCreateBooking.bind(this);
         this._handleSubmit = this._handleSubmit.bind(this);
         this._onDeleteBooking = this._onDeleteBooking.bind(this);
+        this._onSetBookedBy = this._onSetBookedBy.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -89,6 +91,7 @@ class BookingForm extends Component {
             clientID: this.props.clientID,
             fields: this.state.fields,
             bookings: this.state.bookings,
+            bookedBy: this.state.bookedBy
         };
 
         this.setState({
@@ -166,6 +169,12 @@ class BookingForm extends Component {
         })
     }
 
+    _onSetBookedBy(id, value, valid) {
+        this.setState({
+            bookedBy: value
+        })
+    }
+
     render() {
         return (
             <div>
@@ -187,15 +196,19 @@ class BookingForm extends Component {
                         />
                     </Tab>
                     <Tab label='Sessions'>
-                        <BookingsListTab style={style.container}
-                                     bookings={this.state.bookings}
-                                     onSubmitBooking={this._onCreateBooking}
-                                     deleteBooking={this._onDeleteBooking}
+                        <BookingsListTab
+                            style={style.container}
+                            bookings={this.state.bookings}
+                            onSubmitBooking={this._onCreateBooking}
+                            deleteBooking={this._onDeleteBooking}
+                            setBookedBy={this._onSetBookedBy}
+                            bookedBy={this.state.bookedBy}
                         />
                         {this._getSaveButton(this.state.isSaved)}
                         <SubmitErrorDialog
                             handleSubmit={this._handleSubmit}
                             fieldValues={this.state.fields}
+                            bookedBy={this.state.bookedBy}
                             bookings={this.state.bookings}
                             isSubmitting={this.state.isSubmitting}
                             isSubmitted={this.state.isSubmitted}
