@@ -72,7 +72,7 @@ class FinishedStep extends Component {
                     <p>
                         If you would like to be notified in case space opens
                         up, please let us know what times you are typically available to come in, and we will give you a
-                        call if some someone else gives up their spot.
+                        call if someone else gives up their spot.
                     </p>
                     <div style={style.weekDaysContainer}>
                         {weekDays.map((day) => {

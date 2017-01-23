@@ -238,7 +238,7 @@ class IntakeForm extends Component {
                 return (
                     <div style={style.finishedStepContainer}>
                         <h2>Thank you for choosing Chronic Ink!</h2>
-                        <p>If you are in the shop, please let a staff member know that you've completed the form. Otherwise, we will be in touch shortly.</p>
+                        <p>If you are in the shop, please let a staff member know that you've completed the form. Otherwise, please give us a call when you are ready to leave your deposit.</p>
                     </div>
                 );
         }
