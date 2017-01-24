@@ -237,8 +237,11 @@ class IntakeForm extends Component {
             case 3:
                 return (
                     <div style={style.finishedStepContainer}>
-                        <h2>Thank you for choosing Chronic Ink!</h2>
-                        <p>If you are in the shop, please let a staff member know that you've completed the form. Otherwise, please give us a call when you are ready to leave your deposit.</p>
+                        <h2>Thank you!</h2>
+                        <p style={{textAlign: 'center'}}>If you are in the shop, please let a staff member know that you've completed the form. Otherwise, please give us a call when you are ready to leave your deposit.</p>
+                        <p style={{textAlign: 'center'}}>NOTE: The submission of this form does not imply that an appointment or booking has been made. Please contact us if you would like to continue with your consultation.
+                        This form will be deleted in 24 hours if no official booking and deposit has been completed.
+                        </p>
                     </div>
                 );
         }
