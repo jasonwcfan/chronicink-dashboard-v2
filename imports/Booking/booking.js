@@ -16,7 +16,7 @@ function createDescription(fields, bookedBy, bookedThru) {
         description = description + fields[key].label + ':\n\t' + fields[key].value + '\n';
     }
 
-    description = description + `Booked by ${bookedBy} ${bookedThru}`;
+    description = description + `\nBooked by ${bookedBy} ${bookedThru} on ${Moment().format('MMMM Do YYYY')}`;
 
     return description;
 }
