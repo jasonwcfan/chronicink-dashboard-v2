@@ -157,7 +157,9 @@ Meteor.methods({
             Booking.update({_id: form.formID}, {
                 clientID: form.clientID,
                 fields: form.fields,
-                bookings: form.bookings
+                bookings: form.bookings,
+                bookedBy: form.bookedBy,
+                bookedThru: form.bookedThru
             });
             return form.formID;
         }
@@ -165,7 +167,9 @@ Meteor.methods({
         return Booking.insert({
             clientID: form.clientID,
             fields: form.fields,
-            bookings: form.bookings
+            bookings: form.bookings,
+            bookedBy: form.bookedBy,
+            bookedThru: form.bookedThru
         });
     },
     'booking.submitToCalendar': function(form) {
