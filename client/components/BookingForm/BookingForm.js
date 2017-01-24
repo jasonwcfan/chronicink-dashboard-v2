@@ -32,6 +32,7 @@ class BookingForm extends Component {
             const state = {
                 fields: {},
                 bookedBy: '',
+                bookedThru: 'in person',
                 bookings: [],
                 isSaved: false,
                 isSubmitting: false,
@@ -54,6 +55,7 @@ class BookingForm extends Component {
         this._handleSubmit = this._handleSubmit.bind(this);
         this._onDeleteBooking = this._onDeleteBooking.bind(this);
         this._onSetBookedBy = this._onSetBookedBy.bind(this);
+        this._onSetBookedThru = this._onSetBookedThru.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -91,7 +93,8 @@ class BookingForm extends Component {
             clientID: this.props.clientID,
             fields: this.state.fields,
             bookings: this.state.bookings,
-            bookedBy: this.state.bookedBy
+            bookedBy: this.state.bookedBy,
+            bookedThru: this.state.bookedThru
         };
 
         this.setState({
@@ -175,6 +178,12 @@ class BookingForm extends Component {
         })
     }
 
+    _onSetBookedThru(target, idx, value) {
+        this.setState({
+            bookedThru: value
+        })
+    }
+
     render() {
         return (
             <div>
@@ -197,12 +206,13 @@ class BookingForm extends Component {
                     </Tab>
                     <Tab label='Sessions'>
                         <BookingsListTab
-                            style={style.container}
                             bookings={this.state.bookings}
                             onSubmitBooking={this._onCreateBooking}
                             deleteBooking={this._onDeleteBooking}
                             setBookedBy={this._onSetBookedBy}
+                            setBookedThru={this._onSetBookedThru}
                             bookedBy={this.state.bookedBy}
+                            bookedThru={this.state.bookedThru}
                         />
                         {this._getSaveButton(this.state.isSaved)}
                         <SubmitErrorDialog

@@ -1,22 +1,16 @@
 import React, { Component, PropTypes } from 'react';
-import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import ValidatedTextField from '../../Inputs/ValidatedTextField';
 import BookingsList from './BookingsList';
 
 
 const style = {
-    textField: {
-        marginLeft: 5,
-        marginRight: 5
+    container: {
+        margin: 5
     },
-    radioGroup: {
-        display: 'flex',
-        justifyContent: 'flex-start',
-        maxWidth: 650
-    },
-    radioButton: {
-        display: 'inline-block',
-        padding: 10,
+    bookedThruSelectField: {
+        display: 'block'
     }
 };
 
@@ -27,7 +21,7 @@ class BookingsListTab extends Component {
     
     render() {
         return (
-            <div style={this.props.style}>
+            <div style={style.container}>
                 <h2>Sessions</h2>
                 <BookingsList bookings={this.props.bookings} deleteBooking={this.props.deleteBooking} onSubmitBooking={this.props.onSubmitBooking} />
                 <ValidatedTextField
@@ -37,13 +31,22 @@ class BookingsListTab extends Component {
                     onFieldChange={this.props.setBookedBy}
                     required={true}
                 />
+                <SelectField
+                    style={style.bookedThruSelectField}
+                    value={this.props.bookedThru}
+                    onChange={this.props.setBookedThru}
+                >
+                    <MenuItem value='by phone' primaryText='By phone' />
+                    <MenuItem value='in person' primaryText='In person' />
+                </SelectField>
             </div>
         )
     }
 }
 
 BookingsListTab.propTypes = {
-    bookedBy: PropTypes.string
+    bookedBy: PropTypes.string,
+    bookedThru: PropTypes.string
 };
 
 export default BookingsListTab;

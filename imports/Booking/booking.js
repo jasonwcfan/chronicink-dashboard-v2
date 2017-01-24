@@ -3,7 +3,7 @@ import { Mongo } from 'meteor/mongo';
 import Client from '../Client/client';
 import Moment from 'moment';
 
-function createDescription(fields, bookedBy) {
+function createDescription(fields, bookedBy, bookedThru) {
     let description = '';
 
     for (const key in fields) {
@@ -16,7 +16,7 @@ function createDescription(fields, bookedBy) {
         description = description + fields[key].label + ':\n\t' + fields[key].value + '\n';
     }
 
-    description = description + 'Booked By:\n\t' + bookedBy + '\n';
+    description = description + `Booked by ${bookedBy} ${bookedThru}`;
 
     return description;
 }
@@ -35,7 +35,7 @@ function createEventResources(form, client) {
         event.end = {
             dateTime: booking.endTime
         };
-        event.description = createDescription(form.fields, form.bookedBy);
+        event.description = createDescription(form.fields, form.bookedBy, form.bookedThru);
         event.location = `${client.primaryPhoneNumber}/${client.email}`;
         event.extendedProperties= {
             private: {
