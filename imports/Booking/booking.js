@@ -24,11 +24,32 @@ function createDescription(fields, bookedBy, bookedThru) {
 function createEventResources(form, client) {
     const bookings = form.bookings;
     const events = [];
+    let presentationInfo = '';
+
+    bookings.forEach(function(booking) {
+        if (booking.type == 'Presentation') {
+            presentationInfo = `[IPP: ${Moment().format('DD/MM/YYYY')}] `;
+        } else if (booking.type == 'Email Presentation') {
+            presentationInfo = `[EP: ${Moment().format('DD/MM/YYYY')}] `;
+        }
+    });
 
     // TODO:
     bookings.map((booking) => {
         const event = { kind: 'calendar#event' };
-        event.summary = `${client.firstName} ${client.lastName} [${booking.type} ${booking.bookingNum}]`;
+        let confirmationInfo = '';
+
+        if (Moment({hour: 23, minute: 59}).diff(Moment(booking.startTime)) < 86400000) {
+            confirmationInfo = ' - confirmed x2';
+        } else if (Moment({hour: 23, minute: 59}).diff(Moment(booking.startTime)) < 1555200000) {
+            confirmationInfo = ' - confirmed';
+        }
+
+        if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
+            event.summary = `[${booking.type}] ${client.firstName} ${client.lastName}${confirmationInfo}`;
+        } else {
+            event.summary = `[${booking.type} ${booking.bookingNum}] ${presentationInfo}${client.firstName} ${client.lastName}${confirmationInfo}`;
+        }
         event.start = {
             dateTime: booking.startTime
         };
