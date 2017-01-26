@@ -82,9 +82,6 @@ GCalendar = {
 
 GMail = {
     sendEmail: function(recipient, subject, body) {
-        console.log(recipient);
-        console.log(subject);
-        console.log(body);
         const base64EncodedEmail = encodeEmail(recipient, subject, body);
 
         oauth2Client.setCredentials({

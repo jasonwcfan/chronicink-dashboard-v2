@@ -41,9 +41,11 @@ function createEventResources(form, client) {
         const event = { kind: 'calendar#event' };
         let confirmationInfo = '';
 
-        if (Moment({hour: 23, minute: 59}).diff(Moment(booking.startTime)) < 86400000) {
+        console.log(Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})));
+
+        if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 86400000) {
             confirmationInfo = ' - confirmed x2';
-        } else if (Moment({hour: 23, minute: 59}).diff(Moment(booking.startTime)) < 1555200000) {
+        } else if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 1555200000) {
             confirmationInfo = ' - confirmed';
         }
 
