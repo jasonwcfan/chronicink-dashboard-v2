@@ -6,11 +6,15 @@ import Moment from 'moment';
 function createDescription(fields, bookedBy, bookedThru) {
     let description = '';
 
+    description = description + fields.rateType.label + ':\n\t' + fields.rateType.value + '\n';
+    description = description + fields.rate.label + ':\n\t' + fields.rate.value + '\n';
+    description = description + fields.deposit.label + ':\n\t' + fields.deposit.value + '\n';
+
     for (const key in fields) {
         if (!fields.hasOwnProperty(key)) {
             continue;
         }
-        if (key == 'artist') {
+        if (key == 'artist' || key =='rateType' || key == 'rate' || key == 'deposit') {
             continue;
         }
         description = description + fields[key].label + ':\n\t' + fields[key].value + '\n';
