@@ -74,7 +74,7 @@ export default defaultIntakeFormFields = [
     {
         id: 'primaryPhoneNumber',
         label: 'Primary Phone Number',
-        inputType: 'textField',
+        inputType: 'phoneNumber',
         value: '',
         valid: false,
         required: true
@@ -82,14 +82,14 @@ export default defaultIntakeFormFields = [
     {
         id: 'secondaryPhoneNumber',
         label: 'Additional Phone Number',
-        inputType: 'textField',
+        inputType: 'phoneNumber',
         value: '',
         valid: true,
         required: false
     },
     {
         id: 'dateOfBirth',
-        label: 'Date of Birth',
+        label: 'Date of Birth (DD/MM/YYYY)',
         inputType: 'date',
         value: null,
         valid: false,

@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
+import MaskedInput from 'react-text-mask';
 
 class ValidatedTextField extends Component {
     constructor(props) {
@@ -65,13 +66,16 @@ class ValidatedTextField extends Component {
                     // https://github.com/callemall/material-ui/issues/1151
                     float: 'left'
                 }}
-            />
+            >
+                {this.props.mask ? <MaskedInput mask={this.props.mask} /> : null}
+            </TextField>
         )
     }
 }
 
 ValidatedTextField.propTypes = {
-    defaultValue: PropTypes.string
+    defaultValue: PropTypes.string,
+    mask: PropTypes.array
 };
 
 export default ValidatedTextField;

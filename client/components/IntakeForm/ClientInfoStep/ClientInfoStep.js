@@ -37,6 +37,19 @@ class ClientInfoStep extends Component {
                             required={field.required}
                         />
                     );
+                case 'phoneNumber':
+                    return (
+                        <ValidatedTextField
+                            style={style.textField}
+                            defaultValue={this.props.formValues[field.id].value}
+                            name={field.id}
+                            key={field.id}
+                            floatingLabelText={field.label}
+                            onFieldChange={this.props.onFieldChange}
+                            required={field.required}
+                            mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                        />
+                    );
                 case 'country':
                     return (
                         <CountrySelector
@@ -62,14 +75,14 @@ class ClientInfoStep extends Component {
                     );
                 case 'date':
                     return (
-                        <ValidatedDatePicker
-                            style={style.datePicker}
-                            defaultDate={this.props.formValues[field.id].value}
+                        <ValidatedTextField
+                            style={style.textField}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
+                            mask={[/[0-3]/, /\d/, '/', /[0-1]/, /\d/, '/', /[1-2]/, /[09]/, /\d/, /\d/]}
                         />
 
                     );

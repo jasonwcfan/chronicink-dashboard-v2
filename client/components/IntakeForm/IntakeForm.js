@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'react-meteor-data';
 import { withRouter } from 'react-router';
+import Moment from 'moment';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
@@ -115,6 +116,9 @@ class IntakeForm extends Component {
             medicalConditions: this.state.medicalConditions,
             cancellationAvailability: this.state.cancellationAvailability
         };
+
+        form.fields.dateOfBirth.value = Moment(form.fields.dateOfBirth.value, 'DD-MM-YYYY').toDate();
+
         this.setState({
             isSaving: true
         });
