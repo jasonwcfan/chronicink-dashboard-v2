@@ -4,7 +4,7 @@ import placements from './placements';
 export default defaultBookingFormFields = [
     {
         id: 'studioLocation',
-        label: 'Studio location',
+        label: 'Studio Location',
         inputType: 'radio',
         value: 'toronto',
         valid: true,
@@ -15,6 +15,9 @@ export default defaultBookingFormFields = [
         }, {
             value: 'markham',
             label: 'Markham'
+        }, {
+            value: 'convention',
+            label: 'Convention'
         }]
     },
     {
