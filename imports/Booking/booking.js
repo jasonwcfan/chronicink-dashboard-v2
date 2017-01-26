@@ -28,18 +28,16 @@ function createDescription(fields, bookedBy, bookedThru) {
 function createEventResources(form, client) {
     const bookings = form.bookings;
     const events = [];
-    let presentationInfo = '';
+    let presentationInfo = '[PR]';
 
     bookings.forEach(function(booking) {
-        if (booking.type == 'Presentation') {
-            presentationInfo = `[IPP: ${Moment().format('DD/MM/YYYY')}] `;
-        } else if (booking.type == 'Email Presentation') {
-            presentationInfo = `[EP: ${Moment().format('DD/MM/YYYY')}] `;
+        if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
+            presentationInfo = `[${Moment().format('DD/MM/YYYY')}] `;
         }
     });
 
     // TODO:
-    bookings.map((booking) => {
+    bookings.map((booking, idx) => {
         const event = { kind: 'calendar#event' };
         let confirmationInfo = '';
 
@@ -52,7 +50,7 @@ function createEventResources(form, client) {
         if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
             event.summary = `[${booking.type}] ${client.firstName} ${client.lastName}${confirmationInfo}`;
         } else {
-            event.summary = `[${booking.type} ${booking.bookingNum}] ${presentationInfo}${client.firstName} ${client.lastName}${confirmationInfo}`;
+            event.summary = `${booking.bookingNum == 1 && booking.type != 'Consultation' ? presentationInfo : ''}[${booking.type} ${booking.bookingNum}] ${client.firstName} ${client.lastName}${confirmationInfo}`;
         }
         event.start = {
             dateTime: booking.startTime
@@ -91,7 +89,7 @@ function getRateString(rateType, rate) {
 function createClientEmail(artist, client, form) {
 
     let body = `Hi ${client.firstName}!\n\nThis is Chronic Ink Tattoos, we wanted to send you a friendly reminder ` +
-        `that you have appointments booked with ${artist} for the following dates:\n`;
+        `that you have appointments booked with ${artist.name} for the following dates:\n`;
 
     form.bookings.forEach(function(booking) {
         const startTime = Moment(booking.startTime).utcOffset(-5);
