@@ -122,6 +122,14 @@ export default defaultBookingFormFields = [
         required: false
     },
     {
+        id: 'background',
+        label: 'Background',
+        inputType: 'textBox',
+        value: '',
+        valid: true,
+        required: false
+    },
+    {
         id: 'artist',
         label: 'Artist',
         inputType: 'artistSelect',
