@@ -28,7 +28,7 @@ function createDescription(fields, bookedBy, bookedThru) {
 function createEventResources(form, client) {
     const bookings = form.bookings;
     const events = [];
-    let presentationInfo = '[PR]';
+    let presentationInfo = form.presentationRequired ? '[PR]' : '[NPR]';
 
     bookings.forEach(function(booking) {
         if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
@@ -184,7 +184,8 @@ Meteor.methods({
                 fields: form.fields,
                 bookings: form.bookings,
                 bookedBy: form.bookedBy,
-                bookedThru: form.bookedThru
+                bookedThru: form.bookedThru,
+                presentationRequired: form.presentationRequired
             });
             return form.formID;
         }
@@ -194,7 +195,8 @@ Meteor.methods({
             fields: form.fields,
             bookings: form.bookings,
             bookedBy: form.bookedBy,
-            bookedThru: form.bookedThru
+            bookedThru: form.bookedThru,
+            presentationRequired: form.presentationRequired
         });
     },
     'booking.submitToCalendar': function(form) {

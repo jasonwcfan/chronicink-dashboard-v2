@@ -116,6 +116,7 @@ SubmitErrorDialog.propTypes = {
     fieldValues: PropTypes.object,
     bookings: PropTypes.array,
     bookedBy: PropTypes.string,
+    presentationRequired: PropTypes.bool,
     isSubmitted: PropTypes.bool,
     isSubmitting: PropTypes.bool,
     errorMessages: PropTypes.array

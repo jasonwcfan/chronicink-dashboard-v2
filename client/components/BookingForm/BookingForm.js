@@ -33,6 +33,7 @@ class BookingForm extends Component {
                 fields: {},
                 bookedBy: '',
                 bookedThru: 'in person',
+                presentationRequired: true,
                 bookings: [],
                 isSaved: false,
                 isSubmitting: false,
@@ -56,6 +57,7 @@ class BookingForm extends Component {
         this._onDeleteBooking = this._onDeleteBooking.bind(this);
         this._onSetBookedBy = this._onSetBookedBy.bind(this);
         this._onSetBookedThru = this._onSetBookedThru.bind(this);
+        this._onTogglePresentationRequired = this._onTogglePresentationRequired.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -63,6 +65,7 @@ class BookingForm extends Component {
             this.setState({
                 fields: props.form.fields,
                 formID: props.form._id,
+                presentationRequired: props.form.presentationRequired,
                 bookings: props.form.bookings
             })
         }
@@ -72,6 +75,7 @@ class BookingForm extends Component {
         const form = {
             formID: this.state.formID,
             clientID: this.props.clientID,
+            presentationRequired: this.state.presentationRequired,
             fields: this.state.fields,
             bookings: this.state.bookings
         };
@@ -94,7 +98,8 @@ class BookingForm extends Component {
             fields: this.state.fields,
             bookings: this.state.bookings,
             bookedBy: this.state.bookedBy,
-            bookedThru: this.state.bookedThru
+            bookedThru: this.state.bookedThru,
+            presentationRequired: this.state.presentationRequired
         };
 
         this.setState({
@@ -184,6 +189,13 @@ class BookingForm extends Component {
         })
     }
 
+    _onTogglePresentationRequired() {
+        console.log('toggle');
+        this.setState({
+            presentationRequired: !this.state.presentationRequired
+        })
+    }
+
     render() {
         return (
             <div>
@@ -211,8 +223,10 @@ class BookingForm extends Component {
                             deleteBooking={this._onDeleteBooking}
                             setBookedBy={this._onSetBookedBy}
                             setBookedThru={this._onSetBookedThru}
+                            togglePresentationRequired={this._onTogglePresentationRequired}
                             bookedBy={this.state.bookedBy}
                             bookedThru={this.state.bookedThru}
+                            presentationRequired={this.state.presentationRequired}
                         />
                         {this._getSaveButton(this.state.isSaved)}
                         <SubmitErrorDialog
@@ -220,6 +234,7 @@ class BookingForm extends Component {
                             fieldValues={this.state.fields}
                             bookedBy={this.state.bookedBy}
                             bookings={this.state.bookings}
+                            presentationRequired={this.state.presentationRequired}
                             isSubmitting={this.state.isSubmitting}
                             isSubmitted={this.state.isSubmitted}
                             errorMessages={this.state.errorMessages}
