@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
+import Moment from 'moment';
 
 const style = {
     container: {
@@ -56,6 +57,24 @@ class SubmitErrorDialog extends Component {
 
         if (this.props.bookedBy.length == 0) {
             errors.push('Please record who did the booking');
+        }
+
+        if (this.props.presentationRequired) {
+            let presentNow = false;
+            let hasPresentation = false;
+            this.props.bookings.forEach((booking) => {
+                if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
+                    hasPresentation = true;
+                }
+
+                if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 1555200000) {
+                    presentNow = true;
+                }
+            });
+
+            if (presentNow && !hasPresentation) {
+                errors.push('The first session is in less than 18 days, please book a presentation at this point');
+            }
         }
 
         if (errors.length > 0) {
