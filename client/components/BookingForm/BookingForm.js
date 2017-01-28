@@ -170,7 +170,15 @@ class BookingForm extends Component {
 
     _onDeleteBooking(index) {
         const newBookings = this.state.bookings.slice(0);
+        const deletedBooking = newBookings[index];
+
         newBookings.splice(index, 1);
+        newBookings.forEach((booking) => {
+            if (booking.type == deletedBooking.type && booking.bookingNum > deletedBooking.bookingNum) {
+                booking.bookingNum --;
+            }
+        });
+
         this.setState({
             isSaved: false,
             bookings: newBookings
