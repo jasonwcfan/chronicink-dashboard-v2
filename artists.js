@@ -35,6 +35,7 @@
     'name': 'Christine',
     'calendarID': 'christine@chronicinktattoo.com',
     'emails': [
+      'christine@chronicinktattoo.com',
       'qc@chronicinktattoo.com'
     ]
   },
@@ -42,6 +43,7 @@
     'name': 'CJ',
     'calendarID': 'carmen@chronicinktattoo.com',
     'emails': [
+      'carmen@chronicinktattoo.com',
       'qc@chronicinktattoo.com'
     ]
   },
@@ -111,6 +113,7 @@
     'name': 'George',
     'calendarID': 'george@chronicinktattoo.com', 
     'emails': [
+      'george@chronicinktattoo.com',
       'qc@chronicinktattoo.com'
     ]
   },
@@ -134,6 +137,7 @@
     'name': 'Joanna', 
     'calendarID': 'joanna@chronicinktattoo.com', 
     'emails': [
+      'joanna@chronicinktattoo.com',
       'qc@chronicinktattoo.com'
     ]
   },
@@ -149,6 +153,7 @@
     'name': 'Kevin Chen',
     'calendarID': 'kchen@chronicinktattoo.com', 
     'emails': [
+      'kchen@chronicinktattoo.com',
       'qc@chronicinktattoo.com'
     ]
   },
