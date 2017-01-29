@@ -115,5 +115,6 @@ function encodeEmail(recipient, subject, body) {
         "subject: ", subject, "\n\n",
         body
     ].join('');
-    return btoa(str);
+
+    return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
 }

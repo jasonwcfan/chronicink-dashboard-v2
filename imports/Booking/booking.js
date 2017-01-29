@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import Client from '../Client/client';
+import Studio from '../Studio/studio';
 import Moment from 'moment';
 
 function createDescription(fields, bookedBy, bookedThru) {
@@ -40,8 +41,6 @@ function createEventResources(form, client) {
     bookings.map((booking, idx) => {
         const event = { kind: 'calendar#event' };
         let confirmationInfo = '';
-
-        console.log(Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})));
 
         if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 86400000) {
             confirmationInfo = ' - confirmed x2';
@@ -228,7 +227,10 @@ Meteor.methods({
         GMail.sendEmail(client.email, 'Upcoming Tattoo Details', clientEmailBody);
         artist.emails.forEach(function(email) {
             GMail.sendEmail(email, `New Booking - ${client.firstName} ${client.lastName} - ${Moment(form.bookings[0].startTime).format('MMMM YYYY')}`, artistEmailBody);
-        })
+        });
+
+        // Send a client version of the email to the quality control email address
+        GMail.sendEmail(Studio.findOne({name: 'Chronic Ink'}).emails.qualityControl, `New Booking - ${client.firstName} ${client.lastName} - ${Moment(form.bookings[0].startTime).format('MMMM YYYY')}`, artistEmailBody)
     }
 });
 
