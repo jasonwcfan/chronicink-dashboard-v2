@@ -28,7 +28,7 @@ class AgreementStep extends Component {
                         <br />
                             <h4>RIGHT OF REFUSAL</h4>
 
-                            We reserve the right to refuse a tattoo at any point prior to the start of a tattoo. Deposits will be refunded if a sketch has not been drawn. We will only refuse a tattoo if we feel we cannot do the best artwork on a tattoo. Yes, this sounds subjective but we are in the business of doing tattoos, not to refuse them, and we hope our expertise will enable us to make sound judgements. This is the last thing we want to do and we realize you have to trust us, so we will do our best to make you proud.
+                            We reserve the right to refuse a tattoo at any point prior to the start of a tattoo, in which case the deposit would be returned if the sketch has yet to be drawn. We will only refuse a tattoo if we feel we cannot do the best artwork on a tattoo. Yes, this sounds subjective but we are in the business of doing tattoos, not to refuse them, and we hope our expertise will enable us to make sound judgements. This is the last thing we want to do and we realize you have to trust us, so we will do our best to make you proud.
 
                             <h4>REFUNDS</h4>
                             Deposits are non-refundable.
