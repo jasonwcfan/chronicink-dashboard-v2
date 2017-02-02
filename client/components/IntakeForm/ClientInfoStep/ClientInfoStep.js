@@ -79,6 +79,7 @@ class ClientInfoStep extends Component {
                             style={style.textField}
                             name={field.id}
                             key={field.id}
+                            defaultValue={this.props.formValues[field.id].value}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
