@@ -14,6 +14,9 @@ const style = {
     selector: {
         marginLeft: 5,
         marginRight: 5
+    },
+    headerText: {
+        textAlign: 'center'
     }
 };
 
@@ -94,10 +97,11 @@ class ClientInfoStep extends Component {
     render() {
         return (
             <div>
+                <h2 style={{textAlign: 'center'}}>Personal Info</h2><br />
                 <div className='clientInfoFields'>
                     {this._renderFields(this.props.formTemplate)}
                 </div>
-                <h2>Medical Conditions</h2><br />
+                <h2 style={{textAlign: 'center'}}>Medical Conditions</h2><br />
                 <MedicalConditionsChecklist medicalConditions={this.props.medicalConditions} onToggleMedicalCondition={this.props.onToggleMedicalCondition}/>
             </div>
         );
