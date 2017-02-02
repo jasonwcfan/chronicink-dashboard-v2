@@ -255,7 +255,7 @@ class IntakeForm extends Component {
         return (
         <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
             <div>
-                <Paper style={style.appContainer} zDepth={4}>
+                <Paper zDepth={4} >
                     <AppBar
                         title='Intake Form'
                     />

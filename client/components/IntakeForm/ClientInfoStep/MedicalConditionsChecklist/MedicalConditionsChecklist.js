@@ -34,7 +34,7 @@ class MedicalConditionsChecklist extends Component {
 
     render() {
         return(
-            <div style={style.container}>
+            <div style={style.container} className='medicalConditionsContainer'>
                 {this._renderConditionsList(this.props.medicalConditions)}
             </div>
         )

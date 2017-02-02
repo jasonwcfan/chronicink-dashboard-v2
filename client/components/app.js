@@ -63,7 +63,7 @@ class App extends Component {
     render() {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                <div style={style.window}>
+                <div style={style.window} className='appContainer'>
                     <SideNavBar onChangeApp={this.props.onChangeApp} />
                     <Paper style={style.appContainer} zDepth={4}>
                         <AppBar

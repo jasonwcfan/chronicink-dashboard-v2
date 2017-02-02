@@ -28,26 +28,8 @@ class ValidatedTextField extends Component {
                 errorText: null,
                 value: event.target.value
             });
-        }
-    }
-
-    _handleBlur(event) {
-        if (event.target.value.length == 0 && this.props.required) {
-            this.setState({
-                errorText: this.props.floatingLabelText + ' is required',
-                value: event.target.value
-            });
-
-            this.props.onFieldChange(this.props.name, event.target.value, false);
-        } else {
-            this.setState({
-                errorText: null,
-                value: event.target.value
-            });
-
             this.props.onFieldChange(this.props.name, event.target.value, true);
         }
-
     }
 
     render() {
@@ -58,7 +40,6 @@ class ValidatedTextField extends Component {
                 style={this.props.style}
                 floatingLabelText={this.props.floatingLabelText + (this.props.required ? ' *' : '')}
                 onChange={this._handleChange.bind(this)}
-                onBlur={this._handleBlur.bind(this)}
                 fullWidth={this.props.fullWidth}
                 multiLine={this.props.multiLine}
                 errorStyle={{
