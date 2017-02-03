@@ -146,6 +146,6 @@ export default IntakeList = createContainer(({ params }) => {
 
     return {
         subReady: subscription.ready(),
-        data: Intake.find({}).fetch()
+        data: Intake.find({}, {sort: {_id: -1}}).fetch()
     }
 }, IntakeList);
