@@ -16,6 +16,7 @@ Meteor.methods({
                     cancellationAvailability: form.cancellationAvailability,
                     bookingPending: true,
                     clientName: form.fields.firstName.value + ' ' + form.fields.lastName.value,
+                    date: new Date(),
                     clientID
                 }, function (error, formID) {
                     if (error) {

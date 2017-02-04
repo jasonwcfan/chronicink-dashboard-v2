@@ -85,7 +85,7 @@ GCalendar = {
 
         bookings.forEach(function(booking) {
             if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
-                presentationInfo = `[${Moment().format('DD/MM/YYYY')}] `;
+                presentationInfo = `[${Moment(booking.startTime).format('DD/MM/YYYY')}] `;
             }
         });
 
