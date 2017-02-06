@@ -1,7 +1,7 @@
 import { HTTP } from 'meteor/http';
 import google from 'googleapis';
 import googleAuth from 'google-auth-library';
-import Moment from 'moment';
+import Moment from 'moment-timezone';
 import btoa from 'btoa';
 
 const clientSecret = Meteor.settings.google.client_secret;
@@ -156,8 +156,8 @@ GMail = {
             `that you have appointments booked with ${artist.name} for the following dates:\n`;
 
         form.bookings.forEach(function(booking) {
-            const startTime = Moment(booking.startTime).utcOffset(-5);
-            const endTime = Moment(booking.endTime).utcOffset(-5);
+            const startTime = Moment(booking.startTime).tz('America/Toronto');
+            const endTime = Moment(booking.endTime).tz('America/Toronto');
             body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')}\n`;
         });
 
@@ -203,8 +203,8 @@ GMail = {
             `that you have appointments with ${client.firstName} ${client.lastName} for the following dates:\n`;
 
         form.bookings.forEach(function(booking) {
-            const startTime = Moment(booking.startTime).utcOffset(-5);
-            const endTime = Moment(booking.endTime).utcOffset(-5);
+            const startTime = Moment(booking.startTime).tz('America/Toronto');
+            const endTime = Moment(booking.endTime).tz('America/Toronto');
             body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')}\n`;
         });
 
