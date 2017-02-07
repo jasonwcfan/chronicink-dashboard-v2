@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react';
+import { withRouter } from 'react-router';
+import Moment from 'moment-timezone';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
@@ -42,14 +44,7 @@ const style = {
         overflow: 'auto',
         overflowX: 'hidden'
     },
-    listItemIconButton: {
-        position: 'absolute',
-        padding: 0,
-        height: 24,
-        width: 24,
-        right: 10,
-        bottom: 12
-    }
+
 };
 
 class IntakeList extends Component {
@@ -62,7 +57,10 @@ class IntakeList extends Component {
     }
 
     _handleListIconPressed(clientID) {
-        this.props.primaryWidgetAction('intakeList', startBooking, [clientID]);
+        this.props.router.push({
+            pathname: '/booking',
+            query: {clientID: clientID}
+        })
     }
 
     _handleDeleteFromIntakeList(intakeID) {
@@ -77,27 +75,24 @@ class IntakeList extends Component {
                         <ListItem
                             key={form._id}
                             primaryText={form.clientName}
-                        >
-                            {this.state.inDeleteMode ?
+                            secondaryText={form.date ? Moment(form.date).tz('America/Toronto').fromNow(): 'Submission date not available'}
+                            rightIconButton={this.state.inDeleteMode ?
                                 <IconButton
-                                    style={style.listItemIconButton}
                                     tooltipPosition='top-right'
                                     onTouchTap={this._handleDeleteFromIntakeList.bind(this, form._id)}
                                 >
                                     <DeleteIcon />
                                 </IconButton>
                                 :
-                                <LinkWrapper to={{pathname: '/booking', query: {clientID: form.clientID}}}>
-                                    <IconButton
-                                        style={style.listItemIconButton}
-                                        tooltip='Create Booking'
-                                        tooltipPosition='top-left'
-                                        onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                </LinkWrapper>
-                            }
+                                <IconButton
+                                    tooltip='Create Booking'
+                                    tooltipPosition='top-left'
+                                    onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                                }
+                        >
                         </ListItem>
                     );
                 }
@@ -148,4 +143,4 @@ export default IntakeList = createContainer(({ params }) => {
         subReady: subscription.ready(),
         data: Intake.find({}, {sort: {date: -1}}).fetch()
     }
-}, IntakeList);
+}, withRouter(IntakeList));
