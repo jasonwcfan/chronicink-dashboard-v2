@@ -78,7 +78,7 @@ GCalendar = {
             callback(null, bookedHours);
         })
     },
-    createEventResources: function(form, client) {
+    createEventResources: function(form, client, artist) {
         const bookings = form.bookings;
         const events = [];
         let presentationInfo = form.presentationRequired ? '[PR]' : '[NPR]';
@@ -110,7 +110,7 @@ GCalendar = {
             event.end = {
                 dateTime: booking.endTime
             };
-            event.description = createEventDescription(form.fields, form.bookedBy, form.bookedThru);
+            event.description = createEventDescription(form.fields, form.bookedBy, form.bookedThru, artist);
             event.location = `${client.primaryPhoneNumber}/${client.email}`;
             event.extendedProperties= {
                 private: {
@@ -282,7 +282,7 @@ function getRateString(rateType, rate) {
     }
 }
 
-function createEventDescription(fields, bookedBy, bookedThru) {
+function createEventDescription(fields, bookedBy, bookedThru, artist) {
     let description = '';
 
     description = description + fields.rateType.label + ':\n\t' + fields.rateType.value + '\n';
@@ -293,7 +293,11 @@ function createEventDescription(fields, bookedBy, bookedThru) {
         if (!fields.hasOwnProperty(key)) {
             continue;
         }
-        if (key == 'artist' || key =='rateType' || key == 'rate' || key == 'deposit') {
+        if (key =='rateType' || key == 'rate' || key == 'deposit') {
+            continue;
+        }
+        if (key == 'artist') {
+            description = description + 'Artist:\n\t' + artist.name + '\n';
             continue;
         }
         description = description + fields[key].label + ':\n\t' + fields[key].value + '\n';

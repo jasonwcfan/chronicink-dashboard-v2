@@ -36,15 +36,18 @@ Meteor.methods({
         Meteor.call('booking.saveForm', form);
 
         if (Meteor.isServer) {
+            const artist = Artist.findOne({_id: new Mongo.ObjectID(form.fields.artist.value)});
+            console.log(artist);
+
             const client = Client.findOne({_id: form.clientID});
             // Build events resource and pass it to GCalendar.insertEvent()
-            const events = GCalendar.createEventResources(form, client);
+            const events = GCalendar.createEventResources(form, client, artist);
             const responses = [];
 
             // Push events to calendar, keep track of errors/responses
             events.forEach(function(event) {
                 const insertEvent = Meteor.wrapAsync(GCalendar.insertEvent);
-                responses.push(insertEvent(event, form.fields.artist.value));
+                responses.push(insertEvent(event, artist.calendarID));
             });
 
             Meteor.call('booking.sendEmail', client, form);
@@ -53,7 +56,7 @@ Meteor.methods({
         }
     },
     'booking.sendEmail': function(client, form) {
-        const artist = Artist.findOne({calendarID: form.fields.artist.value});
+        const artist = Artist.findOne({_id: new Mongo.ObjectID(form.fields.artist.value)});
 
         const clientEmailBody = GMail.createClientEmail(artist, client, form);
         const artistEmailBody = GMail.createArtistEmail(artist, client, form);

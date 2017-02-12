@@ -135,6 +135,7 @@ class BookingForm extends Component {
         const newFields = _.extend({}, this.state.fields);
         newFields[id].value = value;
         newFields[id].valid = valid;
+        console.log(value);
 
         // Reset buttons and errors since something was changed
         this.setState({
