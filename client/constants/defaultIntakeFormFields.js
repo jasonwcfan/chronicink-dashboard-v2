@@ -66,7 +66,7 @@ export default defaultIntakeFormFields = [
     {
         id: 'email',
         label: 'Email',
-        inputType: 'textField',
+        inputType: 'email',
         value: '',
         valid: false,
         required: true
