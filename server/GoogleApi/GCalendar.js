@@ -84,8 +84,12 @@ GCalendar = {
         let presentationInfo = form.presentationRequired ? '[PR]' : '[NPR]';
 
         bookings.forEach(function(booking) {
+            // Make timezone always 'America/Toronto'
+            booking.startTime = Moment().tz('America/Toronto').hour(booking.startTime.getHours()).minute(booking.startTime.getMinutes());
+            booking.endTime = Moment().tz('America/Toronto').hour(booking.endTime.getHours()).minute(booking.endTime.getMinutes());
+
             if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
-                presentationInfo = `[${Moment(booking.startTime).format('DD/MM/YYYY')}] `;
+                presentationInfo = `[${booking.startTime.format('DD/MM/YYYY')}] `;
             }
         });
 
@@ -93,9 +97,9 @@ GCalendar = {
             const event = { kind: 'calendar#event' };
             let confirmationInfo = '';
 
-            if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 86400000) {
+            if (booking.startTime.diff(Moment({hour: 23, minute: 59})) < 86400000) {
                 confirmationInfo = ' - confirmed x2';
-            } else if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 1555200000) {
+            } else if (booking.startTime.diff(Moment({hour: 23, minute: 59})) < 1555200000) {
                 confirmationInfo = ' - confirmed';
             }
 
@@ -158,7 +162,7 @@ GMail = {
         form.bookings.forEach(function(booking) {
             const startTime = Moment(booking.startTime).tz('America/Toronto');
             const endTime = Moment(booking.endTime).tz('America/Toronto');
-            body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')}\n`;
+            body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')} EST\n`;
         });
 
         body += `\nHere's some more info about your bookings:\n`;
@@ -205,7 +209,7 @@ GMail = {
         form.bookings.forEach(function(booking) {
             const startTime = Moment(booking.startTime).tz('America/Toronto');
             const endTime = Moment(booking.endTime).tz('America/Toronto');
-            body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')}\n`;
+            body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')} EST\n`;
         });
 
         body += '\nDetails about this tattoo:';
@@ -237,7 +241,7 @@ GMail = {
         form.bookings.forEach(function(booking) {
             const startTime = Moment(booking.startTime).utcOffset(-5);
             const endTime = Moment(booking.endTime).utcOffset(-5);
-            body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')}\n`;
+            body += `\t- ${booking.type}: ${startTime.format('dddd, MMMM Do YYYY')}, ${startTime.format('h:mmA')} to ${endTime.format('h:mmA')} EST\n`;
         });
 
         body += '\nDetails about this tattoo:';

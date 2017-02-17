@@ -53,6 +53,19 @@ class ClientInfoStep extends Component {
                             mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                         />
                     );
+                case 'email':
+                    return (
+                        <ValidatedTextField
+                            style={style.textField}
+                            defaultValue={this.props.formValues[field.id].value}
+                            name={field.id}
+                            key={field.id}
+                            floatingLabelText={field.label}
+                            onFieldChange={this.props.onFieldChange}
+                            required={field.required}
+                            pattern={/^[^\s@]+@[^\s@]+\.[^\s@]+$/}
+                        />
+                    );
                 case 'country':
                     return (
                         <CountrySelector
