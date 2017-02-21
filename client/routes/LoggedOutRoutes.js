@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Redirect, withRouter, IndexRedirect } from 'react-router'
 import Login from '../components/Login';
-import IntakeForm from '../components/IntakeForm'
+import IntakeForm from '../components/NewIntakeForm'
 
 export default LoggedInRoutes = (
     <Route path='/'>
