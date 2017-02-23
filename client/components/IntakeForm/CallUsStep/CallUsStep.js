@@ -20,8 +20,8 @@ class CallUsStep extends Component {
     render() {
         return (
             <div style={{textAlign: 'center'}}>
-                <h2>You're not finished yet!</h2>
-                <p>If you are in the shop, please let a staff member know that you've completed the form. Otherwise, please give us a call when you are ready to leave your deposit.</p>
+                <h2>You\'re not finished yet!</h2>
+                <p>If you are in the shop, please let a staff member know that you\'ve completed the form. Otherwise, please give us a call when you are ready to leave your deposit.</p>
 
                 <RaisedButton
                     href="tel:416-544-0311"
