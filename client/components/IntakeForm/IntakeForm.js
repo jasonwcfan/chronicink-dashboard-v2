@@ -20,6 +20,7 @@ import disclaimerAgreements from '../../constants/defaultDisclaimerAgreements';
 import ClientInfoStep from './ClientInfoStep';
 import AgreementStep from './AgreementStep';
 import FinishedStep from './FinishedStep';
+import CallUsStep from './CallUsStep';
 import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
 
@@ -40,7 +41,14 @@ const style = {
     linearProgressContainer: {
         paddingBottom: 10,
         width: '95%'
-    }
+    },
+    callUsStepContainer: {
+        display: 'flex',
+        minHeight: 500,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 };
 
 class IntakeForm extends Component {
@@ -240,12 +248,8 @@ class IntakeForm extends Component {
                 );
             case 3:
                 return (
-                    <div style={style.finishedStepContainer}>
-                        <h2>Thank you!</h2>
-                        <p style={{textAlign: 'center'}}>If you are in the shop, please let a staff member know that you've completed the form. Otherwise, please give us a call when you are ready to leave your deposit.</p>
-                        <p style={{textAlign: 'center'}}>NOTE: The submission of this form does not imply that an appointment or booking has been made. Please contact us if you would like to continue with your consultation.
-                        This form will be deleted in 24 hours if no official booking and deposit has been completed.
-                        </p>
+                    <div style={style.callUsStepContainer}>
+                        <CallUsStep/>
                     </div>
                 );
         }
@@ -268,6 +272,9 @@ class IntakeForm extends Component {
                         </Step>
                         <Step>
                             <StepLabel>Submit</StepLabel>
+                        </Step>
+                        <Step>
+                            <StepLabel>Call Us</StepLabel>
                         </Step>
                     </Stepper>
                     <div style={style.container}>
