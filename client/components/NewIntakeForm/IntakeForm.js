@@ -2,17 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'react-meteor-data';
 import { withRouter } from 'react-router';
 import Moment from 'moment';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import RaisedButton from 'material-ui/RaisedButton';
-import {
-    Step,
-    Stepper,
-    StepLabel,
-} from 'material-ui/Stepper';
-import Paper from 'material-ui/Paper';
-import AppBar from 'material-ui/AppBar';
 import LinearProgress from 'material-ui/LinearProgress';
 import defaultFields from '../../constants/defaultIntakeFormFields';
 import medicalConditions from '../../constants/medicalConditions';
@@ -22,6 +12,10 @@ import AgreementStep from './AgreementStep';
 import FinishedStep from './FinishedStep';
 import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
+
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 const style = {
     container: {
@@ -43,6 +37,7 @@ const style = {
     }
 };
 
+@Radium
 class IntakeForm extends Component {
     constructor(props) {
         super(props);
@@ -253,29 +248,17 @@ class IntakeForm extends Component {
 
     render() {
         return (
-        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-            <div>
-                <Paper zDepth={4} >
-                    <AppBar
-                        title='Intake Form'
-                    />
-                    <Stepper activeStep={this.state.stepIndex}>
-                        <Step>
-                            <StepLabel>Personal Information</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Disclaimer</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Submit</StepLabel>
-                        </Step>
-                    </Stepper>
-                    <div style={style.container}>
-                        {this._renderStepContent(this.state.stepIndex)}
+            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+                <div>
+                    <div>
+                        <div onClick={() => {this.setState({stepIndex: 0})}}>Personal Information</div>
+                        <div onClick={() => {this.setState({stepIndex: 1})}}>Disclaimer</div>
+                        <div onClick={() => {this.setState({stepIndex: 2})}}>Availability</div>
+                        <div onClick={() => {this.setState({stepIndex: 3})}}>Call Us</div>
                     </div>
-                </Paper>
-            </div>
-        </MuiThemeProvider>
+                    {this._renderStepContent(this.state.stepIndex)}
+                </div>
+            </MuiThemeProvider>
         );
     }
 }
