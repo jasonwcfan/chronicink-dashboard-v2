@@ -38,6 +38,10 @@ const style = {
     navButton: {
         margin: 10
     },
+    navButtonContainer: {
+        display: 'flex',
+        justifyContent: 'center'
+    },
     finishedStepContainer: {
         display: 'flex',
         minHeight: 500,
@@ -155,7 +159,7 @@ class IntakeForm extends Component {
         })
     }
 
-    _handleToggleMedicalCondition(idx, condition) {
+    _handleToggleMedicalCondition(idx) {
         const newConditions = [...this.state.medicalConditions];
         newConditions[idx].value = !newConditions[idx].value;
 
@@ -182,6 +186,7 @@ class IntakeForm extends Component {
     }
 
     _incrementStep() {
+        window.scrollTo(0, 0);
         this.setState({
             stepIndex: this.state.stepIndex < 2 ? this.state.stepIndex + 1 : 2
         })
@@ -271,18 +276,49 @@ class IntakeForm extends Component {
                         <div>
                             <img key='logo' src={'images/chronicink_logo.png'} style={style.logo}/>
                         </div>
-                        <Tabs>
-                            <Tab label={window.innerWidth > 425 ? 'Personal Info' : null} icon={<PersonalInfoIcon style={{height: 40, width: 40}} />} >
+                        <Tabs value={this.state.stepIndex}>
+                            <Tab
+                                label={window.innerWidth > 425 ? 'Personal Info' : null}
+                                icon={<PersonalInfoIcon />}
+                                value={0}
+                                onActive={() => {this.setState({stepIndex: 0})}}
+                            >
                                 <ClientInfoStep
                                     onFieldChange={this._handleFieldChange}
                                     formTemplate={this.props.formTemplate}
                                     formValues={this.state.fields}
                                     onToggleMedicalCondition={this._handleToggleMedicalCondition}
                                     medicalConditions={this.state.medicalConditions} />
+                                <div style={style.navButtonContainer}>
+                                    <RaisedButton style={style.navButton} label='Next' secondary={true} onTouchTap={this._incrementStep} />
+                                </div>
                             </Tab>
-                            <Tab label={window.innerWidth > 425 ? 'Disclaimer' : null} icon={<DisclaimerIcon />} >Disclaimer</Tab>
-                            <Tab label={window.innerWidth > 425 ? 'Availability' : null} icon={<AvailabilityIcon />} >Availability</Tab>
-                            <Tab label={window.innerWidth > 425 ? 'Call Us' : null} icon={<CallUsIcon />} >Call Us</Tab>
+                            <Tab
+                                label={window.innerWidth > 425 ? 'Disclaimer' : null}
+                                icon={<DisclaimerIcon />}
+                                value={1}
+                                onActive={() => {this.setState({stepIndex: 1})}}
+                            >
+                                <AgreementStep
+                                    onToggleAgreement={this._handleToggleAgreement}
+                                    agreements={this.state.disclaimerAgreements} />
+                                <div style={style.navButtonContainer}>
+                                    <RaisedButton style={style.navButton} label="Previous" primary={true} onTouchTap={this._decrementStep} />
+                                    <RaisedButton style={style.navButton} label="Next" secondary={true} onTouchTap={this._incrementStep} />
+                                </div>
+                            </Tab>
+                            <Tab
+                                label={window.innerWidth > 425 ? 'Availability' : null}
+                                icon={<AvailabilityIcon />}
+                                value={2}
+                                onActive={() => {this.setState({stepIndex: 2})}}
+                            >Availability</Tab>
+                            <Tab
+                                label={window.innerWidth > 425 ? 'Call Us' : null}
+                                icon={<CallUsIcon />}
+                                value={3}
+                                onActive={() => {this.setState({stepIndex: 3})}}
+                            >Call Us</Tab>
                         </Tabs>
                     </div>
                 </StyleRoot>
