@@ -3,6 +3,15 @@ import MedicalConditionsChecklist from './MedicalConditionsChecklist';
 import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../../Inputs';
 
 const style = {
+    header: {
+        fontFamily: 'Roboto, sans-serif',
+        textAlign: 'center'
+    },
+    fieldsContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center'
+    },
     textField: {
         marginLeft: 5,
         marginRight: 5,
@@ -110,11 +119,11 @@ class ClientInfoStep extends Component {
     render() {
         return (
             <div>
-                <h2 style={{textAlign: 'center'}}>Personal Info</h2><br />
-                <div className='clientInfoFields'>
+                <h2 style={style.header}>Personal Information</h2><br />
+                <div style={style.fieldsContainer}>
                     {this._renderFields(this.props.formTemplate)}
                 </div>
-                <h2 style={{textAlign: 'center'}}>Medical Conditions</h2><br />
+                <h2 style={style.header}>Medical Conditions</h2><br />
                 <MedicalConditionsChecklist medicalConditions={this.props.medicalConditions} onToggleMedicalCondition={this.props.onToggleMedicalCondition}/>
             </div>
         );

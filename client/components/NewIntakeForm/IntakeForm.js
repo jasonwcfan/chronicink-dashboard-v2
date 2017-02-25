@@ -1,9 +1,14 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'react-meteor-data';
-import { withRouter } from 'react-router';
+import Radium from 'radium';
+import { StyleRoot } from 'radium';
 import Moment from 'moment';
 import RaisedButton from 'material-ui/RaisedButton';
 import LinearProgress from 'material-ui/LinearProgress';
+import PersonalInfoIcon from 'material-ui/svg-icons/action/account-circle';
+import DisclaimerIcon from 'material-ui/svg-icons/action/assignment';
+import AvailabilityIcon from 'material-ui/svg-icons/action/date-range';
+import CallUsIcon from 'material-ui/svg-icons/communication/call';
 import defaultFields from '../../constants/defaultIntakeFormFields';
 import medicalConditions from '../../constants/medicalConditions';
 import disclaimerAgreements from '../../constants/defaultDisclaimerAgreements';
@@ -14,12 +19,21 @@ import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { Tabs, Tab } from 'material-ui/Tabs';
 
 const style = {
     container: {
         margin: 5
+    },
+    logo: {
+        height: 72,
+        display: 'block',
+        margin: 'auto',
+        '@media (max-width: 768px)': {
+            height: 54
+        }
     },
     navButton: {
         margin: 10
@@ -37,7 +51,6 @@ const style = {
     }
 };
 
-@Radium
 class IntakeForm extends Component {
     constructor(props) {
         super(props);
@@ -247,17 +260,32 @@ class IntakeForm extends Component {
     }
 
     render() {
+        let customMuiTheme = lightBaseTheme;
+        customMuiTheme.palette.primary1Color = '#303030';
+        customMuiTheme.palette.accent1Color = '#e9cd62';
+
         return (
-            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                <div>
+            <MuiThemeProvider muiTheme={getMuiTheme(customMuiTheme)}>
+                <StyleRoot>
                     <div>
-                        <div onClick={() => {this.setState({stepIndex: 0})}}>Personal Information</div>
-                        <div onClick={() => {this.setState({stepIndex: 1})}}>Disclaimer</div>
-                        <div onClick={() => {this.setState({stepIndex: 2})}}>Availability</div>
-                        <div onClick={() => {this.setState({stepIndex: 3})}}>Call Us</div>
+                        <div>
+                            <img key='logo' src={'images/chronicink_logo.png'} style={style.logo}/>
+                        </div>
+                        <Tabs>
+                            <Tab label={window.innerWidth > 425 ? 'Personal Info' : null} icon={<PersonalInfoIcon style={{height: 40, width: 40}} />} >
+                                <ClientInfoStep
+                                    onFieldChange={this._handleFieldChange}
+                                    formTemplate={this.props.formTemplate}
+                                    formValues={this.state.fields}
+                                    onToggleMedicalCondition={this._handleToggleMedicalCondition}
+                                    medicalConditions={this.state.medicalConditions} />
+                            </Tab>
+                            <Tab label={window.innerWidth > 425 ? 'Disclaimer' : null} icon={<DisclaimerIcon />} >Disclaimer</Tab>
+                            <Tab label={window.innerWidth > 425 ? 'Availability' : null} icon={<AvailabilityIcon />} >Availability</Tab>
+                            <Tab label={window.innerWidth > 425 ? 'Call Us' : null} icon={<CallUsIcon />} >Call Us</Tab>
+                        </Tabs>
                     </div>
-                    {this._renderStepContent(this.state.stepIndex)}
-                </div>
+                </StyleRoot>
             </MuiThemeProvider>
         );
     }
@@ -296,4 +324,4 @@ export default IntakeForm = createContainer(({ clientID }) => {
         }),
         disclaimerAgreements
     }
-}, withRouter(IntakeForm));
+}, Radium(IntakeForm));

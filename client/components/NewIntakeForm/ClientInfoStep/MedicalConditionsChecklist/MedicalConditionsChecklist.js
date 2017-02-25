@@ -5,12 +5,13 @@ const style = {
     container: {
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'center',
         flexWrap: 'wrap',
         width: '100%'
 
     },
     item: {
-        width: 200,
+        width: 175,
         padding: 10
     }
 };
