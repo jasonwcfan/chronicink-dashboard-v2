@@ -1,16 +1,26 @@
 import React, { Component, PropTypes } from 'react';
+import Radium from 'radium';
 import MedicalConditionsChecklist from './MedicalConditionsChecklist';
 import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../../Inputs';
 
 const style = {
+    container: {
+        marginLeft: 10
+    },
     header: {
         fontFamily: 'Roboto, sans-serif',
-        textAlign: 'center'
+        textAlign: 'center',
+        '@media (min-width: 1024px)': {
+            textAlign: 'left'
+        }
     },
     fieldsContainer: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        '@media (min-width: 1024px)': {
+            justifyContent: 'flex-start'
+        }
     },
     textField: {
         marginLeft: 5,
@@ -118,7 +128,7 @@ class ClientInfoStep extends Component {
 
     render() {
         return (
-            <div>
+            <div style={style.container}>
                 <h2 style={style.header}>Personal Information</h2><br />
                 <div style={style.fieldsContainer}>
                     {this._renderFields(this.props.formTemplate)}
@@ -137,4 +147,4 @@ ClientInfoStep.propTypes = {
     medicalConditions: PropTypes.array
 };
 
-export default ClientInfoStep;
+export default Radium(ClientInfoStep);

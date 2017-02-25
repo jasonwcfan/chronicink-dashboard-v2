@@ -40,7 +40,10 @@ const style = {
     },
     navButtonContainer: {
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        '@media (min-width: 1024px)': {
+            justifyContent: 'flex-start'
+        }
     },
     finishedStepContainer: {
         display: 'flex',
