@@ -18,7 +18,6 @@ import AgreementStep from './AgreementStep';
 import CallUsStep from './CallUsStep';
 import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
-
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
