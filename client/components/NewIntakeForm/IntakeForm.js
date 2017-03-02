@@ -15,6 +15,7 @@ import medicalConditions from '../../constants/medicalConditions';
 import disclaimerAgreements from '../../constants/defaultDisclaimerAgreements';
 import ClientInfoStep from './ClientInfoStep';
 import AgreementStep from './AgreementStep';
+import AvailabilityStep from './AvailabilityStep';
 import CallUsStep from './CallUsStep';
 import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
@@ -188,14 +189,17 @@ class IntakeForm extends Component {
         })
     }
 
-    _incrementStep() {
+    _incrementStep(e) {
+        e.preventDefault();
         window.scrollTo(0, 0);
         this.setState({
-            stepIndex: this.state.stepIndex < 2 ? this.state.stepIndex + 1 : 2
+            stepIndex: this.state.stepIndex < 3 ? this.state.stepIndex + 1 : 2
         })
     }
 
-    _decrementStep() {
+    _decrementStep(e) {
+        e.preventDefault();
+        window.scrollTo(0, 0);
         this.setState({
             stepIndex: this.state.stepIndex > 0 ? this.state.stepIndex - 1 : 0
         })
@@ -205,66 +209,6 @@ class IntakeForm extends Component {
         this.setState({
             stepIndex: 0
         })
-    }
-
-    _renderStepContent(stepIndex) {
-        switch (stepIndex) {
-            case 0:
-                return (
-                    <div>
-                        <ClientInfoStep
-                            onFieldChange={this._handleFieldChange}
-                            formTemplate={this.props.formTemplate}
-                            formValues={this.state.fields}
-                            onToggleMedicalCondition={this._handleToggleMedicalCondition}
-                            medicalConditions={this.state.medicalConditions} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._incrementStep} />
-                    </div>
-                );
-            case 1:
-                return (
-                    <div>
-                        <AgreementStep
-                            onToggleAgreement={this._handleToggleAgreement}
-                            agreements={this.state.disclaimerAgreements} />
-                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._incrementStep} />
-                        {}
-                    </div>
-                );
-            case 2:
-                return (
-                    <div style={style.finishedStepContainer}>
-                        <FinishedStep
-                            fields={this.state.fields}
-                            disclaimerAgreements={this.state.disclaimerAgreements}
-                            resetStep={this._resetStep}
-                            handleSubmit={this._handleSubmit}
-                            isSaving={this.state.isSaving}
-                            cancellationAvailability={this.state.cancellationAvailability}
-                            onToggleCancellationAvailability={this._handleToggleCancellationAvailability}
-                        />
-
-                        {this.state.savingForm ?
-                            <div style={style.linearProgressContainer}>
-                                <LinearProgress mode="indeterminate" />
-                            </div> :
-                            null
-                        }
-
-                    </div>
-                );
-            case 3:
-                return (
-                    <div style={style.finishedStepContainer}>
-                        <h2>Thank you!</h2>
-                        <p style={{textAlign: 'center'}}>If you are in the shop, please let a staff member know that you've completed the form. Otherwise, please give us a call when you are ready to leave your deposit.</p>
-                        <p style={{textAlign: 'center'}}>NOTE: The submission of this form does not imply that an appointment or booking has been made. Please contact us if you would like to continue with your consultation.
-                        This form will be deleted in 24 hours if no official booking and deposit has been completed.
-                        </p>
-                    </div>
-                );
-        }
     }
 
     render() {
@@ -315,7 +259,22 @@ class IntakeForm extends Component {
                                 icon={<AvailabilityIcon />}
                                 value={2}
                                 onActive={() => {this.setState({stepIndex: 2})}}
-                            >Availability</Tab>
+                            >
+                                <AvailabilityStep
+                                    fields={this.state.fields}
+                                    disclaimerAgreements={this.state.disclaimerAgreements}
+                                    resetStep={this._resetStep}
+                                    handleSubmit={this._handleSubmit}
+                                    isSaving={this.state.isSaving}
+                                    cancellationAvailability={this.state.cancellationAvailability}
+                                    onToggleCancellationAvailability={this._handleToggleCancellationAvailability}
+                                />
+                                <div style={style.navButtonContainer}>
+                                    <RaisedButton style={style.navButton} label="Previous" primary={true} onTouchTap={this._decrementStep} />
+                                    {this.state.isSaving ? <RaisedButton style={style.navButton} primary={true} label='Saving...' disabled={true} /> :
+                                        <RaisedButton style={style.navButton} secondary={true} label='Submit' onTouchTap={this._handleSubmit} />}
+                                </div>
+                            </Tab>
                             <Tab
                                 label={window.innerWidth > 425 ? 'Call Us' : null}
                                 icon={<CallUsIcon />}

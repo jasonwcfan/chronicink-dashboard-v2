@@ -6,7 +6,6 @@ import CommunicationCall from 'material-ui/svg-icons/communication/call';
 const style = {
     container: {
         display: 'flex',
-        minHeight: 500,
         flexDirection: 'column',
         alignItems: 'center',
         textAlign: 'center',
