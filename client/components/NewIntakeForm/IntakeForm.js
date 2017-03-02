@@ -15,7 +15,7 @@ import medicalConditions from '../../constants/medicalConditions';
 import disclaimerAgreements from '../../constants/defaultDisclaimerAgreements';
 import ClientInfoStep from './ClientInfoStep';
 import AgreementStep from './AgreementStep';
-import FinishedStep from './FinishedStep';
+import CallUsStep from './CallUsStep';
 import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
 
@@ -322,7 +322,9 @@ class IntakeForm extends Component {
                                 icon={<CallUsIcon />}
                                 value={3}
                                 onActive={() => {this.setState({stepIndex: 3})}}
-                            >Call Us</Tab>
+                            >
+                                <CallUsStep/>
+                            </Tab>
                         </Tabs>
                     </div>
                 </StyleRoot>

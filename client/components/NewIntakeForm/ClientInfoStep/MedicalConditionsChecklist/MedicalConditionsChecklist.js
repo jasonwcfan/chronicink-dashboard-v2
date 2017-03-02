@@ -12,8 +12,8 @@ const style = {
 
     },
     checkbox: {
-        width: 175,
-        padding: 10
+        width: 174,
+        paddingBottom: 10
     },
     checkboxIcon: {
         fill: colors.CitGold
