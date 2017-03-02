@@ -19,10 +19,12 @@ class AgreementStep extends Component {
     render() {
         return (
             <div>
-                <h3>Deposit Structure</h3><br />
+                <h3>Deposit Structure</h3>
+                    (all prices are before tax) <br /><br />
+
                     Small – $80<br />
                     Medium – $150<br />
-                    Large – $350<br />
+                    Large (or guest artists) – $350<br />
                     <br />
                         Small to Medium tattoos are priced uniquely by the tattoo. Small to Medium tattoos are estimated to require less than 4 hours for completion. Large pieces are priced by the hour or by a day rate.* Large tattoos are estimated to require more than 4 hours for completion. *Day rates only apply to large tattoos. Day rates are fixed rates for an entire day of tattooing from an artist because some artists prefer to work on a day rate so they don’t feel the pressure of time. Think of it as hiring a photographer for a day of work.
                         <br />
