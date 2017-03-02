@@ -108,7 +108,7 @@ class IntakeForm extends Component {
                 state.fields[field.id] = {
                     value: field.value,
                     id: field.id,
-                    valid: field.valid,
+                    errorText: field.required ? '' : null,
                     label: field.label
                 }
             });
@@ -152,10 +152,10 @@ class IntakeForm extends Component {
         });
     }
 
-    _handleFieldChange(id, value, valid) {
+    _handleFieldChange(id, value, errorText) {
         const newFields = {...this.state.fields};
         newFields[id].value = value;
-        newFields[id].valid = valid;
+        newFields[id].errorText = errorText;
 
         this.setState({
             fields: newFields,
@@ -297,7 +297,7 @@ IntakeForm.propTypes = {
         label: PropTypes.string,
         inputType: PropTypes.string.isRequired,
         value: PropTypes.any,
-        valid: PropTypes.bool.isRequired,
+        errorText: PropTypes.string,
         required: PropTypes.bool.isRequired
     }).isRequired).isRequired,
     form: PropTypes.object
