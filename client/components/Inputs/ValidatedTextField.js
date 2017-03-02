@@ -25,7 +25,7 @@ class ValidatedTextField extends Component {
             errorText = this.props.floatingLabelText + ' is required'
         } else if (this.props.pattern) {
             const matches = this.props.pattern.test(event.target.value);
-            errorText = matches ? null : 'Not a valid ' + this.props.floatingLabelText;
+            errorText = matches ? null : `Not a valid ${this.props.floatingLabelText}`;
         }
 
         this.setState({

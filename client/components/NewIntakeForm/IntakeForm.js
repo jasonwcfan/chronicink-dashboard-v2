@@ -108,7 +108,7 @@ class IntakeForm extends Component {
                 state.fields[field.id] = {
                     value: field.value,
                     id: field.id,
-                    errorText: field.required ? '' : null,
+                    errorText: field.required ? `Not a valid ${field.label}` : null,
                     label: field.label
                 }
             });
@@ -126,30 +126,50 @@ class IntakeForm extends Component {
     }
 
     _handleSubmit() {
-        const form = {
-            fields: this.state.fields,
-            agreements: this.state.disclaimerAgreements,
-            medicalConditions: this.state.medicalConditions,
-            cancellationAvailability: this.state.cancellationAvailability
-        };
 
-        form.fields.dateOfBirth.value = Moment(form.fields.dateOfBirth.value, 'DD-MM-YYYY').toDate();
+        let hasError = false;
+        const fields = this.state.fields;
 
-        this.setState({
-            isSaving: true
-        });
-        console.log('submitting');
-        Meteor.call('intake.insertForm', form, (err, res) => {
-            if (err) {
-                console.log(err);
-            } else {
-                this.setState({
-                    isSaving: false,
-                    isSaved: true,
-                    stepIndex: 3
-                })
+        Object.keys(fields).forEach((key) => {
+            if (fields[key].errorText) {
+                console.log(fields[key].label);
+                hasError = true;
             }
         });
+
+        this.state.disclaimerAgreements.forEach((agreement) => {
+            if (agreement.required && !agreement.value) {
+                console.log(agreement.label);
+                hasError = true;
+            }
+        });
+
+        console.log(hasError);
+        
+        // const form = {
+        //     fields: this.state.fields,
+        //     agreements: this.state.disclaimerAgreements,
+        //     medicalConditions: this.state.medicalConditions,
+        //     cancellationAvailability: this.state.cancellationAvailability
+        // };
+        //
+        // form.fields.dateOfBirth.value = Moment(form.fields.dateOfBirth.value, 'DD-MM-YYYY').toDate();
+        //
+        // this.setState({
+        //     isSaving: true
+        // });
+        // console.log('submitting');
+        // Meteor.call('intake.insertForm', form, (err, res) => {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+        //         this.setState({
+        //             isSaving: false,
+        //             isSaved: true,
+        //             stepIndex: 3
+        //         })
+        //     }
+        // });
     }
 
     _handleFieldChange(id, value, errorText) {

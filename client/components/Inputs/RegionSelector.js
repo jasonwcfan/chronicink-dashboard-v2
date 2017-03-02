@@ -22,6 +22,10 @@ const style = {
 class RegionSelector extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            touched: false
+        }
     }
 
     _getRegionsList(country) {
