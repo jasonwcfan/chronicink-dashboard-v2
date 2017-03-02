@@ -116,6 +116,7 @@
         <item url="file://$USER_HOME$/.meteor/packages/webapp/1.3.12/web.browser/webapp_client.js" />
         <item url="file://$USER_HOME$/.meteor/packages/webapp/1.3.12/web.browser/webapp_cordova.js" />
         <item url="file://$USER_HOME$/.meteor/packages/webapp/1.3.12/web.browser/webapp_server.js" />
+        <item url="file://$USER_HOME$/.meteor/packages/meteorhacks_picker/1.0.3/web.browser/packages/meteorhacks_picker.js" />
         <item url="file://$USER_HOME$/.meteor/packages/blaze/2.1.9/web.browser/view.js" />
         <item url="file://$USER_HOME$/.meteor/packages/blaze/2.1.9/web.browser/dombackend.js" />
         <item url="file://$USER_HOME$/.meteor/packages/blaze/2.1.9/web.browser/template.js" />
@@ -293,6 +294,7 @@
       <root url="file://$USER_HOME$/.meteor/packages/webapp/1.3.12/web.browser/webapp_client.js" />
       <root url="file://$USER_HOME$/.meteor/packages/webapp/1.3.12/web.browser/webapp_cordova.js" />
       <root url="file://$USER_HOME$/.meteor/packages/webapp/1.3.12/web.browser/webapp_server.js" />
+      <root url="file://$USER_HOME$/.meteor/packages/meteorhacks_picker/1.0.3/web.browser/packages/meteorhacks_picker.js" />
       <root url="file://$USER_HOME$/.meteor/packages/blaze/2.1.9/web.browser/view.js" />
       <root url="file://$USER_HOME$/.meteor/packages/blaze/2.1.9/web.browser/dombackend.js" />
       <root url="file://$USER_HOME$/.meteor/packages/blaze/2.1.9/web.browser/template.js" />

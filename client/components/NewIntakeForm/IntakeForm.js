@@ -9,6 +9,7 @@ import PersonalInfoIcon from 'material-ui/svg-icons/action/account-circle';
 import DisclaimerIcon from 'material-ui/svg-icons/action/assignment';
 import AvailabilityIcon from 'material-ui/svg-icons/action/date-range';
 import CallUsIcon from 'material-ui/svg-icons/communication/call';
+import colors from '../../constants/colors';
 import defaultFields from '../../constants/defaultIntakeFormFields';
 import medicalConditions from '../../constants/medicalConditions';
 import disclaimerAgreements from '../../constants/defaultDisclaimerAgreements';
@@ -269,8 +270,8 @@ class IntakeForm extends Component {
 
     render() {
         let customMuiTheme = lightBaseTheme;
-        customMuiTheme.palette.primary1Color = '#303030';
-        customMuiTheme.palette.accent1Color = '#e9cd62';
+        customMuiTheme.palette.primary1Color = colors.CitDarkGrey;
+        customMuiTheme.palette.accent1Color = colors.CitGold;
 
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(customMuiTheme)}>

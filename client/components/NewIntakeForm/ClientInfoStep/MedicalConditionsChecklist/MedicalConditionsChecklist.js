@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Checkbox from 'material-ui/Checkbox';
+import colors from '../../../../constants/colors';
 
 const style = {
     container: {
@@ -10,9 +11,12 @@ const style = {
         width: '100%'
 
     },
-    item: {
+    checkbox: {
         width: 175,
         padding: 10
+    },
+    checkboxIcon: {
+        fill: colors.CitGold
     }
 };
 
@@ -28,7 +32,14 @@ class MedicalConditionsChecklist extends Component {
     _renderConditionsList(medicalConditions) {
         return medicalConditions.map((condition, idx) => {
             return (
-                <Checkbox style={style.item} name={condition.id} key={condition.id} label={condition.id} checked={condition.value} onCheck={this._handleChange.bind(this, idx)} />
+                <Checkbox
+                    style={style.checkbox}
+                    iconStyle={style.checkboxIcon}
+                    name={condition.id}
+                    key={condition.id}
+                    label={condition.id}
+                    checked={condition.value}
+                    onCheck={this._handleChange.bind(this, idx)} />
             )
         })
     }
