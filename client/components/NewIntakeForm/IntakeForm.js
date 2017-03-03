@@ -53,9 +53,17 @@ const style = {
         justifyContent: 'center',
         alignItems: 'center'
     },
-    linearProgressContainer: {
-        paddingBottom: 10,
-        width: '95%'
+    footer: {
+        fontSize: '0.8em',
+        fontFamily: 'Roboto, sans-serif',
+        color: colors.CitGold,
+        textAlign: 'center',
+        backgroundColor: colors.CitDarkGrey,
+        height: '42px',
+        paddingTop: '6px'
+    },
+    homepageLink: {
+        color: colors.CitGold
     }
 };
 
@@ -337,6 +345,10 @@ class IntakeForm extends Component {
                         <Dialog modal={true} actions={this.state.errorDialog.actions} open={this.state.showErrorDialog}>
                             {this.state.errorDialog.message}
                         </Dialog>
+                    </div>
+                    <div style={style.footer}>
+                        {`Copyright ${Moment().year()} `}
+                        <a style={style.homepageLink} href='http://www.chronicinktattoo.com'>Chronic Ink</a>
                     </div>
                 </StyleRoot>
             </MuiThemeProvider>

@@ -58,7 +58,11 @@ class ValidatedTextField extends Component {
 
 ValidatedTextField.propTypes = {
     defaultValue: PropTypes.string,
-    mask: PropTypes.array
+    mask: PropTypes.array,
+    touched: PropTypes.bool,
+    errorText: PropTypes.string,
+    floatingLabelText: PropTypes.string,
+    pattern: PropTypes.object
 };
 
 export default ValidatedTextField;
