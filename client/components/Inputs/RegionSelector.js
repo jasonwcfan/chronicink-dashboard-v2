@@ -24,8 +24,14 @@ class RegionSelector extends Component {
         super(props);
 
         this.state = {
-            touched: false
+            touched: this.props.touched
         }
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            touched: this.props.touched
+        })
     }
 
     _getRegionsList(country) {
@@ -57,11 +63,7 @@ class RegionSelector extends Component {
     }
 
     _handleChange(event, index, value) {
-        if (this.props.selectedCountry == 'Canada' || this.props.selectedCountry == 'United States') {
-            this.props.onFieldChange(this.props.name, value, value.length > 0);
-        } else {
-            this.props.onFieldChange(this.props.name, value, true);
-        }
+        this.props.onFieldChange(this.props.name, value, null);
     }
 
     render() {
@@ -74,7 +76,9 @@ class RegionSelector extends Component {
                         floatingLabelText={this._getFieldLabel(this.props.selectedCountry) + ' *'}
                         value={this.props.value}
                         onChange={this._handleChange.bind(this)}
-                        maxHeight={200}>
+                        maxHeight={200}
+                        errorText={this.state.touched && this.props.errorText ? this.props.errorText : null}
+                    >
                         {this._getRegionsList(this.props.selectedCountry)}
                     </SelectField>
                 );

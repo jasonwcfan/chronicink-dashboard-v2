@@ -58,6 +58,7 @@ class ClientInfoStep extends Component {
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                             errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'phoneNumber':
@@ -72,6 +73,7 @@ class ClientInfoStep extends Component {
                             required={field.required}
                             mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                             errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'email':
@@ -86,6 +88,7 @@ class ClientInfoStep extends Component {
                             required={field.required}
                             pattern={/^[^\s@]+@[^\s@]+\.[^\s@]+$/}
                             errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'country':
@@ -98,6 +101,7 @@ class ClientInfoStep extends Component {
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                             errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'region':
@@ -111,6 +115,7 @@ class ClientInfoStep extends Component {
                             required={field.required}
                             selectedCountry={this.props.formValues.country.value}
                             errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'date':
@@ -125,6 +130,7 @@ class ClientInfoStep extends Component {
                             required={field.required}
                             mask={[/[0-3]/, /\d/, '/', /[0-1]/, /\d/, '/', /[1-2]/, /[09]/, /\d/, /\d/]}
                             errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
 
                     );

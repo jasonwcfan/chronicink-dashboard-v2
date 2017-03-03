@@ -6,7 +6,6 @@ class ValidatedTextField extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            touched: false,
             value: props.defaultValue
         };
 
@@ -29,7 +28,6 @@ class ValidatedTextField extends Component {
         }
 
         this.setState({
-            touched: true,
             value: event.target.value
         });
 
@@ -39,7 +37,7 @@ class ValidatedTextField extends Component {
     render() {
         return(
             <TextField
-                errorText={this.state.touched && this.props.errorText ? this.props.errorText: null}
+                errorText={this.props.touched && this.props.errorText ? this.props.errorText: null}
                 value={this.state.value}
                 style={this.props.style}
                 floatingLabelText={this.props.floatingLabelText + (this.props.required ? ' *' : '')}

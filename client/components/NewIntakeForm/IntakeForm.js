@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'react-meteor-data';
 import Radium from 'radium';
-import { StyleRoot } from 'radium';
 import Moment from 'moment';
+import { StyleRoot } from 'radium';
 import RaisedButton from 'material-ui/RaisedButton';
-import LinearProgress from 'material-ui/LinearProgress';
+import Dialog from 'material-ui/Dialog';
 import PersonalInfoIcon from 'material-ui/svg-icons/action/account-circle';
 import DisclaimerIcon from 'material-ui/svg-icons/action/assignment';
 import AvailabilityIcon from 'material-ui/svg-icons/action/date-range';
@@ -101,14 +101,21 @@ class IntakeForm extends Component {
                 isSaved: false,
                 isSaving: false,
                 formID: null,
-                stepIndex: 0
+                stepIndex: 0,
+                showErrorDialog: false,
+                errorDialog: {
+                    stepIndex: 0,
+                    message: '',
+                    actions: null
+                }
             };
 
             props.formTemplate.forEach(function(field) {
                 state.fields[field.id] = {
                     value: field.value,
                     id: field.id,
-                    errorText: field.required ? `Not a valid ${field.label}` : null,
+                    errorText: field.required && !field.value ? `Not a valid ${field.label}` : null,
+                    touched: false,
                     label: field.label
                 }
             });
@@ -127,55 +134,78 @@ class IntakeForm extends Component {
 
     _handleSubmit() {
 
-        let hasError = false;
+        let hasFieldError = false;
+        let hasDisclaimerError = false;
         const fields = this.state.fields;
 
         Object.keys(fields).forEach((key) => {
             if (fields[key].errorText) {
-                console.log(fields[key].label);
-                hasError = true;
+                hasFieldError = true;
+                fields[key].touched = true;
             }
         });
 
         this.state.disclaimerAgreements.forEach((agreement) => {
             if (agreement.required && !agreement.value) {
-                console.log(agreement.label);
-                hasError = true;
+                hasDisclaimerError = true;
             }
         });
 
-        console.log(hasError);
-        
-        // const form = {
-        //     fields: this.state.fields,
-        //     agreements: this.state.disclaimerAgreements,
-        //     medicalConditions: this.state.medicalConditions,
-        //     cancellationAvailability: this.state.cancellationAvailability
-        // };
-        //
-        // form.fields.dateOfBirth.value = Moment(form.fields.dateOfBirth.value, 'DD-MM-YYYY').toDate();
-        //
-        // this.setState({
-        //     isSaving: true
-        // });
-        // console.log('submitting');
-        // Meteor.call('intake.insertForm', form, (err, res) => {
-        //     if (err) {
-        //         console.log(err);
-        //     } else {
-        //         this.setState({
-        //             isSaving: false,
-        //             isSaved: true,
-        //             stepIndex: 3
-        //         })
-        //     }
-        // });
+        if (hasFieldError) {
+            this.setState({
+                fields: fields,
+                showErrorDialog: true,
+                errorDialog: {
+                    message: 'The form has some errors. Go back and fix them now?',
+                    actions: [
+                        <RaisedButton label='Fix Errors' secondary={true} onTouchTap={() => {this.setState({stepIndex: 0, showErrorDialog: false})}} />
+                    ]
+                }
+            });
+
+        } else if (hasDisclaimerError) {
+            this.setState({
+                showDisclaimerErrorDialog: true,
+                showErrorDialog: true,
+                errorDialog: {
+                    message: 'Don\'t forget to accept the terms of our disclaimer',
+                    actions: [
+                        <RaisedButton label='Go Back' secondary={true} onTouchTap={() => {this.setState({stepIndex: 1, showErrorDialog: false})}} />
+                    ]
+                }
+            });
+        } else {
+            const form = {
+                fields: {...this.state.fields},
+                agreements: this.state.disclaimerAgreements,
+                medicalConditions: this.state.medicalConditions,
+                cancellationAvailability: this.state.cancellationAvailability
+            };
+
+            this.setState({
+                isSaving: true
+            });
+
+            console.log('submitting');
+            Meteor.call('intake.insertForm', form, (err, res) => {
+                if (err) {
+                    console.log(err);
+                } else {
+                    this.setState({
+                        isSaving: false,
+                        isSaved: true,
+                        stepIndex: 3
+                    })
+                }
+            });
+        }
     }
 
     _handleFieldChange(id, value, errorText) {
         const newFields = {...this.state.fields};
         newFields[id].value = value;
         newFields[id].errorText = errorText;
+        newFields[id].touched = true;
 
         this.setState({
             fields: newFields,
@@ -292,7 +322,7 @@ class IntakeForm extends Component {
                                 <div style={style.navButtonContainer}>
                                     <RaisedButton style={style.navButton} label="Previous" primary={true} onTouchTap={this._decrementStep} />
                                     {this.state.isSaving ? <RaisedButton style={style.navButton} primary={true} label='Saving...' disabled={true} /> :
-                                        <RaisedButton style={style.navButton} secondary={true} label='Submit' onTouchTap={this._handleSubmit} />}
+                                        <RaisedButton style={style.navButton} secondary={true} label='Submit' onTouchTap={this._handleSubmit} disabled={this.state.isSaved} />}
                                 </div>
                             </Tab>
                             <Tab
@@ -304,6 +334,9 @@ class IntakeForm extends Component {
                                 <CallUsStep/>
                             </Tab>
                         </Tabs>
+                        <Dialog modal={true} actions={this.state.errorDialog.actions} open={this.state.showErrorDialog}>
+                            {this.state.errorDialog.message}
+                        </Dialog>
                     </div>
                 </StyleRoot>
             </MuiThemeProvider>

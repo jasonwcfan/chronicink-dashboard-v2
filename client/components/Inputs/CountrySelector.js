@@ -7,11 +7,17 @@ class CountrySelector extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            touched: false
+            touched: this.props.touched
         };
 
         this._handleNewRequest = this._handleNewRequest.bind(this);
         this._handleUpdateInput = this._handleUpdateInput.bind(this);
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({
+            touched: this.props.touched
+        })
     }
 
     _filter(searchText, key) {
@@ -21,8 +27,6 @@ class CountrySelector extends Component {
     }
 
     _handleNewRequest(request) {
-        let errorText = null;
-
         this.props.onFieldChange(this.props.name, request, null);
 
         if (request == 'Canada' || request == 'United States') {
@@ -33,7 +37,6 @@ class CountrySelector extends Component {
     }
 
     _handleUpdateInput(text, dataSource) {
-
         let isCountry = false;
 
         if (!this.state.touched) {
