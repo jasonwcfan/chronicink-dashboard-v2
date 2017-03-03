@@ -75,6 +75,7 @@ class IntakeForm extends Component {
             const state = {
                 fields: {},
                 medicalConditions: props.medicalConditions,
+                otherCondition: '',
                 disclaimerAgreements: props.disclaimerAgreements,
                 cancellationAvailability: {
                     monday: {
@@ -138,6 +139,7 @@ class IntakeForm extends Component {
         this._decrementStep = this._decrementStep.bind(this);
         this._resetStep = this._resetStep.bind(this);
         this._handleToggleCancellationAvailability = this._handleToggleCancellationAvailability.bind(this);
+        this._handleOtherConditionChange = this._handleOtherConditionChange.bind(this);
     }
 
     _handleSubmit() {
@@ -183,12 +185,20 @@ class IntakeForm extends Component {
                 }
             });
         } else {
+
+            const otherCondition = this.state.otherCondition ? {
+                id: this.state.otherCondition,
+                value: true
+            } : null ;
+
             const form = {
                 fields: {...this.state.fields},
                 agreements: this.state.disclaimerAgreements,
-                medicalConditions: this.state.medicalConditions,
+                medicalConditions: otherCondition ? this.state.medicalConditions.concat(otherCondition) : this.state.medicalConditions,
                 cancellationAvailability: this.state.cancellationAvailability
             };
+
+            console.log(form);
 
             this.setState({
                 isSaving: true
@@ -223,10 +233,17 @@ class IntakeForm extends Component {
 
     _handleToggleMedicalCondition(idx) {
         const newConditions = [...this.state.medicalConditions];
+        console.log(newConditions);
         newConditions[idx].value = !newConditions[idx].value;
 
         this.setState({
             medicalConditions: newConditions
+        })
+    }
+
+    _handleOtherConditionChange(condition) {
+        this.setState({
+            otherCondition: condition
         })
     }
 
@@ -293,7 +310,10 @@ class IntakeForm extends Component {
                                     formTemplate={this.props.formTemplate}
                                     formValues={this.state.fields}
                                     onToggleMedicalCondition={this._handleToggleMedicalCondition}
-                                    medicalConditions={this.state.medicalConditions} />
+                                    medicalConditions={this.state.medicalConditions}
+                                    otherCondition={this.state.otherCondition}
+                                    onChangeOtherCondition={this._handleOtherConditionChange}
+                                />
                                 <div style={style.navButtonContainer}>
                                     <RaisedButton style={style.navButton} label='Next' secondary={true} onTouchTap={this._incrementStep} />
                                 </div>

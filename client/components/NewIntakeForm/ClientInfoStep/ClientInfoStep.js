@@ -146,7 +146,12 @@ class ClientInfoStep extends Component {
                     {this._renderFields(this.props.formTemplate)}
                 </div>
                 <h2 style={style.header}>Medical Conditions</h2><br />
-                <MedicalConditionsChecklist medicalConditions={this.props.medicalConditions} onToggleMedicalCondition={this.props.onToggleMedicalCondition}/>
+                <MedicalConditionsChecklist
+                    medicalConditions={this.props.medicalConditions}
+                    onToggleMedicalCondition={this.props.onToggleMedicalCondition}
+                    onChangeOtherCondition={this.props.onChangeOtherCondition}
+                    otherCondition={this.props.otherCondition}
+                />
             </div>
         );
 
