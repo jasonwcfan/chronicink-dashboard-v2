@@ -140,6 +140,7 @@ class IntakeForm extends Component {
         this._resetStep = this._resetStep.bind(this);
         this._handleToggleCancellationAvailability = this._handleToggleCancellationAvailability.bind(this);
         this._handleOtherConditionChange = this._handleOtherConditionChange.bind(this);
+        this._handleToggleFreeAnyTime = this._handleToggleFreeAnyTime.bind(this);
     }
 
     _handleSubmit() {
@@ -257,8 +258,21 @@ class IntakeForm extends Component {
     }
 
     _handleToggleCancellationAvailability(day, time, value) {
+        console.log(day, time, value);
         const newCancellationAvailability = {...this.state.cancellationAvailability};
         newCancellationAvailability[day][time] = value;
+        this.setState({
+            cancellationAvailability: newCancellationAvailability
+        })
+    }
+    
+    _handleToggleFreeAnyTime(value) {
+        const newCancellationAvailability = {...this.state.cancellationAvailability};
+        Object.keys(newCancellationAvailability).forEach((key) => {
+            newCancellationAvailability[key]['afternoon'] = value;
+            newCancellationAvailability[key]['evening'] = value;
+        });
+
         this.setState({
             cancellationAvailability: newCancellationAvailability
         })
@@ -339,13 +353,9 @@ class IntakeForm extends Component {
                                 onActive={() => {this.setState({stepIndex: 2})}}
                             >
                                 <AvailabilityStep
-                                    fields={this.state.fields}
-                                    disclaimerAgreements={this.state.disclaimerAgreements}
-                                    resetStep={this._resetStep}
-                                    handleSubmit={this._handleSubmit}
-                                    isSaving={this.state.isSaving}
                                     cancellationAvailability={this.state.cancellationAvailability}
                                     onToggleCancellationAvailability={this._handleToggleCancellationAvailability}
+                                    onToggleFreeAnyTime={this._handleToggleFreeAnyTime}
                                 />
                                 <div style={style.navButtonContainer}>
                                     <RaisedButton style={style.navButton} label="Previous" primary={true} onTouchTap={this._decrementStep} />
