@@ -74,23 +74,35 @@ class FinishedStep extends Component {
                         up, please let us know what times you are typically available to come in, and we will give you a
                         call if someone else gives up their spot.
                     </p>
-                    <div style={style.weekDaysContainer}>
+                    <div className="availabilities">
+                        <div className="all-week">
+                            <Checkbox
+                                label='I am available all week'
+                                name='all'
+                                checked={this._allAvailabilityChecked()}
+                                onCheck={this._handleChange.bind(this, 'all')}
+                            />
+                        </div>
                         {weekDays.map((day) => {
                             const availability = this.props.cancellationAvailability[day.toLowerCase()];
                             return (
-                                <div style={style.weekDay} key={day}>
-                                    <h3>{day}</h3>
+                                <div className='availability' key={day}>
+                                    <div className="day">
+                                        <span>Monday</span>
+                                    </div>
                                     <Checkbox
-                                        label='Afternoon (12 - 5)'
+                                        label='Afternoon (12pm - 5pm)'
                                         name='afternoon'
                                         checked={availability.afternoon}
                                         onCheck={this._handleChange.bind(this, day)}
+                                        className='twelve-to-five'
                                     />
                                     <Checkbox
-                                        label='Evening (5 - 8)'
+                                        label='Evening (5pm - 8pm)'
                                         name='evening'
                                         checked={availability.evening}
                                         onCheck={this._handleChange.bind(this, day)}
+                                        className='five-to-eight'
                                     />
                                 </div>
                             )
@@ -117,6 +129,14 @@ class FinishedStep extends Component {
 
     _handleChange(day, event, value) {
         this.props.onToggleCancellationAvailability(day.toLowerCase(), event.target.name, value);
+    }
+
+    _allAvailabilityChecked() {
+        return Object.keys(this.props.cancellationAvailability).reduce((allChecked, day) => {
+            return allChecked && Object.keys(this.props.cancellationAvailability).reduce((timesChecked, time) => {
+                return timesChecked && this.props.cancellationAvailability[day][time];
+            }, true);
+        }, true)
     }
 
     render() {

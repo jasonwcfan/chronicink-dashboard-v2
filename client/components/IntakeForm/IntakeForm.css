@@ -1,3 +1,36 @@
+/* availabilities form css */
+.availabilities {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.availabilities .all-week {
+    display: flex;
+    justify-content: center;
+    min-width: 250px;
+    margin-bottom: 25px
+}
+
+.availabilities .availability {
+    width: 100%;
+    display: flex;
+    margin-bottom: 5px;
+    justify-content: center;
+}
+
+.availabilities .availability .day {
+    width: 120px;
+    display: inline-block;
+}
+
+.availabilities .availability .twelve-to-five, .availabilities .availability .five-to-eight {
+    width: 250px !important;
+    display: inline-block !important;
+}
+
+
 /* Just media queries.  */
 
 @media only screen
