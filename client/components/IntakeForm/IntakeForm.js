@@ -175,7 +175,17 @@ class IntakeForm extends Component {
 
     _handleToggleCancellationAvailability(day, time, value) {
         const newCancellationAvailability = {...this.state.cancellationAvailability};
-        newCancellationAvailability[day][time] = value;
+        
+        if(day == 'all' && time == 'all') {
+            Object.keys(newCancellationAvailability).map(_day => {
+                Object.keys(newCancellationAvailability[_day]).map(_time => {
+                    newCancellationAvailability[_day][_time] = value;
+                });
+            });
+        } else {
+            newCancellationAvailability[day][time] = value;
+        }
+
         this.setState({
             cancellationAvailability: newCancellationAvailability
         })
