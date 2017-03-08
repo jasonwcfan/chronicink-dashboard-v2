@@ -329,7 +329,7 @@ class IntakeForm extends Component {
                                     onChangeOtherCondition={this._handleOtherConditionChange}
                                 />
                                 <div style={style.navButtonContainer}>
-                                    <RaisedButton style={style.navButton} label='Next' secondary={true} onTouchTap={this._incrementStep} />
+                                    <RaisedButton style={style.navButton} labelStyle={{color: 'black'}} label='Next' secondary={true} onTouchTap={this._incrementStep} />
                                 </div>
                             </Tab>
                             <Tab
@@ -343,7 +343,7 @@ class IntakeForm extends Component {
                                     agreements={this.state.disclaimerAgreements} />
                                 <div style={style.navButtonContainer}>
                                     <RaisedButton style={style.navButton} label="Previous" primary={true} onTouchTap={this._decrementStep} />
-                                    <RaisedButton style={style.navButton} label="Next" secondary={true} onTouchTap={this._incrementStep} />
+                                    <RaisedButton style={style.navButton} labelStyle={{color: 'black'}} label="Next" secondary={true} onTouchTap={this._incrementStep} />
                                 </div>
                             </Tab>
                             <Tab
@@ -360,7 +360,7 @@ class IntakeForm extends Component {
                                 <div style={style.navButtonContainer}>
                                     <RaisedButton style={style.navButton} label="Previous" primary={true} onTouchTap={this._decrementStep} />
                                     {this.state.isSaving ? <RaisedButton style={style.navButton} primary={true} label='Saving...' disabled={true} /> :
-                                        <RaisedButton style={style.navButton} secondary={true} label='Submit' onTouchTap={this._handleSubmit} disabled={this.state.isSaved} />}
+                                        <RaisedButton style={style.navButton} labelStyle={{color: 'black'}}  secondary={true} label='Submit' onTouchTap={this._handleSubmit} disabled={this.state.isSaved} />}
                                 </div>
                             </Tab>
                             <Tab
