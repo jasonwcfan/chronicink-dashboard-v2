@@ -152,80 +152,36 @@ class IntakeForm extends Component {
     }
 
     _handleSubmit() {
+        const otherCondition = this.state.otherCondition ? {
+            id: this.state.otherCondition,
+            value: true
+        } : null ;
 
-        let hasFieldError = false;
-        let hasDisclaimerError = false;
-        const fields = this.state.fields;
+        const form = {
+            fields: {...this.state.fields},
+            agreements: this.state.disclaimerAgreements,
+            medicalConditions: otherCondition ? this.state.medicalConditions.concat(otherCondition) : this.state.medicalConditions,
+            cancellationAvailability: this.state.cancellationAvailability
+        };
 
-        Object.keys(fields).forEach((key) => {
-            if (fields[key].errorText) {
-                hasFieldError = true;
-                fields[key].touched = true;
-            }
+        console.log(form);
+
+        this.setState({
+            isSaving: true
         });
 
-        this.state.disclaimerAgreements.forEach((agreement) => {
-            if (agreement.required && !agreement.value) {
-                hasDisclaimerError = true;
+        console.log('submitting');
+        Meteor.call('intake.insertForm', form, (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                this.setState({
+                    isSaving: false,
+                    isSaved: true,
+                    stepIndex: 3
+                })
             }
         });
-
-        if (hasFieldError) {
-            this.setState({
-                fields: fields,
-                showErrorDialog: true,
-                errorDialog: {
-                    message: 'The form has some errors. Go back and fix them now?',
-                    actions: [
-                        <RaisedButton label='Fix Errors' secondary={true} onTouchTap={() => {this.setState({stepIndex: 0, showErrorDialog: false})}} />
-                    ]
-                }
-            });
-
-        } else if (hasDisclaimerError) {
-            this.setState({
-                showDisclaimerErrorDialog: true,
-                showErrorDialog: true,
-                errorDialog: {
-                    message: 'Don\'t forget to accept the terms of our disclaimer',
-                    actions: [
-                        <RaisedButton label='Go Back' secondary={true} onTouchTap={() => {this.setState({stepIndex: 1, showErrorDialog: false})}} />
-                    ]
-                }
-            });
-        } else {
-
-            const otherCondition = this.state.otherCondition ? {
-                id: this.state.otherCondition,
-                value: true
-            } : null ;
-
-            const form = {
-                fields: {...this.state.fields},
-                agreements: this.state.disclaimerAgreements,
-                medicalConditions: otherCondition ? this.state.medicalConditions.concat(otherCondition) : this.state.medicalConditions,
-                cancellationAvailability: this.state.cancellationAvailability
-            };
-
-            console.log(form);
-
-            this.setState({
-                isSaving: true
-            });
-
-            console.log('submitting');
-            Meteor.call('intake.insertForm', form, (err, res) => {
-                if (err) {
-                    console.log(err);
-                } else {
-                    this.setState({
-                        isSaving: false,
-                        isSaved: true,
-                        stepIndex: 3
-                    })
-                }
-            });
-        }
     }
 
     _handleFieldChange(id, value, errorText) {
@@ -288,6 +244,74 @@ class IntakeForm extends Component {
 
     _incrementStep(e) {
         e.preventDefault();
+
+        switch (this.state.stepIndex) {
+            case 0:
+                let hasFieldError = false;
+                const fields = this.state.fields;
+
+                Object.keys(fields).forEach((key) => {
+                    if (fields[key].errorText) {
+                        hasFieldError = true;
+                        fields[key].touched = true;
+                    }
+                });
+
+                if (hasFieldError) {
+                    this.setState({
+                        fields: fields,
+                        showErrorDialog: true,
+                        errorDialog: {
+                            message: 'The form has some errors. Please fix them before moving on',
+                            actions: [
+                                <RaisedButton
+                                    label='OK'
+                                    secondary={true}
+                                    modal={true}
+                                    onTouchTap={() => {
+                                        this.setState({
+                                            showErrorDialog: false
+                                        })
+                                    }}
+                                />
+                            ]
+                        }
+                    });
+                    return;
+                }
+                break;
+            case 1:
+                let hasDisclaimerError = false;
+
+                this.state.disclaimerAgreements.forEach((agreement) => {
+                    if (agreement.required && !agreement.value) {
+                        hasDisclaimerError = true;
+                    }
+                });
+
+                if (hasDisclaimerError) {
+                    this.setState({
+                        showDisclaimerErrorDialog: true,
+                        showErrorDialog: true,
+                        errorDialog: {
+                            message: 'You must accept the terms of the disclaimer and agree to leave a deposit',
+                            actions: [
+                                <RaisedButton
+                                    label='OK'
+                                    secondary={true}
+                                    onTouchTap={() => {
+                                        this.setState({
+                                            showErrorDialog: false
+                                        })
+                                    }}
+                                />
+                            ]
+                        }
+                    });
+                    return;
+                }
+                break;
+        }
         window.scrollTo(0, 0);
         this.setState({
             stepIndex: this.state.stepIndex < 3 ? this.state.stepIndex + 1 : 2
