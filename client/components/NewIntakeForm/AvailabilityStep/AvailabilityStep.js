@@ -86,7 +86,7 @@ class FinishedStep extends Component {
                                 <TableHeaderColumn>Evening (5PM-8PM)</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
-                        <TableBody displayRowCheckbox={false} stripedRows={true}>
+                        <TableBody displayRowCheckbox={false}>
                             {this._renderTableRows()}
                         </TableBody>
                     </Table>

@@ -5,6 +5,11 @@ import Moment from 'moment';
 import { StyleRoot } from 'radium';
 import RaisedButton from 'material-ui/RaisedButton';
 import Dialog from 'material-ui/Dialog';
+import {
+    Step,
+    Stepper,
+    StepLabel,
+} from 'material-ui/Stepper';
 import PersonalInfoIcon from 'material-ui/svg-icons/action/account-circle';
 import DisclaimerIcon from 'material-ui/svg-icons/action/assignment';
 import AvailabilityIcon from 'material-ui/svg-icons/action/date-range';
@@ -45,6 +50,9 @@ const style = {
         '@media (min-width: 1024px)': {
             justifyContent: 'flex-start'
         }
+    },
+    stepLabel: {
+        fontFamily: 'Roboto, sans-serif',
     },
     finishedStepContainer: {
         display: 'flex',
@@ -300,9 +308,65 @@ class IntakeForm extends Component {
         })
     }
 
+    _renderStepContent(stepIndex) {
+        switch (stepIndex) {
+            case 0:
+                return (
+                    <div>
+                        <ClientInfoStep
+                            onFieldChange={this._handleFieldChange}
+                            formTemplate={this.props.formTemplate}
+                            formValues={this.state.fields}
+                            onToggleMedicalCondition={this._handleToggleMedicalCondition}
+                            medicalConditions={this.state.medicalConditions}
+                            otherCondition={this.state.otherCondition}
+                            onChangeOtherCondition={this._handleOtherConditionChange}
+                        />
+                        <div style={style.navButtonContainer}>
+                            <RaisedButton style={style.navButton} labelStyle={{color: 'black'}} label='Next' secondary={true} onTouchTap={this._incrementStep} />
+                        </div>
+                    </div>
+                );
+            case 1:
+                return (
+                    <div>
+                        <AgreementStep
+                            onToggleAgreement={this._handleToggleAgreement}
+                            agreements={this.state.disclaimerAgreements} />
+                        <div style={style.navButtonContainer}>
+                            <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
+                            <RaisedButton style={style.navButton} labelStyle={{color: 'black'}} label="Next" secondary={true} onTouchTap={this._incrementStep} />
+                        </div>
+                        {}
+                    </div>
+                );
+            case 2:
+                return (
+                    <div style={style.finishedStepContainer}>
+                        <AvailabilityStep
+                            cancellationAvailability={this.state.cancellationAvailability}
+                            onToggleCancellationAvailability={this._handleToggleCancellationAvailability}
+                            onToggleFreeAnyTime={this._handleToggleFreeAnyTime}
+                        />
+                        <div style={style.navButtonContainer}>
+                            <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
+                            {this.state.isSaving ? <RaisedButton style={style.navButton} label='Saving...' disabled={true} /> :
+                                <RaisedButton style={style.navButton} labelStyle={{color: 'black'}}  secondary={true} label='Submit' onTouchTap={this._handleSubmit} disabled={this.state.isSaved} />}
+                        </div>
+                    </div>
+                );
+            case 3:
+                return (
+                    <div style={style.callUsStepContainer}>
+                        <CallUsStep/>
+                    </div>
+                );
+        }
+    }
+
     render() {
         let customMuiTheme = lightBaseTheme;
-        customMuiTheme.palette.primary1Color = colors.CitDarkGrey;
+        customMuiTheme.palette.primary1Color = colors.CitGold;
         customMuiTheme.palette.accent1Color = colors.CitGold;
 
         return (
@@ -312,66 +376,23 @@ class IntakeForm extends Component {
                         <div>
                             <img key='logo' src={'images/chronicink_logo.png'} style={style.logo}/>
                         </div>
-                        <Tabs value={this.state.stepIndex}>
-                            <Tab
-                                label={window.innerWidth > 425 ? 'Personal Info' : null}
-                                icon={<PersonalInfoIcon />}
-                                value={0}
-                                onActive={() => {this.setState({stepIndex: 0})}}
-                            >
-                                <ClientInfoStep
-                                    onFieldChange={this._handleFieldChange}
-                                    formTemplate={this.props.formTemplate}
-                                    formValues={this.state.fields}
-                                    onToggleMedicalCondition={this._handleToggleMedicalCondition}
-                                    medicalConditions={this.state.medicalConditions}
-                                    otherCondition={this.state.otherCondition}
-                                    onChangeOtherCondition={this._handleOtherConditionChange}
-                                />
-                                <div style={style.navButtonContainer}>
-                                    <RaisedButton style={style.navButton} labelStyle={{color: 'black'}} label='Next' secondary={true} onTouchTap={this._incrementStep} />
-                                </div>
-                            </Tab>
-                            <Tab
-                                label={window.innerWidth > 425 ? 'Disclaimer' : null}
-                                icon={<DisclaimerIcon />}
-                                value={1}
-                                onActive={() => {this.setState({stepIndex: 1})}}
-                            >
-                                <AgreementStep
-                                    onToggleAgreement={this._handleToggleAgreement}
-                                    agreements={this.state.disclaimerAgreements} />
-                                <div style={style.navButtonContainer}>
-                                    <RaisedButton style={style.navButton} label="Previous" primary={true} onTouchTap={this._decrementStep} />
-                                    <RaisedButton style={style.navButton} labelStyle={{color: 'black'}} label="Next" secondary={true} onTouchTap={this._incrementStep} />
-                                </div>
-                            </Tab>
-                            <Tab
-                                label={window.innerWidth > 425 ? 'Availability' : null}
-                                icon={<AvailabilityIcon />}
-                                value={2}
-                                onActive={() => {this.setState({stepIndex: 2})}}
-                            >
-                                <AvailabilityStep
-                                    cancellationAvailability={this.state.cancellationAvailability}
-                                    onToggleCancellationAvailability={this._handleToggleCancellationAvailability}
-                                    onToggleFreeAnyTime={this._handleToggleFreeAnyTime}
-                                />
-                                <div style={style.navButtonContainer}>
-                                    <RaisedButton style={style.navButton} label="Previous" primary={true} onTouchTap={this._decrementStep} />
-                                    {this.state.isSaving ? <RaisedButton style={style.navButton} primary={true} label='Saving...' disabled={true} /> :
-                                        <RaisedButton style={style.navButton} labelStyle={{color: 'black'}}  secondary={true} label='Submit' onTouchTap={this._handleSubmit} disabled={this.state.isSaved} />}
-                                </div>
-                            </Tab>
-                            <Tab
-                                label={window.innerWidth > 425 ? 'Call Us' : null}
-                                icon={<CallUsIcon />}
-                                value={3}
-                                onActive={() => {this.setState({stepIndex: 3})}}
-                            >
-                                <CallUsStep/>
-                            </Tab>
-                        </Tabs>
+                        <Stepper activeStep={this.state.stepIndex}>
+                            <Step>
+                                <StepLabel style={style.stepLabel}>Personal Info</StepLabel>
+                            </Step>
+                            <Step>
+                                <StepLabel style={style.stepLabel}>Disclaimer</StepLabel>
+                            </Step>
+                            <Step>
+                                <StepLabel style={style.stepLabel}>My Availability</StepLabel>
+                            </Step>
+                            <Step>
+                                <StepLabel style={style.stepLabel}>Call Us</StepLabel>
+                            </Step>
+                        </Stepper>
+                        <div>
+                            {this._renderStepContent(this.state.stepIndex)}
+                        </div>
                         <Dialog modal={true} actions={this.state.errorDialog.actions} open={this.state.showErrorDialog}>
                             {this.state.errorDialog.message}
                         </Dialog>

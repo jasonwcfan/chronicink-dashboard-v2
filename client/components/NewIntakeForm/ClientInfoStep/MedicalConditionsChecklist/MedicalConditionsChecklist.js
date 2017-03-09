@@ -17,7 +17,7 @@ const style = {
         paddingBottom: 10,
     },
     checkboxIcon: {
-        fill: colors.CitGold
+        // fill: colors.CitGold
     },
     otherConditionContainer: {
         display: 'flex'
