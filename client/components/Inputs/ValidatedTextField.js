@@ -64,7 +64,8 @@ ValidatedTextField.propTypes = {
     touched: PropTypes.bool,
     errorText: PropTypes.string,
     floatingLabelText: PropTypes.string,
-    pattern: PropTypes.object
+    pattern: PropTypes.object,
+    validator: PropTypes.func
 };
 
 export default ValidatedTextField;
