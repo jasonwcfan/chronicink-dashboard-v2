@@ -51,13 +51,13 @@ class BookingForm extends Component {
             return state;
         })();
 
-        this._onFieldChange = this._onFieldChange.bind(this);
-        this._onCreateBooking = this._onCreateBooking.bind(this);
+        this._handleFieldChange = this._handleFieldChange.bind(this);
+        this._handleCreateBooking = this._handleCreateBooking.bind(this);
         this._handleSubmit = this._handleSubmit.bind(this);
-        this._onDeleteBooking = this._onDeleteBooking.bind(this);
-        this._onSetBookedBy = this._onSetBookedBy.bind(this);
-        this._onSetBookedThru = this._onSetBookedThru.bind(this);
-        this._onTogglePresentationRequired = this._onTogglePresentationRequired.bind(this);
+        this._handleDeleteBooking = this._handleDeleteBooking.bind(this);
+        this._handleSetBookedBy = this._handleSetBookedBy.bind(this);
+        this._handleSetBookedThru = this._handleSetBookedThru.bind(this);
+        this._handleTogglePresentationRequired = this._handleTogglePresentationRequired.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -131,7 +131,7 @@ class BookingForm extends Component {
         )
     }
 
-    _onFieldChange(id, value, valid) {
+    _handleFieldChange(id, value, valid) {
         const newFields = _.extend({}, this.state.fields);
         newFields[id].value = value;
         newFields[id].valid = valid;
@@ -146,7 +146,7 @@ class BookingForm extends Component {
         })
     }
 
-    _onCreateBooking(newBooking) {
+    _handleCreateBooking(newBooking) {
         let bookingNum = 1;
 
         this.state.bookings.forEach(function(booking) {
@@ -169,7 +169,7 @@ class BookingForm extends Component {
         })
     }
 
-    _onDeleteBooking(index) {
+    _handleDeleteBooking(index) {
         const newBookings = this.state.bookings.slice(0);
         const deletedBooking = newBookings[index];
 
@@ -186,19 +186,19 @@ class BookingForm extends Component {
         })
     }
 
-    _onSetBookedBy(id, value, valid) {
+    _handleSetBookedBy(id, value, valid) {
         this.setState({
             bookedBy: value
         })
     }
 
-    _onSetBookedThru(target, idx, value) {
+    _handleSetBookedThru(target, idx, value) {
         this.setState({
             bookedThru: value
         })
     }
 
-    _onTogglePresentationRequired() {
+    _handleTogglePresentationRequired() {
         console.log('toggle');
         this.setState({
             presentationRequired: !this.state.presentationRequired
@@ -222,17 +222,17 @@ class BookingForm extends Component {
                                           artists={this.props.artists}
                                           subReady={this.props.artistSubReady}
                                           defaultArtist={this.props.artist}
-                                          onFieldChange={this._onFieldChange}
+                                          onFieldChange={this._handleFieldChange}
                         />
                     </Tab>
                     <Tab label='Sessions'>
                         <BookingsListTab
                             bookings={this.state.bookings}
-                            onSubmitBooking={this._onCreateBooking}
-                            deleteBooking={this._onDeleteBooking}
-                            setBookedBy={this._onSetBookedBy}
-                            setBookedThru={this._onSetBookedThru}
-                            togglePresentationRequired={this._onTogglePresentationRequired}
+                            onSubmitBooking={this._handleCreateBooking}
+                            deleteBooking={this._handleDeleteBooking}
+                            setBookedBy={this._handleSetBookedBy}
+                            setBookedThru={this._handleSetBookedThru}
+                            togglePresentationRequired={this._handleTogglePresentationRequired}
                             bookedBy={this.state.bookedBy}
                             bookedThru={this.state.bookedThru}
                             presentationRequired={this.state.presentationRequired}
