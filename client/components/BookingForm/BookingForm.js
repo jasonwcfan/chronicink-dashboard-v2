@@ -135,7 +135,6 @@ class BookingForm extends Component {
         const newFields = _.extend({}, this.state.fields);
         newFields[id].value = value;
         newFields[id].valid = valid;
-        console.log(value);
 
         // Reset buttons and errors since something was changed
         this.setState({
@@ -150,8 +149,6 @@ class BookingForm extends Component {
         let bookingNum = 1;
 
         this.state.bookings.forEach(function(booking) {
-            console.log(booking);
-            console.log(newBooking.type);
             if (booking.type == newBooking.type) {
                 bookingNum++;
             }
@@ -199,7 +196,6 @@ class BookingForm extends Component {
     }
 
     _handleTogglePresentationRequired() {
-        console.log('toggle');
         this.setState({
             presentationRequired: !this.state.presentationRequired
         })
