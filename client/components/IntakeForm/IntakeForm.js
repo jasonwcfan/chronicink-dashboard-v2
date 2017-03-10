@@ -84,6 +84,7 @@ class IntakeForm extends Component {
                 fields: {},
                 medicalConditions: props.medicalConditions,
                 otherCondition: '',
+                filledInternally: props.params.mode == 'external' ? false : true,
                 disclaimerAgreements: props.disclaimerAgreements,
                 cancellationAvailability: {
                     monday: {
@@ -158,6 +159,7 @@ class IntakeForm extends Component {
         } : null ;
 
         const form = {
+            fieldInternally: this.state.filledInternally,
             fields: {...this.state.fields},
             agreements: this.state.disclaimerAgreements,
             medicalConditions: otherCondition ? this.state.medicalConditions.concat(otherCondition) : this.state.medicalConditions,
@@ -397,7 +399,7 @@ class IntakeForm extends Component {
                 <StyleRoot>
                     <div>
                         <div>
-                            <img key='logo' src={'images/chronicink_logo.png'} style={style.logo}/>
+                            <img key='logo' src={'/images/chronicink_logo.png'} style={style.logo}/>
                         </div>
                         <Stepper activeStep={this.state.stepIndex}>
                             <Step>

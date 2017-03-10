@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 import RaisedButton from 'material-ui/RaisedButton';
 import CommunicationCall from 'material-ui/svg-icons/communication/call';
@@ -37,16 +37,24 @@ class CallUsStep extends Component {
     }
 
     render() {
+        let message = 'Please give us a call when you are ready to leave your deposit.';
+
+        if(this.props.filledInternally) {
+            message = 'Please let a staff member know that you\'ve completed the form.';
+            style.phoneNumber.display = 'none';
+        }
+
         return (
             <div style={style.container}>
                 <h2>You're not finished yet!</h2>
-                <p>If you are in the shop, please let a staff member know that you've completed the form. Otherwise, please give us a call when you are ready to leave your deposit.</p>
+                <p>{message}</p>
                 <div style={style.callUsButton}>
                     <RaisedButton
                         href="tel:416-544-0311"
                         target="_blank"
                         label="Call Us"
                         primary={true}
+                        display={!this.filledInternally}
                         icon={<CommunicationCall />}
                     />
                 </div>
@@ -59,5 +67,9 @@ class CallUsStep extends Component {
         );
     }
 }
+
+CallUsStep.propTypes = {
+    filledInternally: PropTypes.bool
+};
 
 export default Radium(CallUsStep);
