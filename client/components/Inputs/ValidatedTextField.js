@@ -25,6 +25,8 @@ class ValidatedTextField extends Component {
         } else if (this.props.pattern) {
             const matches = this.props.pattern.test(event.target.value);
             errorText = matches ? null : `Not a valid ${this.props.floatingLabelText}`;
+        } else if (this.props.validator) {
+            errorText = this.props.validator(event.target.value) ? null : `Not a valid ${this.props.floatingLabelText}`;
         }
 
         this.setState({

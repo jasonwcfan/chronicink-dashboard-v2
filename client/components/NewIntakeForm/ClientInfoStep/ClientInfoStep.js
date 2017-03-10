@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
+import Moment from 'moment';
 import MedicalConditionsChecklist from './MedicalConditionsChecklist';
 import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../../Inputs';
 
@@ -128,7 +129,12 @@ class ClientInfoStep extends Component {
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
-                            mask={[/[0-3]/, /\d/, '/', /[0-1]/, /\d/, '/', /[1-2]/, /[09]/, /\d/, /\d/]}
+                            mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
+                            validator={function(str){
+                                const date = Moment(str, 'DD/MM/YYYY', true);
+                                console.log(date);
+                                return date != null && date.isValid();
+                            }}
                             errorText={this.props.formValues[field.id].errorText}
                             touched={this.props.formValues[field.id].touched}
                         />
