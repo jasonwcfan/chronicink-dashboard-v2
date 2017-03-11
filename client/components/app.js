@@ -7,7 +7,6 @@ import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import SideNavBar from './SideNavBar';
 import Menu from './Menu';
-import IntakeForm from './IntakeForm';
 import BookingForm from './BookingForm';
 import DashboardContainer from '../containers/DashboardContainer';
 

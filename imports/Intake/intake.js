@@ -1,15 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
+import Moment from 'moment';
 
 Meteor.methods({
     'intake.insertForm': function(form) {
         console.log('inserting');
+
+        // Have to do this here because for some reason it mutates state when doing it in IntakeForm.js!!!
+        form.fields.dateOfBirth.value = Moment(form.fields.dateOfBirth.value, 'DD-MM-YYYY').toDate();
+
         Meteor.call('client.insert', form, function(error, clientID) {
             if (error) {
                 console.log(error);
                 return error;
             } else {
                 Intake.insert({
+                    filledInternally: form.filledInternally,
                     agreements: form.agreements,
                     fields: form.fields,
                     medicalConditions: form.medicalConditions,

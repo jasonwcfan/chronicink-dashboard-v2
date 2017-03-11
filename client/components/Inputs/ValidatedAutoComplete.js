@@ -24,7 +24,7 @@ class ValidatedAutoComplete extends Component {
                 floatingLabelText={this.props.fieldTemplate.label + (this.props.required ? ' *' : '')}
                 style={this.props.style}
                 searchText={ this.props.fieldValue.value || ''}
-                errorText={this.state.errorText}
+                errorText={this.props.touched && this.props.errorText ? this.props.errorText: null}
                 key={this.props.fieldTemplate.id}
                 dataSource={this.props.dataSource}
                 filter={(searchText, key) => {
@@ -35,12 +35,12 @@ class ValidatedAutoComplete extends Component {
                             }}
                 maxSearchResults={10}
                 onNewRequest={(value) => {
-                                this.props.onFieldChange(this.props.fieldTemplate.id, value, !this.state.errorText)
+                                this.props.onFieldChange(this.props.fieldTemplate.id, value, this.state.errorText)
                                 this._handleUpdateInput(value);
                             }}
                 onUpdateInput={this._handleUpdateInput}
                 onBlur={(event) => {
-                    this.props.onFieldChange(this.props.fieldTemplate.id, event.target.value, !this.state.errorText)
+                    this.props.onFieldChange(this.props.fieldTemplate.id, event.target.value, this.state.errorText)
                 }}
             />
         )

@@ -6,7 +6,6 @@ class ValidatedTextField extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            errorText: null,
             value: props.defaultValue
         };
 
@@ -20,31 +19,27 @@ class ValidatedTextField extends Component {
     }
 
     _handleChange(event) {
+        let errorText = null;
         if (event.target.value.length == 0 && this.props.required) {
-            this.setState({
-                errorText: this.props.floatingLabelText + ' is required',
-                value: event.target.value
-            });
+            errorText = this.props.floatingLabelText + ' is required'
         } else if (this.props.pattern) {
             const matches = this.props.pattern.test(event.target.value);
-            this.setState({
-                errorText: matches ? null : 'Not a valid ' + this.props.floatingLabelText,
-                value: event.target.value
-            });
-            this.props.onFieldChange(this.props.name, event.target.value, matches);
-        } else {
-            this.setState({
-                errorText: null,
-                value: event.target.value
-            });
-            this.props.onFieldChange(this.props.name, event.target.value, true);
+            errorText = matches ? null : `Not a valid ${this.props.floatingLabelText}`;
+        } else if (this.props.validator) {
+            errorText = this.props.validator(event.target.value) ? null : `Not a valid ${this.props.floatingLabelText}`;
         }
+
+        this.setState({
+            value: event.target.value
+        });
+
+        this.props.onFieldChange(this.props.name, event.target.value, errorText);
     }
 
     render() {
         return(
             <TextField
-                errorText={this.state.errorText}
+                errorText={this.props.touched && this.props.errorText ? this.props.errorText: null}
                 value={this.state.value}
                 style={this.props.style}
                 floatingLabelText={this.props.floatingLabelText + (this.props.required ? ' *' : '')}
@@ -65,7 +60,12 @@ class ValidatedTextField extends Component {
 
 ValidatedTextField.propTypes = {
     defaultValue: PropTypes.string,
-    mask: PropTypes.array
+    mask: PropTypes.array,
+    touched: PropTypes.bool,
+    errorText: PropTypes.string,
+    floatingLabelText: PropTypes.string,
+    pattern: PropTypes.object,
+    validator: PropTypes.func
 };
 
 export default ValidatedTextField;
