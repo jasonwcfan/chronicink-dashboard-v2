@@ -15,7 +15,7 @@ Meteor.methods({
                 return error;
             } else {
                 Intake.insert({
-                    fieldInternally: form.fieldInternally,
+                    filledInternally: form.filledInternally,
                     agreements: form.agreements,
                     fields: form.fields,
                     medicalConditions: form.medicalConditions,
