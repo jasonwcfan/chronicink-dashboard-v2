@@ -54,6 +54,7 @@ class TattooDetailsTab extends Component {
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                             errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'textBox':
@@ -69,6 +70,7 @@ class TattooDetailsTab extends Component {
                             fullWidth={true}
                             required={field.required}
                             errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'radio':
@@ -106,6 +108,7 @@ class TattooDetailsTab extends Component {
                             dataSource={field.items.map((item) => item.label)}
                             onFieldChange={this.props.onFieldChange}
                             errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'artistSelect':
@@ -117,6 +120,8 @@ class TattooDetailsTab extends Component {
                             artists={this.props.artists}
                             fieldTemplate={field}
                             fieldValue={this.props.formValues[field.id]}
+                            touched={this.props.formValues[field.id].touched}
+                            errorText={this.props.formValues[field.id].errorText}
                         />
                     )
             }

@@ -53,6 +53,7 @@ class BookingForm extends Component {
                 state.fields[field.id] = {
                     value: field.value,
                     errorText: field.required && !field.value ? `Not a valid ${field.label}` : null,
+                    touched: false,
                     label: field.label
                 }
             });
@@ -134,6 +135,63 @@ class BookingForm extends Component {
         });
     }
 
+    _handlePreSubmit() {
+        const errors = [];
+        let fields = this.state.fields;
+
+        Object.keys(fields).forEach((key) => {
+            if (fields[key].errorText) {
+                fields[key].touched = true;
+                errors.push(fields[key].errorText);
+            }
+        });
+
+        if (this.state.bookings.length == 0) {
+            errors.push('There should be at least 1 session to book');
+        }
+
+        if (this.state.bookedBy.length == 0) {
+            errors.push('Please record who did the booking');
+        }
+
+        if (this.state.presentationRequired) {
+            let presentNow = false;
+            let hasPresentation = false;
+            this.state.bookings.forEach((booking) => {
+                if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
+                    hasPresentation = true;
+                }
+
+                if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 1555200000) {
+                    presentNow = true;
+                }
+            });
+
+            if (presentNow && !hasPresentation) {
+                errors.push('The first session is in less than 18 days, please book a presentation at this point');
+            }
+        }
+
+        if (errors.length) {
+            this.setState({
+                fields: fields,
+                showErrorDialog: true,
+                errorDialog: {
+                    errors: errors,
+                    actions: (
+                        <RaisedButton
+                            label='Ok'
+                            primary={true}
+                            onTouchTap={() => { this.setState({showErrorDialog: false});  } }
+                        />
+                    )
+                }
+            });
+        } else {
+            this._handleSubmit();
+        }
+    }
+
     _getSaveButton(isSaved) {
         return (isSaved ?
                 <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true}/> :
@@ -143,9 +201,6 @@ class BookingForm extends Component {
     }
 
     _handleFieldChange(id, value, errorText) {
-        console.log(id)
-        console.log(value)
-        console.log(errorText)
         const newFields = Object.assign({}, this.state.fields);
         newFields[id].value = value;
         newFields[id].errorText = errorText;
@@ -285,61 +340,6 @@ class BookingForm extends Component {
                 </Tabs>
             </div>
         );
-    }
-
-
-    _handlePreSubmit() {
-        const errors = [];
-        Object.keys(this.state.fields).forEach((key) => {
-            const field = this.state.fields[key];
-            if (field.errorText) {
-                errors.push(field.errorText);
-            }
-        });
-
-        if (this.state.bookings.length == 0) {
-            errors.push('There should be at least 1 session to book');
-        }
-
-        if (this.state.bookedBy.length == 0) {
-            errors.push('Please record who did the booking');
-        }
-
-        if (this.state.presentationRequired) {
-            let presentNow = false;
-            let hasPresentation = false;
-            this.state.bookings.forEach((booking) => {
-                if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
-                    hasPresentation = true;
-                }
-
-                if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 1555200000) {
-                    presentNow = true;
-                }
-            });
-
-            if (presentNow && !hasPresentation) {
-                errors.push('The first session is in less than 18 days, please book a presentation at this point');
-            }
-        }
-
-        if (errors.length) {
-            this.setState({
-                showErrorDialog: true,
-                errorDialog: {
-                    errors: errors,
-                    actions: (
-                        <RaisedButton
-                            label='Ok'
-                            primary={true}
-                            onTouchTap={() => { this.setState({showErrorDialog: false});  } }
-                        />
-                    )
-                }
-            });
-        } else {
-            this._handleSubmit();
-        }
     }
 }
 

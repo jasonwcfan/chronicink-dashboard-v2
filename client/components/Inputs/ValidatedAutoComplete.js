@@ -24,7 +24,7 @@ class ValidatedAutoComplete extends Component {
                 floatingLabelText={this.props.fieldTemplate.label + (this.props.required ? ' *' : '')}
                 style={this.props.style}
                 searchText={ this.props.fieldValue.value || ''}
-                errorText={this.state.errorText}
+                errorText={this.props.touched && this.props.errorText ? this.props.errorText: null}
                 key={this.props.fieldTemplate.id}
                 dataSource={this.props.dataSource}
                 filter={(searchText, key) => {
