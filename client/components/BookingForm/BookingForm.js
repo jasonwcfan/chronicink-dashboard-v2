@@ -11,6 +11,9 @@ import ClientInfoTab from './ClientInfoTab';
 import RecommendationsTab from './RecommendationsTab';
 import SubmitErrorDialog from './SubmitErrorDialog';
 import defaultFields from '../../constants/defaultBookingFormFields';
+import Dialog from 'material-ui/Dialog';
+import Moment from 'moment';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const style = {
     container: {
@@ -38,7 +41,12 @@ class BookingForm extends Component {
                 isSaved: false,
                 isSubmitting: false,
                 isSubmitted: false,
-                errorMessages: []
+                errorMessages: [],
+                showErrorDialog: false,
+                errorDialog: {
+                    message: '',
+                    actions: null
+                }
             };
 
             props.fields.forEach(function(field) {
@@ -58,6 +66,7 @@ class BookingForm extends Component {
         this._handleSetBookedBy = this._handleSetBookedBy.bind(this);
         this._handleSetBookedThru = this._handleSetBookedThru.bind(this);
         this._handleTogglePresentationRequired = this._handleTogglePresentationRequired.bind(this);
+        this._handlePreSubmit = this._handlePreSubmit.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -238,16 +247,33 @@ class BookingForm extends Component {
                             presentationRequired={this.state.presentationRequired}
                         />
                         {this._getSaveButton(this.state.isSaved)}
-                        <SubmitErrorDialog
-                            handleSubmit={this._handleSubmit}
-                            fieldValues={this.state.fields}
-                            bookedBy={this.state.bookedBy}
-                            bookings={this.state.bookings}
-                            presentationRequired={this.state.presentationRequired}
-                            isSubmitting={this.state.isSubmitting}
-                            isSubmitted={this.state.isSubmitted}
-                            errorMessages={this.state.errorMessages}
-                        />
+                        <div style={{ display: 'inline' }}>
+                            {
+                                this.state.isSubmitting
+                                ?
+                                <CircularProgress
+                                    style={{ marginLeft: 28 }}
+                                    size={16}
+                                />
+                                :
+                                <RaisedButton
+                                    secondary={true}
+                                    disabled={this.state.isSubmitted}
+                                    label={this.state.isSubmitted ? 'Done' : 'Submit'}
+                                    onTouchTap={this._handlePreSubmit}
+                                />
+
+                            }
+                            <Dialog
+                                modal={true}
+                                title='Form Errors'
+                                open={this.state.showErrorDialog}
+                                onRequestClose={() => { this.setState({showErrorDialog: false}) } }
+                                actions={ this.state.errorDialog.actions }
+                            >
+                                {this.state.errorDialog.message}
+                            </Dialog>
+                        </div>
                     </Tab>
                     <Tab label='Recommendation'>
                         <RecommendationsTab />
@@ -255,6 +281,63 @@ class BookingForm extends Component {
                 </Tabs>
             </div>
         );
+    }
+
+
+    _handlePreSubmit() {
+        const errors = [];
+        console.log(this.state.fields);
+
+        Object.keys(this.state.fields).forEach((key) => {
+            const field = this.state.fields[key];
+            if (!field.valid) {
+                errors.push(`There is a problem with the \"${field.label}\" field`);
+            }
+        });
+
+        if (this.state.bookings.length == 0) {
+            errors.push('There should be at least 1 session to book');
+        }
+
+        if (this.state.bookedBy.length == 0) {
+            errors.push('Please record who did the booking');
+        }
+
+        if (this.state.presentationRequired) {
+            let presentNow = false;
+            let hasPresentation = false;
+            this.state.bookings.forEach((booking) => {
+                if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
+                    hasPresentation = true;
+                }
+
+                if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 1555200000) {
+                    presentNow = true;
+                }
+            });
+
+            if (presentNow && !hasPresentation) {
+                errors.push('The first session is in less than 18 days, please book a presentation at this point');
+            }
+        }
+
+        if (errors.length > 0) {
+            this.setState({
+                showErrorDialog: true,
+                errorDialog: {
+                    message: errors.map((error, index) => <p key={index} style={{color: 'red'}}>{`- ${error}`}</p>),
+                    actions: (
+                        <RaisedButton
+                            label='Ok'
+                            primary={true}
+                            onTouchTap={() => { this.setState({showErrorDialog: false});  } }
+                        />
+                    )
+                }
+            });
+        } else {
+            this._handleSubmit();
+        }
     }
 }
 

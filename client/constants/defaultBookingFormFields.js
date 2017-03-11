@@ -73,7 +73,7 @@ export default defaultBookingFormFields = [
         label: 'Size',
         inputType: 'textField',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
     {
@@ -102,7 +102,7 @@ export default defaultBookingFormFields = [
         label: 'Skin Tone',
         inputType: 'textField',
         value: '',
-        valid: true,
+        errorText: null,
         required: false
     },
     {
@@ -110,7 +110,7 @@ export default defaultBookingFormFields = [
         label: 'Subject',
         inputType: 'textBox',
         value: '',
-        valid: true,
+        errorText: null,
         required: false
     },
     {
@@ -118,7 +118,7 @@ export default defaultBookingFormFields = [
         label: 'Feel',
         inputType: 'textBox',
         value: '',
-        valid: true,
+        errorText: null,
         required: false
     },
     {
@@ -126,7 +126,7 @@ export default defaultBookingFormFields = [
         label: 'Background',
         inputType: 'textBox',
         value: '',
-        valid: true,
+        errorText: null,
         required: false
     },
     {
@@ -165,7 +165,7 @@ export default defaultBookingFormFields = [
         label: 'Rate',
         inputType: 'textField',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
     {
@@ -173,7 +173,7 @@ export default defaultBookingFormFields = [
         label: 'Deposit',
         inputType: 'textField',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
 ];
