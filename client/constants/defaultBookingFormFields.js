@@ -55,7 +55,7 @@ export default defaultBookingFormFields = [
         label: 'Style',
         inputType: 'autocomplete',
         value: '',
-        valid: false,
+        errorText: null,
         required: true,
         items: styles
     },
@@ -64,7 +64,7 @@ export default defaultBookingFormFields = [
         label: 'Placement',
         inputType: 'autocomplete',
         value: '',
-        valid: false,
+        errorText: null,
         required: true,
         items: placements
     },

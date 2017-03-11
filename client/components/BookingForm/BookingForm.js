@@ -41,18 +41,18 @@ class BookingForm extends Component {
                 isSaved: false,
                 isSubmitting: false,
                 isSubmitted: false,
-                errorMessages: [],
                 showErrorDialog: false,
                 errorDialog: {
-                    message: '',
+                    errors: [],
                     actions: null
                 }
             };
 
             props.fields.forEach(function(field) {
+                console.log(field.required && !field.value ? `Not a valid ${field.label}` : null);
                 state.fields[field.id] = {
                     value: field.value,
-                    valid: field.valid,
+                    errorText: field.required && !field.value ? `Not a valid ${field.label}` : null,
                     label: field.label
                 }
             });
@@ -120,7 +120,9 @@ class BookingForm extends Component {
                 console.log(err);
 
                 this.setState({
-                    errorMessages: [...this.state.errorMessages, 'There was a problem saving the appointments to the calendar']
+                    errorDialog: {
+                        errors: [...this.state.errorDialog.errors, 'There was a problem saving the appointments to the calendar']
+                    }
                 })
             } else {
                 console.log(res);
@@ -140,18 +142,23 @@ class BookingForm extends Component {
         )
     }
 
-    _handleFieldChange(id, value, valid) {
-        const newFields = _.extend({}, this.state.fields);
+    _handleFieldChange(id, value, errorText) {
+        console.log(id)
+        console.log(value)
+        console.log(errorText)
+        const newFields = Object.assign({}, this.state.fields);
         newFields[id].value = value;
-        newFields[id].valid = valid;
-        console.log(value);
+        newFields[id].errorText = errorText;
+        newFields[id].touched = true;
 
         // Reset buttons and errors since something was changed
         this.setState({
             fields: newFields,
             isSaved: false,
             isSubmitted: false,
-            errorMessages: []
+            errorDialog: {
+                errors: []
+            }
         })
     }
 
@@ -271,7 +278,7 @@ class BookingForm extends Component {
                                 onRequestClose={() => { this.setState({showErrorDialog: false}) } }
                                 actions={ this.state.errorDialog.actions }
                             >
-                                {this.state.errorDialog.message}
+                                { this.state.errorDialog.errors.map((error, index) => <p key={index} style={{color: 'red'}}>{`- ${error}`}</p>) }
                             </Dialog>
                         </div>
                     </Tab>
@@ -286,12 +293,10 @@ class BookingForm extends Component {
 
     _handlePreSubmit() {
         const errors = [];
-        console.log(this.state.fields);
-
         Object.keys(this.state.fields).forEach((key) => {
             const field = this.state.fields[key];
-            if (!field.valid) {
-                errors.push(`There is a problem with the \"${field.label}\" field`);
+            if (field.errorText) {
+                errors.push(field.errorText);
             }
         });
 
@@ -321,11 +326,11 @@ class BookingForm extends Component {
             }
         }
 
-        if (errors.length > 0) {
+        if (errors.length) {
             this.setState({
                 showErrorDialog: true,
                 errorDialog: {
-                    message: errors.map((error, index) => <p key={index} style={{color: 'red'}}>{`- ${error}`}</p>),
+                    errors: errors,
                     actions: (
                         <RaisedButton
                             label='Ok'
