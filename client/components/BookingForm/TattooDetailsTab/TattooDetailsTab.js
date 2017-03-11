@@ -53,6 +53,7 @@ class TattooDetailsTab extends Component {
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
+                            errorText={this.props.formValues[field.id].errorText}
                         />
                     );
                 case 'textBox':
@@ -67,6 +68,7 @@ class TattooDetailsTab extends Component {
                             multiLine={true}
                             fullWidth={true}
                             required={field.required}
+                            errorText={this.props.formValues[field.id].errorText}
                         />
                     );
                 case 'radio':
@@ -103,6 +105,7 @@ class TattooDetailsTab extends Component {
                             fieldValue={this.props.formValues[field.id]}
                             dataSource={field.items.map((item) => item.label)}
                             onFieldChange={this.props.onFieldChange}
+                            errorText={this.props.formValues[field.id].errorText}
                         />
                     );
                 case 'artistSelect':
@@ -135,7 +138,7 @@ TattooDetailsTab.propTypes = {
         label: PropTypes.string,
         inputType: PropTypes.string.isRequired,
         value: PropTypes.any,
-        valid: PropTypes.bool.isRequired,
+        errorText: PropTypes.string,
         required: PropTypes.bool.isRequired
     }).isRequired).isRequired,
     formValues: PropTypes.object,
