@@ -84,7 +84,7 @@ class IntakeForm extends Component {
                 fields: {},
                 medicalConditions: props.medicalConditions,
                 otherCondition: '',
-                filledInternally: props.params.mode == 'external' ? false : true,
+                filledInternally: props.params.mode == 'internal' ? true : false,
                 disclaimerAgreements: props.disclaimerAgreements,
                 cancellationAvailability: {
                     monday: {
@@ -159,7 +159,7 @@ class IntakeForm extends Component {
         } : null ;
 
         const form = {
-            fieldInternally: this.state.filledInternally,
+            filledInternally: this.state.filledInternally,
             fields: {...this.state.fields},
             agreements: this.state.disclaimerAgreements,
             medicalConditions: otherCondition ? this.state.medicalConditions.concat(otherCondition) : this.state.medicalConditions,

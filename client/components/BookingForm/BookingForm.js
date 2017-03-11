@@ -166,8 +166,6 @@ class BookingForm extends Component {
         let bookingNum = 1;
 
         this.state.bookings.forEach(function(booking) {
-            console.log(booking);
-            console.log(newBooking.type);
             if (booking.type == newBooking.type) {
                 bookingNum++;
             }
@@ -215,7 +213,6 @@ class BookingForm extends Component {
     }
 
     _handleTogglePresentationRequired() {
-        console.log('toggle');
         this.setState({
             presentationRequired: !this.state.presentationRequired
         })
