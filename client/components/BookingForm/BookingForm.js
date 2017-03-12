@@ -162,9 +162,10 @@ class BookingForm extends Component {
                     hasPresentation = true;
                 }
 
-                if (Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 1555200000) {
+                if (booking.type == 'Session' && Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 1555200000) {
                     presentNow = true;
                 }
+
             });
 
             if (presentNow && !hasPresentation) {
