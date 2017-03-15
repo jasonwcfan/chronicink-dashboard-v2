@@ -113,6 +113,7 @@ class NewBookingDialog extends Component {
                         >
                             <MenuItem value='Session' primaryText='Session' />
                             <MenuItem value='Presentation' primaryText='Presentation' />
+                            <MenuItem value='Email Presentation' primaryText='Email Presentation' />
                             <MenuItem value='Consultation' primaryText='Consultation' />
                         </SelectField>
                         <DatePicker

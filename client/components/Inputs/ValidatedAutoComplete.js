@@ -12,10 +12,12 @@ class ValidatedAutoComplete extends Component {
     }
 
     _handleUpdateInput(searchText) {
+        const errorText = searchText.length == 0 ? `${this.props.fieldTemplate.label} is required` : null;
         this.setState({
-            errorText: searchText.length == 0 ? `${this.props.fieldTemplate.label} is required` : null,
+            errorText,
             value: searchText
-        })
+        });
+        this.props.onFieldChange(this.props.fieldTemplate.id, searchText, errorText);
     }
 
     render() {
@@ -35,13 +37,9 @@ class ValidatedAutoComplete extends Component {
                             }}
                 maxSearchResults={10}
                 onNewRequest={(value) => {
-                                this.props.onFieldChange(this.props.fieldTemplate.id, value, this.state.errorText)
                                 this._handleUpdateInput(value);
                             }}
                 onUpdateInput={this._handleUpdateInput}
-                onBlur={(event) => {
-                    this.props.onFieldChange(this.props.fieldTemplate.id, event.target.value, this.state.errorText)
-                }}
             />
         )
     }

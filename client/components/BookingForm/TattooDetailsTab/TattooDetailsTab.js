@@ -82,7 +82,7 @@ class TattooDetailsTab extends Component {
                                 name={field.id}
                                 valueSelected={this.props.formValues[field.id].value}
                                 onChange={(event, value) => {
-                                    this.props.onFieldChange(field.id, value, true)
+                                    this.props.onFieldChange(field.id, value, null)
                                 }}
                             >
                                     {field.items.map((item) =>
