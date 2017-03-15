@@ -84,7 +84,7 @@ class IntakeForm extends Component {
                 fields: {},
                 medicalConditions: props.medicalConditions,
                 otherCondition: '',
-                filledInternally: props.params.mode == 'internal' ? true : false,
+                filledInternally: Meteor.userId() ? true: false,
                 disclaimerAgreements: props.disclaimerAgreements,
                 cancellationAvailability: {
                     monday: {

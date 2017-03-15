@@ -68,10 +68,6 @@ class ArtistStats extends Component {
         this._handleRefreshArtistStats(props.artists, 30);
     }
 
-    componentWillUnmount(props) {
-
-    }
-
     _handleReceiveArtistStats(artist, artistIndex, err, hoursBooked) {
         const nextArtistStats = this.state.artistStats.slice();
         nextArtistStats[artistIndex] = {
