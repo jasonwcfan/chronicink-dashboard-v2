@@ -146,7 +146,7 @@ GMail = {
             if (err) {
                 console.log('The API returned an error: ' + err);
             } else {
-                console.log('Email successfully sent');
+                console.log('Email successfully sent to', recipient);
             }
         });
     },

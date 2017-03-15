@@ -2,6 +2,16 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import Moment from 'moment';
 
+function sendIntakeEmail(form) {
+    let subject = 'Chronic Ink Deposit Reminder';
+    let body = `Hi ${form.fields.firstName.value}, \n\nThank you for taking the time to complete our intake form.\n` +
+                'If you have not yet called us to leave your deposit and confirm your booking, please do so ' +
+                'within 24 hours. Our number is 416-544-0311.\n\nIf you have already called and left your deposit,' +
+                ' thank you and we look forward to seeing you soon!\n\n- The Chronic Ink Family';
+    let recipient = form.fields.email.value;
+    GMail.sendEmail(recipient, subject, body);
+}
+
 Meteor.methods({
     'intake.insertForm': function(form) {
         console.log('inserting');
@@ -28,6 +38,9 @@ Meteor.methods({
                     if (error) {
                         return error;
                     } else {
+                        if (Meteor.isServer) {
+                            sendIntakeEmail(form);
+                        }
                         return formID;
                     }
                 });

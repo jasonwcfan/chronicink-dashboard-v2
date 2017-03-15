@@ -15,6 +15,7 @@ const style = {
         padding: 10
     },
     callUsButton: {
+        marginTop: 10,
         '@media (min-width: 768px)': {
             display: 'none'
         }
@@ -37,28 +38,31 @@ class CallUsStep extends Component {
     }
 
     render() {
-        let message = 'Please give us a call when you are ready to leave your deposit.';
+        let message = <div>
+            Please give us a call when you are ready to leave your deposit.
+            <div style={style.callUsButton}>
+                <RaisedButton
+                    href="tel:416-544-0311"
+                    target="_blank"
+                    label="Call Us"
+                    primary={true}
+                    display={!this.filledInternally}
+                    icon={<CommunicationCall />}
+                />
+            </div>
+            <p style={style.phoneNumber}>416-544-0311</p>
+        </div>;
 
         if(this.props.filledInternally) {
-            message = 'Please let a staff member know that you\'ve completed the form.';
-            style.phoneNumber.display = 'none';
+            message = <div>
+                Please let a staff member know that you've completed the form.
+            </div>;
         }
 
         return (
             <div style={style.container}>
                 <h2>You're not finished yet!</h2>
-                <p>{message}</p>
-                <div style={style.callUsButton}>
-                    <RaisedButton
-                        href="tel:416-544-0311"
-                        target="_blank"
-                        label="Call Us"
-                        primary={true}
-                        display={!this.filledInternally}
-                        icon={<CommunicationCall />}
-                    />
-                </div>
-                <p style={style.phoneNumber}>416-544-0311</p>
+                {message}
 
                 <p>NOTE: The submission of this form does not imply that an appointment or booking has been made. Please contact us if you would like to continue with your consultation.
                     This form will be deleted in 24 hours if no official booking and deposit has been completed.
