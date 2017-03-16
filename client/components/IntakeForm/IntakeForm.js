@@ -79,8 +79,11 @@ class IntakeForm extends Component {
     constructor(props) {
         super(props);
 
+        console.log(Meteor.userId() ? true: false);
+
         this.state = (() => {
             const state = {
+                formID: null,
                 fields: {},
                 medicalConditions: props.medicalConditions,
                 otherCondition: '',
@@ -166,8 +169,6 @@ class IntakeForm extends Component {
             cancellationAvailability: this.state.cancellationAvailability
         };
 
-        console.log(form);
-
         this.setState({
             isSaving: true
         });
@@ -180,7 +181,8 @@ class IntakeForm extends Component {
                 this.setState({
                     isSaving: false,
                     isSaved: true,
-                    stepIndex: 3
+                    stepIndex: 3,
+                    formID: res
                 })
             }
         });
@@ -200,7 +202,6 @@ class IntakeForm extends Component {
 
     _handleToggleMedicalCondition(idx) {
         const newConditions = [...this.state.medicalConditions];
-        console.log(newConditions);
         newConditions[idx].value = !newConditions[idx].value;
 
         this.setState({
@@ -224,7 +225,6 @@ class IntakeForm extends Component {
     }
 
     _handleToggleCancellationAvailability(day, time, value) {
-        console.log(day, time, value);
         const newCancellationAvailability = {...this.state.cancellationAvailability};
         newCancellationAvailability[day][time] = value;
         this.setState({
@@ -383,7 +383,7 @@ class IntakeForm extends Component {
             case 3:
                 return (
                     <div style={style.callUsStepContainer}>
-                        <CallUsStep filledInternally={this.state.filledInternally}/>
+                        <CallUsStep filledInternally={this.state.filledInternally} formID={this.state.formID}/>
                     </div>
                 );
         }

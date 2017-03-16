@@ -19,33 +19,34 @@ Meteor.methods({
         // Have to do this here because for some reason it mutates state when doing it in IntakeForm.js!!!
         form.fields.dateOfBirth.value = Moment(form.fields.dateOfBirth.value, 'DD-MM-YYYY').toDate();
 
-        Meteor.call('client.insert', form, function(error, clientID) {
+        return Intake.insert({
+            filledInternally: form.filledInternally,
+            agreements: form.agreements,
+            fields: form.fields,
+            medicalConditions: form.medicalConditions,
+            cancellationAvailability: form.cancellationAvailability,
+            bookingPending: true,
+            missedCall: false,
+            clientName: form.fields.firstName.value + ' ' + form.fields.lastName.value,
+            date: new Date()
+        }, function (error, formID) {
             if (error) {
                 console.log(error);
-                return error;
             } else {
-                Intake.insert({
-                    filledInternally: form.filledInternally,
-                    agreements: form.agreements,
-                    fields: form.fields,
-                    medicalConditions: form.medicalConditions,
-                    cancellationAvailability: form.cancellationAvailability,
-                    bookingPending: true,
-                    clientName: form.fields.firstName.value + ' ' + form.fields.lastName.value,
-                    date: new Date(),
-                    clientID
-                }, function (error, formID) {
+                if (Meteor.isServer) {
+                    sendIntakeEmail(form);
+                }
+
+                Meteor.call('client.insert', form, function(error, clientID) {
                     if (error) {
-                        return error;
+                        console.log(error);
                     } else {
-                        if (Meteor.isServer) {
-                            sendIntakeEmail(form);
-                        }
-                        return formID;
+                        Intake.update({_id: formID}, {$set: {clientID: clientID}});
                     }
                 });
             }
         });
+
     },
     'intake.markBookingCompleted': function(clientID, intakeID) {
         if(intakeID) {
@@ -64,6 +65,11 @@ Meteor.methods({
                 }
                 return res;
             });
+        }
+    },
+    'intake.missedCall': function(formID) {
+        if (formID) {
+            return Intake.update({_id: formID}, {$set: {missedCall: true}})
         }
     }
 });

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
 import CommunicationCall from 'material-ui/svg-icons/communication/call';
 
 const style = {
@@ -8,14 +9,16 @@ const style = {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        textAlign: 'center',
         fontFamily: 'Roboto, sans-serif'
     },
     item: {
         padding: 10
     },
-    callUsButton: {
+    callUsContainer: {
         marginTop: 10,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
         '@media (min-width: 768px)': {
             display: 'none'
         }
@@ -31,16 +34,28 @@ const style = {
 class CallUsStep extends Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            missedCall: false
+        };
+
+        this._handleMissedCall = this._handleMissedCall.bind(this);
     }
 
-    _handleChange(idx) {
-        this.props.onToggleAgreement(idx);
+    _handleMissedCall() {
+        this.setState({
+            missedCall: !this.state.missedCall
+        });
+
+        Meteor.call('intake.missedCall', this.props.formID, function(err, res){
+            
+        })
     }
 
     render() {
-        let message = <div>
+        let message = this.props.filledInternally ? <div>
             Please give us a call when you are ready to leave your deposit.
-            <div style={style.callUsButton}>
+            <div style={style.callUsContainer}>
                 <RaisedButton
                     href="tel:416-544-0311"
                     target="_blank"
@@ -49,15 +64,18 @@ class CallUsStep extends Component {
                     display={!this.filledInternally}
                     icon={<CommunicationCall />}
                 />
+                <p style={style.phoneNumber}>416-544-0311</p>
+                <Checkbox
+                    style={{width: 'initial'}}
+                    labelStyle={{width: 'initial'}}
+                    labelPosition='left'
+                    label={this.state.missedCall ? 'OK, we\'ll get back to you!' : 'Did we miss your call?'}
+                    onCheck={this._handleMissedCall}
+                    disabled={this.state.missedCall} />
             </div>
-            <p style={style.phoneNumber}>416-544-0311</p>
+        </div> : <div>
+            Please let a staff member know that you've completed the form.
         </div>;
-
-        if(this.props.filledInternally) {
-            message = <div>
-                Please let a staff member know that you've completed the form.
-            </div>;
-        }
 
         return (
             <div style={style.container}>

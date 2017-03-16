@@ -132,7 +132,6 @@ class ClientInfoStep extends Component {
                             mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
                             validator={function(str){
                                 const date = Moment(str, 'DD/MM/YYYY', true);
-                                console.log(date);
                                 return date != null && date.isValid();
                             }}
                             errorText={this.props.formValues[field.id].errorText}
