@@ -122,7 +122,7 @@ class IntakeForm extends Component {
                 isSaved: false,
                 isSaving: false,
                 formID: null,
-                stepIndex: 0,
+                stepIndex: 2,
                 showErrorDialog: false,
                 errorDialog: {
                     stepIndex: 0,

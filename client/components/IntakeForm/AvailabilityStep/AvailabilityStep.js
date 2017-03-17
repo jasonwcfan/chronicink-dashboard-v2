@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Radium from 'radium';
 import Divider from 'material-ui/Divider';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Checkbox from 'material-ui/Checkbox';
@@ -17,6 +17,16 @@ const style = {
     },
     tableHeaderColumn: {
         fontSize: '16px'
+    },
+    tableHeaderTextLarge: {
+        '@media (max-width: 549px)': {
+            display: 'none'
+        }
+    },
+    tableHeaderTextSmall: {
+        '@media (min-width: 550px)': {
+            display: 'none'
+        }
     }
 };
 
@@ -83,9 +93,9 @@ class FinishedStep extends Component {
                     <Table selectable={false}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
-                                <TableHeaderColumn style={style.tableHeaderColumn}>Day</TableHeaderColumn>
-                                <TableHeaderColumn style={style.tableHeaderColumn}>Afternoon (12PM-5PM)</TableHeaderColumn>
-                                <TableHeaderColumn style={style.tableHeaderColumn}>Evening (5PM-8PM)</TableHeaderColumn>
+                                <TableHeaderColumn style={style.tableHeaderColumn}><p>Day</p></TableHeaderColumn>
+                                <TableHeaderColumn style={style.tableHeaderColumn}><p style={style.tableHeaderTextLarge}>Afternoon (12PM-5PM)</p><p style={style.tableHeaderTextSmall}>12PM-5PM</p></TableHeaderColumn>
+                                <TableHeaderColumn style={style.tableHeaderColumn}><p style={style.tableHeaderTextLarge}>Evening (5PM-8PM)</p><p style={style.tableHeaderTextSmall}>5PM-8PM</p></TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
@@ -102,4 +112,4 @@ FinishedStep.propTypes = {
     cancellationAvailability: PropTypes.object
 };
 
-export default FinishedStep;
+export default Radium(FinishedStep);
