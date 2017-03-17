@@ -42,7 +42,7 @@ class SideNavBar extends Component {
                 <List style={style.menuList}>
                     <Divider />
                     <LinkWrapper to={{pathname: '/dashboard'}}><ListItem name='dashboard' leftIcon={<DashboardIcon />}>Dashboard</ListItem></LinkWrapper>
-                    <LinkWrapper to={{pathname: '/intakeform/internal'}}><ListItem name='intakeForm' leftIcon={<IntakeIcon />}>Intake Form</ListItem></LinkWrapper>
+                    <LinkWrapper to={{pathname: '/intakeform'}}><ListItem name='intakeForm' leftIcon={<IntakeIcon />}>Intake Form</ListItem></LinkWrapper>
                     <ListItem
                         primaryTogglesNestedList={true}
                         leftIcon={<FormsIcon />}
