@@ -57,11 +57,11 @@ class CallUsStep extends Component {
     render() {
         let message = this.props.filledInternally ?
             <div>
-                Please let a staff member know that you've completed the form.
+                Please find a Chronic Ink consultant to finish your booking.
             </div> :
             <div>
-                Please give us a call when you are ready to leave your deposit.
                 <div style={style.callUsContainer}>
+                    <p>Please give us a call when you are ready to leave your deposit.</p>
                     <div style={style.callUsButton}>
                         <RaisedButton
                             href="tel:416-544-0311"
@@ -81,16 +81,15 @@ class CallUsStep extends Component {
                         onCheck={this._handleMissedCall}
                         disabled={this.state.missedCall} />
                 </div>
+                <p>NOTE: The submission of this form does not imply that an appointment or booking has been made. Please contact us if you would like to continue with your consultation.
+                    This form will be deleted in 24 hours if no official booking and deposit has been completed.
+                </p>
             </div>;
 
         return (
             <div style={style.container}>
-                <h2>You're not finished yet!</h2>
+                <h2>You're not done!</h2>
                 {message}
-
-                <p>NOTE: The submission of this form does not imply that an appointment or booking has been made. Please contact us if you would like to continue with your consultation.
-                    This form will be deleted in 24 hours if no official booking and deposit has been completed.
-                </p>
             </div>
         );
     }

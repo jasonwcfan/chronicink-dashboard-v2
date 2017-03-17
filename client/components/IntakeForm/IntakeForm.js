@@ -192,7 +192,6 @@ class IntakeForm extends Component {
         const newFields = {...this.state.fields};
         newFields[id].value = value;
         newFields[id].errorText = errorText;
-        newFields[id].touched = true;
 
         this.setState({
             fields: newFields,
@@ -403,7 +402,7 @@ class IntakeForm extends Component {
                         </div>
                         <Stepper activeStep={this.state.stepIndex}>
                             <Step>
-                                <StepLabel style={style.stepLabel}>Personal Info</StepLabel>
+                                <StepLabel style={style.stepLabel}>My Info</StepLabel>
                             </Step>
                             <Step>
                                 <StepLabel style={style.stepLabel}>Disclaimer</StepLabel>

@@ -14,6 +14,9 @@ const style = {
     freeAnyTimeCheckboxContainer: {
         display: 'flex',
         justifyContent: 'center'
+    },
+    tableHeaderColumn: {
+        fontSize: '16px'
     }
 };
 
@@ -67,8 +70,7 @@ class FinishedStep extends Component {
                 </p>
                 <p>
                     If you would like to be notified in case space opens
-                    up, please let us know what times you are typically available to come in, and we will give you a
-                    call if someone else gives up their spot.
+                    up, please let us know what times you are typically available to come in.
                 </p>
                 <div style={style.weekDaysContainer}>
                     <Divider style={style.divider} />
@@ -81,9 +83,9 @@ class FinishedStep extends Component {
                     <Table selectable={false}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
-                                <TableHeaderColumn>Day</TableHeaderColumn>
-                                <TableHeaderColumn>Afternoon (Noon-5PM)</TableHeaderColumn>
-                                <TableHeaderColumn>Evening (5PM-8PM)</TableHeaderColumn>
+                                <TableHeaderColumn style={style.tableHeaderColumn}>Day</TableHeaderColumn>
+                                <TableHeaderColumn style={style.tableHeaderColumn}>Afternoon (12PM-5PM)</TableHeaderColumn>
+                                <TableHeaderColumn style={style.tableHeaderColumn}>Evening (5PM-8PM)</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
