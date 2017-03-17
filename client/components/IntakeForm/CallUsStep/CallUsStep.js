@@ -18,7 +18,9 @@ const style = {
         marginTop: 10,
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
+        alignItems: 'center'
+    },
+    callUsButton: {
         '@media (min-width: 768px)': {
             display: 'none'
         }
@@ -53,29 +55,33 @@ class CallUsStep extends Component {
     }
 
     render() {
-        let message = this.props.filledInternally ? <div>
-            Please give us a call when you are ready to leave your deposit.
-            <div style={style.callUsContainer}>
-                <RaisedButton
-                    href="tel:416-544-0311"
-                    target="_blank"
-                    label="Call Us"
-                    primary={true}
-                    display={!this.filledInternally}
-                    icon={<CommunicationCall />}
-                />
-                <p style={style.phoneNumber}>416-544-0311</p>
-                <Checkbox
-                    style={{width: 'initial'}}
-                    labelStyle={{width: 'initial'}}
-                    labelPosition='left'
-                    label={this.state.missedCall ? 'OK, we\'ll get back to you!' : 'Did we miss your call?'}
-                    onCheck={this._handleMissedCall}
-                    disabled={this.state.missedCall} />
-            </div>
-        </div> : <div>
-            Please let a staff member know that you've completed the form.
-        </div>;
+        let message = this.props.filledInternally ?
+            <div>
+                Please let a staff member know that you've completed the form.
+            </div> :
+            <div>
+                Please give us a call when you are ready to leave your deposit.
+                <div style={style.callUsContainer}>
+                    <div style={style.callUsButton}>
+                        <RaisedButton
+                            href="tel:416-544-0311"
+                            target="_blank"
+                            label="Call Us"
+                            primary={true}
+                            display={!this.filledInternally}
+                            icon={<CommunicationCall />}
+                        />
+                    </div>
+                    <p style={style.phoneNumber}>416-544-0311</p>
+                    <Checkbox
+                        style={{width: 'initial'}}
+                        labelStyle={{width: 'initial'}}
+                        labelPosition='left'
+                        label={this.state.missedCall ? 'OK, we\'ll get back to you!' : 'Did we miss your call?'}
+                        onCheck={this._handleMissedCall}
+                        disabled={this.state.missedCall} />
+                </div>
+            </div>;
 
         return (
             <div style={style.container}>

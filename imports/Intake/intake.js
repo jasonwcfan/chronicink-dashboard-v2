@@ -33,7 +33,7 @@ Meteor.methods({
             if (error) {
                 console.log(error);
             } else {
-                if (Meteor.isServer) {
+                if (Meteor.isServer && !form.filledInternally) {
                     sendIntakeEmail(form);
                 }
 
