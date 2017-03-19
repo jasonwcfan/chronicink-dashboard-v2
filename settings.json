@@ -1,6 +1,6 @@
 {
   "public": {
-    "rootEmail": "chronicinktesting@gmail.com"
+    "primaryEmail": "chronicinktesting@gmail.com"
   },
   "google": {
     "client_secret": "Vd4EV2j3nGf8hSQUZ-W5vqRJ",

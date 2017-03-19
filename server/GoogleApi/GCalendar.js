@@ -16,12 +16,12 @@ const gmail = google.gmail('v1');
 
 GCalendar = {
     insertEvent: function (event, calendarID, callback) {
-        const rootUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.rootEmail});
+        const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
 
         oauth2Client.setCredentials({
-            access_token: rootUser.services.google.accessToken,
-            refresh_token: rootUser.services.google.refreshToken,
-            expiry_date: rootUser.services.google.expiresAt
+            access_token: primaryUser.services.google.accessToken,
+            refresh_token: primaryUser.services.google.refreshToken,
+            expiry_date: primaryUser.services.google.expiresAt
         });
 
         calendar.events.insert({
@@ -42,15 +42,15 @@ GCalendar = {
     getBookedHours: function(calendarID, timeframe, callback) {
         const timeMin = new Moment();
         const timeMax = new Moment();
-        const rootUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.rootEmail});
+        const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
 
         timeMax.add(timeframe, 'days');
         timeMax.set({'hour': 11, 'minute': 59, 'second': 59});
 
         oauth2Client.setCredentials({
-            access_token: rootUser.services.google.accessToken,
-            refresh_token: rootUser.services.google.refreshToken,
-            expiry_date: rootUser.services.google.expiresAt
+            access_token: primaryUser.services.google.accessToken,
+            refresh_token: primaryUser.services.google.refreshToken,
+            expiry_date: primaryUser.services.google.expiresAt
         });
 
         calendar.events.list({
@@ -131,13 +131,12 @@ GCalendar = {
 GMail = {
     sendEmail: function(recipient, subject, body) {
         const base64EncodedEmail = encodeEmail(recipient, subject, body);
-        const rootUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.rootEmail});
-        console.log(rootUser);
+        const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
 
         oauth2Client.setCredentials({
-            access_token: rootUser.services.google.accessToken,
-            refresh_token: rootUser.services.google.refreshToken,
-            expiry_date: rootUser.services.google.expiresAt
+            access_token: primaryUser.services.google.accessToken,
+            refresh_token: primaryUser.services.google.refreshToken,
+            expiry_date: primaryUser.services.google.expiresAt
         });
 
         gmail.users.messages.send({
