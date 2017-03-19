@@ -54,6 +54,11 @@ const style = {
     stepLabel: {
         fontFamily: 'Roboto, sans-serif',
     },
+    stepLabelContent: {
+        '@media (max-width: 500px)': {
+            display: 'none',
+        }
+    },
     finishedStepContainer: {
         display: 'flex',
         minHeight: 500,
@@ -230,7 +235,7 @@ class IntakeForm extends Component {
             cancellationAvailability: newCancellationAvailability
         })
     }
-    
+
     _handleToggleFreeAnyTime(value) {
         const newCancellationAvailability = {...this.state.cancellationAvailability};
         Object.keys(newCancellationAvailability).forEach((key) => {
@@ -402,16 +407,32 @@ class IntakeForm extends Component {
                         </div>
                         <Stepper activeStep={this.state.stepIndex}>
                             <Step>
-                                <StepLabel style={style.stepLabel}>My Info</StepLabel>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                My Info
+                                </div>
+                                </StepLabel>
                             </Step>
                             <Step>
-                                <StepLabel style={style.stepLabel}>Disclaimer</StepLabel>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                Disclaimer
+                                </div>
+                                </StepLabel>
                             </Step>
                             <Step>
-                                <StepLabel style={style.stepLabel}>My Availability</StepLabel>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                My Availability
+                                </div>
+                                </StepLabel>
                             </Step>
                             <Step>
-                                <StepLabel style={style.stepLabel}>Call Us</StepLabel>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                {Meteor.userId() ? 'Get in Touch' : 'Call Us'}
+                                </div>
+                                </StepLabel>
                             </Step>
                         </Stepper>
                         <div>
