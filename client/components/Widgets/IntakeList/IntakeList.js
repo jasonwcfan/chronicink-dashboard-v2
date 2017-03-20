@@ -10,8 +10,6 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import EditIcon from 'material-ui/svg-icons/content/create';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import SearchIcon from 'material-ui/svg-icons/action/search';
-import AutoComplete from 'material-ui/AutoComplete';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import CheckIcon from 'material-ui/svg-icons/action/done';
 import LinkWrapper from '../../UI/LinkWrapper';
@@ -113,13 +111,6 @@ class IntakeList extends Component {
             <Paper style={style.intakeListContainer} zDepth={3}>
                 <div style={style.headerContainer}>
                     <h3 style={style.header} >Intake List</h3>
-                    {/*<AutoComplete*/}
-                        {/*hintText="Hello World!"*/}
-                        {/*dataSource={subReady}*/}
-                    {/*></AutoComplete>*/}
-                    <IconButton>
-                        <SearchIcon></SearchIcon>
-                    </IconButton>
                     {this.state.inDeleteMode ?
                         <IconButton
                             onTouchTap={() => {this.setState({inDeleteMode: false})}}
