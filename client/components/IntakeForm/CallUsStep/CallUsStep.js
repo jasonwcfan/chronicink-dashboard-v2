@@ -14,6 +14,9 @@ const style = {
     item: {
         padding: 10
     },
+    messageContainer: {
+        paddingBottom: 24
+    },
     callUsContainer: {
         marginTop: 10,
         display: 'flex',
@@ -56,10 +59,10 @@ class CallUsStep extends Component {
 
     render() {
         let message = this.props.filledInternally ?
-            <div>
+            <div style={style.messageContainer}>
                 Please find a Chronic Ink consultant to finish your booking.
             </div> :
-            <div>
+            <div style={style.messageContainer}>
                 <div style={style.callUsContainer}>
                     <p>Please give us a call when you are ready to leave your deposit.</p>
                     <div style={style.callUsButton}>

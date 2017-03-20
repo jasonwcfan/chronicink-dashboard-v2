@@ -73,7 +73,7 @@ class FinishedStep extends Component {
     render() {
         return (
             <div style={style.container}>
-                <h2 style={{textAlign: 'center'}}>Availability if a spot opens up</h2>
+                <h2 style={{textAlign: 'center'}}>My availability if a spot opens up</h2>
                 <p>
                     Sometimes, we will have last minute openings when there is a cancellation, so we may be able to get
                     started on your piece earlier than expected.

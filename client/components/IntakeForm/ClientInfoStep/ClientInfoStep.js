@@ -146,7 +146,7 @@ class ClientInfoStep extends Component {
     render() {
         return (
             <div style={style.container}>
-                <h2 style={style.header}>My Information</h2><br />
+                <h2 style={style.header}>My Info</h2><br />
                 <div style={style.fieldsContainer}>
                     {this._renderFields(this.props.formTemplate)}
                 </div>
