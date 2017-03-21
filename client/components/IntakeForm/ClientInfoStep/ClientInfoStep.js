@@ -75,6 +75,7 @@ class ClientInfoStep extends Component {
                             mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                             errorText={this.props.formValues[field.id].errorText}
                             touched={this.props.formValues[field.id].touched}
+                            type='tel'
                         />
                     );
                 case 'email':
@@ -136,6 +137,7 @@ class ClientInfoStep extends Component {
                             }}
                             errorText={this.props.formValues[field.id].errorText}
                             touched={this.props.formValues[field.id].touched}
+                            type='tel'
                         />
 
                     );

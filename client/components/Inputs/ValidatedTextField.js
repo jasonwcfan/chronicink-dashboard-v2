@@ -52,7 +52,7 @@ class ValidatedTextField extends Component {
                     float: 'left'
                 }}
             >
-                {this.props.mask ? <MaskedInput mask={this.props.mask} value={this.state.value} /> : null}
+                {this.props.mask ? <MaskedInput type={this.props.type} autoComplete='off' mask={this.props.mask} value={this.state.value} /> : null}
             </TextField>
         )
     }
