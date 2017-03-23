@@ -10,11 +10,9 @@ import {
     Stepper,
     StepLabel,
 } from 'material-ui/Stepper';
-import PersonalInfoIcon from 'material-ui/svg-icons/action/account-circle';
-import DisclaimerIcon from 'material-ui/svg-icons/action/assignment';
-import AvailabilityIcon from 'material-ui/svg-icons/action/date-range';
-import CallUsIcon from 'material-ui/svg-icons/communication/call';
-import colors from '../../constants/colors';
+import chronicInkMuiTheme from '../../theme/chronicInkMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import defaultFields from '../../constants/defaultIntakeFormFields';
 import medicalConditions from '../../constants/medicalConditions';
 import disclaimerAgreements from '../../constants/defaultDisclaimerAgreements';
@@ -24,10 +22,6 @@ import AvailabilityStep from './AvailabilityStep';
 import CallUsStep from './CallUsStep';
 import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import { Tabs, Tab } from 'material-ui/Tabs';
 
 const style = {
     container: {
@@ -83,8 +77,6 @@ const style = {
 class IntakeForm extends Component {
     constructor(props) {
         super(props);
-
-        console.log(Meteor.userId() ? true: false);
 
         this.state = (() => {
             const state = {
@@ -394,12 +386,8 @@ class IntakeForm extends Component {
     }
 
     render() {
-        let customMuiTheme = lightBaseTheme;
-        customMuiTheme.palette.primary1Color = colors.CitGold;
-        customMuiTheme.palette.accent1Color = colors.CitGold;
-
         return (
-            <MuiThemeProvider muiTheme={getMuiTheme(customMuiTheme)}>
+            <MuiThemeProvider muiTheme={getMuiTheme(chronicInkMuiTheme)}>
                 <StyleRoot>
                     <div>
                         <div>

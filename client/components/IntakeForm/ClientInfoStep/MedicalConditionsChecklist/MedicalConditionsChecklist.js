@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
-import colors from '../../../../constants/colors';
+import colors from '../../../../theme/colors';
 
 const style = {
     container: {
