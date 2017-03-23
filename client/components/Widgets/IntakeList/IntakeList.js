@@ -72,13 +72,14 @@ class IntakeList extends Component {
             return this.props.data.map((form) => {
                 let submitDate = form.date ? Moment(form.date).tz('America/Toronto').fromNow(): 'Submission date not available';
                 let submitLocation = form.filledInternally ? 'In-store' : 'Online' ;
+                let missedCall = form.missedCall ? ' - MISSED CALL' : '';
 
                 if (form.bookingPending) {
                     return (
                         <ListItem
                             key={form._id}
-                            primaryText={form.clientName}
-                            secondaryText={`${submitDate} / ${submitLocation}`}
+                            primaryText={form.clientName + missedCall}
+                            secondaryText={`${submitDate} ${submitLocation}`}
                             rightIconButton={this.state.inDeleteMode ?
                                 <IconButton
                                     tooltipPosition='top-right'

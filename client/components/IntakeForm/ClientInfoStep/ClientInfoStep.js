@@ -75,6 +75,7 @@ class ClientInfoStep extends Component {
                             mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                             errorText={this.props.formValues[field.id].errorText}
                             touched={this.props.formValues[field.id].touched}
+                            type='tel'
                         />
                     );
                 case 'email':
@@ -132,11 +133,11 @@ class ClientInfoStep extends Component {
                             mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
                             validator={function(str){
                                 const date = Moment(str, 'DD/MM/YYYY', true);
-                                console.log(date);
                                 return date != null && date.isValid();
                             }}
                             errorText={this.props.formValues[field.id].errorText}
                             touched={this.props.formValues[field.id].touched}
+                            type='tel'
                         />
 
                     );
@@ -147,7 +148,7 @@ class ClientInfoStep extends Component {
     render() {
         return (
             <div style={style.container}>
-                <h2 style={style.header}>Personal Information</h2><br />
+                <h2 style={style.header}>My Info</h2><br />
                 <div style={style.fieldsContainer}>
                     {this._renderFields(this.props.formTemplate)}
                 </div>

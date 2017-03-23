@@ -1,4 +1,7 @@
 {
+  "public": {
+    "primaryEmail": "chronicinktesting@gmail.com"
+  },
   "google": {
     "client_secret": "Vd4EV2j3nGf8hSQUZ-W5vqRJ",
     "client_id": "305395284985-6434482ol6l51dc2gd108vrae020cg16.apps.googleusercontent.com",

@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import RaisedButton from 'material-ui/RaisedButton';
+import Radium from 'radium';
 import Divider from 'material-ui/Divider';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Checkbox from 'material-ui/Checkbox';
@@ -14,6 +14,19 @@ const style = {
     freeAnyTimeCheckboxContainer: {
         display: 'flex',
         justifyContent: 'center'
+    },
+    tableHeaderColumn: {
+        fontSize: '16px'
+    },
+    tableHeaderTextLarge: {
+        '@media (max-width: 549px)': {
+            display: 'none'
+        }
+    },
+    tableHeaderTextSmall: {
+        '@media (min-width: 550px)': {
+            display: 'none'
+        }
     }
 };
 
@@ -60,15 +73,14 @@ class FinishedStep extends Component {
     render() {
         return (
             <div style={style.container}>
-                <h2 style={{textAlign: 'center'}}>Availability if a spot opens up</h2>
+                <h2 style={{textAlign: 'center'}}>My availability if a spot opens up</h2>
                 <p>
                     Sometimes, we will have last minute openings when there is a cancellation, so we may be able to get
                     started on your piece earlier than expected.
                 </p>
                 <p>
                     If you would like to be notified in case space opens
-                    up, please let us know what times you are typically available to come in, and we will give you a
-                    call if someone else gives up their spot.
+                    up, please let us know what times you are typically available to come in.
                 </p>
                 <div style={style.weekDaysContainer}>
                     <Divider style={style.divider} />
@@ -81,9 +93,9 @@ class FinishedStep extends Component {
                     <Table selectable={false}>
                         <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                             <TableRow>
-                                <TableHeaderColumn>Day</TableHeaderColumn>
-                                <TableHeaderColumn>Afternoon (Noon-5PM)</TableHeaderColumn>
-                                <TableHeaderColumn>Evening (5PM-8PM)</TableHeaderColumn>
+                                <TableHeaderColumn style={style.tableHeaderColumn}><p>Day</p></TableHeaderColumn>
+                                <TableHeaderColumn style={style.tableHeaderColumn}><p style={style.tableHeaderTextLarge}>Afternoon (12PM-5PM)</p><p style={style.tableHeaderTextSmall}>12PM-5PM</p></TableHeaderColumn>
+                                <TableHeaderColumn style={style.tableHeaderColumn}><p style={style.tableHeaderTextLarge}>Evening (5PM-8PM)</p><p style={style.tableHeaderTextSmall}>5PM-8PM</p></TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
@@ -100,4 +112,4 @@ FinishedStep.propTypes = {
     cancellationAvailability: PropTypes.object
 };
 
-export default FinishedStep;
+export default Radium(FinishedStep);

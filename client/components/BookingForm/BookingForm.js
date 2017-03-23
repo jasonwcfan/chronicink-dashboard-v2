@@ -277,7 +277,7 @@ class BookingForm extends Component {
     render() {
         return (
             <div>
-                <Tabs initialSelectedIndex={1} >
+                <Tabs>
                     <Tab label='Client Info'>
                         <ClientInfoTab
                             intake={this.props.intake}

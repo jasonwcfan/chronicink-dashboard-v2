@@ -54,6 +54,11 @@ const style = {
     stepLabel: {
         fontFamily: 'Roboto, sans-serif',
     },
+    stepLabelContent: {
+        '@media (max-width: 500px)': {
+            display: 'none',
+        }
+    },
     finishedStepContainer: {
         display: 'flex',
         minHeight: 500,
@@ -79,12 +84,15 @@ class IntakeForm extends Component {
     constructor(props) {
         super(props);
 
+        console.log(Meteor.userId() ? true: false);
+
         this.state = (() => {
             const state = {
+                formID: null,
                 fields: {},
                 medicalConditions: props.medicalConditions,
                 otherCondition: '',
-                filledInternally: props.params.mode == 'internal' ? true : false,
+                filledInternally: Meteor.userId() ? true: false,
                 disclaimerAgreements: props.disclaimerAgreements,
                 cancellationAvailability: {
                     monday: {
@@ -166,8 +174,6 @@ class IntakeForm extends Component {
             cancellationAvailability: this.state.cancellationAvailability
         };
 
-        console.log(form);
-
         this.setState({
             isSaving: true
         });
@@ -180,7 +186,8 @@ class IntakeForm extends Component {
                 this.setState({
                     isSaving: false,
                     isSaved: true,
-                    stepIndex: 3
+                    stepIndex: 3,
+                    formID: res
                 })
             }
         });
@@ -190,7 +197,6 @@ class IntakeForm extends Component {
         const newFields = {...this.state.fields};
         newFields[id].value = value;
         newFields[id].errorText = errorText;
-        newFields[id].touched = true;
 
         this.setState({
             fields: newFields,
@@ -200,7 +206,6 @@ class IntakeForm extends Component {
 
     _handleToggleMedicalCondition(idx) {
         const newConditions = [...this.state.medicalConditions];
-        console.log(newConditions);
         newConditions[idx].value = !newConditions[idx].value;
 
         this.setState({
@@ -224,14 +229,13 @@ class IntakeForm extends Component {
     }
 
     _handleToggleCancellationAvailability(day, time, value) {
-        console.log(day, time, value);
         const newCancellationAvailability = {...this.state.cancellationAvailability};
         newCancellationAvailability[day][time] = value;
         this.setState({
             cancellationAvailability: newCancellationAvailability
         })
     }
-    
+
     _handleToggleFreeAnyTime(value) {
         const newCancellationAvailability = {...this.state.cancellationAvailability};
         Object.keys(newCancellationAvailability).forEach((key) => {
@@ -383,7 +387,7 @@ class IntakeForm extends Component {
             case 3:
                 return (
                     <div style={style.callUsStepContainer}>
-                        <CallUsStep filledInternally={this.state.filledInternally}/>
+                        <CallUsStep filledInternally={this.state.filledInternally} formID={this.state.formID}/>
                     </div>
                 );
         }
@@ -403,16 +407,32 @@ class IntakeForm extends Component {
                         </div>
                         <Stepper activeStep={this.state.stepIndex}>
                             <Step>
-                                <StepLabel style={style.stepLabel}>Personal Info</StepLabel>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                My Info
+                                </div>
+                                </StepLabel>
                             </Step>
                             <Step>
-                                <StepLabel style={style.stepLabel}>Disclaimer</StepLabel>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                Disclaimer
+                                </div>
+                                </StepLabel>
                             </Step>
                             <Step>
-                                <StepLabel style={style.stepLabel}>My Availability</StepLabel>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                My Availability
+                                </div>
+                                </StepLabel>
                             </Step>
                             <Step>
-                                <StepLabel style={style.stepLabel}>Call Us</StepLabel>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                {Meteor.userId() ? 'Get in Touch' : 'Call Us'}
+                                </div>
+                                </StepLabel>
                             </Step>
                         </Stepper>
                         <div>
