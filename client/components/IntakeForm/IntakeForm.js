@@ -1,25 +1,24 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'react-meteor-data';
-import { withRouter } from 'react-router';
+import Radium from 'radium';
 import Moment from 'moment';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import { StyleRoot } from 'radium';
 import RaisedButton from 'material-ui/RaisedButton';
+import Dialog from 'material-ui/Dialog';
 import {
     Step,
     Stepper,
     StepLabel,
 } from 'material-ui/Stepper';
-import Paper from 'material-ui/Paper';
-import AppBar from 'material-ui/AppBar';
-import LinearProgress from 'material-ui/LinearProgress';
+import chronicInkMuiTheme from '../../theme/chronicInkMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import defaultFields from '../../constants/defaultIntakeFormFields';
 import medicalConditions from '../../constants/medicalConditions';
 import disclaimerAgreements from '../../constants/defaultDisclaimerAgreements';
 import ClientInfoStep from './ClientInfoStep';
 import AgreementStep from './AgreementStep';
-import FinishedStep from './FinishedStep';
+import AvailabilityStep from './AvailabilityStep';
 import CallUsStep from './CallUsStep';
 import Intake from '../../../imports/Intake/intake';
 import Client from '../../../imports/Client/client';
@@ -28,8 +27,31 @@ const style = {
     container: {
         margin: 5
     },
+    logo: {
+        height: 72,
+        display: 'block',
+        margin: 'auto',
+        '@media (max-width: 768px)': {
+            height: 54
+        }
+    },
     navButton: {
         margin: 10
+    },
+    navButtonContainer: {
+        display: 'flex',
+        justifyContent: 'center',
+        '@media (min-width: 1024px)': {
+            justifyContent: 'flex-start'
+        }
+    },
+    stepLabel: {
+        fontFamily: 'Roboto, sans-serif',
+    },
+    stepLabelContent: {
+        '@media (max-width: 500px)': {
+            display: 'none',
+        }
     },
     finishedStepContainer: {
         display: 'flex',
@@ -38,17 +60,18 @@ const style = {
         justifyContent: 'center',
         alignItems: 'center'
     },
-    linearProgressContainer: {
-        paddingBottom: 10,
-        width: '95%'
+    footer: {
+        fontSize: '0.8em',
+        fontFamily: 'Roboto, sans-serif',
+        color: colors.CitGold,
+        textAlign: 'center',
+        backgroundColor: colors.CitDarkGrey,
+        height: '42px',
+        paddingTop: '6px'
     },
-    callUsStepContainer: {
-        display: 'flex',
-        minHeight: 500,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+    homepageLink: {
+        color: colors.CitGold
+    }
 };
 
 class IntakeForm extends Component {
@@ -57,8 +80,11 @@ class IntakeForm extends Component {
 
         this.state = (() => {
             const state = {
+                formID: null,
                 fields: {},
                 medicalConditions: props.medicalConditions,
+                otherCondition: '',
+                filledInternally: Meteor.userId() ? true: false,
                 disclaimerAgreements: props.disclaimerAgreements,
                 cancellationAvailability: {
                     monday: {
@@ -93,14 +119,21 @@ class IntakeForm extends Component {
                 isSaved: false,
                 isSaving: false,
                 formID: null,
-                stepIndex: 0
+                stepIndex: 0,
+                showErrorDialog: false,
+                errorDialog: {
+                    stepIndex: 0,
+                    message: '',
+                    actions: null
+                }
             };
 
             props.formTemplate.forEach(function(field) {
                 state.fields[field.id] = {
                     value: field.value,
                     id: field.id,
-                    valid: field.valid,
+                    errorText: field.required && !field.value ? `Not a valid ${field.label}` : null,
+                    touched: false,
                     label: field.label
                 }
             });
@@ -115,21 +148,28 @@ class IntakeForm extends Component {
         this._decrementStep = this._decrementStep.bind(this);
         this._resetStep = this._resetStep.bind(this);
         this._handleToggleCancellationAvailability = this._handleToggleCancellationAvailability.bind(this);
+        this._handleOtherConditionChange = this._handleOtherConditionChange.bind(this);
+        this._handleToggleFreeAnyTime = this._handleToggleFreeAnyTime.bind(this);
     }
 
     _handleSubmit() {
+        const otherCondition = this.state.otherCondition ? {
+            id: this.state.otherCondition,
+            value: true
+        } : null ;
+
         const form = {
-            fields: this.state.fields,
+            filledInternally: this.state.filledInternally,
+            fields: {...this.state.fields},
             agreements: this.state.disclaimerAgreements,
-            medicalConditions: this.state.medicalConditions,
+            medicalConditions: otherCondition ? this.state.medicalConditions.concat(otherCondition) : this.state.medicalConditions,
             cancellationAvailability: this.state.cancellationAvailability
         };
-
-        form.fields.dateOfBirth.value = Moment(form.fields.dateOfBirth.value, 'DD-MM-YYYY').toDate();
 
         this.setState({
             isSaving: true
         });
+
         console.log('submitting');
         Meteor.call('intake.insertForm', form, (err, res) => {
             if (err) {
@@ -138,16 +178,17 @@ class IntakeForm extends Component {
                 this.setState({
                     isSaving: false,
                     isSaved: true,
-                    stepIndex: 3
+                    stepIndex: 3,
+                    formID: res
                 })
             }
         });
     }
 
-    _handleFieldChange(id, value, valid) {
+    _handleFieldChange(id, value, errorText) {
         const newFields = {...this.state.fields};
         newFields[id].value = value;
-        newFields[id].valid = valid;
+        newFields[id].errorText = errorText;
 
         this.setState({
             fields: newFields,
@@ -155,12 +196,18 @@ class IntakeForm extends Component {
         })
     }
 
-    _handleToggleMedicalCondition(idx, condition) {
+    _handleToggleMedicalCondition(idx) {
         const newConditions = [...this.state.medicalConditions];
         newConditions[idx].value = !newConditions[idx].value;
 
         this.setState({
             medicalConditions: newConditions
+        })
+    }
+
+    _handleOtherConditionChange(condition) {
+        this.setState({
+            otherCondition: condition
         })
     }
 
@@ -181,13 +228,96 @@ class IntakeForm extends Component {
         })
     }
 
-    _incrementStep() {
+    _handleToggleFreeAnyTime(value) {
+        const newCancellationAvailability = {...this.state.cancellationAvailability};
+        Object.keys(newCancellationAvailability).forEach((key) => {
+            newCancellationAvailability[key]['afternoon'] = value;
+            newCancellationAvailability[key]['evening'] = value;
+        });
+
         this.setState({
-            stepIndex: this.state.stepIndex < 2 ? this.state.stepIndex + 1 : 2
+            cancellationAvailability: newCancellationAvailability
         })
     }
 
-    _decrementStep() {
+    _incrementStep(e) {
+        e.preventDefault();
+
+        switch (this.state.stepIndex) {
+            case 0:
+                let hasFieldError = false;
+                const fields = this.state.fields;
+
+                Object.keys(fields).forEach((key) => {
+                    if (fields[key].errorText) {
+                        hasFieldError = true;
+                        fields[key].touched = true;
+                    }
+                });
+
+                if (hasFieldError) {
+                    this.setState({
+                        fields: fields,
+                        showErrorDialog: true,
+                        errorDialog: {
+                            message: 'The form has some errors. Please fix them before moving on',
+                            actions: [
+                                <RaisedButton
+                                    label='OK'
+                                    secondary={true}
+                                    onTouchTap={() => {
+                                        this.setState({
+                                            showErrorDialog: false
+                                        })
+                                    }}
+                                />
+                            ]
+                        }
+                    });
+                    return;
+                }
+                break;
+            case 1:
+                let hasDisclaimerError = false;
+
+                this.state.disclaimerAgreements.forEach((agreement) => {
+                    if (agreement.required && !agreement.value) {
+                        hasDisclaimerError = true;
+                    }
+                });
+
+                if (hasDisclaimerError) {
+                    this.setState({
+                        showDisclaimerErrorDialog: true,
+                        showErrorDialog: true,
+                        errorDialog: {
+                            message: 'You must accept the terms of the disclaimer and agree to leave a deposit',
+                            actions: [
+                                <RaisedButton
+                                    label='OK'
+                                    secondary={true}
+                                    onTouchTap={() => {
+                                        this.setState({
+                                            showErrorDialog: false
+                                        })
+                                    }}
+                                />
+                            ]
+                        }
+                    });
+                    return;
+                }
+                break;
+        }
+        window.scrollTo(0, 0);
+        this.setState({
+            stepIndex: this.state.stepIndex < 3 ? this.state.stepIndex + 1 : 2
+        })
+    }
+
+    _decrementStep(e) {
+        e.preventDefault();
+        window.scrollTo(0, 0);
         this.setState({
             stepIndex: this.state.stepIndex > 0 ? this.state.stepIndex - 1 : 0
         })
@@ -209,8 +339,13 @@ class IntakeForm extends Component {
                             formTemplate={this.props.formTemplate}
                             formValues={this.state.fields}
                             onToggleMedicalCondition={this._handleToggleMedicalCondition}
-                            medicalConditions={this.state.medicalConditions} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._incrementStep} />
+                            medicalConditions={this.state.medicalConditions}
+                            otherCondition={this.state.otherCondition}
+                            onChangeOtherCondition={this._handleOtherConditionChange}
+                        />
+                        <div style={style.navButtonContainer}>
+                            <RaisedButton style={style.navButton} labelStyle={{color: 'black'}} label='Next' secondary={true} onTouchTap={this._incrementStep} />
+                        </div>
                     </div>
                 );
             case 1:
@@ -219,37 +354,32 @@ class IntakeForm extends Component {
                         <AgreementStep
                             onToggleAgreement={this._handleToggleAgreement}
                             agreements={this.state.disclaimerAgreements} />
-                        <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
-                        <RaisedButton style={style.navButton} label="Next" primary={true} onTouchTap={this._incrementStep} />
+                        <div style={style.navButtonContainer}>
+                            <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
+                            <RaisedButton style={style.navButton} labelStyle={{color: 'black'}} label="Next" secondary={true} onTouchTap={this._incrementStep} />
+                        </div>
                         {}
                     </div>
                 );
             case 2:
                 return (
                     <div style={style.finishedStepContainer}>
-                        <FinishedStep
-                            fields={this.state.fields}
-                            disclaimerAgreements={this.state.disclaimerAgreements}
-                            resetStep={this._resetStep}
-                            handleSubmit={this._handleSubmit}
-                            isSaving={this.state.isSaving}
+                        <AvailabilityStep
                             cancellationAvailability={this.state.cancellationAvailability}
                             onToggleCancellationAvailability={this._handleToggleCancellationAvailability}
+                            onToggleFreeAnyTime={this._handleToggleFreeAnyTime}
                         />
-
-                        {this.state.savingForm ?
-                            <div style={style.linearProgressContainer}>
-                                <LinearProgress mode="indeterminate" />
-                            </div> :
-                            null
-                        }
-
+                        <div style={style.navButtonContainer}>
+                            <RaisedButton style={style.navButton} label="Previous" onTouchTap={this._decrementStep} />
+                            {this.state.isSaving ? <RaisedButton style={style.navButton} label='Saving...' disabled={true} /> :
+                                <RaisedButton style={style.navButton} labelStyle={{color: 'black'}}  secondary={true} label='Submit' onTouchTap={this._handleSubmit} disabled={this.state.isSaved} />}
+                        </div>
                     </div>
                 );
             case 3:
                 return (
                     <div style={style.callUsStepContainer}>
-                        <CallUsStep/>
+                        <CallUsStep filledInternally={this.state.filledInternally} formID={this.state.formID}/>
                     </div>
                 );
         }
@@ -257,32 +387,55 @@ class IntakeForm extends Component {
 
     render() {
         return (
-        <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-            <div>
-                <Paper zDepth={4} >
-                    <AppBar
-                        title='Intake Form'
-                    />
-                    <Stepper activeStep={this.state.stepIndex}>
-                        <Step>
-                            <StepLabel>Personal Information</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Disclaimer</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Submit</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Call Us</StepLabel>
-                        </Step>
-                    </Stepper>
-                    <div style={style.container}>
-                        {this._renderStepContent(this.state.stepIndex)}
+            <MuiThemeProvider muiTheme={getMuiTheme(chronicInkMuiTheme)}>
+                <StyleRoot>
+                    <div>
+                        <div>
+                            <img key='logo' src={'/images/chronicink_logo.png'} style={style.logo}/>
+                        </div>
+                        <Stepper activeStep={this.state.stepIndex}>
+                            <Step>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                My Info
+                                </div>
+                                </StepLabel>
+                            </Step>
+                            <Step>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                Disclaimer
+                                </div>
+                                </StepLabel>
+                            </Step>
+                            <Step>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                My Availability
+                                </div>
+                                </StepLabel>
+                            </Step>
+                            <Step>
+                                <StepLabel style={style.stepLabel}>
+                                <div style={style.stepLabelContent}>
+                                {Meteor.userId() ? 'Get in Touch' : 'Call Us'}
+                                </div>
+                                </StepLabel>
+                            </Step>
+                        </Stepper>
+                        <div>
+                            {this._renderStepContent(this.state.stepIndex)}
+                        </div>
+                        <Dialog modal={true} actions={this.state.errorDialog.actions} open={this.state.showErrorDialog}>
+                            {this.state.errorDialog.message}
+                        </Dialog>
                     </div>
-                </Paper>
-            </div>
-        </MuiThemeProvider>
+                    <div style={style.footer}>
+                        {`Copyright ${Moment().year()} `}
+                        <a style={style.homepageLink} href='http://www.chronicinktattoo.com'>Chronic Ink</a>
+                    </div>
+                </StyleRoot>
+            </MuiThemeProvider>
         );
     }
 }
@@ -293,7 +446,7 @@ IntakeForm.propTypes = {
         label: PropTypes.string,
         inputType: PropTypes.string.isRequired,
         value: PropTypes.any,
-        valid: PropTypes.bool.isRequired,
+        errorText: PropTypes.string,
         required: PropTypes.bool.isRequired
     }).isRequired).isRequired,
     form: PropTypes.object
@@ -320,4 +473,4 @@ export default IntakeForm = createContainer(({ clientID }) => {
         }),
         disclaimerAgreements
     }
-}, withRouter(IntakeForm));
+}, Radium(IntakeForm));

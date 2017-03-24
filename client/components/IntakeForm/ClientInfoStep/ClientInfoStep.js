@@ -1,8 +1,28 @@
 import React, { Component, PropTypes } from 'react';
+import Radium from 'radium';
+import Moment from 'moment';
 import MedicalConditionsChecklist from './MedicalConditionsChecklist';
 import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../../Inputs';
 
 const style = {
+    container: {
+        marginLeft: 10
+    },
+    header: {
+        fontFamily: 'Roboto, sans-serif',
+        textAlign: 'center',
+        '@media (min-width: 1024px)': {
+            textAlign: 'left'
+        }
+    },
+    fieldsContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        '@media (min-width: 1024px)': {
+            justifyContent: 'flex-start'
+        }
+    },
     textField: {
         marginLeft: 5,
         marginRight: 5,
@@ -38,6 +58,8 @@ class ClientInfoStep extends Component {
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
+                            errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'phoneNumber':
@@ -51,6 +73,9 @@ class ClientInfoStep extends Component {
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                             mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                            errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
+                            type='tel'
                         />
                     );
                 case 'email':
@@ -64,6 +89,8 @@ class ClientInfoStep extends Component {
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                             pattern={/^[^\s@]+@[^\s@]+\.[^\s@]+$/}
+                            errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'country':
@@ -75,6 +102,8 @@ class ClientInfoStep extends Component {
                             key={field.id}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
+                            errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'region':
@@ -87,6 +116,8 @@ class ClientInfoStep extends Component {
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                             selectedCountry={this.props.formValues.country.value}
+                            errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
                         />
                     );
                 case 'date':
@@ -99,7 +130,14 @@ class ClientInfoStep extends Component {
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
-                            mask={[/[0-3]/, /\d/, '/', /[0-1]/, /\d/, '/', /[1-2]/, /[09]/, /\d/, /\d/]}
+                            mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
+                            validator={function(str){
+                                const date = Moment(str, 'DD/MM/YYYY', true);
+                                return date != null && date.isValid();
+                            }}
+                            errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
+                            type='tel'
                         />
 
                     );
@@ -109,13 +147,18 @@ class ClientInfoStep extends Component {
 
     render() {
         return (
-            <div>
-                <h2 style={{textAlign: 'center'}}>Personal Info</h2><br />
-                <div className='clientInfoFields'>
+            <div style={style.container}>
+                <h2 style={style.header}>My Info</h2><br />
+                <div style={style.fieldsContainer}>
                     {this._renderFields(this.props.formTemplate)}
                 </div>
-                <h2 style={{textAlign: 'center'}}>Medical Conditions</h2><br />
-                <MedicalConditionsChecklist medicalConditions={this.props.medicalConditions} onToggleMedicalCondition={this.props.onToggleMedicalCondition}/>
+                <h2 style={style.header}>Medical Conditions</h2><br />
+                <MedicalConditionsChecklist
+                    medicalConditions={this.props.medicalConditions}
+                    onToggleMedicalCondition={this.props.onToggleMedicalCondition}
+                    onChangeOtherCondition={this.props.onChangeOtherCondition}
+                    otherCondition={this.props.otherCondition}
+                />
             </div>
         );
 
@@ -128,4 +171,4 @@ ClientInfoStep.propTypes = {
     medicalConditions: PropTypes.array
 };
 
-export default ClientInfoStep;
+export default Radium(ClientInfoStep);

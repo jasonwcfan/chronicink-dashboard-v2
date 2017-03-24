@@ -1,3 +1,3 @@
-export default medicalConditions = ['Diabetes', 'Faint or Dizzy', 'Nursing', 'Tuberculosis', 'Pregnant', 'Hepatitis',
+export default medicalConditions = ['Diabetes', 'Faint or Dizziness', 'Nursing', 'Tuberculosis', 'Pregnant', 'Hepatitis',
     'HIV AIDS', 'Epilepsy', 'Infections', 'Herpes', 'Eczema', 'Psoriasis', 'Heart Condition', 'Hemophilia',
-    'Scarring or Keloid', 'Asthma', 'Blood Thinners', 'Anemic'];
+    'Scarring/Keloid', 'Asthma', 'Blood Thinners', 'Anemic'];

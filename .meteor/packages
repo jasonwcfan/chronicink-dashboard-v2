@@ -24,3 +24,4 @@ react-meteor-data
 aldeed:simple-schema
 service-configuration@1.0.11
 accounts-google@1.0.11
+accounts-base
