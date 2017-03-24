@@ -4,6 +4,7 @@ import Moment from 'moment-timezone';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
+import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -12,8 +13,6 @@ import EditIcon from 'material-ui/svg-icons/content/create';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import CheckIcon from 'material-ui/svg-icons/action/done';
-import LinkWrapper from '../../UI/LinkWrapper';
-import { startBooking } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
 import Intake from '../../../../imports/Intake/intake';
 
@@ -52,9 +51,17 @@ class IntakeList extends Component {
         super(props);
 
         this.state = {
-            inDeleteMode: false
+            inDeleteMode: false,
+            searchText: null
         }
+        this._handleChange = this._handleChange.bind(this);
     }
+
+    _handleChange(event, newValue) {
+        this.setState({searchText: newValue});
+        // display only the list items that match the search text
+    }
+
 
     _handleListIconPressed(clientID) {
         this.props.router.push({
@@ -74,7 +81,7 @@ class IntakeList extends Component {
                 let submitLocation = form.filledInternally ? 'In-store' : 'Online' ;
                 let missedCall = form.missedCall ? ' - MISSED CALL' : '';
 
-                if (form.bookingPending) {
+                if (form.bookingPending && (!this.state.searchText || form.clientName.includes(this.state.searchText))) {
                     return (
                         <ListItem
                             key={form._id}
@@ -131,6 +138,13 @@ class IntakeList extends Component {
                         </IconMenu>
                     }
                 </div>
+                <Divider />
+                <TextField
+                    onChange={this._handleChange}
+                    hintText="Type here to search"
+                >
+
+                </TextField>
                 <Divider />
                 <List style={style.intakeList}>
                     {this._renderIntakeList()}
