@@ -1,6 +1,20 @@
 node_modules/
 .idea/codeStyleSettings.xml
 
-.idea/workspace.xml
+.idea/
 
-.idea/workspace.xml
+.idea/chronicink-dashboard-v2.iml
+
+.idea/chronicink-dashboard-v2.iml
+
+.idea/libraries/meteor_packages_auto_import_browser.xml
+
+.idea/libraries/meteor_packages_auto_import_npm.xml
+
+.idea/libraries/meteor_packages_auto_import_npm.xml
+
+.idea/misc.xml
+
+.idea/modules.xml
+
+.idea/vcs.xml

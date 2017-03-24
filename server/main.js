@@ -5,7 +5,7 @@ Meteor.startup(() => {
     // code to run on server at startup
 
     Accounts.config({
-        restrictCreationByEmailDomain: 'chronicinktattoo.com'
+        restrictCreationByEmailDomain: Meteor.settings.public.production ? 'chronicinktattoo.com' : null
     });
 
     ServiceConfiguration.configurations.upsert(
