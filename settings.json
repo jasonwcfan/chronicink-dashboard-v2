@@ -1,6 +1,7 @@
 {
   "public": {
-    "primaryEmail": "chronicinktesting@gmail.com"
+    "primaryEmail": "chronicinktesting@gmail.com",
+    "production": false
   },
   "google": {
     "client_secret": "Vd4EV2j3nGf8hSQUZ-W5vqRJ",
