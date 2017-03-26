@@ -133,7 +133,7 @@ class IntakeForm extends Component {
                     value: field.value,
                     id: field.id,
                     errorText: field.required && !field.value ? `Not a valid ${field.label}` : null,
-                    touched: false,
+                    validated: false,
                     label: field.label
                 }
             });
@@ -189,6 +189,7 @@ class IntakeForm extends Component {
         const newFields = {...this.state.fields};
         newFields[id].value = value;
         newFields[id].errorText = errorText;
+        newFields[id].touched = true;
 
         this.setState({
             fields: newFields,
@@ -251,7 +252,7 @@ class IntakeForm extends Component {
                 Object.keys(fields).forEach((key) => {
                     if (fields[key].errorText) {
                         hasFieldError = true;
-                        fields[key].touched = true;
+                        fields[key].validated = true;
                     }
                 });
 

@@ -18,28 +18,29 @@ class ValidatedTextField extends Component {
         })
     }
 
-    _handleChange(event) {
+    _handleChange(_, value) {
+
         let errorText = null;
-        if (event.target.value.length == 0 && this.props.required) {
+        if (value.length == 0 && this.props.required) {
             errorText = this.props.floatingLabelText + ' is required'
         } else if (this.props.pattern) {
-            const matches = this.props.pattern.test(event.target.value);
+            const matches = this.props.pattern.test(value);
             errorText = matches ? null : `Not a valid ${this.props.floatingLabelText}`;
         } else if (this.props.validator) {
-            errorText = this.props.validator(event.target.value) ? null : `Not a valid ${this.props.floatingLabelText}`;
+            errorText = this.props.validator(value) ? null : `Not a valid ${this.props.floatingLabelText}`;
         }
 
         this.setState({
-            value: event.target.value
+            value: value
         });
 
-        this.props.onFieldChange(this.props.name, event.target.value, errorText);
+        this.props.onFieldChange(this.props.name, value, errorText);
     }
 
     render() {
         return(
             <TextField
-                errorText={this.props.touched && this.props.errorText ? this.props.errorText: null}
+                errorText={this.props.validated && this.props.errorText ? this.props.errorText: null}
                 value={this.state.value}
                 style={this.props.style}
                 floatingLabelText={this.props.floatingLabelText + (this.props.required ? ' *' : '')}
@@ -62,6 +63,7 @@ ValidatedTextField.propTypes = {
     defaultValue: PropTypes.string,
     mask: PropTypes.array,
     touched: PropTypes.bool,
+    validated: PropTypes.bool,
     errorText: PropTypes.string,
     floatingLabelText: PropTypes.string,
     pattern: PropTypes.object,

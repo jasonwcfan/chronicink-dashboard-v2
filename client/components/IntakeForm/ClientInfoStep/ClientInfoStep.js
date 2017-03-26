@@ -47,34 +47,41 @@ class ClientInfoStep extends Component {
 
     _renderFields(fields) {
         return fields.map((field) => {
+            const formValue = this.props.formValues[field.id];
             switch (field.inputType) {
                 case 'textField':
                     return (
                         <ValidatedTextField 
                             style={style.textField}
-                            defaultValue={this.props.formValues[field.id].value}
+                            defaultValue={formValue.value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
-                            errorText={this.props.formValues[field.id].errorText}
-                            touched={this.props.formValues[field.id].touched}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                         />
                     );
                 case 'phoneNumber':
                     return (
                         <ValidatedTextField
                             style={style.textField}
-                            defaultValue={this.props.formValues[field.id].value}
+                            defaultValue={formValue.value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
-                            mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-                            errorText={this.props.formValues[field.id].errorText}
-                            touched={this.props.formValues[field.id].touched}
+                            mask={formValue.touched ?
+                                ['+', /\d/, /\d/, ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/] :
+                                ['+', '0', '1', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+                            }
+                            pattern={/\+\d{2} \(\d{3}\) \d{3}-\d{4}/}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                             type='tel'
                         />
                     );
@@ -82,42 +89,45 @@ class ClientInfoStep extends Component {
                     return (
                         <ValidatedTextField
                             style={style.textField}
-                            defaultValue={this.props.formValues[field.id].value}
+                            defaultValue={formValue.value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                             pattern={/^[^\s@]+@[^\s@]+\.[^\s@]+$/}
-                            errorText={this.props.formValues[field.id].errorText}
-                            touched={this.props.formValues[field.id].touched}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                         />
                     );
                 case 'country':
                     return (
                         <CountrySelector
                             style={style.selector}
-                            defaultValue={this.props.formValues[field.id].value}
+                            defaultValue={formValue.value}
                             name={field.id}
                             key={field.id}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
-                            errorText={this.props.formValues[field.id].errorText}
-                            touched={this.props.formValues[field.id].touched}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                         />
                     );
                 case 'region':
                     return (
                         <RegionSelector
                             style={style.selector}
-                            value={this.props.formValues[field.id].value}
+                            value={formValue.value}
                             name={field.id}
                             key={field.id}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                             selectedCountry={this.props.formValues.country.value}
-                            errorText={this.props.formValues[field.id].errorText}
-                            touched={this.props.formValues[field.id].touched}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                         />
                     );
                 case 'date':
@@ -126,7 +136,7 @@ class ClientInfoStep extends Component {
                             style={style.textField}
                             name={field.id}
                             key={field.id}
-                            defaultValue={this.props.formValues[field.id].value}
+                            defaultValue={formValue.value}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
@@ -135,8 +145,9 @@ class ClientInfoStep extends Component {
                                 const date = Moment(str, 'DD/MM/YYYY', true);
                                 return date != null && date.isValid();
                             }}
-                            errorText={this.props.formValues[field.id].errorText}
-                            touched={this.props.formValues[field.id].touched}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                             type='tel'
                         />
 
