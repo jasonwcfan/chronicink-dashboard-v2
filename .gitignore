@@ -5,11 +5,7 @@ node_modules/
 
 .idea/chronicink-dashboard-v2.iml
 
-.idea/chronicink-dashboard-v2.iml
-
 .idea/libraries/meteor_packages_auto_import_browser.xml
-
-.idea/libraries/meteor_packages_auto_import_npm.xml
 
 .idea/libraries/meteor_packages_auto_import_npm.xml
 
@@ -18,3 +14,23 @@ node_modules/
 .idea/modules.xml
 
 .idea/vcs.xml
+
+.idea/chronicink-dashboard-v2.iml
+
+.idea/jsLibraryMappings.xml
+
+.idea/libraries/chronicink_dashboard_v2_node_modules.xml
+
+.idea/libraries/meteor_packages_auto_import_browser.xml
+
+.idea/libraries/meteor_packages_auto_import_npm.xml
+
+.idea/misc.xml
+
+*.xml
+
+.idea/chronicink-dashboard-v2.iml
+
+.idea/jsLibraryMappings.xml
+
+.idea/libraries/meteor_packages_auto_import_browser.xml
