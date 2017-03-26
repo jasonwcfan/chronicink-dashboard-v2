@@ -16,6 +16,8 @@ import CheckIcon from 'material-ui/svg-icons/action/done';
 import { createContainer } from 'meteor/react-meteor-data';
 import Intake from '../../../../imports/Intake/intake';
 
+
+// Eventually move this style to "Widget" component
 const style = {
     intakeListContainer: {
         width: 300,
@@ -32,7 +34,7 @@ const style = {
         justifyContent: 'space-between'
     },
     header: {
-        marginLeft: 10
+        marginLeft: 16
     },
     menuIcon: {
         display: 'inline'
@@ -43,6 +45,10 @@ const style = {
         overflow: 'auto',
         overflowX: 'hidden'
     },
+    searchBar: {
+        marginLeft:16,
+        borderBottomStyle:'none'
+    }
 
 };
 
@@ -57,9 +63,9 @@ class IntakeList extends Component {
         this._handleChange = this._handleChange.bind(this);
     }
 
+    // Function that updates search text in intake list state
     _handleChange(event, newValue) {
         this.setState({searchText: newValue});
-        // display only the list items that match the search text
     }
 
 
@@ -81,20 +87,21 @@ class IntakeList extends Component {
                 let submitLocation = form.filledInternally ? 'In-store' : 'Online' ;
                 let missedCall = form.missedCall ? ' - MISSED CALL' : '';
 
-                if (form.bookingPending && (!this.state.searchText || form.clientName.includes(this.state.searchText))) {
+                // Only render list items if search text matches client name (case insensitive), or if search text is blank
+                if (form.bookingPending && (!this.state.searchText || form.clientName.toLowerCase().includes(this.state.searchText.toLowerCase()))) {
                     return (
                         <ListItem
                             key={form._id}
                             primaryText={form.clientName + missedCall}
                             secondaryText={`${submitDate} ${submitLocation}`}
-                            rightIconButton={this.state.inDeleteMode ?
+                            rightIconButton={this.state.inDeleteMode ? // If in Delete Mode: garbage can icon
                                 <IconButton
                                     tooltipPosition='top-right'
                                     onTouchTap={this._handleDeleteFromIntakeList.bind(this, form._id)}
                                 >
                                     <DeleteIcon />
                                 </IconButton>
-                                :
+                                : // If NOT in Delete Mode: pencil icon
                                 <IconButton
                                     tooltip='Create Booking'
                                     tooltipPosition='top-left'
@@ -115,6 +122,7 @@ class IntakeList extends Component {
 
     render() {
         return (
+            // Intake List Header (title and menu button)
             <Paper style={style.intakeListContainer} zDepth={3}>
                 <div style={style.headerContainer}>
                     <h3 style={style.header} >Intake List</h3>
@@ -139,13 +147,18 @@ class IntakeList extends Component {
                     }
                 </div>
                 <Divider />
+
+                {/* Intake List search bar*/}
                 <TextField
+                    style={style.searchBar}
                     onChange={this._handleChange}
+                    underlineShow={false}
                     hintText="Type here to search"
                 >
-
                 </TextField>
                 <Divider />
+
+                {/* Actual list of intakes*/}
                 <List style={style.intakeList}>
                     {this._renderIntakeList()}
                 </List>
