@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
+import { withRouter } from 'react-router';
+import Moment from 'moment-timezone';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
+import TextField from 'material-ui/TextField';
 import { List, ListItem } from 'material-ui/List';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
@@ -10,11 +13,11 @@ import EditIcon from 'material-ui/svg-icons/content/create';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import CheckIcon from 'material-ui/svg-icons/action/done';
-import LinkWrapper from '../../UI/LinkWrapper';
-import { startBooking } from '../../../actions/Dashboard/Widgets/IntakeList';
 import { createContainer } from 'meteor/react-meteor-data';
 import Intake from '../../../../imports/Intake/intake';
 
+
+// Eventually move this style to "Widget" component
 const style = {
     intakeListContainer: {
         width: 300,
@@ -31,7 +34,7 @@ const style = {
         justifyContent: 'space-between'
     },
     header: {
-        marginLeft: 10
+        marginLeft: 16
     },
     menuIcon: {
         display: 'inline'
@@ -42,14 +45,11 @@ const style = {
         overflow: 'auto',
         overflowX: 'hidden'
     },
-    listItemIconButton: {
-        position: 'absolute',
-        padding: 0,
-        height: 24,
-        width: 24,
-        right: 10,
-        bottom: 12
+    searchBar: {
+        marginLeft:16,
+        borderBottomStyle:'none'
     }
+
 };
 
 class IntakeList extends Component {
@@ -57,12 +57,23 @@ class IntakeList extends Component {
         super(props);
 
         this.state = {
-            inDeleteMode: false
+            inDeleteMode: false,
+            searchText: null
         }
+        this._handleChange = this._handleChange.bind(this);
     }
 
+    // Function that updates search text in intake list state
+    _handleChange(event, newValue) {
+        this.setState({searchText: newValue});
+    }
+
+
     _handleListIconPressed(clientID) {
-        this.props.primaryWidgetAction('intakeList', startBooking, [clientID]);
+        this.props.router.push({
+            pathname: '/booking',
+            query: {clientID: clientID}
+        })
     }
 
     _handleDeleteFromIntakeList(intakeID) {
@@ -72,32 +83,34 @@ class IntakeList extends Component {
     _renderIntakeList() {
         if (this.props.subReady) {
             return this.props.data.map((form) => {
-                if (form.bookingPending) {
+                let submitDate = form.date ? Moment(form.date).tz('America/Toronto').fromNow(): 'Submission date not available';
+                let submitLocation = form.filledInternally ? 'In-store' : 'Online' ;
+                let missedCall = form.missedCall ? ' - MISSED CALL' : '';
+
+                // Only render list items if search text matches client name (case insensitive), or if search text is blank
+                if (form.bookingPending && (!this.state.searchText || form.clientName.toLowerCase().includes(this.state.searchText.toLowerCase()))) {
                     return (
                         <ListItem
                             key={form._id}
-                            primaryText={form.clientName}
-                        >
-                            {this.state.inDeleteMode ?
+                            primaryText={form.clientName + missedCall}
+                            secondaryText={`${submitDate} ${submitLocation}`}
+                            rightIconButton={this.state.inDeleteMode ? // If in Delete Mode: garbage can icon
                                 <IconButton
-                                    style={style.listItemIconButton}
                                     tooltipPosition='top-right'
                                     onTouchTap={this._handleDeleteFromIntakeList.bind(this, form._id)}
                                 >
                                     <DeleteIcon />
                                 </IconButton>
-                                :
-                                <LinkWrapper to={{pathname: '/booking', query: {clientID: form.clientID}}}>
-                                    <IconButton
-                                        style={style.listItemIconButton}
-                                        tooltip='Create Booking'
-                                        tooltipPosition='top-left'
-                                        onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                </LinkWrapper>
-                            }
+                                : // If NOT in Delete Mode: pencil icon
+                                <IconButton
+                                    tooltip='Create Booking'
+                                    tooltipPosition='top-left'
+                                    onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
+                                >
+                                    <EditIcon />
+                                </IconButton>
+                                }
+                        >
                         </ListItem>
                     );
                 }
@@ -109,6 +122,7 @@ class IntakeList extends Component {
 
     render() {
         return (
+            // Intake List Header (title and menu button)
             <Paper style={style.intakeListContainer} zDepth={3}>
                 <div style={style.headerContainer}>
                     <h3 style={style.header} >Intake List</h3>
@@ -133,6 +147,18 @@ class IntakeList extends Component {
                     }
                 </div>
                 <Divider />
+
+                {/* Intake List search bar*/}
+                <TextField
+                    style={style.searchBar}
+                    onChange={this._handleChange}
+                    underlineShow={false}
+                    hintText="Type here to search"
+                >
+                </TextField>
+                <Divider />
+
+                {/* Actual list of intakes*/}
                 <List style={style.intakeList}>
                     {this._renderIntakeList()}
                 </List>
@@ -146,6 +172,6 @@ export default IntakeList = createContainer(({ params }) => {
 
     return {
         subReady: subscription.ready(),
-        data: Intake.find({}).fetch()
+        data: Intake.find({}, {sort: {date: -1}}).fetch()
     }
-}, IntakeList);
+}, withRouter(IntakeList));

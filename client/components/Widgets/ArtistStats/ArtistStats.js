@@ -68,11 +68,12 @@ class ArtistStats extends Component {
         this._handleRefreshArtistStats(props.artists, 30);
     }
 
-    _handleReceiveArtistStats(artist, artistIndex, hoursBooked) {
+    _handleReceiveArtistStats(artist, artistIndex, err, hoursBooked) {
         const nextArtistStats = this.state.artistStats.slice();
         nextArtistStats[artistIndex] = {
             calendarID: artist.calendarID,
             name: artist.name,
+            status: err,
             hoursBooked: hoursBooked,
             loading: false
         };
@@ -90,16 +91,13 @@ class ArtistStats extends Component {
             nextArtistStats[idx] = {
                 calendarID: artist.calendarID,
                 name: artist.name,
+                status: null,
                 hoursBooked: null,
                 loading: true
             };
 
             Meteor.call('artist.getHoursBooked', artist.calendarID, timeFrame, (err, res) => {
-                if (err) {
-                    console.log(err);
-                    return;
-                }
-                this._handleReceiveArtistStats(artist, idx, res);
+                this._handleReceiveArtistStats(artist, idx, err, res);
             });
         });
 
@@ -118,17 +116,20 @@ class ArtistStats extends Component {
 
     _renderArtistStats() {
         if (this.props.subReady) {
-            return this.state.artistStats.map((artistStat) => (
-                <ListItem key={artistStat.calendarID} primaryText={artistStat.name}>
-                    <div style={style.listItemContainer} >
-                        <div style={style.listItemRightLabel}>{artistStat.loading ?
-                            <CircularProgress
-                                size={16}
-                            />
-                            : artistStat.hoursBooked + ' hours booked'}</div>
-                    </div>
-                </ListItem>
-            ));
+            return this.state.artistStats.map((artistStat) => {
+                const message = artistStat.status ? 'Error' : artistStat.hoursBooked + ' hours booked';
+                return (
+                    <ListItem key={artistStat.calendarID} primaryText={artistStat.name}>
+                        <div style={style.listItemContainer} >
+                            <div style={style.listItemRightLabel}>{artistStat.loading ?
+                                <CircularProgress
+                                    size={16}
+                                />
+                                : message }</div>
+                        </div>
+                    </ListItem>
+                )
+            });
         }
         return null;
     }

@@ -4,7 +4,7 @@ export default defaultIntakeFormFields = [
         label: 'First Name',
         inputType: 'textField',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
     {
@@ -12,7 +12,7 @@ export default defaultIntakeFormFields = [
         label: 'Last Name',
         inputType: 'textField',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
     {
@@ -20,7 +20,7 @@ export default defaultIntakeFormFields = [
         label: 'Address',
         inputType: 'textField',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
     {
@@ -28,7 +28,7 @@ export default defaultIntakeFormFields = [
         label: 'Address Line 2',
         inputType: 'textField',
         value: '',
-        valid: true,
+        errorText: null,
         required: false
     },
     {
@@ -36,7 +36,7 @@ export default defaultIntakeFormFields = [
         label: 'City',
         inputType: 'textField',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
     {
@@ -44,7 +44,7 @@ export default defaultIntakeFormFields = [
         label: 'Country',
         inputType: 'country',
         value: 'Canada',
-        valid: true,
+        errorText: null,
         required: true
     },
     {
@@ -52,7 +52,7 @@ export default defaultIntakeFormFields = [
         label: 'Province/State/Region',
         inputType: 'region',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
     {
@@ -60,15 +60,15 @@ export default defaultIntakeFormFields = [
         label: 'Postal/ZIP Code',
         inputType: 'textField',
         value: '',
-        valid: true,
+        errorText: null,
         required: false
     },
     {
         id: 'email',
         label: 'Email',
-        inputType: 'textField',
+        inputType: 'email',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
     {
@@ -76,7 +76,7 @@ export default defaultIntakeFormFields = [
         label: 'Primary Phone Number',
         inputType: 'phoneNumber',
         value: '',
-        valid: false,
+        errorText: null,
         required: true
     },
     {
@@ -84,7 +84,7 @@ export default defaultIntakeFormFields = [
         label: 'Additional Phone Number',
         inputType: 'phoneNumber',
         value: '',
-        valid: true,
+        errorText: null,
         required: false
     },
     {
@@ -92,7 +92,7 @@ export default defaultIntakeFormFields = [
         label: 'Date of Birth (DD/MM/YYYY)',
         inputType: 'date',
         value: null,
-        valid: false,
+        errorText: null,
         required: true
     },
 

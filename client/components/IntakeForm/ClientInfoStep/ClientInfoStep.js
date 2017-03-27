@@ -1,8 +1,28 @@
 import React, { Component, PropTypes } from 'react';
+import Radium from 'radium';
+import Moment from 'moment';
 import MedicalConditionsChecklist from './MedicalConditionsChecklist';
 import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../../Inputs';
 
 const style = {
+    container: {
+        marginLeft: 10
+    },
+    header: {
+        fontFamily: 'Roboto, sans-serif',
+        textAlign: 'center',
+        '@media (min-width: 1024px)': {
+            textAlign: 'left'
+        }
+    },
+    fieldsContainer: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        '@media (min-width: 1024px)': {
+            justifyContent: 'flex-start'
+        }
+    },
     textField: {
         marginLeft: 5,
         marginRight: 5,
@@ -14,6 +34,9 @@ const style = {
     selector: {
         marginLeft: 5,
         marginRight: 5
+    },
+    headerText: {
+        textAlign: 'center'
     }
 };
 
@@ -24,53 +47,87 @@ class ClientInfoStep extends Component {
 
     _renderFields(fields) {
         return fields.map((field) => {
+            const formValue = this.props.formValues[field.id];
             switch (field.inputType) {
                 case 'textField':
                     return (
                         <ValidatedTextField 
                             style={style.textField}
-                            defaultValue={this.props.formValues[field.id].value}
+                            defaultValue={formValue.value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                         />
                     );
                 case 'phoneNumber':
                     return (
                         <ValidatedTextField
                             style={style.textField}
-                            defaultValue={this.props.formValues[field.id].value}
+                            defaultValue={formValue.value}
                             name={field.id}
                             key={field.id}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
-                            mask={['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                            mask={formValue.touched ?
+                                ['+', /\d/, /\d/, ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/] :
+                                ['+', '0', '1', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+                            }
+                            pattern={/\+\d{2} \(\d{3}\) \d{3}-\d{4}/}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
+                            type='tel'
+                        />
+                    );
+                case 'email':
+                    return (
+                        <ValidatedTextField
+                            style={style.textField}
+                            defaultValue={formValue.value}
+                            name={field.id}
+                            key={field.id}
+                            floatingLabelText={field.label}
+                            onFieldChange={this.props.onFieldChange}
+                            required={field.required}
+                            pattern={/^[^\s@]+@[^\s@]+\.[^\s@]+$/}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                         />
                     );
                 case 'country':
                     return (
                         <CountrySelector
                             style={style.selector}
-                            defaultValue={this.props.formValues[field.id].value}
+                            defaultValue={formValue.value}
                             name={field.id}
                             key={field.id}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                         />
                     );
                 case 'region':
                     return (
                         <RegionSelector
                             style={style.selector}
-                            value={this.props.formValues[field.id].value}
+                            value={formValue.value}
                             name={field.id}
                             key={field.id}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
                             selectedCountry={this.props.formValues.country.value}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
                         />
                     );
                 case 'date':
@@ -79,10 +136,19 @@ class ClientInfoStep extends Component {
                             style={style.textField}
                             name={field.id}
                             key={field.id}
+                            defaultValue={formValue.value}
                             floatingLabelText={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
-                            mask={[/[0-3]/, /\d/, '/', /[0-1]/, /\d/, '/', /[1-2]/, /[09]/, /\d/, /\d/]}
+                            mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
+                            validator={function(str){
+                                const date = Moment(str, 'DD/MM/YYYY', true);
+                                return date != null && date.isValid();
+                            }}
+                            errorText={formValue.errorText}
+                            touched={formValue.touched}
+                            validated={formValue.validated}
+                            type='tel'
                         />
 
                     );
@@ -92,10 +158,18 @@ class ClientInfoStep extends Component {
 
     render() {
         return (
-            <div>
-                {this._renderFields(this.props.formTemplate)}
-                <h2>Medical Conditions</h2><br />
-                <MedicalConditionsChecklist medicalConditions={this.props.medicalConditions} onToggleMedicalCondition={this.props.onToggleMedicalCondition}/>
+            <div style={style.container}>
+                <h2 style={style.header}>My Info</h2><br />
+                <div style={style.fieldsContainer}>
+                    {this._renderFields(this.props.formTemplate)}
+                </div>
+                <h2 style={style.header}>Medical Conditions</h2><br />
+                <MedicalConditionsChecklist
+                    medicalConditions={this.props.medicalConditions}
+                    onToggleMedicalCondition={this.props.onToggleMedicalCondition}
+                    onChangeOtherCondition={this.props.onChangeOtherCondition}
+                    otherCondition={this.props.otherCondition}
+                />
             </div>
         );
 
@@ -108,4 +182,4 @@ ClientInfoStep.propTypes = {
     medicalConditions: PropTypes.array
 };
 
-export default ClientInfoStep;
+export default Radium(ClientInfoStep);

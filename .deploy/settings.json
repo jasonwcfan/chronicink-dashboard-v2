@@ -1,6 +1,7 @@
 {
   "public": {
-
+    "primaryEmail": "info@chronicinktattoo.com",
+    "production": true
   },
   "google": {
     "client_secret": "viTI5NBNry1l9weaEuadmGBR",

@@ -11,6 +11,9 @@ import ClientInfoTab from './ClientInfoTab';
 import RecommendationsTab from './RecommendationsTab';
 import SubmitErrorDialog from './SubmitErrorDialog';
 import defaultFields from '../../constants/defaultBookingFormFields';
+import Dialog from 'material-ui/Dialog';
+import Moment from 'moment';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const style = {
     container: {
@@ -38,26 +41,33 @@ class BookingForm extends Component {
                 isSaved: false,
                 isSubmitting: false,
                 isSubmitted: false,
-                errorMessages: []
+                showErrorDialog: false,
+                errorDialog: {
+                    errors: [],
+                    actions: null
+                }
             };
 
             props.fields.forEach(function(field) {
+                console.log(field.required && !field.value ? `Not a valid ${field.label}` : null);
                 state.fields[field.id] = {
                     value: field.value,
-                    valid: field.valid,
+                    errorText: field.required && !field.value ? `Not a valid ${field.label}` : null,
+                    touched: false,
                     label: field.label
                 }
             });
             return state;
         })();
 
-        this._onFieldChange = this._onFieldChange.bind(this);
-        this._onCreateBooking = this._onCreateBooking.bind(this);
+        this._handleFieldChange = this._handleFieldChange.bind(this);
+        this._handleCreateBooking = this._handleCreateBooking.bind(this);
         this._handleSubmit = this._handleSubmit.bind(this);
-        this._onDeleteBooking = this._onDeleteBooking.bind(this);
-        this._onSetBookedBy = this._onSetBookedBy.bind(this);
-        this._onSetBookedThru = this._onSetBookedThru.bind(this);
-        this._onTogglePresentationRequired = this._onTogglePresentationRequired.bind(this);
+        this._handleDeleteBooking = this._handleDeleteBooking.bind(this);
+        this._handleSetBookedBy = this._handleSetBookedBy.bind(this);
+        this._handleSetBookedThru = this._handleSetBookedThru.bind(this);
+        this._handleTogglePresentationRequired = this._handleTogglePresentationRequired.bind(this);
+        this._handlePreSubmit = this._handlePreSubmit.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -111,7 +121,9 @@ class BookingForm extends Component {
                 console.log(err);
 
                 this.setState({
-                    errorMessages: [...this.state.errorMessages, 'There was a problem saving the appointments to the calendar']
+                    errorDialog: {
+                        errors: [...this.state.errorDialog.errors, 'There was a problem saving the appointments to the calendar']
+                    }
                 })
             } else {
                 console.log(res);
@@ -123,6 +135,64 @@ class BookingForm extends Component {
         });
     }
 
+    _handlePreSubmit() {
+        const errors = [];
+        let fields = this.state.fields;
+
+        Object.keys(fields).forEach((key) => {
+            if (fields[key].errorText) {
+                fields[key].touched = true;
+                errors.push(fields[key].errorText);
+            }
+        });
+
+        if (this.state.bookings.length == 0) {
+            errors.push('There should be at least 1 session to book');
+        }
+
+        if (this.state.bookedBy.length == 0) {
+            errors.push('Please record who did the booking');
+        }
+
+        if (this.state.presentationRequired) {
+            let presentNow = false;
+            let hasPresentation = false;
+            this.state.bookings.forEach((booking) => {
+                if (booking.type == 'Presentation' || booking.type == 'Email Presentation') {
+                    hasPresentation = true;
+                }
+
+                if (booking.type == 'Session' && Moment(booking.startTime).diff(Moment({hour: 23, minute: 59})) < 1555200000) {
+                    presentNow = true;
+                }
+
+            });
+
+            if (presentNow && !hasPresentation) {
+                errors.push('The first session is in less than 18 days, please book a presentation at this point');
+            }
+        }
+
+        if (errors.length) {
+            this.setState({
+                fields: fields,
+                showErrorDialog: true,
+                errorDialog: {
+                    errors: errors,
+                    actions: (
+                        <RaisedButton
+                            label='Ok'
+                            primary={true}
+                            onTouchTap={() => { this.setState({showErrorDialog: false});  } }
+                        />
+                    )
+                }
+            });
+        } else {
+            this._handleSubmit();
+        }
+    }
+
     _getSaveButton(isSaved) {
         return (isSaved ?
                 <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true}/> :
@@ -131,26 +201,27 @@ class BookingForm extends Component {
         )
     }
 
-    _onFieldChange(id, value, valid) {
-        const newFields = _.extend({}, this.state.fields);
+    _handleFieldChange(id, value, errorText) {
+        const newFields = Object.assign({}, this.state.fields);
         newFields[id].value = value;
-        newFields[id].valid = valid;
+        newFields[id].errorText = errorText;
+        newFields[id].touched = true;
 
         // Reset buttons and errors since something was changed
         this.setState({
             fields: newFields,
             isSaved: false,
             isSubmitted: false,
-            errorMessages: []
+            errorDialog: {
+                errors: []
+            }
         })
     }
 
-    _onCreateBooking(newBooking) {
+    _handleCreateBooking(newBooking) {
         let bookingNum = 1;
 
         this.state.bookings.forEach(function(booking) {
-            console.log(booking);
-            console.log(newBooking.type);
             if (booking.type == newBooking.type) {
                 bookingNum++;
             }
@@ -168,7 +239,7 @@ class BookingForm extends Component {
         })
     }
 
-    _onDeleteBooking(index) {
+    _handleDeleteBooking(index) {
         const newBookings = this.state.bookings.slice(0);
         const deletedBooking = newBookings[index];
 
@@ -185,20 +256,19 @@ class BookingForm extends Component {
         })
     }
 
-    _onSetBookedBy(id, value, valid) {
+    _handleSetBookedBy(id, value, valid) {
         this.setState({
             bookedBy: value
         })
     }
 
-    _onSetBookedThru(target, idx, value) {
+    _handleSetBookedThru(target, idx, value) {
         this.setState({
             bookedThru: value
         })
     }
 
-    _onTogglePresentationRequired() {
-        console.log('toggle');
+    _handleTogglePresentationRequired() {
         this.setState({
             presentationRequired: !this.state.presentationRequired
         })
@@ -207,7 +277,7 @@ class BookingForm extends Component {
     render() {
         return (
             <div>
-                <Tabs initialSelectedIndex={1} >
+                <Tabs>
                     <Tab label='Client Info'>
                         <ClientInfoTab
                             intake={this.props.intake}
@@ -221,32 +291,49 @@ class BookingForm extends Component {
                                           artists={this.props.artists}
                                           subReady={this.props.artistSubReady}
                                           defaultArtist={this.props.artist}
-                                          onFieldChange={this._onFieldChange}
+                                          onFieldChange={this._handleFieldChange}
                         />
                     </Tab>
                     <Tab label='Sessions'>
                         <BookingsListTab
                             bookings={this.state.bookings}
-                            onSubmitBooking={this._onCreateBooking}
-                            deleteBooking={this._onDeleteBooking}
-                            setBookedBy={this._onSetBookedBy}
-                            setBookedThru={this._onSetBookedThru}
-                            togglePresentationRequired={this._onTogglePresentationRequired}
+                            onSubmitBooking={this._handleCreateBooking}
+                            deleteBooking={this._handleDeleteBooking}
+                            setBookedBy={this._handleSetBookedBy}
+                            setBookedThru={this._handleSetBookedThru}
+                            togglePresentationRequired={this._handleTogglePresentationRequired}
                             bookedBy={this.state.bookedBy}
                             bookedThru={this.state.bookedThru}
                             presentationRequired={this.state.presentationRequired}
                         />
                         {this._getSaveButton(this.state.isSaved)}
-                        <SubmitErrorDialog
-                            handleSubmit={this._handleSubmit}
-                            fieldValues={this.state.fields}
-                            bookedBy={this.state.bookedBy}
-                            bookings={this.state.bookings}
-                            presentationRequired={this.state.presentationRequired}
-                            isSubmitting={this.state.isSubmitting}
-                            isSubmitted={this.state.isSubmitted}
-                            errorMessages={this.state.errorMessages}
-                        />
+                        <div style={{ display: 'inline' }}>
+                            {
+                                this.state.isSubmitting
+                                ?
+                                <CircularProgress
+                                    style={{ marginLeft: 28 }}
+                                    size={16}
+                                />
+                                :
+                                <RaisedButton
+                                    secondary={true}
+                                    disabled={this.state.isSubmitted}
+                                    label={this.state.isSubmitted ? 'Done' : 'Submit'}
+                                    onTouchTap={this._handlePreSubmit}
+                                />
+
+                            }
+                            <Dialog
+                                modal={true}
+                                title='Form Errors'
+                                open={this.state.showErrorDialog}
+                                onRequestClose={() => { this.setState({showErrorDialog: false}) } }
+                                actions={ this.state.errorDialog.actions }
+                            >
+                                { this.state.errorDialog.errors.map((error, index) => <p key={index} style={{color: 'red'}}>{`- ${error}`}</p>) }
+                            </Dialog>
+                        </div>
                     </Tab>
                     <Tab label='Recommendation'>
                         <RecommendationsTab />

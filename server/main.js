@@ -1,7 +1,12 @@
 import { Meteor } from 'meteor/meteor';
+import { Accounts } from 'meteor/accounts-base';
 
 Meteor.startup(() => {
     // code to run on server at startup
+
+    Accounts.config({
+        restrictCreationByEmailDomain: Meteor.settings.public.production ? 'chronicinktattoo.com' : null
+    });
 
     ServiceConfiguration.configurations.upsert(
         { service: 'google'},

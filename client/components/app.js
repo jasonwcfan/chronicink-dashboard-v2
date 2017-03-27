@@ -7,7 +7,6 @@ import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import SideNavBar from './SideNavBar';
 import Menu from './Menu';
-import IntakeForm from './IntakeForm';
 import BookingForm from './BookingForm';
 import DashboardContainer from '../containers/DashboardContainer';
 
@@ -63,7 +62,7 @@ class App extends Component {
     render() {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                <div style={style.window}>
+                <div style={style.window} className='appContainer'>
                     <SideNavBar onChangeApp={this.props.onChangeApp} />
                     <Paper style={style.appContainer} zDepth={4}>
                         <AppBar

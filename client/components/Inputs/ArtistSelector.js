@@ -5,6 +5,7 @@ import MenuItem from 'material-ui/MenuItem';
 class ArtistSelector extends Component {
     constructor(props) {
         super(props);
+        console.log(props);
     }
 
     _artistSort(a, b) {
@@ -23,14 +24,15 @@ class ArtistSelector extends Component {
         return (
             <SelectField
                 floatingLabelText={this.props.fieldTemplate.label}
+                errorText={this.props.touched && this.props.errorText ? this.props.errorText: null}
                 style={this.props.style}
                 value={this.props.fieldValue.value || ''}
                 onChange={(event, index, value) => {
-                                this.props.onFieldChange(this.props.fieldTemplate.id, value, true)
-                             }}
+                    this.props.onFieldChange(this.props.fieldTemplate.id, value, null)
+                }}
             >
                 {this.props.artists.sort(this._artistSort).map((artist) => (
-                    <MenuItem key={artist.calendarID} value={artist.calendarID} primaryText={artist.name} />
+                    <MenuItem key={artist._id._str} value={artist._id._str} primaryText={artist.name} />
                 ))}
             </SelectField>
         )
