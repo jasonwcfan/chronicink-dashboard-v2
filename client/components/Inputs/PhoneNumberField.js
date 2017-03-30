@@ -8,15 +8,13 @@ import callingCodes from '../../constants/callingCodes';
 
 const style = {
     wrapper: {
+        display: 'flex',
+        width: 256,
         marginLeft: 5,
         marginRight: 5,
 
     },
     callingCodeSelector: {
-        container: {
-            verticalAlign: 'bottom',
-            width: 80
-        },
         labelStyle : {
             paddingRight: 0
         },
@@ -25,7 +23,7 @@ const style = {
         }
     },
     phoneNumberTextField: {
-        width: 176
+        width: '100%'
     }
 };
 
@@ -85,19 +83,38 @@ class PhoneNumberField extends Component {
 
 
     render() {
+
+        const callingCodeWidth = (() => {
+            switch(this.state.callingCode.length) {
+                case 2:
+                    return 45;
+                case 3:
+                    return 55;
+                case 4:
+                    return 65;
+                case 5:
+                    return 76;
+                default:
+                    return 76;
+            }
+        })();
+        console.log(callingCodeWidth);
+
         return(
             <div style={style.wrapper}>
-                <SelectField
-                    style={style.callingCodeSelector.container}
-                    labelStyle={style.callingCodeSelector.labelStyle}
-                    iconStyle={style.callingCodeSelector.iconStyle}
-                    autoWidth={true}
-                    onChange={this._handleCallingCodeChange}
-                    maxHeight={240}
-                    value={this.state.callingCodeIdx}
-                >
-                    {this._renderCallingCodes()}
-                </SelectField>
+                <div style={{display: 'flex', flexDirection: 'column-reverse'}}>
+                    <SelectField
+                        style={{width: callingCodeWidth}}
+                        labelStyle={style.callingCodeSelector.labelStyle}
+                        iconStyle={style.callingCodeSelector.iconStyle}
+                        autoWidth={true}
+                        onChange={this._handleCallingCodeChange}
+                        maxHeight={240}
+                        value={this.state.callingCodeIdx}
+                    >
+                        {this._renderCallingCodes()}
+                    </SelectField>
+                </div>
                 <ValidatedTextField
                     style={style.phoneNumberTextField}
                     name={this.props.name}
