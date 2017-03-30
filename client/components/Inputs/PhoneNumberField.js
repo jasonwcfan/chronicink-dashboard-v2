@@ -34,7 +34,8 @@ class PhoneNumberField extends Component {
         super(props);
         this.state = {
             value: props.defaultValue,
-            callingCode: '+1'
+            callingCode: '+1',
+            callingCodeIdx: 38
         };
 
         this._handleNumberChange = this._handleNumberChange.bind(this);
@@ -48,16 +49,27 @@ class PhoneNumberField extends Component {
 
     _handleCallingCodeChange(event, key, value) {
         this.setState({
-            callingCode: value
+            callingCode: callingCodes[value].value,
+            callingCodeIdx: value
         })
     }
 
     _getTextMask() {
-        return ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+        switch(this.state.callingCode) {
+            case '+1':
+                return ['(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+            default:
+                return null;
+        }
     }
 
     _getPattern() {
-        return /\(\d{3}\) \d{3}-\d{4}/
+        switch(this.state.callingCode) {
+            case '+1':
+                return /\(\d{3}\) \d{3}-\d{4}/;
+            default:
+                return null;
+        }
     }
 
     _renderCallingCodes() {
@@ -65,7 +77,7 @@ class PhoneNumberField extends Component {
             <MenuItem
                 primaryText={countryCode.label}
                 label={countryCode.value}
-                value={countryCode.value}
+                value={idx}
                 key={idx}
             />
         ))
@@ -82,7 +94,7 @@ class PhoneNumberField extends Component {
                     autoWidth={true}
                     onChange={this._handleCallingCodeChange}
                     maxHeight={240}
-                    value={this.state.callingCode}
+                    value={this.state.callingCodeIdx}
                 >
                     {this._renderCallingCodes()}
                 </SelectField>

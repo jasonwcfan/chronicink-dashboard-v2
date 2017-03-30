@@ -190,7 +190,6 @@ class IntakeForm extends Component {
         newFields[id].value = value;
         newFields[id].errorText = errorText;
         newFields[id].touched = true;
-        console.log(value);
 
         this.setState({
             fields: newFields,
