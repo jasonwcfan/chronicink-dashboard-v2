@@ -4,5 +4,14 @@ import ValidatedAutoComplete from './ValidatedAutoComplete';
 import CountrySelector from './CountrySelector';
 import RegionSelector from './RegionSelector';
 import ArtistSelector from './ArtistSelector';
+import PhoneNumberField from './PhoneNumberField';
 
-export { ValidatedDatePicker, ValidatedTextField, ValidatedAutoComplete, CountrySelector, RegionSelector, ArtistSelector };
+export {
+    ValidatedDatePicker,
+    ValidatedTextField,
+    ValidatedAutoComplete,
+    CountrySelector,
+    RegionSelector,
+    ArtistSelector,
+    PhoneNumberField
+};

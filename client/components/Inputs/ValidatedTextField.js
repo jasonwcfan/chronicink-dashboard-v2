@@ -12,12 +12,6 @@ class ValidatedTextField extends Component {
         this._handleChange = this._handleChange.bind(this);
     }
 
-    componentWillReceiveProps(props) {
-        this.setState({
-            value: props.defaultValue
-        })
-    }
-
     _handleChange(_, value) {
 
         let errorText = null;
