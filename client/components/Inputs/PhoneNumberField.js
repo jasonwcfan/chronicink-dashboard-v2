@@ -16,10 +16,13 @@ const style = {
     },
     callingCodeSelector: {
         labelStyle : {
-            paddingRight: 0
+            paddingRight: 0,
+            top: -2,
+            fontSize: '16px'
         },
         iconStyle: {
-            paddingRight: 0
+            paddingRight: 0,
+            top: 2
         }
     },
     phoneNumberTextField: {
@@ -46,6 +49,7 @@ class PhoneNumberField extends Component {
     }
 
     _handleCallingCodeChange(event, key, value) {
+        event.preventDefault();
         this.setState({
             callingCode: callingCodes[value].value,
             callingCodeIdx: value
@@ -84,6 +88,7 @@ class PhoneNumberField extends Component {
 
     render() {
 
+        // Change the width of the calling code selector depending on the size of its contents
         const callingCodeWidth = (() => {
             switch(this.state.callingCode.length) {
                 case 2:
@@ -98,7 +103,6 @@ class PhoneNumberField extends Component {
                     return 76;
             }
         })();
-        console.log(callingCodeWidth);
 
         return(
             <div style={style.wrapper}>
