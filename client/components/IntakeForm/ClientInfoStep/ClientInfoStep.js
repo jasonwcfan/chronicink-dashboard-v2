@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import Radium from 'radium';
 import Moment from 'moment';
 import MedicalConditionsChecklist from './MedicalConditionsChecklist';
-import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector  } from '../../Inputs';
+import { ValidatedTextField, ValidatedDatePicker, CountrySelector, RegionSelector, PhoneNumberField  } from '../../Inputs';
 
 const style = {
     container: {
@@ -66,23 +66,17 @@ class ClientInfoStep extends Component {
                     );
                 case 'phoneNumber':
                     return (
-                        <ValidatedTextField
+                        <PhoneNumberField
                             style={style.textField}
-                            defaultValue={formValue.value}
+                            value={formValue.value}
                             name={field.id}
                             key={field.id}
-                            floatingLabelText={field.label}
+                            label={field.label}
                             onFieldChange={this.props.onFieldChange}
                             required={field.required}
-                            mask={formValue.touched ?
-                                ['+', /\d/, /\d/, ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/] :
-                                ['+', '0', '1', ' ', '(', /[1-9]/, /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-                            }
-                            pattern={/\+\d{2} \(\d{3}\) \d{3}-\d{4}/}
                             errorText={formValue.errorText}
                             touched={formValue.touched}
                             validated={formValue.validated}
-                            type='tel'
                         />
                     );
                 case 'email':

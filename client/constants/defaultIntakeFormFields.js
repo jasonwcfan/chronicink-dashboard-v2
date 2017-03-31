@@ -73,7 +73,7 @@ export default defaultIntakeFormFields = [
     },
     {
         id: 'primaryPhoneNumber',
-        label: 'Primary Phone Number',
+        label: 'Phone Number 1',
         inputType: 'phoneNumber',
         value: '',
         errorText: null,
@@ -81,7 +81,7 @@ export default defaultIntakeFormFields = [
     },
     {
         id: 'secondaryPhoneNumber',
-        label: 'Additional Phone Number',
+        label: 'Phone Number 2',
         inputType: 'phoneNumber',
         value: '',
         errorText: null,
