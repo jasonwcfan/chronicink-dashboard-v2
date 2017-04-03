@@ -5,7 +5,6 @@ import MenuItem from 'material-ui/MenuItem';
 class ArtistSelector extends Component {
     constructor(props) {
         super(props);
-        console.log(props);
     }
 
     _artistSort(a, b) {

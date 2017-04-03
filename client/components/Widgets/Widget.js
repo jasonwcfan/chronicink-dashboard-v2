@@ -8,7 +8,7 @@ class Widget extends Component {
     }
 
     render() {
-        switch(this.props.widget.id) {
+        switch(this.props.widget) {
             case 'intakeList':
                 return <IntakeList {...this.props} />;
             case 'artistStats':
@@ -18,7 +18,7 @@ class Widget extends Component {
 }
 
 Widget.propTypes = {
-    widget: PropTypes.object.isRequired,
+    widget: PropTypes.string.isRequired,
 };
 
 export default Widget;

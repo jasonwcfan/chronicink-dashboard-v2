@@ -7,8 +7,6 @@ import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import SideNavBar from './SideNavBar';
 import Menu from './Menu';
-import BookingForm from './BookingForm';
-import DashboardContainer from '../containers/DashboardContainer';
 
 injectTapEventPlugin();
 
@@ -24,40 +22,24 @@ const style = {
 class App extends Component {
     constructor(props) {
         super(props);
-        this._getActiveApp = this._getActiveApp.bind(this);
     }
 
     // Eventually move app routing elsewhere...
-    _getActiveApp() {
-        const activeApp = this.props.params.appname;
-        if (activeApp) {
-            switch (activeApp.toLowerCase()) {
-                case 'booking':
-                    return <BookingForm clientID={this.props.location.query.clientID} />;
-                case 'dashboard':
-                    return <DashboardContainer />;
-                default:
-                    return <DashboardContainer />;
-            }
-        } else {
-            return <DashboardContainer />
-        }
-    }
-
-    _getAppName(activeApp) {
-        if (activeApp) {
-            switch (activeApp.toLowerCase()) {
-                case 'booking':
-                    return 'Booking';
-                case 'dashboard':
-                    return 'Dashboard';
-                default:
-                    return 'Dashboard';
-            }
-        } else {
-            return 'Dashboard';
-        }
-    }
+    // _getActiveApp() {
+    //     const activeApp = this.props.params.appname;
+    //     if (activeApp) {
+    //         switch (activeApp.toLowerCase()) {
+    //             case 'booking':
+    //                 return <BookingForm clientID={this.props.location.query.clientID} />;
+    //             case 'dashboard':
+    //                 return <DashboardContainer />;
+    //             default:
+    //                 return <DashboardContainer />;
+    //         }
+    //     } else {
+    //         return <DashboardContainer />
+    //     }
+    // }
 
     render() {
         return (
@@ -66,10 +48,10 @@ class App extends Component {
                     <SideNavBar onChangeApp={this.props.onChangeApp} />
                     <Paper style={style.appContainer} zDepth={4}>
                         <AppBar
-                            title={this._getAppName(this.props.params.appname)}
+                            title={this.props.appName}
                             iconElementRight={<Menu />}
                         />
-                        {this._getActiveApp()}
+                        {this.props.children}
                     </Paper>
                 </div>
             </MuiThemeProvider>

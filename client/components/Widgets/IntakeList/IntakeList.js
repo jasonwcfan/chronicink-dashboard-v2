@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import Moment from 'moment-timezone';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
@@ -71,7 +71,7 @@ class IntakeList extends Component {
 
     _handleListIconPressed(clientID) {
         this.props.router.push({
-            pathname: '/booking',
+            pathname: '/bookingform',
             query: {clientID: clientID}
         })
     }

@@ -5,11 +5,11 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import Artist from '../../../imports/Artist/artist';
 import Booking from '../../../imports/Booking/booking';
 import Intake from '../../../imports/Intake/intake';
+import App from '../app';
 import TattooDetailsTab from './TattooDetailsTab';
 import BookingsListTab from './BookingsListTab';
 import ClientInfoTab from './ClientInfoTab';
 import RecommendationsTab from './RecommendationsTab';
-import SubmitErrorDialog from './SubmitErrorDialog';
 import defaultFields from '../../constants/defaultBookingFormFields';
 import Dialog from 'material-ui/Dialog';
 import Moment from 'moment';
@@ -49,7 +49,6 @@ class BookingForm extends Component {
             };
 
             props.fields.forEach(function(field) {
-                console.log(field.required && !field.value ? `Not a valid ${field.label}` : null);
                 state.fields[field.id] = {
                     value: field.value,
                     errorText: field.required && !field.value ? `Not a valid ${field.label}` : null,
@@ -126,7 +125,6 @@ class BookingForm extends Component {
                     }
                 })
             } else {
-                console.log(res);
                 this.setState({
                     isSubmitted: true,
                     isSubmitting: false
@@ -276,7 +274,7 @@ class BookingForm extends Component {
 
     render() {
         return (
-            <div>
+            <App appName='Booking Form'>
                 <Tabs>
                     <Tab label='Client Info'>
                         <ClientInfoTab
@@ -339,7 +337,7 @@ class BookingForm extends Component {
                         <RecommendationsTab />
                     </Tab>
                 </Tabs>
-            </div>
+            </App>
         );
     }
 }
@@ -351,10 +349,12 @@ BookingForm.propTypes = {
     artists: PropTypes.array
 };
 
-export default BookingForm = createContainer(({ clientID }) => {
+export default BookingForm = createContainer(({ params }) => {
     const artistSubscription = Meteor.subscribe('artist');
     const formSubscription = Meteor.subscribe('booking');
     const intakeSubscription = Meteor.subscribe('intake');
+
+    console.log(params);
 
     return {
         artistSubReady: artistSubscription.ready(),
@@ -366,4 +366,4 @@ export default BookingForm = createContainer(({ clientID }) => {
         intake: Intake.findOne({clientID: clientID}, {sort: {natural: -1}}),
         clientID
     }
-}, BookingForm);
+}, <BookingForm props={this.props}/>);

@@ -1,4 +1,7 @@
 import React, { Component, PropTypes } from 'react';
+import { createContainer } from 'meteor/react-meteor-data';
+import Studio from '../../../imports/Studio/studio';
+import App from '../app';
 import Widget from '../Widgets/Widget';
 
 const style = {
@@ -21,25 +24,33 @@ class Dashboard extends Component {
             return (
                 <Widget
                     widget={widget}
-                    key={widget.id}
-                    primaryWidgetAction={this.props.primaryWidgetAction}
+                    key={widget}
                 />
             );
         });
     }
 
     render() {
-        return (
-            <div style={style.container} >
-                {this._renderWidgets(this.props.widgets)}
-            </div>
-        );
+        return this.props.subReady ? (
+            <App appName='Dashboard'>
+                <div style={style.container} >
+                    {this._renderWidgets(this.props.studio.widgets)}
+                </div>
+            </App>
+        ): null ;
     }
 }
 
 
 Dashboard.propTypes = {
-    widgets: PropTypes.arrayOf(PropTypes.object)
+    studio: PropTypes.object
 };
 
-export default Dashboard;
+export default Dashboard = createContainer(({ params }) => {
+    const subscription = Meteor.subscribe('studio');
+
+    return {
+        subReady: subscription.ready(),
+        studio: Studio.findOne({})
+    }
+}, Dashboard);

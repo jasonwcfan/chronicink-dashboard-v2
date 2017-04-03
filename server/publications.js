@@ -3,6 +3,7 @@ import Intake from '../imports/Intake/intake';
 import Booking from '../imports/Booking/booking';
 import Client from '../imports/Client/client';
 import Artist from '../imports/Artist/artist';
+import Studio from '../imports/Studio/studio';
 
 Meteor.publish('intake', function() {
     return Intake.find({});
@@ -18,4 +19,8 @@ Meteor.publish('booking', function() {
 
 Meteor.publish('client', function() {
     return Client.find({});
+});
+
+Meteor.publish('studio', function() {
+    return Studio.find({});
 });
