@@ -19,27 +19,13 @@ const style = {
     }
 };
 
+/**
+ * High level wrapper for all dashboard components, setting the Material UI theme and attaching the sidebar and appbar
+ */
 class App extends Component {
     constructor(props) {
         super(props);
     }
-
-    // Eventually move app routing elsewhere...
-    // _getActiveApp() {
-    //     const activeApp = this.props.params.appname;
-    //     if (activeApp) {
-    //         switch (activeApp.toLowerCase()) {
-    //             case 'booking':
-    //                 return <BookingForm clientID={this.props.location.query.clientID} />;
-    //             case 'dashboard':
-    //                 return <DashboardContainer />;
-    //             default:
-    //                 return <DashboardContainer />;
-    //         }
-    //     } else {
-    //         return <DashboardContainer />
-    //     }
-    // }
 
     render() {
         return (

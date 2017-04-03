@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Moment from 'moment-timezone';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
@@ -162,11 +162,11 @@ class IntakeList extends Component {
     }
 }
 
-export default IntakeList = createContainer(({ params }) => {
+export default IntakeList = createContainer(() => {
     const subscription = Meteor.subscribe('intake');
 
     return {
         subReady: subscription.ready(),
         data: Intake.find({}, {sort: {date: -1}}).fetch()
     }
-}, withRouter(IntakeList));
+}, IntakeList);
