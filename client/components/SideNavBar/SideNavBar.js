@@ -7,6 +7,7 @@ import FormsIcon from 'material-ui/svg-icons/action/assignment';
 import IntakeIcon from 'material-ui/svg-icons/action/assignment-ind';
 import ChecklistIcon from 'material-ui/svg-icons/action/assignment-turned-in';
 import StoreIcon from 'material-ui/svg-icons/action/store';
+import PreferencesIcon from 'material-ui/svg-icons/action/settings';
 import LinkWrapper from '../UI/LinkWrapper';
 
 const style = {
@@ -43,6 +44,7 @@ class SideNavBar extends Component {
                     <Divider />
                     <LinkWrapper to={{pathname: '/dashboard'}}><ListItem name='dashboard' leftIcon={<DashboardIcon />}>Dashboard</ListItem></LinkWrapper>
                     <LinkWrapper to={{pathname: '/intakeform'}}><ListItem name='intakeForm' leftIcon={<IntakeIcon />}>Intake Form</ListItem></LinkWrapper>
+                    <LinkWrapper to={{pathname: '/preferences'}}><ListItem name='preferences' leftIcon={<PreferencesIcon />}>Preferences</ListItem></LinkWrapper>
                     <ListItem
                         primaryTogglesNestedList={true}
                         leftIcon={<FormsIcon />}
