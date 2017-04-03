@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 import Paper from 'material-ui/Paper';
 import { List, ListItem } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
@@ -8,7 +9,6 @@ import IntakeIcon from 'material-ui/svg-icons/action/assignment-ind';
 import ChecklistIcon from 'material-ui/svg-icons/action/assignment-turned-in';
 import StoreIcon from 'material-ui/svg-icons/action/store';
 import PreferencesIcon from 'material-ui/svg-icons/action/settings';
-import LinkWrapper from '../UI/LinkWrapper';
 
 const style = {
     sideNavBarContainer: {
@@ -23,8 +23,7 @@ const style = {
         bottom: 0
     },
     link: {
-        height: 100,
-        width: 100
+        textDecoration: 'none'
     }
 };
 
@@ -42,9 +41,21 @@ class SideNavBar extends Component {
             <Paper style={style.sideNavBarContainer} >
                 <List style={style.menuList}>
                     <Divider />
-                    <LinkWrapper to={{pathname: '/dashboard'}}><ListItem name='dashboard' leftIcon={<DashboardIcon />}>Dashboard</ListItem></LinkWrapper>
-                    <LinkWrapper to={{pathname: '/intakeform'}}><ListItem name='intakeForm' leftIcon={<IntakeIcon />}>Intake Form</ListItem></LinkWrapper>
-                    <LinkWrapper to={{pathname: '/preferences'}}><ListItem name='preferences' leftIcon={<PreferencesIcon />}>Preferences</ListItem></LinkWrapper>
+                    <NavLink
+                        style={style.link}
+                        to='/dashboard'>
+                        <ListItem name='dashboard' leftIcon={<DashboardIcon />}>Dashboard</ListItem>
+                    </NavLink>
+                    <NavLink
+                        style={style.link}
+                        to='/intakeform'>
+                        <ListItem name='intakeForm' leftIcon={<IntakeIcon />}>Intake Form</ListItem>
+                    </NavLink>
+                    <NavLink
+                        style={style.link}
+                        to='/preferences'>
+                        <ListItem name='preferences' leftIcon={<PreferencesIcon />}>Preferences</ListItem>
+                    </NavLink>
                     <ListItem
                         primaryTogglesNestedList={true}
                         leftIcon={<FormsIcon />}

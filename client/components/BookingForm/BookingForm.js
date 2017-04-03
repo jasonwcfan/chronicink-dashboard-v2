@@ -349,12 +349,11 @@ BookingForm.propTypes = {
     artists: PropTypes.array
 };
 
-export default BookingForm = createContainer(({ params }) => {
+export default BookingForm = createContainer(({ match }) => {
     const artistSubscription = Meteor.subscribe('artist');
     const formSubscription = Meteor.subscribe('booking');
     const intakeSubscription = Meteor.subscribe('intake');
-
-    console.log(params);
+    const clientID = match.params.clientID;
 
     return {
         artistSubReady: artistSubscription.ready(),
@@ -366,4 +365,4 @@ export default BookingForm = createContainer(({ params }) => {
         intake: Intake.findOne({clientID: clientID}, {sort: {natural: -1}}),
         clientID
     }
-}, <BookingForm props={this.props}/>);
+}, BookingForm);

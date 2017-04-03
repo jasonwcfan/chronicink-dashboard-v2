@@ -8,7 +8,7 @@ export default LoggedInRoutes = (
     <Switch>
         <Route path='/intakeform' component={IntakeForm} />
         <Route path='/dashboard' component={Dashboard}/>
-        <Route path='/bookingform' component={BookingForm}/>
+        <Route path='/bookingform/:clientID' component={BookingForm}/>
         <Redirect from='/' to='/dashboard' />
     </Switch>
 )
