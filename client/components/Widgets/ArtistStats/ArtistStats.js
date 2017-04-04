@@ -85,7 +85,6 @@ class ArtistStats extends Component {
         if (this.props.subReady) {
             return this.props.artists.map((artist) => {
                 const hoursBooked = artist.hoursBooked[this.state.timeFrame];
-                console.log(hoursBooked);
                 const message = hoursBooked != null ? hoursBooked + ' hours booked' : 'Error';
                 return (
                     <ListItem key={artist.calendarID} primaryText={artist.name}>

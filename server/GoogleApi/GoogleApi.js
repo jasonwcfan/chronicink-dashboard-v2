@@ -65,8 +65,6 @@ GCalendar = {
                 return;
             }
 
-            console.log(res);
-
             let bookedHours = 0;
 
             res.items.forEach(function(event) {

@@ -22,7 +22,7 @@ Meteor.methods({
                     default:
                         return 30;
                 }
-            });
+            })();
             GCalendar.getBookedHours(calendarID, numTimeFrame, Meteor.bindEnvironment(function(err, hours) {
                 if (err) {
                     console.log(err);
@@ -31,7 +31,6 @@ Meteor.methods({
 
                 let hoursBooked = {};
                 hoursBooked[timeFrame] = hours;
-                console.log(hoursBooked);
                 Artist.update({calendarID}, {$set: {hoursBooked}});
             }))
         }
