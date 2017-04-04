@@ -3,6 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Artist from '../../../imports/Artist/artist';
 import App from '../app';
+import ArtistStyleGuide from './ArtistStyleGuide';
 
 const style = {
     container: {
@@ -25,10 +26,14 @@ class Preferences extends Component {
             <App appName='Preferences'>
                 <Tabs>
                     <Tab label='Application'>
-
+                        <div style={style.container}>
+                            UNDER CONSTRUCTION
+                        </div>
                     </Tab>
                     <Tab label='Style Guide'>
-
+                        <div style={style.container}>
+                            <ArtistStyleGuide />
+                        </div>
                     </Tab>
                 </Tabs>
             </App>

@@ -5,8 +5,6 @@ Meteor.methods({
     'artist.getHoursBooked': function(calendarID, timeFrame) {
         // Timeframe given in days (e.g. sixtyDays = 2 months)
         if (Meteor.isServer) {
-            // const getHours = Meteor.wrapAsync(GCalendar.getBookedHours);
-            // return getHours(calendarID, timeFrame);
             const numTimeFrame = (() => {
                 switch (timeFrame) {
                     case 'sevenDays':

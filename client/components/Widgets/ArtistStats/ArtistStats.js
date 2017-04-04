@@ -1,15 +1,14 @@
 import React, { Component, PropTypes } from 'react';
+import { createContainer } from 'meteor/react-meteor-data';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
 import IconMenu from 'material-ui/IconMenu';
-import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
-import { createContainer } from 'meteor/react-meteor-data';
 import Artist from '../../../../imports/Artist/artist';
 
 const style = {

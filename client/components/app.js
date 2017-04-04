@@ -12,10 +12,12 @@ injectTapEventPlugin();
 
 const style = {
     window: {
-        display: 'flex'
+        display: 'flex',
+        height: '100%'
     },
     appContainer: {
-        width: '100%'
+        width: '100%',
+        overflow: 'auto'
     }
 };
 
