@@ -7,6 +7,9 @@ import Artist from '../../../../imports/Artist/artist';
 import tattooStyles from '../../../constants/styles';
 
 const style = {
+    root: {
+
+    },
     styleSlidersContainer: {
         display: 'flex',
         height: 124,
@@ -77,8 +80,9 @@ class ArtistStyleGuide extends Component {
 
     render() {
         return this.props.subReady ? (
-            <div>
+            <div style={style.root}>
                 <SelectField
+                    style={{margin: 'auto'}}
                     onChange={this._handleArtistChange}
                     value={this.state.selectedArtist}
                     floatingLabelText='Artist'
