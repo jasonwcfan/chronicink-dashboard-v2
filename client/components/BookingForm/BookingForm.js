@@ -333,9 +333,6 @@ class BookingForm extends Component {
                             </Dialog>
                         </div>
                     </Tab>
-                    <Tab label='Recommendation'>
-                        <RecommendationsTab />
-                    </Tab>
                 </Tabs>
             </App>
         );
