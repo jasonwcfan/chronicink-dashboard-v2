@@ -55,7 +55,6 @@ class ArtistStats extends Component {
         super(props);
 
         this.state = {
-            artistStats: [],
             timeFrame: 30
         };
 
@@ -67,41 +66,13 @@ class ArtistStats extends Component {
         this._handleRefreshArtistStats(props.artists, 30);
     }
 
-    _handleReceiveArtistStats(artist, artistIndex, err, hoursBooked) {
-        const nextArtistStats = this.state.artistStats.slice();
-        nextArtistStats[artistIndex] = {
-            calendarID: artist.calendarID,
-            name: artist.name,
-            status: err,
-            hoursBooked: hoursBooked,
-            loading: false
-        };
-
-        this.setState({
-            artistStats: nextArtistStats
-        })
-    }
 
 
     _handleRefreshArtistStats(artists, timeFrame) {
-        const nextArtistStats = this.state.artistStats.slice();
 
+        // Calls back-end method to store artist hours in database
         artists.forEach((artist, idx) => {
-            nextArtistStats[idx] = {
-                calendarID: artist.calendarID,
-                name: artist.name,
-                status: null,
-                hoursBooked: null,
-                loading: true
-            };
-
-            Meteor.call('artist.getHoursBooked', artist.calendarID, timeFrame, (err, res) => {
-                this._handleReceiveArtistStats(artist, idx, err, res);
-            });
-        });
-
-        this.setState({
-            artistStats: nextArtistStats
+            Meteor.call('artist.getHoursBooked', artist.calendarID, timeFrame);
         });
     }
 
@@ -115,16 +86,15 @@ class ArtistStats extends Component {
 
     _renderArtistStats() {
         if (this.props.subReady) {
-            return this.state.artistStats.map((artistStat) => {
-                const message = artistStat.status ? 'Error' : artistStat.hoursBooked + ' hours booked';
+            // Create key for # of hours in timeFrame
+            let key = 'hoursIn' + String(this.state.timeFrame) + 'Days';
+
+            return this.props.artists.map((artist) => {
+                const message = artist[key] ?  artist[key] + ' hours booked': 'Error';
                 return (
-                    <ListItem key={artistStat.calendarID} primaryText={artistStat.name}>
+                    <ListItem key={artist.calendarID} primaryText={artist.name}>
                         <div style={style.listItemContainer} >
-                            <div style={style.listItemRightLabel}>{artistStat.loading ?
-                                <CircularProgress
-                                    size={16}
-                                />
-                                : message }</div>
+                            <div style={style.listItemRightLabel}>{message }</div>
                         </div>
                     </ListItem>
                 )

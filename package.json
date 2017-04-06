@@ -5,6 +5,8 @@
     "start": "meteor run"
   },
   "dependencies": {
+    "ag-grid":"^8.2.0",
+    "ag-grid-react":"^8.2.0",
     "btoa": "^1.1.2",
     "fs": "0.0.1-security",
     "google-auth-library": "^0.9.10",
