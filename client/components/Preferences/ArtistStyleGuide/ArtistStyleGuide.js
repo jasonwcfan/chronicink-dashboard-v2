@@ -20,7 +20,7 @@ const style = {
     sliderContainer: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-around',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         height: '100%',
         width: 72,
@@ -80,6 +80,7 @@ class ArtistStyleGuide extends Component {
     render() {
         return this.props.subReady ? (
             <div style={style.root}>
+                <h3>Select an artist from the list</h3>
                 <SelectField
                     style={{margin: 'auto'}}
                     onChange={this._handleArtistChange}
@@ -88,6 +89,17 @@ class ArtistStyleGuide extends Component {
                 >
                     {this._renderArtistSelect(this.props.artists)}
                 </SelectField>
+                <h3>
+                    Use the sliders to indicate how often you would like to be booked for each style
+                </h3>
+                <p>
+                    The closer you drag each slider to the top, the more often you will be booked for that style.
+                    <br/>
+                    <br/>
+                    Drag to top = As often as possible
+                    <br/>
+                    Drag to bottom = Never
+                </p>
                 <div style={style.styleSlidersContainer}>
                     {this._renderStyleGuide(tattooStyles)}
                 </div>
