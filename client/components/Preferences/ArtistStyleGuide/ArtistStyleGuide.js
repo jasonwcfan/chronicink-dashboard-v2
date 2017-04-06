@@ -65,12 +65,11 @@ class ArtistStyleGuide extends Component {
 
     _renderStyleGuide(tattooStyles) {
         return tattooStyles.map((tattooStyle) =>
-            <div style={style.sliderContainer}>
+            <div style={style.sliderContainer} key={tattooStyle.value}>
                 <Slider
                     style={style.slider}
                     sliderStyle={{margin: 0}}
                     axis='y'
-                    key={style.value}
                 />
                 <div style={style.sliderLabel}>{tattooStyle.label}</div>
             </div>

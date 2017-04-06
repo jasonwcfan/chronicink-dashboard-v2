@@ -14,6 +14,7 @@ import Artist from '../../../../imports/Artist/artist';
 const style = {
     widgetContainer: {
         width: 300,
+        maxHeight: '80vh',
         display: 'flex',
         flexDirection: 'column',
         margin: 20,
@@ -33,8 +34,6 @@ const style = {
         display: 'inline'
     },
     list: {
-        maxHeight: '70vh',
-        minHeight: 600,
         overflow: 'auto',
         overflowX: 'hidden'
     },

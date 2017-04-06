@@ -11,12 +11,17 @@ import Menu from './Menu';
 injectTapEventPlugin();
 
 const style = {
-    window: {
+    appContainer: {
         display: 'flex',
         height: '100%'
     },
-    appContainer: {
+    appBar: {
+        position: 'fixed'
+    },
+    content: {
+        display: 'flex',
         width: '100%',
+        marginTop: 64,
         overflow: 'auto'
     }
 };
@@ -32,16 +37,19 @@ class App extends Component {
     render() {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                <div style={style.window} className='appContainer'>
+                <Paper style={style.appContainer} zDepth={4}>
                     <SideNavBar onChangeApp={this.props.onChangeApp} />
-                    <Paper style={style.appContainer} zDepth={4}>
+                    <div style={{width: '100%', display: 'flex'}}>
                         <AppBar
+                            style={style.appBar}
                             title={this.props.appName}
                             iconElementRight={<Menu />}
                         />
-                        {this.props.children}
-                    </Paper>
-                </div>
+                        <div style={style.content}>
+                            {this.props.children}
+                        </div>
+                    </div>
+                </Paper>
             </MuiThemeProvider>
         );
     }

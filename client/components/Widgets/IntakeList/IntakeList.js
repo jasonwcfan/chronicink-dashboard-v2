@@ -21,6 +21,7 @@ import Intake from '../../../../imports/Intake/intake';
 const style = {
     intakeListContainer: {
         width: 300,
+        maxHeight: '80vh',
         display: 'flex',
         flexDirection: 'column',
         margin: 20,
@@ -40,8 +41,6 @@ const style = {
         display: 'inline'
     },
     intakeList: {
-        maxHeight: '70vh',
-        minHeight: 600,
         overflow: 'auto',
         overflowX: 'hidden'
     },
