@@ -8,8 +8,13 @@ Meteor.methods({
         if (Meteor.isServer) {
             GCalendar.getBookedHours(calendarID, timeFrame, Meteor.bindEnvironment((err, hours) => {
 
+                // Create key value pair for # of hours booked within specified timeframe
+                let obj = {};
+                obj['hoursIn' + String(timeFrame) + 'Days'] = hours;
+                timeFrame = String(timeFrame);
+
                 // Update the hours of the artist with matching calendarID in the Artist collection
-                Artist.update({calendarID}, {$set:{hours}},(err,response) => {
+                Artist.update({calendarID}, {$set:obj},(err,response) => {
                     if (err) {
                         console.log(err)
                     }

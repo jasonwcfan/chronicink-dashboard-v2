@@ -4,7 +4,6 @@ import Colors from 'material-ui/styles/colors';
 import Divider from 'material-ui/Divider';
 import { List, ListItem } from 'material-ui/List';
 import IconMenu from 'material-ui/IconMenu';
-import CircularProgress from 'material-ui/CircularProgress';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
@@ -87,16 +86,15 @@ class ArtistStats extends Component {
 
     _renderArtistStats() {
         if (this.props.subReady) {
+            // Create key for # of hours in timeFrame
+            let key = 'hoursIn' + String(this.state.timeFrame) + 'Days';
+
             return this.props.artists.map((artist) => {
-                const message = artist.hours ?  artist.hours + ' hours booked': 'Error';
+                const message = artist[key] ?  artist[key] + ' hours booked': 'Error';
                 return (
                     <ListItem key={artist.calendarID} primaryText={artist.name}>
                         <div style={style.listItemContainer} >
-                            <div style={style.listItemRightLabel}>{artist.loading ?
-                                <CircularProgress
-                                    size={16}
-                                />
-                                : message }</div>
+                            <div style={style.listItemRightLabel}>{message }</div>
                         </div>
                     </ListItem>
                 )
