@@ -61,6 +61,7 @@ GCalendar = {
             timeMax: timeMax.toISOString()
         }, function (err, res) {
             if (err) {
+                console.log(err);
                 callback(err, null);
                 return;
             }

@@ -8,6 +8,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import CircularProgress from 'material-ui/CircularProgress';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import Artist from '../../../../imports/Artist/artist';
 
@@ -54,7 +55,8 @@ class ArtistStats extends Component {
         super(props);
 
         this.state = {
-            timeFrame: 'sixtyDays'
+            artistStats: [],
+            timeFrame: 30
         };
 
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
@@ -62,12 +64,44 @@ class ArtistStats extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this._handleRefreshArtistStats(props.artists, this.state.timeFrame);
+        this._handleRefreshArtistStats(props.artists, 30);
     }
 
+    _handleReceiveArtistStats(artist, artistIndex, err, hoursBooked) {
+        const nextArtistStats = this.state.artistStats.slice();
+        nextArtistStats[artistIndex] = {
+            calendarID: artist.calendarID,
+            name: artist.name,
+            status: err,
+            hoursBooked: hoursBooked,
+            loading: false
+        };
+
+        this.setState({
+            artistStats: nextArtistStats
+        })
+    }
+
+
     _handleRefreshArtistStats(artists, timeFrame) {
-        artists.forEach((artist) => {
-            Meteor.call('artist.getHoursBooked', artist.calendarID, timeFrame);
+        const nextArtistStats = this.state.artistStats.slice();
+
+        artists.forEach((artist, idx) => {
+            nextArtistStats[idx] = {
+                calendarID: artist.calendarID,
+                name: artist.name,
+                status: null,
+                hoursBooked: null,
+                loading: true
+            };
+
+            Meteor.call('artist.getHoursBooked', artist.calendarID, timeFrame, (err, res) => {
+                this._handleReceiveArtistStats(artist, idx, err, res);
+            });
+        });
+
+        this.setState({
+            artistStats: nextArtistStats
         });
     }
 
@@ -81,15 +115,16 @@ class ArtistStats extends Component {
 
     _renderArtistStats() {
         if (this.props.subReady) {
-            return this.props.artists.map((artist) => {
-                const hoursBooked = artist.hoursBooked[this.state.timeFrame];
-                const message = hoursBooked != null ? hoursBooked + ' hours booked' : 'Error';
+            return this.state.artistStats.map((artistStat) => {
+                const message = artistStat.status ? 'Error' : artistStat.hoursBooked + ' hours booked';
                 return (
-                    <ListItem key={artist.calendarID} primaryText={artist.name}>
+                    <ListItem key={artistStat.calendarID} primaryText={artistStat.name}>
                         <div style={style.listItemContainer} >
-                            <div style={style.listItemRightLabel}>
-                                {message}
-                            </div>
+                            <div style={style.listItemRightLabel}>{artistStat.loading ?
+                                <CircularProgress
+                                    size={16}
+                                />
+                                : message }</div>
                         </div>
                     </ListItem>
                 )
@@ -113,32 +148,32 @@ class ArtistStats extends Component {
                         <MenuItem
                             primaryText='7 days'
                             insetChildren={true}
-                            checked={this.state.timeFrame == 'sevenDays'}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 'sevenDays')}
+                            checked={this.state.timeFrame == 7}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 7)}
                         />
                         <MenuItem
                             primaryText='14 days'
                             insetChildren={true}
-                            checked={this.state.timeFrame == 'fourteenDays'}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 'fourteenDays')}
+                            checked={this.state.timeFrame == 14}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 14)}
                         />
                         <MenuItem
                             primaryText='30 days'
                             insetChildren={true}
-                            checked={this.state.timeFrame == 'thirtyDays'}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 'thirtyDays')}
+                            checked={this.state.timeFrame == 30}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 30)}
                         />
                         <MenuItem
                             primaryText='60 days'
                             insetChildren={true}
-                            checked={this.state.timeFrame == 'sixtyDays'}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 'sixtyDays')}
+                            checked={this.state.timeFrame == 60}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 60)}
                         />
                         <MenuItem
                             primaryText='90 days'
                             insetChildren={true}
-                            checked={this.state.timeFrame == 'ninetyDays'}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 'ninetyDays')}
+                            checked={this.state.timeFrame == 90}
+                            onTouchTap={this._handleChangeTimeFrame.bind(this, 90)}
                         />
                     </IconMenu>
                 </div>
@@ -157,6 +192,6 @@ export default ArtistStats = createContainer(({ params }) => {
     return {
         subReady: subscription.ready(),
         // Test by only using artists with a test calendar
-        artists: Artist.find({}).fetch()
+        artists: Artist.find({}, ).fetch()
     }
 }, ArtistStats);
