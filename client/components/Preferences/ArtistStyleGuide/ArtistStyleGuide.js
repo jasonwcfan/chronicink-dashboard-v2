@@ -41,7 +41,10 @@ class ArtistStyleGuide extends Component {
         super(props);
 
         this.state = {
+            // The currently selected artist. Will be a string representing the artist's _id in MongoDB
             selectedArtist: null,
+            // An object where keys are styles and values are integers from 0 to 100 representing the selected artist's
+            // preference for that style
             styleValues: {}
         };
 
@@ -64,6 +67,9 @@ class ArtistStyleGuide extends Component {
         });
     }
 
+    /**
+     * Handle when the user picks a different artist from the dropdown
+     * **/
     _handleArtistChange(event, key, artistId) {
         let artist = null;
         this.props.artists.forEach((elem) => {
@@ -78,6 +84,9 @@ class ArtistStyleGuide extends Component {
         })
     }
 
+    /**
+     * Renders the Select field for picking the artist
+     * **/
     _renderArtistSelect(artists) {
         return artists.map((artist) =>
             <MenuItem
@@ -88,6 +97,9 @@ class ArtistStyleGuide extends Component {
         )
     }
 
+    /**
+     * Renders all the sliders
+     * **/
     _renderStyleGuide(tattooStyles) {
         return tattooStyles.map((tattooStyle) => {
             // Get the value of this current slider based on the styleValue state, and bind it to the Slider's value.
@@ -114,11 +126,11 @@ class ArtistStyleGuide extends Component {
 
     }
 
+    /**
+     * Render the Select field to pick an artist.
+     * Render the sliders and instructions only if an artist has been selected .
+     * **/
     render() {
-        /**
-         * Render the Select field to pick an artist.
-         * Render the sliders and instructions only if an artist has been selected .
-         * **/
         return this.props.subReady ? (
             <div style={style.root}>
                 <h3>Select an artist from the list</h3>
