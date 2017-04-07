@@ -24,6 +24,13 @@ Meteor.methods({
 
         }
     },
+    'artist.setStylePreferences': function(id, newStylePreferences) {
+        Artist.update({_id: new Mongo.ObjectID(id)}, {$set: {'preferences.styles': newStylePreferences}}, (err, res) => {
+            if (err) {
+                console.log(err);
+            }
+        })
+    }
 });
 
 export default Artist = new Mongo.Collection('artist');

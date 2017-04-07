@@ -6,6 +6,9 @@ import App from '../app';
 import ArtistStyleGuide from './ArtistStyleGuide';
 
 const style = {
+    tabs: {
+        width: '100%'
+    },
     container: {
         margin: 5
     }
@@ -24,7 +27,7 @@ class Preferences extends Component {
     render() {
         return (
             <App appName='Preferences'>
-                <Tabs>
+                <Tabs style={style.tabs}>
                     <Tab label='Application'>
                         <div style={style.container}>
                             UNDER CONSTRUCTION
