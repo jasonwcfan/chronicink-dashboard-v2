@@ -6,6 +6,7 @@ import DashboardIcon from 'material-ui/svg-icons/action/dashboard';
 import FormsIcon from 'material-ui/svg-icons/action/assignment';
 import IntakeIcon from 'material-ui/svg-icons/action/assignment-ind';
 import ChecklistIcon from 'material-ui/svg-icons/action/assignment-turned-in';
+import ActionCheckCircle from 'material-ui/svg-icons/action/check-circle';
 import StoreIcon from 'material-ui/svg-icons/action/store';
 import LinkWrapper from '../UI/LinkWrapper';
 
@@ -61,6 +62,13 @@ class SideNavBar extends Component {
                                 primaryText='Open/Close Form'
                                 leftIcon={<StoreIcon />}
                                 onTouchTap={() => {window.open('https://docs.google.com/forms/d/e/1FAIpQLSc8Oseu3nb8fdnQVX2STdoSfZttefY2MuWMU_gtfXRtcGdUnA/viewform?c=0&w=1', '_blank')}}
+                            />,
+                            <ListItem
+                                name='openCloseForm'
+                                key={3}
+                                primaryText='Shop Duties Checklist'
+                                leftIcon={<ActionCheckCircle />}
+                                onTouchTap={() => {window.open('https://goo.gl/forms/KnyhiO43VYpTvVRU2', '_blank')}}
                             />
                         ]}
                     />
