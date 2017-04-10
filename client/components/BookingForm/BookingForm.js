@@ -16,15 +16,14 @@ import Moment from 'moment';
 import CircularProgress from 'material-ui/CircularProgress';
 
 const style = {
+    tabs: {
+        width: '100%'
+    },
     container: {
-        margin: 5
+        margin: 24
     },
     navButton: {
         margin: 10
-    },
-    linearProgressContainer: {
-        paddingBottom: 10,
-        width: '95%'
     }
 };
 
@@ -275,9 +274,10 @@ class BookingForm extends Component {
     render() {
         return (
             <App appName='Booking Form'>
-                <Tabs>
+                <Tabs style={style.tabs}>
                     <Tab label='Client Info'>
                         <ClientInfoTab
+                            style={style.container}
                             intake={this.props.intake}
                             subReady={this.props.intakeSubReady}
                         />
@@ -294,6 +294,7 @@ class BookingForm extends Component {
                     </Tab>
                     <Tab label='Sessions'>
                         <BookingsListTab
+                            style={style.container}
                             bookings={this.state.bookings}
                             onSubmitBooking={this._handleCreateBooking}
                             deleteBooking={this._handleDeleteBooking}

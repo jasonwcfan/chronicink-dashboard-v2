@@ -37,7 +37,7 @@ class ClientInfoTab extends Component {
 
     render() {
         return (
-            <div>{this.props.subReady ?
+            <div style={this.props.style}>{this.props.subReady ?
                 <List>
                     {this.props.intake? this._renderClientInfo(this.props.intake) : 'No client set'}
                 </List>

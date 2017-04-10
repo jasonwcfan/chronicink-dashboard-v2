@@ -7,9 +7,6 @@ import BookingsList from './BookingsList';
 
 
 const style = {
-    container: {
-        margin: 5
-    },
     bookedThruSelectField: {
         display: 'block'
     },
@@ -26,7 +23,7 @@ class BookingsListTab extends Component {
     
     render() {
         return (
-            <div style={style.container}>
+            <div style={this.props.style}>
                 <h2>Sessions</h2>
                 <Toggle
                     style={style.presentationToggle}
