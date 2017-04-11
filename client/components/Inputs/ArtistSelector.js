@@ -37,6 +37,7 @@ class ArtistSelector extends Component {
     }
 
     _handleClickRecommendButton() {
+        this.props.onClickRecommendButton();
         this.setState({
             dialogOpen: true
         })
