@@ -7,17 +7,10 @@ import { ArtistSelector, ValidatedAutoComplete } from '../../Inputs';
 
 const style = {
     textField: {
-        display: 'block',
-        marginLeft: 5,
-        marginRight: 5
+        display: 'block'
     },
     autoComplete: {
-        display: 'block',
-        marginLeft: 5,
-        marginRight: 5
-    },
-    dropdown: {
-        marginLeft: 5
+        display: 'block'
     },
     radioGroup: {
         display: 'flex',
@@ -31,7 +24,7 @@ const style = {
     radioItem: {
         display: 'inline-block',
         padding: 10
-    },
+    }
 };
 
 class TattooDetailsTab extends Component {
@@ -114,7 +107,6 @@ class TattooDetailsTab extends Component {
                 case 'artistSelect':
                     return (
                         <ArtistSelector
-                            style={style.dropdown}
                             onFieldChange={this.props.onFieldChange}
                             key={field.id}
                             artists={this.props.artists}
