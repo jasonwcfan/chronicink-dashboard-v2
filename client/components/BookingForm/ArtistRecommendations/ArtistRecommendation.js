@@ -8,14 +8,18 @@ const style = {
 
     },
     dialog: {
-        padding: 0
+        display: 'flex',
+        padding: 5,
+        overflowX: 'hidden'
     },
     gridList: {
         display: 'flex',
-        flexWrap: 'nowrap'
+        justifyContent: 'flex-start',
+        flexWrap: 'nowrap',
+        overflowX: 'auto'
     },
     gridTile: {
-        width: '200px'
+
     }
 };
 
@@ -25,6 +29,7 @@ class ArtistRecommendation extends Component {
 
         this.state = {
             dialogOpen: false,
+            showAll: false,
             recommendationResult: null
         };
 
@@ -61,6 +66,7 @@ class ArtistRecommendation extends Component {
 
     _renderRecommendations(result) {
         return (
+            this.state.showAll ?
             result.map((artist) => {
                 return (
                     <GridTile
@@ -69,7 +75,19 @@ class ArtistRecommendation extends Component {
                         title={artist.name}
                         titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
                     >
-
+                        <div style={{width: '150px'}}>Placeholder</div>
+                    </GridTile>
+                )
+            }) :
+            result.slice(0, 3).map((artist) => {
+                return (
+                    <GridTile
+                        style={style.gridTile}
+                        key={artist._id}
+                        title={artist.name}
+                        titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+                    >
+                        <div style={{width: '150px'}}>Placeholder</div>
                     </GridTile>
                 )
             })
@@ -91,9 +109,10 @@ class ArtistRecommendation extends Component {
                     open={this.state.dialogOpen}
                     onRequestClose={() => {this.setState({dialogOpen: false})}}
                 >
-                    <GridList style={style.gridList} cols={2.2} onScroll={() => {console.log('scroll')}}>
+                    <GridList style={style.gridList} cols={1} onScroll={() => {console.log('scroll')}}>
                         {this.state.recommendationResult ? this._renderRecommendations(this.state.recommendationResult) : null}
                     </GridList>
+                    <FlatButton label='Show All' />
                 </Dialog>
             </div>
         )
