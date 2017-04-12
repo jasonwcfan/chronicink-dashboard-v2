@@ -43,6 +43,13 @@ class ArtistRecommendation extends Component {
 
         this._handleClickRecommendButton = this._handleClickRecommendButton.bind(this);
         this._renderRecommendations = this._renderRecommendations.bind(this);
+        this._handleClickShowAll = this._handleClickShowAll.bind(this);
+    }
+
+    _handleClickShowAll() {
+        this.setState({
+            showAll: true
+        })
     }
 
     _handleClickRecommendButton() {
@@ -120,9 +127,12 @@ class ArtistRecommendation extends Component {
                     <GridList style={style.gridList} cols={1} onScroll={() => {console.log('scroll')}}>
                         {this.state.recommendationResult ? this._renderRecommendations(this.state.recommendationResult) : null}
                     </GridList>
-                    <div style={style.showAllButtonContainer}>
-                        <FlatButton style={style.showAllButton} label='Show All' />
-                    </div>
+                    {this.state.showAll ? null :
+                        <div style={style.showAllButtonContainer}>
+                            <FlatButton style={style.showAllButton} onTouchTap={this._handleClickShowAll}
+                                        label='Show All'/>
+                        </div>
+                    }
                 </Dialog>
             </div>
         )
