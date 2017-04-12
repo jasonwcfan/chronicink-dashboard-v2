@@ -106,11 +106,13 @@ class TattooDetailsTab extends Component {
                         />
                     );
                 case 'select':
+                    const currentFieldValue = this.props.formValues[field.id];
                     return (
                         <SelectField
                             key={field.id}
                             floatingLabelText={field.label}
-                            value={this.props.formValues[field.id].value}
+                            value={currentFieldValue.value}
+                            errorText={currentFieldValue.touched ? currentFieldValue.errorText : null}
                             onChange={(event, key, value) => this.props.onFieldChange(field.id, value, null)}
                         >
                             {field.items.map((style) => {
