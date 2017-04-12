@@ -18,7 +18,8 @@ class ArtistSelector extends Component {
         super(props);
 
         this.state = {
-            dialogOpen: false
+            dialogOpen: false,
+            dialogContent: this.props.dialogContent
         };
 
         this._handleClickRecommendButton = this._handleClickRecommendButton.bind(this);
@@ -37,10 +38,25 @@ class ArtistSelector extends Component {
     }
 
     _handleClickRecommendButton() {
-        this.props.onClickRecommendButton();
-        this.setState({
-            dialogOpen: true
-        })
+        if (this.props.formValues.style.value) {
+            this.setState({
+                dialogOpen: true
+            });
+            Meteor.call('booking.getArtistRecommendation', this.props.formValues, (err, res) => {
+                if (err) {console.log(err); return}
+                const content = res.map((artist) => {
+                    return `${artist.name}: ${artist.score}`;
+                });
+                this.setState({
+                    dialogContent: content.toString()
+                })
+            });
+        } else {
+            this.setState({
+                dialogOpen: true,
+                dialogContent: 'A style must be selected in order to recommend artists'
+            })
+        }
     }
 
     render() {
@@ -67,7 +83,7 @@ class ArtistSelector extends Component {
                     open={this.state.dialogOpen}
                     onRequestClose={() => {this.setState({dialogOpen: false})}}
                 >
-                    Test
+                    {this.state.dialogContent}
                 </Dialog>
             </div>
         )
@@ -77,6 +93,7 @@ class ArtistSelector extends Component {
 ArtistSelector.propTypes = {
     fieldTemplate: PropTypes.object,
     fieldValue: PropTypes.object,
+    formValues: PropTypes.object,
     artists: PropTypes.array
 };
 

@@ -108,10 +108,10 @@ class TattooDetailsTab extends Component {
                     return (
                         <ArtistSelector
                             onFieldChange={this.props.onFieldChange}
-                            onClickRecommendButton={this.props.onClickRecommendButton}
                             key={field.id}
                             artists={this.props.artists}
                             fieldTemplate={field}
+                            formValues={this.props.formValues}
                             fieldValue={this.props.formValues[field.id]}
                             touched={this.props.formValues[field.id].touched}
                             errorText={this.props.formValues[field.id].errorText}

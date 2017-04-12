@@ -66,7 +66,6 @@ class BookingForm extends Component {
         this._handleSetBookedThru = this._handleSetBookedThru.bind(this);
         this._handleTogglePresentationRequired = this._handleTogglePresentationRequired.bind(this);
         this._handlePreSubmit = this._handlePreSubmit.bind(this);
-        this._handleClickRecommendButton = this._handleClickRecommendButton.bind(this)
     }
 
     componentWillReceiveProps(props) {
@@ -272,17 +271,6 @@ class BookingForm extends Component {
         })
     }
 
-    _handleClickRecommendButton() {
-        if (this.state.fields.style.value) {
-            Meteor.call('booking.getArtistRecommendation', this.state.fields, (err, res) => {
-                if (err) {console.log(err); return}
-                console.log(res);
-            })
-        } else {
-            console.log('Style must be filled in!');
-        }
-    }
-
     render() {
         return (
             <App appName='Booking Form'>
@@ -302,7 +290,6 @@ class BookingForm extends Component {
                                           subReady={this.props.artistSubReady}
                                           defaultArtist={this.props.artist}
                                           onFieldChange={this._handleFieldChange}
-                                          onClickRecommendButton={this._handleClickRecommendButton}
                         />
                     </Tab>
                     <Tab label='Sessions'>
