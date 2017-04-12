@@ -71,7 +71,7 @@ export default defaultBookingFormFields = [
     {
         id: 'size',
         label: 'Size',
-        inputType: 'textField',
+        inputType: 'size',
         value: '',
         errorText: null,
         required: true
