@@ -11,17 +11,15 @@ Meteor.methods({
      * good fit for this particular tattoo. Right now it just takes the style as input and determines the rest of the
      * factors from the calendar, but in the future it could also take a list of preferred/banned keywords as well
      * as size and colouring
-     * @param form the booking form object that represents this tattoo
+     * @param data the input data (currently just style)
      */
-    'booking.getArtistRecommendation': function(fields) {
+    'booking.getArtistRecommendation': function(data) {
         if (Meteor.isServer) {
+            const { tattooStyle, ...rest } = data;
+            console.log(tattooStyle);
             import PythonShell from '../../server/Helpers/PythonShell';
 
-            const style = TattooStyle.findOne({label: fields.style.value});
-
-            console.log(style);
-
-            const list = PythonShell.recommendArtist(style.value);
+            const list = PythonShell.recommendArtist(tattooStyle);
             return list;
         }
     },

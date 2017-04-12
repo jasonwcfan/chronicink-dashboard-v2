@@ -38,11 +38,19 @@ class ArtistSelector extends Component {
     }
 
     _handleClickRecommendButton() {
-        if (this.props.formValues.style.value) {
+        const tattooStyle = this.props.formValues.style.value;
+        if (tattooStyle) {
             this.setState({
                 dialogOpen: true
             });
-            Meteor.call('booking.getArtistRecommendation', this.props.formValues, (err, res) => {
+
+            // Set up the data to pass to the recommendation engine
+            const data = {
+                tattooStyle
+            };
+
+            // Call the meteor method that spawns the python script to calculate artist recommendations
+            Meteor.call('booking.getArtistRecommendation', data, (err, res) => {
                 if (err) {console.log(err); return}
                 const content = res.map((artist) => {
                     return `${artist.name}: ${artist.score}`;
@@ -52,6 +60,7 @@ class ArtistSelector extends Component {
                 })
             });
         } else {
+            // tattooStyle is not set
             this.setState({
                 dialogOpen: true,
                 dialogContent: 'A style must be selected in order to recommend artists'

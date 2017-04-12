@@ -199,6 +199,7 @@ class BookingForm extends Component {
     }
 
     _handleFieldChange(id, value, errorText) {
+        console.log(id, value, errorText);
         const newFields = Object.assign({}, this.state.fields);
         newFields[id].value = value;
         newFields[id].errorText = errorText;

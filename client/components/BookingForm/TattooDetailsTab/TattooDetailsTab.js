@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ValidatedTextField from '../../Inputs/ValidatedTextField';
-import AutoComplete from 'material-ui/AutoComplete';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 import { ArtistSelector, ValidatedAutoComplete } from '../../Inputs';
 
 const style = {
@@ -104,15 +105,35 @@ class TattooDetailsTab extends Component {
                             touched={this.props.formValues[field.id].touched}
                         />
                     );
+                case 'select':
+                    return (
+                        <SelectField
+                            key={field.id}
+                            floatingLabelText={field.label}
+                            value={this.props.formValues[field.id].value}
+                            onChange={(event, key, value) => this.props.onFieldChange(field.id, value, null)}
+                        >
+                            {field.items.map((style) => {
+                                return (
+                                    <MenuItem
+                                        key={style.value}
+                                        value={style.value}
+                                        primaryText={style.label}
+                                    />
+                                )
+                            })}
+                        </SelectField>
+                    );
                 case 'artistSelect':
                     return (
                         <ArtistSelector
                             onFieldChange={this.props.onFieldChange}
+                            onClickRecommendButton={this.props.onClickRecommendButton}
                             key={field.id}
                             artists={this.props.artists}
                             fieldTemplate={field}
-                            formValues={this.props.formValues}
                             fieldValue={this.props.formValues[field.id]}
+                            formValues={this.props.formValues}
                             touched={this.props.formValues[field.id].touched}
                             errorText={this.props.formValues[field.id].errorText}
                         />
