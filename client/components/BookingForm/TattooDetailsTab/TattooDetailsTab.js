@@ -4,7 +4,8 @@ import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import ValidatedTextField from '../../Inputs/ValidatedTextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import { ArtistSelector, ValidatedAutoComplete } from '../../Inputs';
+import { ValidatedAutoComplete } from '../../Inputs';
+import ArtistSelector from '../ArtistRecommendations';
 
 const style = {
     textField: {

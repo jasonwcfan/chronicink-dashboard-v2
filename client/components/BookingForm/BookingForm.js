@@ -9,7 +9,6 @@ import App from '../app';
 import TattooDetailsTab from './TattooDetailsTab';
 import BookingsListTab from './BookingsListTab';
 import ClientInfoTab from './ClientInfoTab';
-import RecommendationsTab from './RecommendationsTab';
 import defaultFields from '../../constants/defaultBookingFormFields';
 import Dialog from 'material-ui/Dialog';
 import Moment from 'moment';
