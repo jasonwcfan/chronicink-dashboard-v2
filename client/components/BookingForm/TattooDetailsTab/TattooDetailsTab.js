@@ -69,32 +69,32 @@ class TattooDetailsTab extends Component {
         return fields.map((field) => {
             switch (field.inputType) {
                 case 'size':
-                    const textFieldStyle = Object.assign(style.textField, { width: '256px' });
+                    const textFieldStyle = Object.assign({ width: '256px' }, style.textField);
                     return (
                         <div style={style.flexedDivContainer} key={'some-key'}>
                             {this.state.useActualSize ?
                                 <div style={style.flexedDivContainer} key={'some-key-2'}>
                                     <ValidatedTextField
-                                        style={Object.assign(textFieldStyle, { width: '123px' })}
+                                        style={Object.assign({ width: '123px' }, textFieldStyle)}
                                         defaultValue={this.sizeWidthAndHeight.width.value}
                                         name={'size_width'}
                                         key={'size_width'}
                                         floatingLabelText={this.sizeWidthAndHeight.width.label}
                                         onFieldChange={this.processSizeWidthAndHeight}
-                                        fullWidth={true}
                                         required={field.required}
+                                        mask={[/\d/, /\d/]}
                                         errorText={this.sizeWidthAndHeight.width.errorText}
                                         touched={this.sizeWidthAndHeight.width.touched}
                                     />
                                     <ValidatedTextField
-                                        style={Object.assign(textFieldStyle, { width: '123px' })}
+                                        style={Object.assign({ width: '123px' }, textFieldStyle)}
                                         defaultValue={this.sizeWidthAndHeight.height.value}
                                         name={'size_height'}
                                         key={'size_height'}
                                         floatingLabelText={this.sizeWidthAndHeight.height.label}
                                         onFieldChange={this.processSizeWidthAndHeight}
-                                        fullWidth={true}
                                         required={true}
+                                        mask={[/\d/, /\d/]}
                                         errorText={this.sizeWidthAndHeight.height.errorText}
                                         touched={this.sizeWidthAndHeight.height.touched}
                                     />
@@ -107,7 +107,6 @@ class TattooDetailsTab extends Component {
                                     key={field.id}
                                     floatingLabelText={field.label}
                                     onFieldChange={this.props.onFieldChange}
-                                    fullWidth={true}
                                     required={field.required}
                                     errorText={this.props.formValues[field.id].errorText}
                                     touched={this.props.formValues[field.id].touched}
@@ -253,9 +252,9 @@ class TattooDetailsTab extends Component {
 
         if(this.sizeWidthAndHeight.width.errorText || this.sizeWidthAndHeight.height.errorText) {
             error = 'Size is required';
+            this.props.onFieldChange('size', size, error);
         }
 
-        this.props.onFieldChange('size', size, error);
     }
 
     render() {
