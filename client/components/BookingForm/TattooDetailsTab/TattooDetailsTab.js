@@ -9,10 +9,17 @@ import ArtistSelector from '../ArtistRecommendations';
 
 const style = {
     textField: {
-        display: 'block'
+        display: 'block',
+        marginLeft: 5,
+        marginRight: 5
     },
     autoComplete: {
-        display: 'block'
+        display: 'block',
+        marginLeft: 5,
+        marginRight: 5
+    },
+    dropdown: {
+        marginLeft: 5
     },
     radioGroup: {
         display: 'flex',
@@ -26,7 +33,7 @@ const style = {
     radioItem: {
         display: 'inline-block',
         padding: 10
-    }
+    },
 };
 
 class TattooDetailsTab extends Component {
@@ -39,7 +46,6 @@ class TattooDetailsTab extends Component {
         return fields.map((field) => {
             switch (field.inputType) {
                 case 'textField':
-                    // console.log(this.props.formValues[field.id].value);
                     return (
                         <ValidatedTextField
                             style={style.textField}
