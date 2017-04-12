@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import Client from '../Client/client';
 import Studio from '../Studio/studio';
+import TattooStyle from '../TattooStyle/tattooStyle';
 import Moment from 'moment';
 
 Meteor.methods({
@@ -16,8 +17,11 @@ Meteor.methods({
         if (Meteor.isServer) {
             import PythonShell from '../../server/Helpers/PythonShell';
 
-            const style = fields.style.value;
-            const list = PythonShell.recommendArtist(style);
+            const style = TattooStyle.findOne({label: fields.style.value});
+
+            console.log(style);
+
+            const list = PythonShell.recommendArtist(style.value);
             return list;
         }
     },

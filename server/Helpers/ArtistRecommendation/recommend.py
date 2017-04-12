@@ -43,7 +43,6 @@ def main():
     # parse out tattoo properties
     data = json.loads(sys.stdin.readline())
     style = data['tattooStyle']
-    print(style)
 
     # store all values for each of the transformed input variables
     artist_properties = []
@@ -54,7 +53,7 @@ def main():
 
         # optionally apply transformations to properties before normalizing
         values = {'name': artist['name'],
-                  '_id:': artist['_id'],
+                  '_id': str(artist['_id']),
                   'preference': artist['preferences']['styles'][style],
                   'soonestOpeningTrans': 1/math.log(soonest_opening + 2, 10),
                   'soonestOpening': soonest_opening,
@@ -76,20 +75,30 @@ def main():
                                                min_soonest_opening,
                                                max_soonest_opening)), reverse=True)
 
-    # for elem in artist_properties:
-    #     print('Preference: {}, Soonest Opening: {}, Booking Volume: {}, Score: {}'.format(
-    #         elem['preference'],
-    #         elem['soonestOpening'],
-    #         elem['bookingVolume'],
-    #         (rank(elem,
-    #               style,
-    #               min_booking_volume,
-    #               max_booking_volume,
-    #               min_soonest_opening,
-    #               max_soonest_opening)
-    #          )
-    #     ))
-    # print(json.dumps(artist_properties))
+    result_set = []
+    for elem in artist_properties:
+        # print('Preference: {}, Soonest Opening: {}, Booking Volume: {}, Score: {}'.format(
+        #     elem['preference'],
+        #     elem['soonestOpening'],
+        #     elem['bookingVolume'],
+        #     (rank(elem,
+        #           style,
+        #           min_booking_volume,
+        #           max_booking_volume,
+        #           min_soonest_opening,
+        #           max_soonest_opening)
+        #      )
+        # ))
+        result_set.append(
+            {'name': elem['name'], '_id': elem['_id'], 'preference': elem['preference'], 'soonestOpening': elem['soonestOpening'],
+             'bookingVolume': elem['bookingVolume'], 'score': rank(elem,
+                                                                style,
+                                                                min_booking_volume,
+                                                                max_booking_volume,
+                                                                min_soonest_opening,
+                                                                max_soonest_opening)})
+
+    print(json.dumps(result_set))
 
 
 

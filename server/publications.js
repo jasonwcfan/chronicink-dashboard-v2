@@ -4,6 +4,7 @@ import Booking from '../imports/Booking/booking';
 import Client from '../imports/Client/client';
 import Artist from '../imports/Artist/artist';
 import Studio from '../imports/Studio/studio';
+import TattooStyle from '../imports/TattooStyle/tattooStyle';
 
 Meteor.publish('intake', function() {
     return Intake.find({});
@@ -23,4 +24,8 @@ Meteor.publish('client', function() {
 
 Meteor.publish('studio', function() {
     return Studio.find({});
+});
+
+Meteor.publish('tattooStyle', function() {
+    return TattooStyle.find({});
 });
