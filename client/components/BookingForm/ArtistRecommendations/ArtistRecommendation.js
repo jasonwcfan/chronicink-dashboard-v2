@@ -14,11 +14,19 @@ const style = {
     },
     gridList: {
         display: 'flex',
-        justifyContent: 'flex-start',
         flexWrap: 'nowrap',
         overflowX: 'auto'
     },
     gridTile: {
+
+    },
+    showAllButtonContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexGrow: 1
+    },
+    showAllButton: {
 
     }
 };
@@ -112,7 +120,9 @@ class ArtistRecommendation extends Component {
                     <GridList style={style.gridList} cols={1} onScroll={() => {console.log('scroll')}}>
                         {this.state.recommendationResult ? this._renderRecommendations(this.state.recommendationResult) : null}
                     </GridList>
-                    <FlatButton label='Show All' />
+                    <div style={style.showAllButtonContainer}>
+                        <FlatButton style={style.showAllButton} label='Show All' />
+                    </div>
                 </Dialog>
             </div>
         )
