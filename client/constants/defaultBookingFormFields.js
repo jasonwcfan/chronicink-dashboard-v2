@@ -62,7 +62,7 @@ export default defaultBookingFormFields = [
     {
         id: 'placement',
         label: 'Placement',
-        inputType: 'autocomplete',
+        inputType: 'textField',
         value: '',
         errorText: null,
         required: true,

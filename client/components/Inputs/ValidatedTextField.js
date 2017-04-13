@@ -41,11 +41,6 @@ class ValidatedTextField extends Component {
                 onChange={this._handleChange}
                 fullWidth={this.props.fullWidth}
                 multiLine={this.props.multiLine}
-                errorStyle={{
-                    // Workaround to fix layout issues caused by material ui's error text
-                    // https://github.com/callemall/material-ui/issues/1151
-                    float: 'left'
-                }}
             >
                 {this.props.mask ? <MaskedInput type={this.props.type} autoComplete='off' mask={this.props.mask} value={this.state.value} /> : null}
             </TextField>
