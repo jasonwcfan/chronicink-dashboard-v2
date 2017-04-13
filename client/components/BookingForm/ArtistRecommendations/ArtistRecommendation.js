@@ -4,14 +4,6 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
 const style = {
-    root: {
-
-    },
-    dialogBody: {
-        // display: 'flex',
-        // padding: 5,
-        // overflowX: 'hidden'
-    },
     dialogContent: {
         width: '100%'
     },
@@ -25,12 +17,12 @@ const style = {
     },
     showAllButtonContainer: {
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'center',
-        flexGrow: 1
     },
-    showAllButton: {
-
+    avatar: {
+        width: '200px',
+        display: 'block',
+        margin: '0 auto'
     }
 };
 
@@ -84,9 +76,9 @@ class ArtistRecommendation extends Component {
     }
 
     _renderRecommendations(result) {
+        const displayedResult = this.state.showAll ? result : result.slice(0, 3);
         return (
-            this.state.showAll ?
-            result.map((artist) => {
+            displayedResult.map((artist) => {
                 return (
                     <GridTile
                         style={style.gridTile}
@@ -94,19 +86,7 @@ class ArtistRecommendation extends Component {
                         title={artist.name}
                         titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
                     >
-                        <div style={{width: '150px'}}>Placeholder</div>
-                    </GridTile>
-                )
-            }) :
-            result.slice(0, 3).map((artist) => {
-                return (
-                    <GridTile
-                        style={style.gridTile}
-                        key={artist._id}
-                        title={artist.name}
-                        titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
-                    >
-                        <div style={{width: '150px'}}>Placeholder</div>
+                        <img style={style.avatar} src={'/images/default_avatar.png'}/>
                     </GridTile>
                 )
             })
@@ -123,7 +103,7 @@ class ArtistRecommendation extends Component {
     render() {
         return (
 
-            <div style={style.root}>
+            <div>
                 <FlatButton
                     style={style.recommendButton}
                     label='Recommend'
@@ -131,7 +111,6 @@ class ArtistRecommendation extends Component {
                 />
                 <Dialog
                     className='test'
-                    bodyStyle={style.dialogBody}
                     contentStyle={style.dialogContent}
                     open={this.state.dialogOpen}
                     onRequestClose={this._handleCloseDialog}
@@ -140,7 +119,7 @@ class ArtistRecommendation extends Component {
                         {this.state.recommendationResult ? this._renderRecommendations(this.state.recommendationResult) : null}
                     </GridList>
                     <div style={style.showAllButtonContainer}>
-                        <FlatButton style={style.showAllButton} onTouchTap={this._handleClickShowAll}
+                        <FlatButton onTouchTap={this._handleClickShowAll}
                                     label='Show All' disabled={this.state.showAll}/>
                     </div>
                 </Dialog>
