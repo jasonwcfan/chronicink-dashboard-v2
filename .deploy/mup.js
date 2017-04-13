@@ -1,8 +1,8 @@
 module.exports = {
   servers: {
     one: {
-      host: 'dashboard.chronicinktattoo.com',
       // host: 'ec2-35-163-139-178.us-west-2.compute.amazonaws.com',
+      host: 'dashboard.chronicinktattoo.com',
       // username: 'ubuntu',
       username: 'jason',
       // pem: 'coil-website.pem'

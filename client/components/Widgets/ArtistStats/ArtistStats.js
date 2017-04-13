@@ -8,7 +8,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-import CircularProgress from 'material-ui/CircularProgress';
+import UpdateIcon from 'material-ui/svg-icons/action/update';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import Artist from '../../../../imports/Artist/artist';
 
@@ -60,20 +60,13 @@ class ArtistStats extends Component {
 
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
         this._handleRefreshArtistStats = this._handleRefreshArtistStats.bind(this);
+
+        this._handleRefreshArtistStats(this.state.timeFrame);
     }
 
-    componentWillReceiveProps(props) {
-        this._handleRefreshArtistStats(props.artists, 30);
-    }
-
-
-
-    _handleRefreshArtistStats(artists, timeFrame) {
-
+    _handleRefreshArtistStats(timeFrame) {
         // Calls back-end method to store artist hours in database
-        artists.forEach((artist, idx) => {
-            Meteor.call('artist.getHoursBooked', artist.calendarID, timeFrame);
-        });
+        Meteor.call('artist.getHoursBooked', timeFrame);
     }
 
     _handleChangeTimeFrame(newTimeFrame) {
@@ -81,7 +74,7 @@ class ArtistStats extends Component {
             timeFrame: newTimeFrame
         });
 
-        this._handleRefreshArtistStats(this.props.artists, newTimeFrame);
+        this._handleRefreshArtistStats(newTimeFrame);
     }
 
     _renderArtistStats() {
@@ -116,34 +109,41 @@ class ArtistStats extends Component {
                         targetOrigin={{horizontal: 'left', vertical: 'top'}}
                     >
                         <MenuItem
+                            primaryText='Refresh'
+                            insetChildren={true}
+                            leftIcon={<UpdateIcon/>}
+                            onTouchTap={() => this._handleRefreshArtistStats(this.state.timeFrame)}
+                        />
+                        <Divider/>
+                        <MenuItem
                             primaryText='7 days'
                             insetChildren={true}
                             checked={this.state.timeFrame == 7}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 7)}
+                            onTouchTap={() => this._handleChangeTimeFrame(7)}
                         />
                         <MenuItem
                             primaryText='14 days'
                             insetChildren={true}
                             checked={this.state.timeFrame == 14}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 14)}
+                            onTouchTap={() => this._handleChangeTimeFrame(14)}
                         />
                         <MenuItem
                             primaryText='30 days'
                             insetChildren={true}
                             checked={this.state.timeFrame == 30}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 30)}
+                            onTouchTap={() => this._handleChangeTimeFrame(30)}
                         />
                         <MenuItem
                             primaryText='60 days'
                             insetChildren={true}
                             checked={this.state.timeFrame == 60}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 60)}
+                            onTouchTap={() => this._handleChangeTimeFrame(60)}
                         />
                         <MenuItem
                             primaryText='90 days'
                             insetChildren={true}
                             checked={this.state.timeFrame == 90}
-                            onTouchTap={this._handleChangeTimeFrame.bind(this, 90)}
+                            onTouchTap={() => this._handleChangeTimeFrame(90)}
                         />
                     </IconMenu>
                 </div>
@@ -162,6 +162,6 @@ export default ArtistStats = createContainer(({ params }) => {
     return {
         subReady: subscription.ready(),
         // Test by only using artists with a test calendar
-        artists: Artist.find({}, ).fetch()
+        artists: Artist.find({}).fetch()
     }
 }, ArtistStats);
