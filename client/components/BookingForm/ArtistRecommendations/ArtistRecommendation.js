@@ -33,6 +33,7 @@ class ArtistRecommendation extends Component {
         this.state = {
             dialogOpen: false,
             showAll: false,
+            // A list of all artists returned by the recommendation engine
             recommendationResult: null
         };
 
@@ -43,12 +44,21 @@ class ArtistRecommendation extends Component {
         this._handleClickArtistTile = this._handleClickArtistTile.bind(this);
     }
 
+    /**
+     * Shows all artists in order of their recommendation score
+     * @private
+     */
     _handleClickShowAll() {
         this.setState({
             showAll: true
         })
     }
 
+    /**
+     * Opens up the recommendation dialog and calls the Meteor method to run the recommendation script, then writes
+     * the results to the state
+     * @private
+     */
     _handleClickRecommendButton() {
         const tattooStyle = this.props.formValues.style.value;
         if (tattooStyle) {
@@ -76,11 +86,23 @@ class ArtistRecommendation extends Component {
         }
     }
 
+    /**
+     * Closes the dialog and changes the artist field on the BookingForm to be the selected artist
+     * @param artist
+     * @private
+     */
     _handleClickArtistTile(artist) {
         this._handleCloseDialog();
         this.props.onFieldChange('artist', artist._id, null);
     }
 
+    /**
+     * Renders the list of GridTiles that represent recommended artists, including images. Start by rendering only
+     * the top 3 artists
+     * @param result the raw results returned by the artist recommendation script (array of artists)
+     * @returns {*}
+     * @private
+     */
     _renderRecommendations(result) {
         // Stupid thing with this GridTile component: if the key of an element is the same on a re-render, that
         // element won't appear for some reason. So we have to duplicate the code and assign the key to the index
@@ -115,6 +137,10 @@ class ArtistRecommendation extends Component {
 
     }
 
+    /**
+     * Close the recommendation dialog
+     * @private
+     */
     _handleCloseDialog() {
         this.setState({
             dialogOpen: false,
@@ -124,7 +150,6 @@ class ArtistRecommendation extends Component {
 
     render() {
         return (
-
             <div>
                 <FlatButton
                     style={style.recommendButton}
