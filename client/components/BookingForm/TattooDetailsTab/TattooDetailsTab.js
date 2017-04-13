@@ -39,6 +39,7 @@ class TattooDetailsTab extends Component {
         return fields.map((field) => {
             switch (field.inputType) {
                 case 'textField':
+                    // console.log(this.props.formValues[field.id].value);
                     return (
                         <ValidatedTextField
                             style={style.textField}

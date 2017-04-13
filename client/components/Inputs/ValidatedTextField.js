@@ -6,7 +6,7 @@ class ValidatedTextField extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: props.defaultValue
+            
         };
 
         this._handleChange = this._handleChange.bind(this);
@@ -35,7 +35,7 @@ class ValidatedTextField extends Component {
         return(
             <TextField
                 errorText={this.props.validated && this.props.errorText ? this.props.errorText: null}
-                value={this.state.value}
+                value={this.props.defaultValue}
                 style={this.props.style}
                 floatingLabelText={this.props.floatingLabelText + (this.props.required ? ' *' : '')}
                 onChange={this._handleChange}
