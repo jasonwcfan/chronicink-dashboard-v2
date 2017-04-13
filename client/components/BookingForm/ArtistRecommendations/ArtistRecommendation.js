@@ -7,10 +7,13 @@ const style = {
     root: {
 
     },
-    dialog: {
-        display: 'flex',
-        padding: 5,
-        overflowX: 'hidden'
+    dialogBody: {
+        // display: 'flex',
+        // padding: 5,
+        // overflowX: 'hidden'
+    },
+    dialogContent: {
+        width: '100%'
     },
     gridList: {
         display: 'flex',
@@ -44,6 +47,7 @@ class ArtistRecommendation extends Component {
         this._handleClickRecommendButton = this._handleClickRecommendButton.bind(this);
         this._renderRecommendations = this._renderRecommendations.bind(this);
         this._handleClickShowAll = this._handleClickShowAll.bind(this);
+        this._handleCloseDialog = this._handleCloseDialog.bind(this);
     }
 
     _handleClickShowAll() {
@@ -109,6 +113,13 @@ class ArtistRecommendation extends Component {
         )
     }
 
+    _handleCloseDialog() {
+        this.setState({
+            dialogOpen: false,
+            showAll: false
+        })
+    }
+
     render() {
         return (
 
@@ -120,19 +131,18 @@ class ArtistRecommendation extends Component {
                 />
                 <Dialog
                     className='test'
-                    bodyStyle={style.dialog}
+                    bodyStyle={style.dialogBody}
+                    contentStyle={style.dialogContent}
                     open={this.state.dialogOpen}
-                    onRequestClose={() => {this.setState({dialogOpen: false})}}
+                    onRequestClose={this._handleCloseDialog}
                 >
                     <GridList style={style.gridList} cols={1} onScroll={() => {console.log('scroll')}}>
                         {this.state.recommendationResult ? this._renderRecommendations(this.state.recommendationResult) : null}
                     </GridList>
-                    {this.state.showAll ? null :
-                        <div style={style.showAllButtonContainer}>
-                            <FlatButton style={style.showAllButton} onTouchTap={this._handleClickShowAll}
-                                        label='Show All'/>
-                        </div>
-                    }
+                    <div style={style.showAllButtonContainer}>
+                        <FlatButton style={style.showAllButton} onTouchTap={this._handleClickShowAll}
+                                    label='Show All' disabled={this.state.showAll}/>
+                    </div>
                 </Dialog>
             </div>
         )
