@@ -46,6 +46,7 @@ class ArtistSelector extends Component {
                 </SelectField>
                 <ArtistRecommendation
                     formValues={this.props.formValues}
+                    onFieldChange={this.props.onFieldChange}
                 />
             </div>
         )

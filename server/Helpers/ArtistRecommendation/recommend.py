@@ -26,10 +26,6 @@ def rank(artist, style, min_booking_volume, max_booking_volume, min_soonest_open
     n_style_preference = (artist['preference'] - 33)/67
     n_soonest_opening = normalize(min_soonest_opening, max_soonest_opening, artist['soonestOpeningTrans'])
 
-    # print(n_booking_volume)
-    # print(n_style_preference)
-    # print(n_soonest_opening)
-
     # apply the weights here
     score = (0.5 * n_booking_volume) + (1 * n_style_preference) + (2 * n_soonest_opening)
 
@@ -37,7 +33,7 @@ def rank(artist, style, min_booking_volume, max_booking_volume, min_soonest_open
 
 
 def main():
-    # setup artists and randomize values
+    # setup artists and randomize values (for testing purposes only)
     # test_setup.main()
 
     # parse out tattoo properties
@@ -57,7 +53,7 @@ def main():
                   'preference': artist['preferences']['styles'][style],
                   'soonestOpeningTrans': 1/math.log(soonest_opening + 2, 10),
                   'soonestOpening': soonest_opening,
-                  'bookingVolume': artist['hoursBooked']}
+                  'bookingVolume': artist['hoursIn60Days']}
         artist_properties.append(values)
 
     # find min and max values for normalization

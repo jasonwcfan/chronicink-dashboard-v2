@@ -13,7 +13,7 @@ const style = {
         overflowX: 'auto'
     },
     gridTile: {
-
+        cursor: 'pointer'
     },
     showAllButtonContainer: {
         display: 'flex',
@@ -40,6 +40,7 @@ class ArtistRecommendation extends Component {
         this._renderRecommendations = this._renderRecommendations.bind(this);
         this._handleClickShowAll = this._handleClickShowAll.bind(this);
         this._handleCloseDialog = this._handleCloseDialog.bind(this);
+        this._handleClickArtistTile = this._handleClickArtistTile.bind(this);
     }
 
     _handleClickShowAll() {
@@ -75,22 +76,43 @@ class ArtistRecommendation extends Component {
         }
     }
 
+    _handleClickArtistTile(artist) {
+        this._handleCloseDialog();
+        this.props.onFieldChange('artist', artist._id, null);
+    }
+
     _renderRecommendations(result) {
-        const displayedResult = this.state.showAll ? result : result.slice(0, 3);
-        return (
-            displayedResult.map((artist) => {
+        // Stupid thing with this GridTile component: if the key of an element is the same on a re-render, that
+        // element won't appear for some reason. So we have to duplicate the code and assign the key to the index
+        // if we are displaying only the first 3 results, otherwise assign the key to be artist._id.
+        return this.state.showAll ?
+            result.map((artist) => {
                 return (
                     <GridTile
                         style={style.gridTile}
                         key={artist._id}
                         title={artist.name}
                         titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+                        onTouchTap={() => this._handleClickArtistTile(artist)}
+                    >
+                        <img style={style.avatar} src={'/images/default_avatar.png'}/>
+                    </GridTile>
+                )
+            }) :
+            result.slice(0, 3).map((artist, idx) => {
+                return (
+                    <GridTile
+                        style={style.gridTile}
+                        key={idx}
+                        title={artist.name}
+                        titleBackground="linear-gradient(to top, rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.3) 70%,rgba(0,0,0,0) 100%)"
+                        onTouchTap={() => this._handleClickArtistTile(artist)}
                     >
                         <img style={style.avatar} src={'/images/default_avatar.png'}/>
                     </GridTile>
                 )
             })
-        )
+
     }
 
     _handleCloseDialog() {
@@ -115,7 +137,7 @@ class ArtistRecommendation extends Component {
                     open={this.state.dialogOpen}
                     onRequestClose={this._handleCloseDialog}
                 >
-                    <GridList style={style.gridList} cols={1} onScroll={() => {console.log('scroll')}}>
+                    <GridList style={style.gridList} cols={1}>
                         {this.state.recommendationResult ? this._renderRecommendations(this.state.recommendationResult) : null}
                     </GridList>
                     <div style={style.showAllButtonContainer}>

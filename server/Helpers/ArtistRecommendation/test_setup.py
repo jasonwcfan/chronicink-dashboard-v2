@@ -56,7 +56,12 @@ def main():
                          {"$set": {"preferences.styles": styles,
                                    "preferences.availability": avail,
                                    "nextOpening": next_opening,
-                                   "hoursBooked": hours_booked}})
+                                   "hoursIn7Days": hours_booked // 6,
+                                   "hoursIn14Days": hours_booked // 4,
+                                   "hoursIn30Days": hours_booked // 2,
+                                   "hoursIn60Days": hours_booked,
+                                   "hoursIn90Days": hours_booked * 2,
+                                   }})
 
 
 if __name__ == '__main__':
