@@ -14,7 +14,16 @@ const oauth2Client = new authFactory.OAuth2(clientID, clientSecret, redirectURL)
 const calendar = google.calendar('v3');
 const gmail = google.gmail('v1');
 
+/**
+ * Google Calendar API helper functions
+ */
 GCalendar = {
+    /**
+     * Creates a new event resouce and inserts it into the calendar
+     * @param event the event resource to be sent
+     * @param calendarID the calendar in which the event will be created
+     * @param callback a callback to be called when the event either inserts successfully or fails
+     */
     insertEvent: function (event, calendarID, callback) {
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
 
@@ -39,6 +48,12 @@ GCalendar = {
         });
 
     },
+    /**
+     * Get the cumulative number of hours each artist is booked for
+     * @param calendarID the calendar of the artist
+     * @param timeframe how far out to calculate (7/15/30/60 days)
+     * @param callback a callback to be called on completion or failure
+     */
     getBookedHours: function(calendarID, timeframe, callback) {
         const timeMin = new Moment();
         const timeMax = new Moment();
@@ -80,6 +95,13 @@ GCalendar = {
             callback(null, bookedHours);
         })
     },
+    /**
+     * Create an event resource based on information from the BookingForm
+     * @param form the BookingForm
+     * @param client
+     * @param artist
+     * @returns {Array}
+     */
     createEventResources: function(form, client, artist) {
         const bookings = form.bookings;
         const events = [];
@@ -128,7 +150,16 @@ GCalendar = {
     }
 };
 
+/**
+ * Gmail API helper functions
+ */
 GMail = {
+    /**
+     * Self-explanatory
+     * @param recipient
+     * @param subject
+     * @param body
+     */
     sendEmail: function(recipient, subject, body) {
         const base64EncodedEmail = encodeEmail(recipient, subject, body);
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
@@ -153,6 +184,13 @@ GMail = {
             }
         });
     },
+    /**
+     * Creates the body of the email to be sent to the client, based on fields from the BookingForm
+     * @param artist
+     * @param client
+     * @param form the BookingForm
+     * @returns {string}
+     */
     createClientEmail: function(artist, client, form) {
 
         let body = `Hi ${client.firstName}!\n\nThis is Chronic Ink Tattoos, we wanted to send you a friendly reminder ` +
@@ -201,6 +239,13 @@ GMail = {
         return body;
 
     },
+    /**
+     * Creates the body of the email to be sent to the artist, based on fields from the BookingForm
+     * @param artist
+     * @param client
+     * @param form the BookingForm
+     * @returns {string}
+     */
     createArtistEmail: function(artist, client, form) {
         let body = `Hi ${artist.name}!\n\nThis is a friendly reminder ` +
             `that you have appointments with ${client.firstName} ${client.lastName} for the following dates:\n`;
@@ -234,6 +279,13 @@ GMail = {
 
         return body;
     },
+    /**
+     * Creates the body of the email to be sent to qc, based on fields from the BookingForm
+     * @param artist
+     * @param client
+     * @param form the BookingForm
+     * @returns {string}
+     */
     createQualityControlEmail: function(artist, client, form) {
         let body = `${artist.name} has appointments booked with ${client.firstName} ${client.lastName} for the following dates:\n`;
 
@@ -272,6 +324,12 @@ GMail = {
     }
 };
 
+/**
+ * Returns a string to be displayed that shows how much the rate is and how it's being charged (per hour or per piece)
+ * @param rateType
+ * @param rate
+ * @returns {String}
+ */
 function getRateString(rateType, rate) {
     switch(rateType) {
         case 'hourly':
@@ -285,6 +343,14 @@ function getRateString(rateType, rate) {
     }
 }
 
+/**
+ * Constructs a string representation of all the relevant fields in the booking form that was used to create this event
+ * @param fields all the BookingForm fields
+ * @param bookedBy who did the booking (from BookingForm)
+ * @param bookedThru how they did the booking (from BookingForm)
+ * @param artist an artist document
+ * @returns {String}
+ */
 function createEventDescription(fields, bookedBy, bookedThru, artist) {
     let description = '';
 
@@ -311,6 +377,13 @@ function createEventDescription(fields, bookedBy, bookedThru, artist) {
     return description;
 }
 
+/**
+ * Uses the btao library to encode an email that the gmail api accepts. Fuzzy on the details of what btoa actually does
+ * @param recipient the email address of the recipient
+ * @param subject the subject line in the email
+ * @param body the body of the email
+ * @returns {String}
+ */
 function encodeEmail(recipient, subject, body) {
     var str = ["Content-Type: text/plain; charset=\"UTF-8\"\n",
         "MIME-Version: 1.0\n",

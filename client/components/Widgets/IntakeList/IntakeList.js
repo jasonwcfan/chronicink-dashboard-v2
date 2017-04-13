@@ -66,7 +66,8 @@ class IntakeList extends Component {
     _handleChange(event, newValue) {
         this.setState({searchText: newValue});
     }
-
+    
+    
     _handleDeleteFromIntakeList(intakeID) {
         Meteor.call('intake.markBookingCompleted', null, intakeID);
     }

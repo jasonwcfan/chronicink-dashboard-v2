@@ -28,7 +28,7 @@ class ArtistSelector extends Component {
         }
         return 0;
     }
-
+    
     render() {
         return (
             <div style={style.container}>
