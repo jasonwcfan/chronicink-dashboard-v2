@@ -6,7 +6,7 @@ class ValidatedTextField extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+
         };
 
         this._handleChange = this._handleChange.bind(this);

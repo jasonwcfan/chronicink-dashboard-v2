@@ -13,13 +13,22 @@ injectTapEventPlugin();
 const style = {
     appContainer: {
         display: 'flex',
-        height: '100vh'
+        height: '100vh',
+        width: '100%'
     },
     appBar: {
-        position: 'fixed'
+        position: 'fixed',
+        right: 0,
+        left: 240,
+        width: 'initial'
+
     },
     sideNavBar: {
 
+    },
+    contentContainer: {
+        display: 'flex',
+        width: '100%'
     },
     content: {
         display: 'flex',
@@ -42,7 +51,7 @@ class App extends Component {
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
                 <Paper style={style.appContainer} zDepth={4}>
                     <SideNavBar style={style.sideNavBar} onChangeApp={this.props.onChangeApp} />
-                    <div style={{width: '100%', display: 'flex'}}>
+                    <div style={style.contentContainer}>
                         <AppBar
                             style={style.appBar}
                             title={this.props.appName}
