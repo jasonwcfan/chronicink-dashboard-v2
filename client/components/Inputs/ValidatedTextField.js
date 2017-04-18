@@ -42,7 +42,7 @@ class ValidatedTextField extends Component {
                 fullWidth={this.props.fullWidth}
                 multiLine={this.props.multiLine}
             >
-                {this.props.mask ? <MaskedInput type={this.props.type} autoComplete='off' mask={this.props.mask} value={this.state.value} /> : null}
+                {this.props.mask ? <MaskedInput type={this.props.type} autoComplete='off' mask={this.props.mask} value={this.props.defaultValue} /> : null}
             </TextField>
         )
     }
