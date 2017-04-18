@@ -46,6 +46,7 @@ class TattooDetailsTab extends Component {
         super(props);
         this._renderForm = this._renderForm.bind(this);
         this.processSizeWidthAndHeight = this._processSizeWidthAndHeight.bind(this);
+        this.parseWidthAndHeight = this._parseWidthAndHeight.bind(this);
         this.sizeWidthAndHeight = {
             width: {
                 errorText: '',
@@ -70,6 +71,18 @@ class TattooDetailsTab extends Component {
             switch (field.inputType) {
                 case 'size':
                     const textFieldStyle = Object.assign({ width: '256px' }, style.textField);
+                    const widthIsEmpty = this.sizeWidthAndHeight.width.value ==  null || !this.sizeWidthAndHeight.width.value.length;
+                    const heightIsEmpty = this.sizeWidthAndHeight.height.value ==  null || !this.sizeWidthAndHeight.height.value.length;
+                    const sizeIsNotEmpty = this.props.formValues[field.id].value != null && !!this.props.formValues[field.id].value.length;
+
+                    if(sizeIsNotEmpty && widthIsEmpty && heightIsEmpty) {
+                        const dimensions = this.parseWidthAndHeight(this.props.formValues[field.id].value);
+                        if(dimensions.length) {
+                            this.sizeWidthAndHeight.width.value = dimensions[0];
+                            this.sizeWidthAndHeight.height.value = dimensions[1];
+                        }
+                    }
+
                     return (
                         <div style={style.flexedDivContainer} key={'some-key'}>
                             {this.state.useActualSize ?
@@ -235,7 +248,7 @@ class TattooDetailsTab extends Component {
             }
         });
     }
-    
+
     _processSizeWidthAndHeight(id, value, errorText) {
         if(id == 'size_width') {
             this.sizeWidthAndHeight.width.value = value;
@@ -247,14 +260,28 @@ class TattooDetailsTab extends Component {
             this.sizeWidthAndHeight.height.touched = true;
         }
 
+
         const size = `${this.sizeWidthAndHeight.width.value} x ${this.sizeWidthAndHeight.height.value} (Inches)`;
+        const widthHasError = this.sizeWidthAndHeight.width.errorText != null && this.sizeWidthAndHeight.width.errorText.length;
+        const heightHasError = this.sizeWidthAndHeight.height.errorText != null && this.sizeWidthAndHeight.height.errorText.length;
         let error = '';
 
-        if(this.sizeWidthAndHeight.width.errorText || this.sizeWidthAndHeight.height.errorText) {
+        if(widthHasError || heightHasError) {
             error = 'Size is required';
-            this.props.onFieldChange('size', size, error);
         }
 
+        this.props.onFieldChange('size', size, error);
+
+    }
+    
+    _parseWidthAndHeight(input) {
+        const dimensions = input.replace(' (Inches)', '').split(' x ');
+
+        if(dimensions.length == 2 && !isNaN(dimensions[0]) && !isNaN(dimensions[1])) {
+            return dimensions;
+        }
+
+        return [];
     }
 
     render() {
