@@ -24,6 +24,20 @@ Meteor.methods({
 
         }
     },
+    'artist.getEarliestOpening': function(calendarID) {
+        if (Meteor.isServer) {
+            GCalendar.getEarliestOpening(calendarID,Meteor.bindEnvironment((err, earliestOpening) => {
+
+                let obj = {'earliestOpening': earliestOpening};
+
+                Artist.update({calendarID}, {$set:obj},(err,response) => {
+                    if (err) {
+                        console.log(err)
+                    }
+                })
+            }))
+        }
+    }
 });
 
 export default Artist = new Mongo.Collection('artist');
