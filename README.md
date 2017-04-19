@@ -28,7 +28,7 @@ Import `artists.json` into your DB with
 
 `mongoimport --db meteor --collection artist --file artist.json --jsonArray`
 
-Add this object as a collection into your `studio` collection:
+Add this object as a document into your `studio` collection:
 
 ```
 {
@@ -46,3 +46,19 @@ Add this object as a collection into your `studio` collection:
 	"staff" : [ ]
 }
 ```
+
+## Setting up Meteor Up To Push To Production
+
+Install [Meteor Up](https://github.com/zodern/meteor-up) with 
+
+`npm install -g mup`
+
+In the `.deploy` directory of the project, there is a `mup.js` file that specifies the configuration. There are a few commented lines of code you can comment/uncomment to toggle which server it deploys to. There is also a `settings.json` file that specifies what settings to pass to the production Meteor instance.
+
+In the `.deploy` directory, just run 
+
+`mup deploy`
+
+to deploy to the server specified in `mup.js`. 
+
+**Keep in mind that this will build and deploy the project in its current state in your local repository, so PLEASE MAKE SURE that your repo is synced up with the upstream before you deploy. Any errant changes in your local project WILL be incorporated into the build and deployed to the server**
