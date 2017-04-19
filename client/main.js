@@ -4,7 +4,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { Router, browserHistory } from 'react-router'
+import { BrowserRouter } from 'react-router-dom'
 import reducer from './reducers'
 import { LoggedInRoutes, LoggedOutRoutes } from './routes';
 
@@ -14,9 +14,9 @@ const store = createStore(reducer, applyMiddleware(ReduxThunk, logger));
 
 const routes = (
     <Provider store={store}>
-        <Router history={browserHistory} >
+        <BrowserRouter>
             { Meteor.userId() ? LoggedInRoutes : LoggedOutRoutes }
-        </Router>
+        </BrowserRouter>
     </Provider>
 );
 

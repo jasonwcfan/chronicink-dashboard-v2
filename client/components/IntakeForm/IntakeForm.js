@@ -169,8 +169,7 @@ class IntakeForm extends Component {
         this.setState({
             isSaving: true
         });
-
-        console.log('submitting');
+        
         Meteor.call('intake.insertForm', form, (err, res) => {
             if (err) {
                 console.log(err);

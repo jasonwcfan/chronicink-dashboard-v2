@@ -5,9 +5,10 @@
     "start": "meteor run"
   },
   "dependencies": {
-    "ag-grid":"^8.2.0",
-    "ag-grid-react":"^8.2.0",
+    "ag-grid": "^8.2.0",
+    "ag-grid-react": "^8.2.0",
     "btoa": "^1.1.2",
+    "fixed-data-table": "^0.6.3",
     "fs": "0.0.1-security",
     "google-auth-library": "^0.9.10",
     "googleapis": "^14.2.0",
@@ -16,6 +17,7 @@
     "meteor-node-stubs": "~0.2.0",
     "moment": "^2.16.0",
     "moment-timezone": "^0.5.11",
+    "python-shell": "^0.4.0",
     "radium": "^0.18.1",
     "react": "^15.3.2",
     "react-addons-pure-render-mixin": "^15.3.2",
@@ -23,6 +25,7 @@
     "react-meteor-data": "^0.2.9",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
+    "react-router-dom": "^4.0.0",
     "react-tap-event-plugin": "^2.0.0",
     "react-text-mask": "^2.3.0",
     "redux": "^3.6.0",

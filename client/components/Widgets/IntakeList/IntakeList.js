@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import Moment from 'moment-timezone';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
@@ -21,6 +21,7 @@ import Intake from '../../../../imports/Intake/intake';
 const style = {
     intakeListContainer: {
         width: 300,
+        maxHeight: '80vh',
         display: 'flex',
         flexDirection: 'column',
         margin: 20,
@@ -40,8 +41,6 @@ const style = {
         display: 'inline'
     },
     intakeList: {
-        maxHeight: '70vh',
-        minHeight: 600,
         overflow: 'auto',
         overflowX: 'hidden'
     },
@@ -67,15 +66,8 @@ class IntakeList extends Component {
     _handleChange(event, newValue) {
         this.setState({searchText: newValue});
     }
-
-
-    _handleListIconPressed(clientID) {
-        this.props.router.push({
-            pathname: '/booking',
-            query: {clientID: clientID}
-        })
-    }
-
+    
+    
     _handleDeleteFromIntakeList(intakeID) {
         Meteor.call('intake.markBookingCompleted', null, intakeID);
     }
@@ -102,14 +94,17 @@ class IntakeList extends Component {
                                     <DeleteIcon />
                                 </IconButton>
                                 : // If NOT in Delete Mode: pencil icon
+
                                 <IconButton
                                     tooltip='Create Booking'
-                                    tooltipPosition='top-left'
-                                    onTouchTap={this._handleListIconPressed.bind(this, form.clientID)}
-                                >
-                                    <EditIcon />
+                                    tooltipPosition='top-left'>
+                                    <Link to={{
+                                        pathname: `/bookingform/${form.clientID}`
+                                    }}>
+                                        <EditIcon/>
+                                    </Link>
                                 </IconButton>
-                                }
+                            }
                         >
                         </ListItem>
                     );
@@ -167,11 +162,11 @@ class IntakeList extends Component {
     }
 }
 
-export default IntakeList = createContainer(({ params }) => {
+export default IntakeList = createContainer(() => {
     const subscription = Meteor.subscribe('intake');
 
     return {
         subReady: subscription.ready(),
         data: Intake.find({}, {sort: {date: -1}}).fetch()
     }
-}, withRouter(IntakeList));
+}, IntakeList);

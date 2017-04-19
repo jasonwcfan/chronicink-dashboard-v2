@@ -7,71 +7,61 @@ import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import SideNavBar from './SideNavBar';
 import Menu from './Menu';
-import BookingForm from './BookingForm';
-import DashboardContainer from '../containers/DashboardContainer';
 
 injectTapEventPlugin();
 
 const style = {
-    window: {
-        display: 'flex'
-    },
     appContainer: {
+        display: 'flex',
+        height: '100vh',
         width: '100%'
+    },
+    appBar: {
+        position: 'fixed',
+        right: 0,
+        left: 240,
+        width: 'initial'
+
+    },
+    sideNavBar: {
+
+    },
+    contentContainer: {
+        display: 'flex',
+        width: '100%'
+    },
+    content: {
+        display: 'flex',
+        width: '100%',
+        marginTop: 64,
+        overflow: 'auto'
     }
 };
 
+/**
+ * High level wrapper for all dashboard components, setting the Material UI theme and attaching the sidebar and appbar
+ */
 class App extends Component {
     constructor(props) {
         super(props);
-        this._getActiveApp = this._getActiveApp.bind(this);
-    }
-
-    // Eventually move app routing elsewhere...
-    _getActiveApp() {
-        const activeApp = this.props.params.appname;
-        if (activeApp) {
-            switch (activeApp.toLowerCase()) {
-                case 'booking':
-                    return <BookingForm clientID={this.props.location.query.clientID} />;
-                case 'dashboard':
-                    return <DashboardContainer />;
-                default:
-                    return <DashboardContainer />;
-            }
-        } else {
-            return <DashboardContainer />
-        }
-    }
-
-    _getAppName(activeApp) {
-        if (activeApp) {
-            switch (activeApp.toLowerCase()) {
-                case 'booking':
-                    return 'Booking';
-                case 'dashboard':
-                    return 'Dashboard';
-                default:
-                    return 'Dashboard';
-            }
-        } else {
-            return 'Dashboard';
-        }
     }
 
     render() {
         return (
             <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
-                <div style={style.window} className='appContainer'>
-                    <SideNavBar onChangeApp={this.props.onChangeApp} />
-                    <Paper style={style.appContainer} zDepth={4}>
+                <Paper style={style.appContainer} zDepth={4}>
+                    <SideNavBar style={style.sideNavBar} onChangeApp={this.props.onChangeApp} />
+                    <div style={style.contentContainer}>
                         <AppBar
-                            title={this._getAppName(this.props.params.appname)}
+                            style={style.appBar}
+                            title={this.props.appName}
                             iconElementRight={<Menu />}
                         />
-                        {this._getActiveApp()}
-                    </Paper>
-                </div>
+                        <div style={style.content}>
+                            {this.props.children}
+                        </div>
+                    </div>
+                </Paper>
             </MuiThemeProvider>
         );
     }

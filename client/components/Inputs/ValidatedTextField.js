@@ -6,7 +6,7 @@ class ValidatedTextField extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: props.defaultValue
+
         };
 
         this._handleChange = this._handleChange.bind(this);
@@ -35,19 +35,14 @@ class ValidatedTextField extends Component {
         return(
             <TextField
                 errorText={this.props.validated && this.props.errorText ? this.props.errorText: null}
-                value={this.state.value}
+                value={this.props.defaultValue}
                 style={this.props.style}
                 floatingLabelText={this.props.floatingLabelText + (this.props.required ? ' *' : '')}
                 onChange={this._handleChange}
                 fullWidth={this.props.fullWidth}
                 multiLine={this.props.multiLine}
-                errorStyle={{
-                    // Workaround to fix layout issues caused by material ui's error text
-                    // https://github.com/callemall/material-ui/issues/1151
-                    float: 'left'
-                }}
             >
-                {this.props.mask ? <MaskedInput type={this.props.type} autoComplete='off' mask={this.props.mask} value={this.state.value} /> : null}
+                {this.props.mask ? <MaskedInput type={this.props.type} autoComplete='off' mask={this.props.mask} value={this.props.defaultValue} /> : null}
             </TextField>
         )
     }
