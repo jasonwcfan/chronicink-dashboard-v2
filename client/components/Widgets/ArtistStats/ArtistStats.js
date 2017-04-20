@@ -66,19 +66,19 @@ class ArtistStats extends Component {
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
         this._handleRefreshArtistStats = this._handleRefreshArtistStats.bind(this);
 
-    }
-
-    componentWillReceiveProps(props) {
-        this.setState({artists: props.artists}); // potentiall get rid of this?
         this._handleRefreshArtistStats(this.state.timeFrame);
     }
 
     _handleRefreshArtistStats(timeFrame) {
         // Calls back-end method to store artist hours in database
         Meteor.call('artist.getHoursBooked', timeFrame);
-        artists.forEach((artist, idx) => {
-            Meteor.call('artist.getEarliestOpening', artist.calendarID);
-        });
+
+
+        Meteor.call('artist.getEarliestOpening', 'f59gej5v6rimvqccv8a79dikq0@group.calendar.google.com');
+
+        // this.props.artists.forEach((artist, idx) => {
+        //     Meteor.call('artist.getEarliestOpening', artist.calendarID);
+        // });
     }
 
     _handleChangeTimeFrame(newTimeFrame) {
@@ -103,6 +103,7 @@ class ArtistStats extends Component {
                 <TableRow key={artist.calendarID}>
                     <TableRowColumn>{artist.name}</TableRowColumn>
                     <TableRowColumn>{message}</TableRowColumn>
+                    <TableRowColumn>{artist.earliestOpening ? String(artist.earliestOpening.startDateTime) : '' }</TableRowColumn>
                 </TableRow>
 
                     // <ListItem key={artist.calendarID} primaryText={artist.name}>

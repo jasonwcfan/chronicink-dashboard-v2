@@ -37,6 +37,7 @@ Meteor.methods({
     },
     'artist.getEarliestOpening': function(calendarID) {
         if (Meteor.isServer) {
+
             GCalendar.getEarliestOpening(calendarID, Meteor.bindEnvironment((err, earliestOpening) => {
 
                 let obj = {'earliestOpening': earliestOpening};
