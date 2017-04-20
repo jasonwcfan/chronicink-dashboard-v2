@@ -20,3 +20,5 @@ node_modules/
 .idea/libraries/chronicink_dashboard_v2_node_modules.xml
 
 *.xml
+
+server/Helpers/ArtistRecommendation/__pycache__/test_setup.cpython-35.pyc

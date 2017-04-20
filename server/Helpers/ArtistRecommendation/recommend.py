@@ -33,7 +33,7 @@ def rank(artist, style, min_booking_volume, max_booking_volume, min_soonest_open
 
 
 def main():
-    # setup artists and randomize values (for testing purposes only)
+    # setup artists and randomize values
     # test_setup.main()
 
     # parse out tattoo properties
@@ -46,14 +46,19 @@ def main():
     # find all artists
     for artist in db.artist.find({'preferences.styles.' + style: {'$gt': 0}}):
         soonest_opening = (artist['nextOpening']['start'] - datetime.datetime.now()).days
+        preference = artist['preferences']['styles'][style]
+        booking_volume = artist['hoursIn60Days']
+
+        if (preference is None) or (soonest_opening is None) or (booking_volume is None):
+            continue
 
         # optionally apply transformations to properties before normalizing
         values = {'name': artist['name'],
                   '_id': str(artist['_id']),
-                  'preference': artist['preferences']['styles'][style],
+                  'preference': preference,
                   'soonestOpeningTrans': 1/math.log(soonest_opening + 2, 10),
                   'soonestOpening': soonest_opening,
-                  'bookingVolume': artist['hoursIn60Days']}
+                  'bookingVolume': booking_volume}
         artist_properties.append(values)
 
     # find min and max values for normalization
