@@ -15,12 +15,15 @@ Meteor.methods({
      */
     'booking.getArtistRecommendation': function(data) {
         if (Meteor.isServer) {
-            const { tattooStyle, ...rest } = data;
-            console.log(tattooStyle);
-            import PythonShell from '../../server/Helpers/PythonShell';
-
-            const list = PythonShell.recommendArtist(tattooStyle);
-            return list;
+            // const { tattooStyle, ...rest } = data;
+            // console.log(tattooStyle);
+            // import PythonShell from '../../server/Helpers/PythonShell';
+            //
+            // const list = PythonShell.recommendArtist(tattooStyle);
+            // return list;
+            GCalendar.getEarliestOpening('f59gej5v6rimvqccv8a79dikq0@group.calendar.google.com', function() {
+                
+            })
         }
     },
     /**
