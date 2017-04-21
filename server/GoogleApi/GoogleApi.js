@@ -147,6 +147,110 @@ GCalendar = {
         });
 
         return events;
+    },
+    getEarliestOpening(calendarID, callback) {
+
+        const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
+        const today = new Moment();
+
+        oauth2Client.setCredentials({
+            access_token: primaryUser.services.google.accessToken,
+            refresh_token: primaryUser.services.google.refreshToken,
+            expiry_date: primaryUser.services.google.expiresAt
+        });
+
+        calendar.events.list({
+            auth: oauth2Client,
+            calendarId: calendarID,
+            maxResults: 250,
+            singleEvents: true, // Break recurring events into a single instances
+            orderBy: 'startTime',
+            timeMin: today.toISOString(), // List all events from today onward
+        }, (err, res) => {
+
+            if (err) {
+                console.log('Error with Events List Request!!!');
+                console.log(err);
+                callback(err, null);
+                return;
+            }
+            let days = {};
+
+            // Sort events into buckets, one for each date
+            res.items.map((event) => {
+                // This is an all day event
+                if (event.start.date && event.end.date) {
+                    // This indicates this is a day off
+                    if (event.summary.toLowerCase().indexOf('off') > -1) {
+                        days[event.start.date] = {off: true};
+                        return;
+                    }
+                    return;
+                }
+                // This is a regular event, on a non off day
+                const dateStr = Moment(event.start.dateTime).format('YYYY-MM-DD');
+                // If this bucket exists already, and is not an off day, just insert
+                if (days[dateStr]) {
+                    if (!days[dateStr].off) {
+                        days[dateStr].events.push(event);
+                    }
+                // If this bucket does not yet exist, create it
+                } else {
+                    days[dateStr] = {events: [event]}
+                }
+            });
+
+            const dates = Object.keys(days);
+
+            // Store the first opening, with Moments
+            let opening = null;
+
+            // Go through the bucket for each day and see if there is an opening
+            for (var i = 0; i < dates.length; i++) {
+                const date = dates[i];
+
+                if (days[date].events) {
+                    const events = days[date].events;
+                    // If there is an opening between the start of the day and the start of the first event
+                    if (Moment(events[0].start.dateTime).hour() - 12 > 1) {
+                        opening = {
+                            startTime: Moment(events[0].start.dateTime).hour(12),
+                            endTime: Moment(events[0].start.dateTime)
+                        };
+                        break;
+                    }
+
+                    // If there is an opening between the end of the last event and the end of the day
+                    if (20 - Moment(events[events.length - 1].end.dateTime).hour() > 1) {
+                        opening = {
+                            startTime: Moment(events[0].end.dateTime),
+                            endTime: Moment(events[0].end.dateTime).hour(20)
+                        };
+                        break;
+                    }
+
+                    // If there is more than one event, compare each of their start and end times to find openings
+                    if (events.length > 1) {
+                        let hasOpening = false;
+                        for (var i = 0; i < events.length; i++) {
+                            // If the gap between the two events is more than an hour
+                            if (i < events.length - 1 && Moment(events[i + 1].start.dateTime).hour()
+                                - Moment(events[i].end.dateTime).hour() > 1) {
+                                opening = {
+                                    startTime: Moment(events[i].end.dateTime),
+                                    endTime: Moment(events[i + 1].start.dateTime)
+                                };
+                                hasOpening = true;
+                                break;
+                            }
+                        }
+                        if (hasOpening) {break;}
+                    }
+                }
+            }
+
+            console.log(opening);
+        })
     }
 };
 
