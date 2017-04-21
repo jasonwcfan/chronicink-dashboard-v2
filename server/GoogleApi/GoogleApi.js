@@ -76,7 +76,8 @@ GCalendar = {
             timeMax: timeMax.toISOString()
         }, function (err, res) {
             if (err) {
-                console.log(err);
+
+                //console.log(err);
                 callback(err, null);
                 return;
             }
@@ -91,10 +92,177 @@ GCalendar = {
                     bookedHours += eventLength;
                 }
             });
-            
+
             callback(null, bookedHours);
         })
     },
+
+    /**
+     * Get the artist's next available time slot of at least 1 hour, between 12PM and 8PM on days not marked "OFF"
+     * @param calendarID the calendar of the artist
+     * @param callback a callback to be called on completion or failure
+     */
+    getEarliestOpening: function (calendarID, callback) {
+
+        const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
+        const today = new Moment();
+
+        oauth2Client.setCredentials({
+            access_token: primaryUser.services.google.accessToken,
+            refresh_token: primaryUser.services.google.refreshToken,
+            expiry_date: primaryUser.services.google.expiresAt
+        });
+
+        calendar.events.list({
+            auth: oauth2Client,
+            calendarId: calendarID,
+            maxResults: 500,
+            singleEvents: true, // Break recurring events into a single instances
+            orderBy: 'startTime',
+            timeMin: today.toISOString(), // List all events from today onward
+        }, (err, res) => {
+
+            if (err) {
+                console.log('Error with Events List Request!!!');
+                console.log(err);
+                callback(err, null);
+                return;
+            }
+
+            // Reduce list of events to an array of arrays. each array represents one day of events.
+
+            // One bucket per day. An empty day of events is an empty bucket.
+
+
+
+
+            // Return object: two Dates
+            let earliestOpening = {
+                startDateTime: null,
+                endDateTime: null
+            };
+
+            // List of events in any given day
+            let day = [];
+
+            // Check if there are any openings on days before the first event
+            let opening = openingBeforeFirstEvent(today, rest.items[0]);
+            if (opening.found) {
+                callback(null, opening.earliestOpening);
+                return;
+            }
+
+            // Outer loop: saving events on the same day in "day"
+            loopEventsList:
+                for (let i = 0; i < res.items.length; i++) {
+
+                    const event = res.items[i];
+
+                    console.log(event);
+
+                    // Skip if the artist is off that day
+                    if (eventIsDayOff(event)) {
+                        day = []; // New day
+
+                        // Add checks to see if there are still any other events on that day
+                        // Save the 'off' dates, make sure any events on 'off' dates are not considered
+
+                        continue;
+                    }
+
+                    if (day.length == 0) {
+                        // If "day" is empty, add event
+                        day.push(event);
+                    }
+                    else {
+                        // For second event of the day and onward
+                        // If the next event occurs on the same day, add to "day"
+                        const eventBeingCheckedDate = Moment(event.start.dateTime);
+                        const dayBeingCheckedDate = Moment(day[0].start.dateTime);
+                        if (eventBeingCheckedDate.isSame(dayBeingCheckedDate, 'day')) {
+                            day.push(event);
+                        }
+                        else {
+                            // Check the day for openings
+                            console.log("### DAY")
+                            console.log(day);
+
+
+                            const firstEvent = Moment(day[0].start.dateTime);
+
+
+                            console.log("### FIRST EVENT")
+                            console.log(firstEvent)
+
+                            // TODO: In future versions, get startOfDay and endOfDay from the artist's preferences
+                            const startOfDay = firstEvent;
+                            const endOfDay = firstEvent;
+                            startOfDay.hour(12);
+                            endOfDay.hour(20);
+
+                            console.log("### START OF DAY")
+                            console.log(startOfDay);
+
+                            console.log("### DIFF BTWN START OF DAY AND FIRST EVENT")
+                            console.log(firstEvent.diff(startOfDay,'h'))
+
+                            // If opening is from 12PM to start of first event in the day
+                            if (firstEvent.diff(startOfDay,'h') >= 1) {
+                                // Opening found!
+                                earliestOpening.startDateTime = startOfDay.toDate();
+                                earliestOpening.endDateTime = firstEvent.toDate();
+                                break;
+                            }
+
+                            // Check for openings between events on the same day
+                            loopDay:
+                                for (let j = 0; j < day.length-1; j++) {
+                                    let event1End = day[j].end.dateTime;
+                                    let event2Start = day[j+1].start.dateTime;
+
+                                    // Check if at least a 1 hour gap exists between events
+
+
+
+                                    if (Moment(event2Start).diff(event1End,'h') >= 1) {
+                                        // Opening found!
+                                        earliestOpening.startDateTime = startOfDay.toDate();
+                                        earliestOpening.endDateTime = firstEvent.toDate();
+                                        break loopEventsList;
+                                    }
+                                }
+
+                            const lastEvent = Moment(day[day.length-1].end.dateTime);
+
+                            // If opening is from end of last event to end of day
+                            if (endOfDay.diff(lastEvent,'h') >= 1) {
+                                // Opening found!
+                                earliestOpening.startDateTime = lastEvent.toDate();
+                                earliestOpening.endDateTime = endOfDay.toDate();
+                                break;
+                            }
+
+                            // If there is 1 or more full days between events
+                            if (Moment(res.items[i+1].start.dateTime).diff(lastEvent,'d') > 0){
+                                // Opening found!
+                                earliestOpening.startDateTime = startOfDay.toDate();
+                                earliestOpening.endDateTime = firstEvent.toDate();
+                                break;
+                            }
+
+                            // If this part of the code is reached, no opening was found on a particular day.
+                            // Reset "day" to be the most recent event
+                            day = [event];
+                        }
+                    }
+                }
+
+
+            callback(null, earliestOpening);
+
+        })
+    },
+
     /**
      * Create an event resource based on information from the BookingForm
      * @param form the BookingForm
@@ -102,6 +270,7 @@ GCalendar = {
      * @param artist
      * @returns {Array}
      */
+
     createEventResources: function(form, client, artist) {
         const bookings = form.bookings;
         const events = [];
@@ -502,4 +671,56 @@ function encodeEmail(recipient, subject, body) {
     ].join('');
 
     return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
+}
+
+/**
+ * Check if there is an opening between today and the first event
+ * @param today - moment object of today's date
+ * @param firstEvent - first event returned by GCalendar API: res.items[0]
+ * @returns {{openingFound: boolean, earliestOpening: null}}
+ */
+function openingBeforeFirstEvent (today, firstEvent) {
+    let returnObj = {
+        found: false,
+        earliestOpening: null
+    }
+
+    if (eventIsDayOff(event)) {
+        // Check if there is a free day between today and first event
+        let daysBetweenTodayAndFirstEvent = Moment(firstEvent.start.dateTime).diff(today,'days');
+        if (daysBetweenTodayAndFirstEvent > 0 ) {
+            returnObj.found = true;
+            returnObj.earliestOpening = {
+                'startDateTime': today.add(1,'days').hour(12).minute(0).toDate(),
+                'endDateTime': firstEvent.start.dateTime
+            }
+        }
+        else {
+            // Check if there is at least 1 hr between now and first event
+
+            let hrsBetweenTodayAndFirstEvent = Moment(firstEvent.start.dateTime).diff(today,'hours');
+            if (hrsBetweenTodayAndFirstEvent >= 1 ) {
+                returnObj.found = true;
+                returnObj.earliestOpening = {
+                    'startDateTime': today.toDate(),
+                    'endDateTime': firstEvent.start.dateTime
+                }
+            }
+
+        }
+    }
+
+    return returnObj;
+}
+
+/**
+ * Check if an event is a day off
+ * @param event: event object returned by GCalendar API
+ * @returns {*|boolean}
+ */
+function eventIsDayOff (event) {
+    let fullDayEvent = event.start.date && event.end.date;
+    let markedAsOff = event.summary.toLowerCase().includes('off');
+
+    return fullDayEvent && markedAsOff;
 }

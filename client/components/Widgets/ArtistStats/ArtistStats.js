@@ -11,6 +11,8 @@ import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import UpdateIcon from 'material-ui/svg-icons/action/update';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import Artist from '../../../../imports/Artist/artist';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+
 
 const style = {
     widgetContainer: {
@@ -34,7 +36,9 @@ const style = {
     menuIcon: {
         display: 'inline'
     },
-    list: {
+    table: {
+        maxHeight: '70vh',
+        minHeight: 600,
         overflow: 'auto',
         overflowX: 'hidden'
     },
@@ -55,7 +59,8 @@ class ArtistStats extends Component {
         super(props);
 
         this.state = {
-            timeFrame: 30
+            timeFrame: 30,
+            artists: [],
         };
 
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
@@ -67,6 +72,13 @@ class ArtistStats extends Component {
     _handleRefreshArtistStats(timeFrame) {
         // Calls back-end method to store artist hours in database
         Meteor.call('artist.getHoursBooked', timeFrame);
+
+
+        Meteor.call('artist.getEarliestOpening', 'f59gej5v6rimvqccv8a79dikq0@group.calendar.google.com');
+
+        // this.props.artists.forEach((artist, idx) => {
+        //     Meteor.call('artist.getEarliestOpening', artist.calendarID);
+        // });
     }
 
     _handleChangeTimeFrame(newTimeFrame) {
@@ -83,13 +95,22 @@ class ArtistStats extends Component {
             let key = 'hoursIn' + String(this.state.timeFrame) + 'Days';
 
             return this.props.artists.map((artist) => {
-                const message = artist[key] ?  artist[key] + ' hours booked': 'Error';
+                const message = artist[key] ?  artist[key] : 'Error';
+
+
                 return (
-                    <ListItem key={artist.calendarID} primaryText={artist.name}>
-                        <div style={style.listItemContainer} >
-                            <div style={style.listItemRightLabel}>{message }</div>
-                        </div>
-                    </ListItem>
+
+                <TableRow key={artist.calendarID}>
+                    <TableRowColumn>{artist.name}</TableRowColumn>
+                    <TableRowColumn>{message}</TableRowColumn>
+                    <TableRowColumn>{artist.earliestOpening ? String(artist.earliestOpening.startDateTime) : '' }</TableRowColumn>
+                </TableRow>
+
+                    // <ListItem key={artist.calendarID} primaryText={artist.name}>
+                    //     <div style={style.listItemContainer} >
+                    //         <div style={style.listItemRightLabel}>{message }</div>
+                    //     </div>
+                    // </ListItem>
                 )
             });
         }
@@ -148,9 +169,23 @@ class ArtistStats extends Component {
                     </IconMenu>
                 </div>
                 <Divider />
-                <List style={style.list}>
-                    {this._renderArtistStats()}
-                </List>
+                {/*<List style={style.list}>*/}
+                    {/*{this._renderArtistStats()}*/}
+                {/*</List>*/}
+                <div style={style.table}>
+                <Table selectable={false}>
+                    <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                        <TableRow>
+                            <TableHeaderColumn>Name</TableHeaderColumn>
+                            <TableHeaderColumn tooltip="Today Onward">Hours Booked</TableHeaderColumn>
+                            <TableHeaderColumn>Earliest Opening</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody displayRowCheckbox={false}>
+                        {this._renderArtistStats()}
+                    </TableBody>
+                </Table>
+                </div>
             </Paper>
         )
     }
