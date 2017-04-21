@@ -211,20 +211,14 @@ GCalendar = {
 
                 if (days[date].events) {
                     const events = days[date].events;
-                    // If there is an opening between the start of the day and the start of the first event
-                    if (Moment(events[0].start.dateTime).hour() - 12 > 1) {
-                        opening = {
-                            startTime: Moment(events[0].start.dateTime).hour(12),
-                            endTime: Moment(events[0].start.dateTime)
-                        };
-                        break;
-                    }
+                    const dayStart = Moment(events[0].start.dateTime).hour(12).minute(0);
+                    const dayEnd = Moment(events[0].start.dateTime).hour(20).minute(0);
 
-                    // If there is an opening between the end of the last event and the end of the day
-                    if (20 - Moment(events[events.length - 1].end.dateTime).hour() > 1) {
+                    // If there is an opening between the start of the day and the start of the first event
+                    if (Moment(events[0].start.dateTime).diff(dayStart, 'minutes') > 60) {
                         opening = {
-                            startTime: Moment(events[0].end.dateTime),
-                            endTime: Moment(events[0].end.dateTime).hour(20)
+                            startTime: dayStart,
+                            endTime: Moment(events[0].start.dateTime)
                         };
                         break;
                     }
@@ -232,10 +226,10 @@ GCalendar = {
                     // If there is more than one event, compare each of their start and end times to find openings
                     if (events.length > 1) {
                         let hasOpening = false;
-                        for (var i = 0; i < events.length; i++) {
+                        for (var i = 0; i < events.length - 1; i++) {
                             // If the gap between the two events is more than an hour
-                            if (i < events.length - 1 && Moment(events[i + 1].start.dateTime).hour()
-                                - Moment(events[i].end.dateTime).hour() > 1) {
+                            if (Moment(events[i + 1].start.dateTime)
+                                    .diff(Moment(events[i].end.dateTime), 'minutes') > 60) {
                                 opening = {
                                     startTime: Moment(events[i].end.dateTime),
                                     endTime: Moment(events[i + 1].start.dateTime)
@@ -245,6 +239,15 @@ GCalendar = {
                             }
                         }
                         if (hasOpening) {break;}
+                    }
+
+                    // If there is an opening between the end of the last event and the end of the day
+                    if (dayEnd.diff(Moment(events[events.length - 1].end.dateTime), 'minutes') > 60) {
+                        opening = {
+                            startTime: Moment(events[events.length - 1].end.dateTime),
+                            endTime: dayEnd
+                        };
+                        break;
                     }
                 }
             }
