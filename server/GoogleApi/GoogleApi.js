@@ -149,7 +149,6 @@ GCalendar = {
         return events;
     },
     getEarliestOpening(calendarID, callback) {
-        console.log('hello')
 
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
         const today = new Moment();
@@ -170,8 +169,6 @@ GCalendar = {
         }, (err, res) => {
 
             if (err) {
-                console.log('Error with Events List Request!!!');
-                console.log(err);
                 callback(err, null);
                 return;
             }
@@ -201,8 +198,6 @@ GCalendar = {
                 }
             });
 
-            console.log(days);
-
             const dates = Object.keys(days);
 
             // Store the first opening, with Moments
@@ -229,13 +224,13 @@ GCalendar = {
                     // If there is more than one event, compare each of their start and end times to find openings
                     if (events.length > 1) {
                         let hasOpening = false;
-                        for (var i = 0; i < events.length - 1; i++) {
+                        for (var j = 0; j < events.length - 1; j++) {
                             // If the gap between the two events is more than an hour
-                            if (Moment(events[i + 1].start.dateTime)
-                                    .diff(Moment(events[i].end.dateTime), 'minutes') > 60) {
+                            if (Moment(events[j + 1].start.dateTime)
+                                    .diff(Moment(events[j].end.dateTime), 'minutes') > 60) {
                                 opening = {
-                                    startTime: Moment(events[i].end.dateTime),
-                                    endTime: Moment(events[i + 1].start.dateTime)
+                                    startTime: Moment(events[j].end.dateTime),
+                                    endTime: Moment(events[j + 1].start.dateTime)
                                 };
                                 hasOpening = true;
                                 break;
@@ -255,7 +250,7 @@ GCalendar = {
                 }
             }
 
-            console.log(opening);
+            callback(null, opening);
         })
     }
 };

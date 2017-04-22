@@ -67,6 +67,7 @@ class ArtistStats extends Component {
     _handleRefreshArtistStats(timeFrame) {
         // Calls back-end method to store artist hours in database
         Meteor.call('artist.getHoursBooked', timeFrame);
+        Meteor.call('artist.getEarliestOpening');
     }
 
     _handleChangeTimeFrame(newTimeFrame) {

@@ -19,6 +19,20 @@ function getBookedHours(artist, timeFrame) {
 }
 
 Meteor.methods({
+    'artist.getEarliestOpening': function() {
+        if (Meteor.isServer) {
+            const artists = Artist.find().fetch();
+            artists.forEach((artist) => {
+                GCalendar.getEarliestOpening(artist.calendarID, Meteor.bindEnvironment((err, res) => {
+                    if (err) {console.log(err); return}
+                    Artist.update({calendarID: artist.calendarID}, {$set: {nextOpening: {
+                        startTime: res.startTime.toDate(),
+                        endTime: res.endTime.toDate()
+                    }}})
+                }))
+            });
+        }    
+    },
     'artist.getHoursBooked': function(timeFrame) {
         // Timeframe given in days (e.g. 60 = 2 months)
         if (Meteor.isServer) {
