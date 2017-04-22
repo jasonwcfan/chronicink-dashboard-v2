@@ -149,6 +149,7 @@ GCalendar = {
         return events;
     },
     getEarliestOpening(calendarID, callback) {
+        console.log('hello')
 
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
         const today = new Moment();
@@ -199,6 +200,8 @@ GCalendar = {
                     days[dateStr] = {events: [event]}
                 }
             });
+
+            console.log(days);
 
             const dates = Object.keys(days);
 
