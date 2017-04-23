@@ -60,12 +60,12 @@ Meteor.methods({
     'artist.setKeywordPreferences': function(id, preferredKeywords, refusedKeywords) {
         if (preferredKeywords) {
             Artist.update({_id: new Mongo.ObjectID((id))}, {$set: {'preferences.preferredKeywords': preferredKeywords}}, (err, res) => {
-                if (err) {console.log(err)};
+                if (err) throw err;
             });
         }
         if (refusedKeywords) {
             Artist.update({_id: new Mongo.ObjectID((id))}, {$set: {'preferences.refusedKeywords': refusedKeywords}}, (err, res) => {
-                if (err) {console.log(err)};
+                if (err) throw err;
             });
         }
     }

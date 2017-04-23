@@ -15,7 +15,11 @@ const style = {
         flexWrap: 'wrap'
     },
     chipContainer: {
-
+        display: 'flex',
+        flexWrap: 'wrap'
+    },
+    chip: {
+        margin: 5
     }
 };
 
@@ -64,37 +68,55 @@ class SubjectKeywordFilter extends Component {
         )
     }
 
-    _handleDeleteSubject(idx) {
-        console.log('delete', idx)
+    _handleDeleteSubject(idx, type) {
+        console.log('delete', idx, type);
+
+        Meteor.call('artist.setKeywordPreferences', this.state.selectedArtist, preferred, refused, (err) => {
+            if (err) {console.log(err)};
+            this.setState({
+                preferredKeywords: preferred,
+                refusedKeywords: refused
+            })
+        })
+
+        this.setState({
+            [type]: this.state[type].slice().splice(idx, 1)
+        });
     }
 
-    _renderpreferredKeywords(subjects) {
+    _renderKeywords(subjects, type) {
         return subjects.map((subject, idx) =>
             <Chip
-                onRequestDelete={(event) => this._handleDeleteSubject(idx, 'preferredKeywords')}
+                style={style.chip}
+                key={idx}
+                onRequestDelete={(event) => this._handleDeleteSubject(idx, type)}
             >
                 {subject}
             </Chip>
         )
     }
 
-    _renderrefusedKeywords(subjects) {
-        return subjects.map((subject, idx) =>
-            <Chip
-                onRequestDelete={(event) => this._handleDeleteSubject(idx, 'refusedKeywords')}
-            >
-                {subject}
-            </Chip>
-        )
-    }
-
-    _renderAddSubjectField(type) {
+    _renderAddKeywordField(type) {
         return <div>
             <TextField hintText='Add new...' ref={type}/>
             <FlatButton label='Submit' onTouchTap={() => {
-                console.log('add', this.refs[type].input.value);
-                Meteor.call('artist.setKeywordPreferences', (err, res) => {
+                const value = this.refs[type].input.value;
+                const preferred = this.state.preferredKeywords.slice();
+                const refused = this.state.refusedKeywords.slice();
 
+                if (type == 'preferredKeywords') {
+                    preferred.push(value);
+                }
+                if (type == 'refusedKeywords') {
+                    refused.push(value);
+                }
+
+                Meteor.call('artist.setKeywordPreferences', this.state.selectedArtist, preferred, refused, (err) => {
+                    if (err) {console.log(err)};
+                    this.setState({
+                        preferredKeywords: preferred,
+                        refusedKeywords: refused
+                    })
                 })
             }} />
         </div>
@@ -117,16 +139,16 @@ class SubjectKeywordFilter extends Component {
                         I prefer these subjects
                     </h3>
                     <div style={style.chipContainer}>
-                        {this._renderpreferredKeywords(this.state.preferredKeywords)}
-                        {this._renderAddSubjectField('preferred-subject')}
+                        {this._renderKeywords(this.state.preferredKeywords, 'preferredKeywords')}
                     </div>
+                    {this._renderAddKeywordField('preferredKeywords')}
                     <h3>
                         I don't want to do these subjects
                     </h3>
                     <div style={style.chipContainer}>
-                        {this._renderrefusedKeywords(this.state.refusedKeywords)}
-                        {this._renderAddSubjectField('refused-subject')}
+                        {this._renderKeywords(this.state.refusedKeywords, 'refusedKeywords')}
                     </div>
+                    {this._renderAddKeywordField('refusedKeywords')}
                 </div> : null}
             </div>
         ) : null;
