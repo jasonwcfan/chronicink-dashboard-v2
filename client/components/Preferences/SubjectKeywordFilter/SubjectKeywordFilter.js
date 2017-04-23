@@ -69,18 +69,23 @@ class SubjectKeywordFilter extends Component {
     }
 
     _handleDeleteSubject(idx, type) {
-        console.log('delete', idx, type);
+
+        const preferred = this.state.preferredKeywords.slice();
+        const refused = this.state.refusedKeywords.slice();
+
+        if (type == 'preferredKeywords') {
+            preferred.splice(idx, 1);
+        }
+        if (type == 'refusedKeywords') {
+            refused.splice(idx, 1);
+        }
 
         Meteor.call('artist.setKeywordPreferences', this.state.selectedArtist, preferred, refused, (err) => {
-            if (err) {console.log(err)};
+            if (err) {console.log(err)}
             this.setState({
                 preferredKeywords: preferred,
                 refusedKeywords: refused
             })
-        })
-
-        this.setState({
-            [type]: this.state[type].slice().splice(idx, 1)
         });
     }
 
@@ -112,7 +117,8 @@ class SubjectKeywordFilter extends Component {
                 }
 
                 Meteor.call('artist.setKeywordPreferences', this.state.selectedArtist, preferred, refused, (err) => {
-                    if (err) {console.log(err)};
+                    if (err) {console.log(err)}
+                    this.refs[type].input.value = '';
                     this.setState({
                         preferredKeywords: preferred,
                         refusedKeywords: refused
