@@ -3,7 +3,6 @@ import { createContainer } from 'meteor/react-meteor-data';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Slider from 'material-ui/Slider';
-import Artist from '../../../../imports/Artist/artist';
 import tattooStyles from '../../../constants/styles';
 
 const style = {
@@ -163,11 +162,4 @@ class ArtistStyleGuide extends Component {
     }
 };
 
-export default ArtistStyleGuide = createContainer(({ params }) => {
-    const subscription = Meteor.subscribe('artist');
-
-    return {
-        subReady: subscription.ready(),
-        artists: Artist.find({}).fetch()
-    }
-}, ArtistStyleGuide);
+export default ArtistStyleGuide;

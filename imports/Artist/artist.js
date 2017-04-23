@@ -56,6 +56,18 @@ Meteor.methods({
                 console.log(err);
             }
         })
+    },
+    'artist.setKeywordPreferences': function(id, preferredKeywords, refusedKeywords) {
+        if (preferredKeywords) {
+            Artist.update({_id: new Mongo.ObjectID((id))}, {$set: {'preferences.preferredKeywords': preferredKeywords}}, (err, res) => {
+                if (err) {console.log(err)};
+            });
+        }
+        if (refusedKeywords) {
+            Artist.update({_id: new Mongo.ObjectID((id))}, {$set: {'preferences.refusedKeywords': refusedKeywords}}, (err, res) => {
+                if (err) {console.log(err)};
+            });
+        }
     }
 });
 
