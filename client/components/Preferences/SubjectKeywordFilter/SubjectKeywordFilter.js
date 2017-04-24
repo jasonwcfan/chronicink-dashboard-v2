@@ -16,7 +16,8 @@ const style = {
     },
     chipContainer: {
         display: 'flex',
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
+        minHeight: 42
     },
     chip: {
         margin: 5
@@ -31,10 +32,14 @@ class SubjectKeywordFilter extends Component {
             // The currently selected artist. Will be a string representing the artist's _id in MongoDB
             selectedArtist: null,
             preferredKeywords: [],
-            refusedKeywords: []
+            refusedKeywords: [],
+            newPreferredKeyword: '',
+            newRefusedKeyword: ''
         };
 
         this._handleArtistChange = this._handleArtistChange.bind(this);
+        this._handleAddPreferredKeyword = this._handleAddPreferredKeyword.bind(this);
+        this._handleAddRefusedKeyword = this._handleAddRefusedKeyword.bind(this);
     }
 
     /**
@@ -101,31 +106,30 @@ class SubjectKeywordFilter extends Component {
         )
     }
 
-    _renderAddKeywordField(type) {
-        return <div>
-            <TextField hintText='Add new...' ref={type}/>
-            <FlatButton label='Submit' onTouchTap={() => {
-                const value = this.refs[type].input.value;
-                const preferred = this.state.preferredKeywords.slice();
-                const refused = this.state.refusedKeywords.slice();
+    _handleAddPreferredKeyword() {
+        let preferred = this.state.preferredKeywords.slice();
+        preferred.push(this.state.newPreferredKeyword);
 
-                if (type == 'preferredKeywords') {
-                    preferred.push(value);
-                }
-                if (type == 'refusedKeywords') {
-                    refused.push(value);
-                }
+        Meteor.call('artist.setKeywordPreferences', this.state.selectedArtist, preferred, null, (err) => {
+            if (err) {console.log(err)}
+            this.setState({
+                preferredKeywords: preferred,
+                newPreferredKeyword: ''
+            })
+        })
+    }
 
-                Meteor.call('artist.setKeywordPreferences', this.state.selectedArtist, preferred, refused, (err) => {
-                    if (err) {console.log(err)}
-                    this.refs[type].input.value = '';
-                    this.setState({
-                        preferredKeywords: preferred,
-                        refusedKeywords: refused
-                    })
-                })
-            }} />
-        </div>
+    _handleAddRefusedKeyword() {
+        let refused = this.state.refusedKeywords.slice();
+        refused.push(this.state.newRefusedKeyword);
+
+        Meteor.call('artist.setKeywordPreferences', this.state.selectedArtist, null, refused, (err) => {
+            if (err) {console.log(err)}
+            this.setState({
+                refusedKeywords: refused,
+                newRefusedKeyword: ''
+            })
+        })
     }
 
     render() {
@@ -147,14 +151,21 @@ class SubjectKeywordFilter extends Component {
                     <div style={style.chipContainer}>
                         {this._renderKeywords(this.state.preferredKeywords, 'preferredKeywords')}
                     </div>
-                    {this._renderAddKeywordField('preferredKeywords')}
+                    <TextField hintText='Add new...'
+                               value={this.state.newPreferredKeyword}
+                               onChange={(_, value) => {this.setState({newPreferredKeyword: value})}}/>
+                    <FlatButton label='Submit' onTouchTap={this._handleAddPreferredKeyword}/>
                     <h3>
                         I don't want to do these subjects
                     </h3>
                     <div style={style.chipContainer}>
                         {this._renderKeywords(this.state.refusedKeywords, 'refusedKeywords')}
                     </div>
-                    {this._renderAddKeywordField('refusedKeywords')}
+                    <TextField hintText='Add new...'
+                               value={this.state.newRefusedKeyword}
+                               onChange={(_, value) => {this.setState({newRefusedKeyword: value})}}
+                    />
+                    <FlatButton label='Submit' onTouchTap={this._handleAddRefusedKeyword}/>
                 </div> : null}
             </div>
         ) : null;
