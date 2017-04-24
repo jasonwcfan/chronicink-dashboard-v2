@@ -101,13 +101,13 @@ Meteor.methods({
         const artistEmailBody = GMail.createArtistEmail(artist, client, form);
         const qcEmailBody = GMail.createQualityControlEmail(artist, client, form);
 
-        GMail.sendEmail(client.email, 'Upcoming Tattoo Details', clientEmailBody);
+        GMail.sendEmail('yomexzo@gmail.com', 'Upcoming Tattoo Details', clientEmailBody);
         artist.emails.forEach(function(email) {
-            GMail.sendEmail(email, `New Booking - ${client.firstName} ${client.lastName} - ${Moment(form.bookings[0].startTime).format('MMMM YYYY')}`, artistEmailBody);
+            GMail.sendEmail('yomexzo@gmail.com', `New Booking - ${client.firstName} ${client.lastName} - ${Moment(form.bookings[0].startTime).format('MMMM YYYY')}`, artistEmailBody);
         });
 
         // Send a client version of the email to the quality control email address
-        GMail.sendEmail(Studio.findOne({name: 'Chronic Ink'}).emails.qualityControl, `New Booking - ${client.firstName} ${client.lastName} - ${Moment(form.bookings[0].startTime).format('MMMM YYYY')}`, qcEmailBody)
+        GMail.sendEmail('yomexzo@gmail.com', `New Booking - ${client.firstName} ${client.lastName} - ${Moment(form.bookings[0].startTime).format('MMMM YYYY')}`, qcEmailBody)
     }
 });
 
