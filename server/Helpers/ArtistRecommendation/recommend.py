@@ -45,7 +45,7 @@ def main():
 
     # find all artists
     for artist in db.artist.find({'preferences.styles.' + style: {'$gt': 0}}):
-        soonest_opening = (artist['nextOpening']['start'] - datetime.datetime.now()).days
+        soonest_opening = (artist['nextOpening']['startTime'] - datetime.datetime.now()).days
         preference = artist['preferences']['styles'][style]
         booking_volume = artist['hoursIn60Days']
 
