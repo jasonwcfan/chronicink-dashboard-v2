@@ -3,13 +3,14 @@ import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import AddIcon from 'material-ui/svg-icons/content/add-circle-outline';
+import IconButton from 'material-ui/IconButton';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 
 const style = {
     container: {
-        display: 'inline-block',
-        margin: 10
+        display: 'inline-block'
     },
     dialogHeader: {
         textAlign: 'center'
@@ -19,6 +20,14 @@ const style = {
         flexDirection: 'column',
         alignItems: 'center'
     },
+    iconButton: {
+        height: 36,
+        width: 36
+    },
+    icon: {
+        height: 36,
+        width: 36
+    }
 };
 
 class NewBookingDialog extends Component {
@@ -96,7 +105,15 @@ class NewBookingDialog extends Component {
 
         return (
             <div style={style.container}>
-                <RaisedButton style={style.dialogButton} label='Create New Booking' onTouchTap={this._handleOpen.bind(this)} />
+                <IconButton
+                    style={style.iconButton}
+                    iconStyle={style.icon}
+                    onTouchTap={this._handleOpen.bind(this)}
+                    tooltip='Create New Booking'
+                    tooltipPosition='bottom-right'
+                >
+                    <AddIcon/>
+                </IconButton>
                 <Dialog
                     title='New Booking'
                     titleStyle={style.dialogHeader}
