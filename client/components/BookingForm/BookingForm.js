@@ -31,6 +31,7 @@ class BookingForm extends Component {
         super(props);
         this.state = (() => {
             const state = {
+                tabIndex: 0,
                 fields: {},
                 bookedBy: '',
                 bookedThru: 'in person',
@@ -65,6 +66,7 @@ class BookingForm extends Component {
         this._handleSetBookedThru = this._handleSetBookedThru.bind(this);
         this._handleTogglePresentationRequired = this._handleTogglePresentationRequired.bind(this);
         this._handlePreSubmit = this._handlePreSubmit.bind(this);
+        this._handleChangeTab = this._handleChangeTab.bind(this);
     }
 
     componentWillReceiveProps(props) {
@@ -270,18 +272,34 @@ class BookingForm extends Component {
         })
     }
 
+    _handleChangeTab(e, tabIndex) {
+        // Prevent something on the next page from being selected accidentally on touch up
+        if (e) {e.preventDefault();}
+        // Reset to the top of the document
+        window.scrollTo(0, 0);
+        this.setState({
+            tabIndex: tabIndex
+        })
+    }
+
     render() {
         return (
             <App appName='Booking Form'>
-                <Tabs style={style.tabs}>
-                    <Tab label='Client Info'>
+                <Tabs style={style.tabs} value={this.state.tabIndex}>
+                    <Tab label='Client Info' value={0} onActive={() => {this._handleChangeTab(null, 0)}}>
                         <ClientInfoTab
                             style={style.container}
                             intake={this.props.intake}
                             subReady={this.props.intakeSubReady}
                         />
+                        <RaisedButton
+                            style={style.navButton}
+                            primary={true}
+                            label='Next'
+                            onTouchTap={(e) => {this._handleChangeTab(e, 1)}}
+                        />
                     </Tab>
-                    <Tab label='Details'>
+                    <Tab label='Details' value={1} onActive={() => {this._handleChangeTab(null, 1)}}>
                         <TattooDetailsTab formTemplate={this.props.fields}
                                           formValues={this.state.fields}
                                           style={style.container}
@@ -290,8 +308,19 @@ class BookingForm extends Component {
                                           defaultArtist={this.props.artist}
                                           onFieldChange={this._handleFieldChange}
                         />
+                        <RaisedButton
+                            style={style.navButton}
+                            label='Previous'
+                            onTouchTap={(e) => {this._handleChangeTab(e, 0)}}
+                        />
+                        <RaisedButton
+                            style={style.navButton}
+                            primary={true}
+                            label='Next'
+                            onTouchTap={(e) => {this._handleChangeTab(e, 2)}}
+                        />
                     </Tab>
-                    <Tab label='Sessions'>
+                    <Tab label='Sessions' value={2} onActive={() => {this._handleChangeTab(null, 2)}}>
                         <BookingsListTab
                             style={style.container}
                             bookings={this.state.bookings}

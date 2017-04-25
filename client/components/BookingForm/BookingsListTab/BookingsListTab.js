@@ -32,31 +32,29 @@ class BookingsListTab extends Component {
     render() {
         return (
             <div style={this.props.style}>
+                <div style={style.presentationLabel}>Presentation Required</div>
+                <RadioButtonGroup
+                    style={{display: 'inline-block'}}
+                    name={'presentationRequired'}
+                    valueSelected={this.props.presentationRequired}
+                    onChange={this.props.togglePresentationRequired}
+                >
+                    <RadioButton
+                        style={style.radioItem}
+                        iconStyle={{marginRight: 10}}
+                        value={true}
+                        label={'Yes'}
+                        key={'yes'}
+                    />
+                    <RadioButton
+                        style={style.radioItem}
+                        iconStyle={{marginRight: 10}}
+                        value={false}
+                        label={'No'}
+                        key={'no'}
+                    />
+                </RadioButtonGroup>
                 <h2>Sessions</h2>
-                <div>
-                    <div style={style.presentationLabel}>Presentation Required</div>
-                    <RadioButtonGroup
-                        style={{display: 'inline-block'}}
-                        name={'presentationRequired'}
-                        valueSelected={this.props.presentationRequired}
-                        onChange={this.props.togglePresentationRequired}
-                    >
-                        <RadioButton
-                            style={style.radioItem}
-                            iconStyle={{marginRight: 10}}
-                            value={true}
-                            label={'Yes'}
-                            key={'yes'}
-                        />
-                        <RadioButton
-                            style={style.radioItem}
-                            iconStyle={{marginRight: 10}}
-                            value={false}
-                            label={'No'}
-                            key={'no'}
-                        />
-                    </RadioButtonGroup>
-                </div>
                 <BookingsList bookings={this.props.bookings} deleteBooking={this.props.deleteBooking} onSubmitBooking={this.props.onSubmitBooking} />
                 <ValidatedTextField
                     name='bookedBy'

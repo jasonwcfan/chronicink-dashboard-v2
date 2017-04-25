@@ -316,7 +316,9 @@ class IntakeForm extends Component {
     }
 
     _decrementStep(e) {
+        // Prevent something on the next page from being selected accidentally on touch up
         e.preventDefault();
+        // Reset to the top of the document
         window.scrollTo(0, 0);
         this.setState({
             stepIndex: this.state.stepIndex > 0 ? this.state.stepIndex - 1 : 0
