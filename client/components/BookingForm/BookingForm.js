@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
-import {MenuItem, RaisedButton, Dialog} from 'material-ui';
+import RaisedButton from 'material-ui/RaisedButton';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Artist from '../../../imports/Artist/artist';
 import Booking from '../../../imports/Booking/booking';
@@ -10,9 +10,9 @@ import TattooDetailsTab from './TattooDetailsTab';
 import BookingsListTab from './BookingsListTab';
 import ClientInfoTab from './ClientInfoTab';
 import defaultFields from '../../constants/defaultBookingFormFields';
+import Dialog from 'material-ui/Dialog';
 import Moment from 'moment';
-import {Row, Col, Grid} from 'react-bootstrap/lib';
-import ValidatedTextField from '../Inputs/ValidatedTextField';
+import CircularProgress from 'material-ui/CircularProgress';
 
 const style = {
     tabs: {
@@ -22,10 +22,7 @@ const style = {
         margin: 24
     },
     navButton: {
-        marginRight: 20
-    },
-    bookedThruSelectField: {
-        display: 'block'
+        margin: 10
     }
 };
 
@@ -274,62 +271,69 @@ class BookingForm extends Component {
     }
 
     render() {
-        // TattooDetailsTab
-        // BookingsListTab
         return (
             <App appName='Booking Form'>
-                <Grid>
-                    <Row>
-                        <Col sm={6}>
-                            <TattooDetailsTab 
-                              formTemplate={this.props.fields}
-                              formValues={this.state.fields}
-                              style={style.container}
-                              artists={this.props.artists}
-                              subReady={this.props.artistSubReady}
-                              defaultArtist={this.props.artist}
-                              onFieldChange={this._handleFieldChange}
-                              setBookedBy={this._handleSetBookedBy}
-                              setBookedThru={this._handleSetBookedThru}
-                              bookedBy={this.state.bookedBy}
-                              bookedThru={this.state.bookedThru}
-                              saveButton={this._getSaveButton(this.state.isSaved)}
-                              isSubmitting={this.state.isSubmitting}
-                              isSubmitted={this.state.isSubmitted}
-                              handlePreSubmit={this._handlePreSubmit}
-                            />
-                        </Col>
-                        <Col sm={6}>
-                            <ClientInfoTab
-                                style={style.container}
-                                intake={this.props.intake}
-                                subReady={this.props.intakeSubReady}
-                            />
+                <Tabs style={style.tabs}>
+                    <Tab label='Client Info'>
+                        <ClientInfoTab
+                            style={style.container}
+                            intake={this.props.intake}
+                            subReady={this.props.intakeSubReady}
+                        />
+                    </Tab>
+                    <Tab label='Details'>
+                        <TattooDetailsTab formTemplate={this.props.fields}
+                                          formValues={this.state.fields}
+                                          style={style.container}
+                                          artists={this.props.artists}
+                                          subReady={this.props.artistSubReady}
+                                          defaultArtist={this.props.artist}
+                                          onFieldChange={this._handleFieldChange}
+                        />
+                    </Tab>
+                    <Tab label='Sessions'>
+                        <BookingsListTab
+                            style={style.container}
+                            bookings={this.state.bookings}
+                            onSubmitBooking={this._handleCreateBooking}
+                            deleteBooking={this._handleDeleteBooking}
+                            setBookedBy={this._handleSetBookedBy}
+                            setBookedThru={this._handleSetBookedThru}
+                            togglePresentationRequired={this._handleTogglePresentationRequired}
+                            bookedBy={this.state.bookedBy}
+                            bookedThru={this.state.bookedThru}
+                            presentationRequired={this.state.presentationRequired}
+                        />
+                        {this._getSaveButton(this.state.isSaved)}
+                        <div style={{ display: 'inline' }}>
+                            {
+                                this.state.isSubmitting
+                                ?
+                                <CircularProgress
+                                    style={{ marginLeft: 28 }}
+                                    size={16}
+                                />
+                                :
+                                <RaisedButton
+                                    secondary={true}
+                                    disabled={this.state.isSubmitted}
+                                    label={this.state.isSubmitted ? 'Done' : 'Submit'}
+                                    onTouchTap={this._handlePreSubmit}
+                                />
 
-                            <BookingsListTab
-                                bookings={this.state.bookings}
-                                onSubmitBooking={this._handleCreateBooking}
-                                deleteBooking={this._handleDeleteBooking}
-                                setBookedBy={this._handleSetBookedBy}
-                                setBookedThru={this._handleSetBookedThru}
-                                togglePresentationRequired={this._handleTogglePresentationRequired}
-                                bookedBy={this.state.bookedBy}
-                                bookedThru={this.state.bookedThru}
-                                presentationRequired={this.state.presentationRequired}
-                            />
-                        </Col>
-                    </Row>
-                </Grid>
-
-                <Dialog
-                    modal={true}
-                    title='Form Errors'
-                    open={this.state.showErrorDialog}
-                    onRequestClose={() => { this.setState({showErrorDialog: false}) } }
-                    actions={ this.state.errorDialog.actions }
-                >
-                    { this.state.errorDialog.errors.map((error, index) => <p key={index} style={{color: 'red'}}>{`- ${error}`}</p>) }
-                </Dialog>
+                            }
+                            <Dialog
+                                modal={true}
+                                title='Form Errors'
+                                open={this.state.showErrorDialog}
+                                onRequestClose={() => { this.setState({showErrorDialog: false}) } }
+                                actions={ this.state.errorDialog.actions }
+                            >
+                                { this.state.errorDialog.errors.map((error, index) => <p key={index} style={{color: 'red'}}>{`- ${error}`}</p>) }
+                            </Dialog>
+                        </div>
+                    </Tab>
+                </Tabs>
             </App>
         );
     }

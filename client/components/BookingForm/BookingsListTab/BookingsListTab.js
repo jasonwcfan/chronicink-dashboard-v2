@@ -12,6 +12,7 @@ const style = {
     },
     presentationToggle: {
         maxWidth: 360,
+        margin: 10
     }
 };
 
@@ -31,6 +32,21 @@ class BookingsListTab extends Component {
                     onToggle={this.props.togglePresentationRequired}
                 />
                 <BookingsList bookings={this.props.bookings} deleteBooking={this.props.deleteBooking} onSubmitBooking={this.props.onSubmitBooking} />
+                <ValidatedTextField
+                    name='bookedBy'
+                    defaultValue={this.props.bookedBy}
+                    floatingLabelText='Booked by...'
+                    onFieldChange={this.props.setBookedBy}
+                    required={true}
+                />
+                <SelectField
+                    style={style.bookedThruSelectField}
+                    value={this.props.bookedThru}
+                    onChange={this.props.setBookedThru}
+                >
+                    <MenuItem value='by phone' primaryText='By phone' />
+                    <MenuItem value='in person' primaryText='In person' />
+                </SelectField>
             </div>
         )
     }

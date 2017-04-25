@@ -32,7 +32,8 @@ class BookingsList extends Component {
             root: {
                 marginBottom: 200,
                 marginRight: 24,
-                maxWidth: 400,
+                marginLeft: 10,
+                maxWidth: 360,
                 width: '100%',
             },
             listContainer: {

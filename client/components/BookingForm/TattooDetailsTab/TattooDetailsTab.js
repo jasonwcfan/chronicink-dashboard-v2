@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
-import { RaisedButton, CircularProgress } from 'material-ui';
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 import Toggle from 'material-ui/Toggle';
 import ValidatedTextField from '../../Inputs/ValidatedTextField';
@@ -38,11 +37,7 @@ const style = {
     },
     radioItem: {
         display: 'inline-block',
-        padding: 10,
-        paddingLeft: 0,
-        paddingRight: 5,
-        marginRight: 20,
-        width: 'auto'
+        padding: 10
     }
 };
 
@@ -75,7 +70,7 @@ class TattooDetailsTab extends Component {
         return fields.map((field) => {
             switch (field.inputType) {
                 case 'size':
-                    const textFieldStyleCopy = Object.assign({}, style.textField);
+                    const textFieldStyle = Object.assign({ width: '256px' }, style.textField);
                     const widthIsEmpty = this.sizeWidthAndHeight.width.value ==  null || !this.sizeWidthAndHeight.width.value.length;
                     const heightIsEmpty = this.sizeWidthAndHeight.height.value ==  null || !this.sizeWidthAndHeight.height.value.length;
                     const sizeIsNotEmpty = this.props.formValues[field.id].value != null && !!this.props.formValues[field.id].value.length;
@@ -93,7 +88,7 @@ class TattooDetailsTab extends Component {
                             {this.state.useActualSize ?
                                 <div style={style.flexedDivContainer} key={'some-key-2'}>
                                     <ValidatedTextField
-                                        style={Object.assign(textFieldStyleCopy, { width: 123, marginRight: 20 })}
+                                        style={Object.assign({ width: '123px' }, textFieldStyle)}
                                         defaultValue={this.sizeWidthAndHeight.width.value}
                                         name={'size_width'}
                                         key={'size_width'}
@@ -105,7 +100,7 @@ class TattooDetailsTab extends Component {
                                         touched={this.sizeWidthAndHeight.width.touched}
                                     />
                                     <ValidatedTextField
-                                        style={Object.assign(textFieldStyleCopy, { width: 123 })}
+                                        style={Object.assign({ width: '123px' }, textFieldStyle)}
                                         defaultValue={this.sizeWidthAndHeight.height.value}
                                         name={'size_height'}
                                         key={'size_height'}
@@ -119,7 +114,7 @@ class TattooDetailsTab extends Component {
                                 </div>
                             :
                                 <ValidatedTextField
-                                    style={style.textField}
+                                    style={textFieldStyle}
                                     defaultValue={this.props.formValues[field.id].value}
                                     name={field.id}
                                     key={field.id}
@@ -178,7 +173,7 @@ class TattooDetailsTab extends Component {
                 case 'radio':
                     return (
                         <div key={field.id}>
-                            <h4>{field.label}</h4>
+                            <h3>{field.label}</h3>
                             <RadioButtonGroup
                                 style={style.group}
                                 name={field.id}
@@ -193,8 +188,6 @@ class TattooDetailsTab extends Component {
                                             label={item.label}
                                             key={item.value}
                                             style={style.radioItem}
-                                            iconStyle={{marginRight: 10}}
-                                            labelStyle={{width: 'auto'}}
                                         />
                                     )}
                             </RadioButtonGroup>
@@ -294,39 +287,6 @@ class TattooDetailsTab extends Component {
         return (
             <div style={this.props.style}>
                 {this._renderForm(this.props.formTemplate)}
-
-                <ValidatedTextField
-                    name='bookedBy'
-                    defaultValue={this.props.bookedBy}
-                    floatingLabelText='Booked by...'
-                    onFieldChange={this.props.setBookedBy}
-                    required={true}
-                />
-                <SelectField
-                    style={style.bookedThruSelectField}
-                    value={this.props.bookedThru}
-                    onChange={this.props.setBookedThru}
-                >
-                    <MenuItem value='by phone' primaryText='By phone' />
-                    <MenuItem value='in person' primaryText='In person' />
-                </SelectField>
-
-
-                <div>
-                    {this.props.saveButton}
-                    {this.props.isSubmitting
-                        ?
-                        <CircularProgress style={{ marginLeft: 28 }} size={16} />
-                        :
-                        <RaisedButton
-                            secondary={true}
-                            disabled={this.props.isSubmitted}
-                            label={this.props.isSubmitted ? 'Done' : 'Submit'}
-                            onTouchTap={this.props.handlePreSubmit}
-                        />
-
-                    }
-                </div>
             </div>
         )
     }
