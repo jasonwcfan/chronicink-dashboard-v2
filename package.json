@@ -22,7 +22,6 @@
     "radium": "^0.18.1",
     "react": "^15.3.2",
     "react-addons-pure-render-mixin": "^15.3.2",
-    "react-bootstrap": "0.30.9",
     "react-dom": "^15.3.2",
     "react-meteor-data": "^0.2.9",
     "react-redux": "^4.4.5",
