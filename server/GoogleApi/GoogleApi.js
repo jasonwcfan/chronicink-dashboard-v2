@@ -175,12 +175,6 @@ GCalendar = {
             timeMin: today.toISOString(), // List all events from today onward
         }, (err, res) => {
             if (err) {
-                console.log('err', err)
-            } else {
-                console.log(res.items[0])
-            }
-
-            if (err) {
                 callback(err, null);
                 return;
             }
@@ -251,9 +245,11 @@ GCalendar = {
                     if (events.length > 1) {
                         let hasOpening = false;
                         for (var j = 0; j < events.length - 1; j++) {
-                            // If the gap between the two events is more than an hour
+                            // If the gap between the two events is more than an hour, and the first event ends after
+                            // 12PM Noon
                             if (Moment(events[j + 1].start.dateTime)
-                                    .diff(Moment(events[j].end.dateTime), 'minutes') > 60) {
+                                    .diff(Moment(events[j].end.dateTime), 'minutes') > 60
+                                    && Moment(events[j].end.dateTime).hour() >= 12) {
                                 opening = {
                                     startTime: Moment(events[j].end.dateTime),
                                     endTime: Moment(events[j + 1].start.dateTime)
