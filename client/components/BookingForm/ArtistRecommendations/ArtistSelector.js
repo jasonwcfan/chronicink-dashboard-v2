@@ -44,10 +44,10 @@ class ArtistSelector extends Component {
                         <MenuItem key={artist._id._str} value={artist._id._str} primaryText={artist.name} />
                     ))}
                 </SelectField>
-                {/**<ArtistRecommendation
+                <ArtistRecommendation
                     formValues={this.props.formValues}
                     onFieldChange={this.props.onFieldChange}
-                />**/}
+                />
             </div>
         )
     }

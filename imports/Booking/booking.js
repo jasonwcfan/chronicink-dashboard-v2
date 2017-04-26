@@ -16,7 +16,6 @@ Meteor.methods({
     'booking.getArtistRecommendation': function(data) {
         if (Meteor.isServer) {
             const { tattooStyle, ...rest } = data;
-            console.log(tattooStyle);
             import PythonShell from '../../server/Helpers/PythonShell';
 
             const list = PythonShell.recommendArtist(tattooStyle);
