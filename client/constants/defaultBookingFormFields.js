@@ -183,9 +183,9 @@ export default defaultBookingFormFields = [
     {
         id: 'deposit',
         label: 'Deposit',
-        inputType: 'textField',
+        inputType: 'deposit',
         value: '',
-        errorText: null,
+        valid: false,
         required: true
-    },
+    }
 ];
