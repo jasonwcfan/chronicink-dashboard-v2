@@ -191,6 +191,39 @@ class BookingForm extends Component {
         }
     }
 
+    _validateFields(e) {
+        const errors = [];
+        let fields = this.state.fields;
+
+        Object.keys(fields).forEach((key) => {
+            if (fields[key].errorText) {
+                fields[key].touched = true;
+                errors.push(fields[key].errorText);
+            }
+        });
+
+        console.log(errors);
+
+        if (errors.length) {
+            this.setState({
+                fields: fields,
+                showErrorDialog: true,
+                errorDialog: {
+                    errors: errors,
+                    actions: (
+                        <RaisedButton
+                            label='Ok'
+                            primary={true}
+                            onTouchTap={() => { this.setState({showErrorDialog: false});  } }
+                        />
+                    )
+                }
+            });
+        } else {
+            this._handleChangeTab(e, 2);
+        }
+    }
+
     _getSaveButton(isSaved) {
         return (isSaved ?
                 <RaisedButton style={style.navButton} primary={true} label='Saved!' disabled={true}/> :
@@ -317,10 +350,10 @@ class BookingForm extends Component {
                             style={style.navButton}
                             primary={true}
                             label='Next'
-                            onTouchTap={(e) => {this._handleChangeTab(e, 2)}}
+                            onTouchTap={(e) => {this._validateFields(e)}}
                         />
                     </Tab>
-                    <Tab label='Sessions' value={2} onActive={() => {this._handleChangeTab(null, 2)}}>
+                    <Tab label='Sessions' value={2} onActive={() => {this._validateFields(null)}}>
                         <BookingsListTab
                             style={style.container}
                             bookings={this.state.bookings}

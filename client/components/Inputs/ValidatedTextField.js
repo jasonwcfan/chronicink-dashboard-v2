@@ -34,7 +34,7 @@ class ValidatedTextField extends Component {
     render() {
         return(
             <TextField
-                errorText={this.props.validated && this.props.errorText ? this.props.errorText: null}
+                errorText={(this.props.validated || this.props.touched) && this.props.errorText ? this.props.errorText: null}
                 value={this.props.defaultValue}
                 style={this.props.style}
                 floatingLabelText={this.props.floatingLabelText + (this.props.required ? ' *' : '')}
