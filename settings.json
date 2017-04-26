@@ -1,11 +1,12 @@
 {
   "public": {
-    "primaryEmail": "info@chronicinktattoo.com",
+    "pythonPath": "/Library/Frameworks/Python.framework/Versions/3.5/bin/python3.5",
+    "primaryEmail": "chronicinktesting@gmail.com",
     "production": false
   },
   "google": {
-    "client_secret": "viTI5NBNry1l9weaEuadmGBR",
-    "client_id": "305395284985-ivrm9g90n8mmb4f81jplvvbf67mkjt4c.apps.googleusercontent.com",
-    "redirect_uris": ["dashboard.chronicinktattoo.com/_oauth/google"]
+    "client_secret": "Vd4EV2j3nGf8hSQUZ-W5vqRJ",
+    "client_id": "305395284985-6434482ol6l51dc2gd108vrae020cg16.apps.googleusercontent.com",
+    "redirect_uris": ["http://localhost:3000/_oauth/google"]
   }
 }
