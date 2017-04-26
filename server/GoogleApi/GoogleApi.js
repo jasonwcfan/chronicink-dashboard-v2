@@ -72,6 +72,8 @@ GCalendar = {
             auth: oauth2Client,
             calendarId: calendarID,
             maxResults: 500,
+            showDeleted: false,
+            singleEvents: true,
             timeMin: timeMin.toISOString(),
             timeMax: timeMax.toISOString()
         }, function (err, res) {
@@ -172,9 +174,19 @@ GCalendar = {
             orderBy: 'startTime',
             timeMin: today.toISOString(), // List all events from today onward
         }, (err, res) => {
+            if (err) {
+                console.log('err', err)
+            } else {
+                console.log(res.items[0])
+            }
 
             if (err) {
                 callback(err, null);
+                return;
+            }
+
+            if (!res.items.length) {
+                callback(null, 0);
                 return;
             }
 
@@ -182,9 +194,9 @@ GCalendar = {
             let days = {};
 
             // The first and last dates in the returned items
-            const firstDay = Moment(res.items[0].start.date || res.items[0].start.date);
+            const firstDay = Moment(res.items[0].start.date || res.items[0].start.dateTime);
             const lastDay = Moment(res.items[res.items.length - 1].start.date || res.items[res.items.length - 1]
-                    .start.date);
+                    .start.dateTime);
 
             for (let day = Moment(firstDay); day.diff(lastDay, 'days') <= 0; day.add(1, 'days')) {
                 days[day.format('YYYY-MM-DD')] = {
@@ -192,9 +204,11 @@ GCalendar = {
                     events: []
                 }
             }
-
             // Sort events into buckets, one for each date
             res.items.map((event) => {
+                if (!event.summary) {
+                    return;
+                }
                 const dateStr = Moment(event.start.date || event.start.dateTime).format('YYYY-MM-DD');
                 // This is an all day event
                 if (event.start.date && event.end.date) {
@@ -285,6 +299,10 @@ GMail = {
      * @param body
      */
     sendEmail: function(recipient, subject, body) {
+        if (!Meteor.settings.public.production) {
+            console.log('Not sending email because the production flag is set to false');
+            return;
+        }
         const base64EncodedEmail = encodeEmail(recipient, subject, body);
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
 
