@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
-import Divider from 'material-ui/Divider';
-import { List, ListItem } from 'material-ui/List';
+import Divider from 'material-ui/Divider';;
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -12,11 +11,12 @@ import UpdateIcon from 'material-ui/svg-icons/action/update';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import Artist from '../../../../imports/Artist/artist';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import Moment from 'moment-timezone';
 
 
 const style = {
     widgetContainer: {
-        width: 300,
+        // width: 300,
         maxHeight: '80vh',
         display: 'flex',
         flexDirection: 'column',
@@ -37,10 +37,15 @@ const style = {
         display: 'inline'
     },
     table: {
-        maxHeight: '70vh',
-        minHeight: 600,
-        overflow: 'auto',
-        overflowX: 'hidden'
+        height:'70vh',
+        // maxHeight: '70vh',
+        // minHeight: 600,
+        // overflow: 'auto',
+        overflowY: 'hidden'
+    },
+    tableBody:{
+        // height: '70vh',
+        // overflowY: 'auto'
     },
     listItemContainer: {
         display: 'flex',
@@ -97,7 +102,7 @@ class ArtistStats extends Component {
                 <TableRow key={artist.calendarID}>
                     <TableRowColumn>{artist.name}</TableRowColumn>
                     <TableRowColumn>{message}</TableRowColumn>
-                    <TableRowColumn>{artist.earliestOpening ? String(artist.earliestOpening.startDateTime) : '' }</TableRowColumn>
+                    <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
                 </TableRow>
 
                     // <ListItem key={artist.calendarID} primaryText={artist.name}>
@@ -166,8 +171,8 @@ class ArtistStats extends Component {
                 {/*<List style={style.list}>*/}
                     {/*{this._renderArtistStats()}*/}
                 {/*</List>*/}
-                <div style={style.table}>
-                <Table selectable={false}>
+
+                <Table selectable={false} fixedHeader={true} style={style.table}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
                             <TableHeaderColumn>Name</TableHeaderColumn>
@@ -175,11 +180,11 @@ class ArtistStats extends Component {
                             <TableHeaderColumn>Earliest Opening</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
-                    <TableBody displayRowCheckbox={false}>
+                    <TableBody displayRowCheckbox={false} style={style.tableBody}>
                         {this._renderArtistStats()}
                     </TableBody>
                 </Table>
-                </div>
+
             </Paper>
         )
     }
