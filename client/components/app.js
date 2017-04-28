@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
@@ -48,7 +48,7 @@ class App extends Component {
 
     render() {
         return (
-            <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+            <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
                 <Paper style={style.appContainer} zDepth={4}>
                     <SideNavBar style={style.sideNavBar} onChangeApp={this.props.onChangeApp} />
                     <div style={style.contentContainer}>
