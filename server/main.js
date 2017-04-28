@@ -14,7 +14,8 @@ Meteor.startup(() => {
             $set: {
                 clientId: Meteor.settings.google.client_id,
                 loginStyle: 'popup',
-                secret: Meteor.settings.google.client_secret
+                secret: Meteor.settings.google.client_secret,
+                forceApprovalPrompt: true
             }
         }
     );
