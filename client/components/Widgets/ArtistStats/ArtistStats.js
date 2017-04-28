@@ -72,13 +72,7 @@ class ArtistStats extends Component {
     _handleRefreshArtistStats(timeFrame) {
         // Calls back-end method to store artist hours in database
         Meteor.call('artist.getHoursBooked', timeFrame);
-
-
-        Meteor.call('artist.getEarliestOpening', 'f59gej5v6rimvqccv8a79dikq0@group.calendar.google.com');
-
-        // this.props.artists.forEach((artist, idx) => {
-        //     Meteor.call('artist.getEarliestOpening', artist.calendarID);
-        // });
+        Meteor.call('artist.getEarliestOpening');
     }
 
     _handleChangeTimeFrame(newTimeFrame) {

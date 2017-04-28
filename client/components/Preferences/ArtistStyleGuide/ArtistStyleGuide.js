@@ -3,7 +3,6 @@ import { createContainer } from 'meteor/react-meteor-data';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Slider from 'material-ui/Slider';
-import Artist from '../../../../imports/Artist/artist';
 import tattooStyles from '../../../constants/styles';
 
 const style = {
@@ -58,7 +57,7 @@ class ArtistStyleGuide extends Component {
      * **/
     _handleSliderStop(tattooStyle) {
         const nextValue = this.refs[tattooStyle].state.value;
-        const nextStyleValues = JSON.parse(JSON.stringify(this.state.styleValues));
+        const nextStyleValues = Object.assign({}, this.state.styleValues);
         nextStyleValues[tattooStyle] = nextValue;
 
         Meteor.call('artist.setStylePreferences', this.state.selectedArtist, nextStyleValues);
@@ -104,8 +103,10 @@ class ArtistStyleGuide extends Component {
         return tattooStyles.map((tattooStyle) => {
             // Get the value of this current slider based on the styleValue state, and bind it to the Slider's value.
             // This is so that when setState is called to update the styleValue state, the Slider also updates itself
-            const sliderValue = this.state.styleValues ?
-                this.state.styleValues[tattooStyle.value] : 0;
+            let sliderValue = 0;
+            if (this.state.styleValues) {
+                sliderValue = this.state.styleValues[tattooStyle.value] || 0;
+            }
             return (
                 <div style={style.sliderContainer} key={tattooStyle.value}>
                     <Slider
@@ -163,11 +164,4 @@ class ArtistStyleGuide extends Component {
     }
 };
 
-export default ArtistStyleGuide = createContainer(({ params }) => {
-    const subscription = Meteor.subscribe('artist');
-
-    return {
-        subReady: subscription.ready(),
-        artists: Artist.find({}).fetch()
-    }
-}, ArtistStyleGuide);
+export default ArtistStyleGuide;

@@ -13,6 +13,9 @@ db = mongo_client.meteor
 
 # normalize a value given the max and min
 def normalize(min, max, x):
+    # if all values are the same, the weight of each item might as well be 0
+    if max == min:
+        return 0
     return (x - min) / (max - min)
 
 
@@ -45,7 +48,13 @@ def main():
 
     # find all artists
     for artist in db.artist.find({'preferences.styles.' + style: {'$gt': 0}}):
-        soonest_opening = (artist['nextOpening']['start'] - datetime.datetime.now()).days
+        soonest_opening = (artist['nextOpening']['startTime'] - datetime.datetime.now()).days
+        # if for some reason the soonest opening is before today, invert it as an estimate of how far away the soonest
+        # opening really is. e.g. if it was 3 days ago, the artist is probably still around. If it was 100 days ago,
+        # the artist probably hasn't had a booking in a long time and shouldn't be high up in the results
+        if soonest_opening < 0:
+            soonest_opening = -soonest_opening
+
         preference = artist['preferences']['styles'][style]
         booking_volume = artist['hoursIn60Days']
 
@@ -62,19 +71,20 @@ def main():
         artist_properties.append(values)
 
     # find min and max values for normalization
-    booking_volume_seq = [x['bookingVolume'] for x in artist_properties]
-    soonest_opening_seq = [x['soonestOpeningTrans'] for x in artist_properties]
-    min_booking_volume = min(booking_volume_seq)
-    max_booking_volume = max(booking_volume_seq)
-    max_soonest_opening = max(soonest_opening_seq)
-    min_soonest_opening = min(soonest_opening_seq)
+    if len(artist_properties) > 0:
+        booking_volume_seq = [x['bookingVolume'] for x in artist_properties]
+        soonest_opening_seq = [x['soonestOpeningTrans'] for x in artist_properties]
+        min_booking_volume = min(booking_volume_seq)
+        max_booking_volume = max(booking_volume_seq)
+        max_soonest_opening = max(soonest_opening_seq)
+        min_soonest_opening = min(soonest_opening_seq)
 
-    artist_properties.sort(key=lambda x: (rank(x,
-                                               style,
-                                               min_booking_volume,
-                                               max_booking_volume,
-                                               min_soonest_opening,
-                                               max_soonest_opening)), reverse=True)
+        artist_properties.sort(key=lambda x: (rank(x,
+                                                   style,
+                                                   min_booking_volume,
+                                                   max_booking_volume,
+                                                   min_soonest_opening,
+                                                   max_soonest_opening)), reverse=True)
 
     result_set = []
     for elem in artist_properties:

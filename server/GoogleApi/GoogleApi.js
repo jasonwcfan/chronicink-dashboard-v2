@@ -72,6 +72,8 @@ GCalendar = {
             auth: oauth2Client,
             calendarId: calendarID,
             maxResults: 500,
+            showDeleted: false,
+            singleEvents: true,
             timeMin: timeMin.toISOString(),
             timeMax: timeMax.toISOString()
         }, function (err, res) {
@@ -317,6 +319,11 @@ GCalendar = {
 
         return events;
     },
+    /**
+     * Get the earliest opening for this calendar that is at least 60 minutes in length
+     * @param calendarID The calendar to search through
+     * @param callback Called on error or with the opening, an object with a startTime and an endTime property
+     */
     getEarliestOpening(calendarID, callback) {
 
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
@@ -336,50 +343,61 @@ GCalendar = {
             orderBy: 'startTime',
             timeMin: today.toISOString(), // List all events from today onward
         }, (err, res) => {
-
             if (err) {
-                console.log('Error with Events List Request!!!');
-                console.log(err);
                 callback(err, null);
                 return;
             }
+
+            if (!res.items.length) {
+                callback(null, 0);
+                return;
+            }
+
+            // Tracks all of the buckets for each day, and whether they are off days
             let days = {};
 
+            // The first and last dates in the returned items
+            const firstDay = Moment(res.items[0].start.date || res.items[0].start.dateTime);
+            const lastDay = Moment(res.items[res.items.length - 1].start.date || res.items[res.items.length - 1]
+                    .start.dateTime);
+
+            for (let day = Moment(firstDay); day.diff(lastDay, 'days') <= 0; day.add(1, 'days')) {
+                days[day.format('YYYY-MM-DD')] = {
+                    off : false,
+                    events: []
+                }
+            }
             // Sort events into buckets, one for each date
             res.items.map((event) => {
+                if (!event.summary) {
+                    return;
+                }
+                const dateStr = Moment(event.start.date || event.start.dateTime).format('YYYY-MM-DD');
                 // This is an all day event
                 if (event.start.date && event.end.date) {
                     // This indicates this is a day off
                     if (event.summary.toLowerCase().indexOf('off') > -1) {
-                        days[event.start.date] = {off: true};
+                        days[dateStr].off = true;
                         return;
                     }
                     return;
                 }
-                // This is a regular event, on a non off day
-                const dateStr = Moment(event.start.dateTime).format('YYYY-MM-DD');
-                // If this bucket exists already, and is not an off day, just insert
-                if (days[dateStr]) {
-                    if (!days[dateStr].off) {
-                        days[dateStr].events.push(event);
-                    }
-                // If this bucket does not yet exist, create it
-                } else {
-                    days[dateStr] = {events: [event]}
+                // This is a regular event, on a non off day add the event to that bucket
+                if (!days[dateStr].off) {
+                    days[dateStr].events.push(event);
                 }
             });
-
-            const dates = Object.keys(days);
 
             // Store the first opening, with Moments
             let opening = null;
 
             // Go through the bucket for each day and see if there is an opening
-            for (var i = 0; i < dates.length; i++) {
-                const date = dates[i];
+            for (let day = Moment(firstDay); day.diff(lastDay, 'days') <= 0; day.add(1, 'days')) {
+                const dateStr = day.format('YYYY-MM-DD');
 
-                if (days[date].events) {
-                    const events = days[date].events;
+                // If this day has events and is not an off day
+                if (days[dateStr].events.length > 0 && !days[dateStr].off) {
+                    const events = days[dateStr].events;
                     const dayStart = Moment(events[0].start.dateTime).hour(12).minute(0);
                     const dayEnd = Moment(events[0].start.dateTime).hour(20).minute(0);
 
@@ -395,13 +413,15 @@ GCalendar = {
                     // If there is more than one event, compare each of their start and end times to find openings
                     if (events.length > 1) {
                         let hasOpening = false;
-                        for (var i = 0; i < events.length - 1; i++) {
-                            // If the gap between the two events is more than an hour
-                            if (Moment(events[i + 1].start.dateTime)
-                                    .diff(Moment(events[i].end.dateTime), 'minutes') > 60) {
+                        for (var j = 0; j < events.length - 1; j++) {
+                            // If the gap between the two events is more than an hour, and the first event ends after
+                            // 12PM Noon
+                            if (Moment(events[j + 1].start.dateTime)
+                                    .diff(Moment(events[j].end.dateTime), 'minutes') > 60
+                                    && Moment(events[j].end.dateTime).hour() >= 12) {
                                 opening = {
-                                    startTime: Moment(events[i].end.dateTime),
-                                    endTime: Moment(events[i + 1].start.dateTime)
+                                    startTime: Moment(events[j].end.dateTime),
+                                    endTime: Moment(events[j + 1].start.dateTime)
                                 };
                                 hasOpening = true;
                                 break;
@@ -418,10 +438,17 @@ GCalendar = {
                         };
                         break;
                     }
+                // This day is not an off day, but has no events, so the opening is the whole day
+                } else if (!days[dateStr].off) {
+                    opening = {
+                        startTime: Moment(dateStr).hour(12).minute(0),
+                        endTime: Moment(dateStr).hour(20).minute(0)
+                    };
+                    break;
                 }
             }
 
-            console.log(opening);
+            callback(null, opening);
         })
     }
 };
@@ -437,6 +464,10 @@ GMail = {
      * @param body
      */
     sendEmail: function(recipient, subject, body) {
+        if (!Meteor.settings.public.production) {
+            console.log('Not sending email because the production flag is set to false');
+            return;
+        }
         const base64EncodedEmail = encodeEmail(recipient, subject, body);
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
 

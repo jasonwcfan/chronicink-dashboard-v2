@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { List, ListItem } from 'material-ui/List';
-import Paper from 'material-ui/Paper';
 import DeleteIcon from 'material-ui/svg-icons/action/delete-forever';
 import IconButton from 'material-ui/IconButton';
 import NewBookingDialog from './NewBookingDialog';
@@ -31,34 +30,26 @@ class BookingsList extends Component {
         const style = {
             root: {
                 marginBottom: 200,
-                marginRight: 24,
-                marginLeft: 10,
                 maxWidth: 360,
                 width: '100%',
             },
             listContainer: {
-                backgroundColor: '#404040',
-                height: this.props.bookings.length * 72 || 144,
                 overflow: 'hidden',
             },
             dialogContainer: {
-                backgroundColor: '#404040',
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'flex-end',
-                alignItems: 'flex-end'
+
             }
         };
 
         return (
-            <Paper style={style.root} zDepth={5}>
+            <div style={style.root}>
                 <List style={style.listContainer}>
                     {this._renderBookings(this.props.bookings)}
                 </List>
                 <div style={style.dialogContainer}>
                     <NewBookingDialog onSubmitBooking={this.props.onSubmitBooking} />
                 </div>
-            </Paper>
+            </div>
         )
     }
 }

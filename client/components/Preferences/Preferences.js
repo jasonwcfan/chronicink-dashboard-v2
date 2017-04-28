@@ -4,13 +4,14 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import Artist from '../../../imports/Artist/artist';
 import App from '../app';
 import ArtistStyleGuide from './ArtistStyleGuide';
+import SubjectKeywordFilter from './SubjectKeywordFilter';
 
 const style = {
     tabs: {
         width: '100%'
     },
     container: {
-        margin: 5
+        margin: 24
     }
 
 };
@@ -28,14 +29,19 @@ class Preferences extends Component {
         return (
             <App appName='Preferences'>
                 <Tabs style={style.tabs}>
-                    <Tab label='Application'>
+                    {/**<Tab label='Application'>
                         <div style={style.container}>
                             UNDER CONSTRUCTION
                         </div>
-                    </Tab>
+                    </Tab>**/}
                     <Tab label='Style Guide'>
                         <div style={style.container}>
-                            <ArtistStyleGuide />
+                            <ArtistStyleGuide subReady={this.props.subReady} artists={this.props.artists} />
+                        </div>
+                    </Tab>
+                    <Tab label='Keywords'>
+                        <div style={style.container}>
+                            <SubjectKeywordFilter subReady={this.props.subReady} artists={this.props.artists} />
                         </div>
                     </Tab>
                 </Tabs>
