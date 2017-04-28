@@ -16,7 +16,6 @@ import Moment from 'moment-timezone';
 
 const style = {
     widgetContainer: {
-        // width: 300,
         maxHeight: '80vh',
         display: 'flex',
         flexDirection: 'column',
@@ -38,14 +37,7 @@ const style = {
     },
     table: {
         height:'70vh',
-        // maxHeight: '70vh',
-        // minHeight: 600,
-        // overflow: 'auto',
         overflowY: 'hidden'
-    },
-    tableBody:{
-        // height: '70vh',
-        // overflowY: 'auto'
     },
     listItemContainer: {
         display: 'flex',
@@ -180,7 +172,7 @@ class ArtistStats extends Component {
                             <TableHeaderColumn>Earliest Opening</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
-                    <TableBody displayRowCheckbox={false} style={style.tableBody}>
+                    <TableBody displayRowCheckbox={false}>
                         {this._renderArtistStats()}
                     </TableBody>
                 </Table>
