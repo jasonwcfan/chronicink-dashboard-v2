@@ -25,6 +25,14 @@ const style = {
     },
     link: {
         textDecoration: 'none'
+    },
+    logo: {
+        height: 72*5/8,
+        display: 'block',
+        margin: '10px 10px 10px 10px',
+        '@media (maxWidth: 768px)': {
+            height: 54*5/8
+        }
     }
 };
 
@@ -40,6 +48,9 @@ class SideNavBar extends Component {
     render() {
         return(
             <Paper style={style.sideNavBarContainer} >
+                <div>
+                    <img key='logo' src={'/images/chronicink_logo.png'} style={style.logo}/>
+                </div>
                 <List style={style.menuList}>
                     <Divider />
                     <NavLink

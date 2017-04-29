@@ -55,6 +55,7 @@ class App extends Component {
                         <AppBar
                             style={style.appBar}
                             title={this.props.appName}
+                            showMenuIconButton={false}
                             iconElementRight={<Menu />}
                         />
                         <div style={style.content}>
