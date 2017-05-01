@@ -202,6 +202,8 @@ class BookingForm extends Component {
             }
         });
 
+        console.log(errors);
+
         if (errors.length) {
             this.setState({
                 fields: fields,

@@ -5,7 +5,6 @@ import Toggle from 'material-ui/Toggle';
 import ValidatedTextField from '../../Inputs/ValidatedTextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import TextField from 'material-ui/TextField';
 import { ValidatedAutoComplete } from '../../Inputs';
 import ArtistSelector from '../ArtistRecommendations';
 
@@ -29,25 +28,16 @@ const style = {
     },
     radioGroup: {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        maxWidth: 650
     },
     radioButton: {
         display: 'inline-block',
         padding: 10,
     },
     radioItem: {
-        width: 'initial',
-        padding: 10,
-    },
-    depositContainer: {
-
-    },
-    otherDeposit: {
-        position: 'relative',
-        width: 240,
-        bottom: 45,
-        left: 100
+        display: 'inline-block',
+        padding: 10
     }
 };
 
@@ -72,9 +62,7 @@ class TattooDetailsTab extends Component {
             },
         };
         this.state = {
-            useActualSize: false,
-            otherDeposit: '',
-            otherDepositError: 'Please enter a deposit'
+            useActualSize: false
         }
     }
     
@@ -187,7 +175,7 @@ class TattooDetailsTab extends Component {
                         <div key={field.id}>
                             <h3>{field.label}</h3>
                             <RadioButtonGroup
-                                style={style.radioGroup}
+                                style={style.group}
                                 name={field.id}
                                 valueSelected={this.props.formValues[field.id].value}
                                 onChange={(event, value) => {
@@ -255,59 +243,6 @@ class TattooDetailsTab extends Component {
                             errorText={this.props.formValues[field.id].errorText}
                             onFieldChange={this.props.onFieldChange}
                         />
-                    );
-                case 'deposit':
-                    const value = this.props.formValues[field.id].value;
-                    return (
-                        <div key={field.id}>
-                            <h3>{field.label}</h3>
-                            <RadioButtonGroup
-                                style={style.radioGroup}
-                                name={field.id}
-                                valueSelected={value}
-                                onChange={(event, v) => {
-                                    if (v != 80 && v != 150 && v != 350) {
-                                        this.props.onFieldChange(field.id, v, this.state.otherDepositError)
-                                    } else {
-                                        this.props.onFieldChange(field.id, v, null)
-                                    }
-                                }}
-                            >
-                                <RadioButton
-                                    value={80}
-                                    label='$80'
-                                    style={style.radioItem}
-                                />
-                                <RadioButton
-                                    value={150}
-                                    label='$150'
-                                    style={style.radioItem}
-                                />
-                                <RadioButton
-                                    value={350}
-                                    label='$350'
-                                    style={style.radioItem}
-                                />
-                                <RadioButton
-                                    value={this.state.otherDeposit}
-                                    label='Other:'
-                                    style={style.radioItem}
-                                />
-                            </RadioButtonGroup>
-                            <TextField
-                                style={style.otherDeposit}
-                                name='otherDeposit'
-                                onChange={(_, v) => {
-                                    // If a deposit value is entered, call onFieldChange with no errors
-                                    const error = v.length ? null : 'Please enter a deposit';
-                                    this.setState({
-                                            otherDeposit: v,
-                                            otherDepositError: error
-                                        });
-                                    this.props.onFieldChange('deposit', v, error);
-                                }}
-                            />
-                        </div>
                     )
             }
         });

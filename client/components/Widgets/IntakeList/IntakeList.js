@@ -167,6 +167,6 @@ export default IntakeList = createContainer(() => {
 
     return {
         subReady: subscription.ready(),
-        data: Intake.find({bookingPending: true}, {sort: {date: -1}}).fetch()
+        data: Intake.find({}, {sort: {date: -1}}).fetch()
     }
 }, IntakeList);

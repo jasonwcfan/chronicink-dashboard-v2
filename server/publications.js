@@ -7,7 +7,7 @@ import Studio from '../imports/Studio/studio';
 import TattooStyle from '../imports/TattooStyle/tattooStyle';
 
 Meteor.publish('intake', function() {
-    return Intake.find({bookingPending: true});
+    return Intake.find({});
 });
 
 Meteor.publish('artist', function() {
