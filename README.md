@@ -53,13 +53,13 @@ Install [Meteor Up](https://github.com/zodern/meteor-up) with
 
 `npm install -g mup`
 
-In the `.deploy` directory of the project, there is a `mup.js` file that specifies the configuration. Under the `servers` property there are keys `one`, `two`, etc that have the specifications for different servers we can deploy to. The one with host `dashboard.chronicinktattoo.com` is the production server. Under the `meteor.servers` setting, specify which of the servers you want to deploy to when you run the deployment command. There is also a `settings.json` file that specifies what settings to pass to the Meteor instance that is deployed.
+In the `.deploy` directory of the project, there is a `mup.js` file that specifies the configuration. Under the `servers` property there are keys `one`, `two`, etc that have the specifications for different servers we can deploy to. The one with host `dashboard.chronicinktattoo.com` is the production server. Under the `meteor.servers` setting, specify which of the servers you want to deploy to when you run the deployment command. Change the ROOT_URL environment variable to the url of the server you are deploying to this time. There is also a `settings.json` file that specifies what settings to pass to the Meteor instance that is deployed.
 
 In the `.deploy` directory, just run 
 
 `mup deploy`
 
-to deploy to the server(s) specified in `mup.js`. Deployments done using mup run in a docker container that can be accessed with the commands:
+to deploy to the server specified in `mup.js`. Deployments done using mup run in a docker container that can be accessed with the commands:
 
 `docker exec -it chronicink-dashboard bash` for the Meteor instance.
 
