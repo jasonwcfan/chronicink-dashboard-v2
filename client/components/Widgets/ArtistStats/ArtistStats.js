@@ -8,7 +8,6 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import UpdateIcon from 'material-ui/svg-icons/action/update';
-import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import Artist from '../../../../imports/Artist/artist';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Moment from 'moment-timezone';
