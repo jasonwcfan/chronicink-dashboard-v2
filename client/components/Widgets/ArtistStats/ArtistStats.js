@@ -39,15 +39,7 @@ const style = {
         height:'70vh',
         overflowY: 'hidden'
     },
-    listItemContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'space-between',
-        justifyContent: 'space-between'
     },
-    listItemRightLabel: {
-        position: 'absolute',
-        right: 10
     }
 };
 
@@ -91,17 +83,6 @@ class ArtistStats extends Component {
 
                 return (
 
-                <TableRow key={artist.calendarID}>
-                    <TableRowColumn>{artist.name}</TableRowColumn>
-                    <TableRowColumn>{message}</TableRowColumn>
-                    <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
-                </TableRow>
-
-                    // <ListItem key={artist.calendarID} primaryText={artist.name}>
-                    //     <div style={style.listItemContainer} >
-                    //         <div style={style.listItemRightLabel}>{message }</div>
-                    //     </div>
-                    // </ListItem>
                 )
             });
         }
@@ -161,18 +142,13 @@ class ArtistStats extends Component {
                 </div>
                 <Divider />
                 {/*<List style={style.list}>*/}
-                    {/*{this._renderArtistStats()}*/}
                 {/*</List>*/}
 
                 <Table selectable={false} fixedHeader={true} style={style.table}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
-                            <TableHeaderColumn>Name</TableHeaderColumn>
-                            <TableHeaderColumn tooltip="Today Onward">Hours Booked</TableHeaderColumn>
-                            <TableHeaderColumn>Earliest Opening</TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
-                    <TableBody displayRowCheckbox={false}>
                         {this._renderArtistStats()}
                     </TableBody>
                 </Table>

@@ -13,6 +13,7 @@ import {
 import chronicInkMuiTheme from '../../theme/chronicInkMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import colors from '../../theme/colors'
 import defaultFields from '../../constants/defaultIntakeFormFields';
 import medicalConditions from '../../constants/medicalConditions';
 import disclaimerAgreements from '../../constants/defaultDisclaimerAgreements';
@@ -36,7 +37,8 @@ const style = {
         }
     },
     navButton: {
-        margin: 10
+        margin: 10,
+        backgroundColor: colors.CitGold
     },
     navButtonContainer: {
         display: 'flex',

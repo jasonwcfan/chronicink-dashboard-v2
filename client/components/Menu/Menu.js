@@ -4,11 +4,6 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
-const style = {
-    iconButton: {
-        color: 'white'
-    }
-}
 
 class Menu extends Component {
     constructor() {
@@ -28,7 +23,7 @@ class Menu extends Component {
             <IconMenu
                 {...this.props}
                 iconButtonElement={
-                    <IconButton><MoreVertIcon style={style.iconButton}/></IconButton>
+                    <IconButton><MoreVertIcon color="white" /></IconButton>
                 }
                 targetOrigin={{horizontal: 'right', vertical: 'top'}}
                 anchorOrigin={{horizontal: 'right', vertical: 'top'}}
