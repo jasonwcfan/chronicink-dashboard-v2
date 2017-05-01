@@ -6,7 +6,7 @@ export default defaultBookingFormFields = [
         id: 'studioLocation',
         label: 'Studio Location',
         inputType: 'radio',
-        value: 'toronto',
+        value: '',
         valid: true,
         required: true,
         items: [{
@@ -24,7 +24,7 @@ export default defaultBookingFormFields = [
         id: 'customTattoo',
         label: 'Custom Tattoo?',
         inputType: 'radio',
-        value: 'yes',
+        value: '',
         valid: true,
         required: true,
         items: [{
@@ -39,7 +39,7 @@ export default defaultBookingFormFields = [
         id: 'coverup',
         label: 'Coverup?',
         inputType: 'radio',
-        value: 'no',
+        value: '',
         valid: true,
         required: true,
         items: [{
@@ -183,9 +183,9 @@ export default defaultBookingFormFields = [
     {
         id: 'deposit',
         label: 'Deposit',
-        inputType: 'textField',
+        inputType: 'deposit',
         value: '',
-        errorText: null,
+        valid: false,
         required: true
-    },
+    }
 ];
