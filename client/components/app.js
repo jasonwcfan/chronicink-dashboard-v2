@@ -3,7 +3,6 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import colors from '../theme/colors';
 import Paper from 'material-ui/Paper';
 import AppBar from 'material-ui/AppBar';
 import SideNavBar from './SideNavBar';
@@ -21,8 +20,7 @@ const style = {
         position: 'fixed',
         right: 0,
         left: 240,
-        width: 'initial',
-        backgroundColor: colors.CitDarkGrey
+        width: 'initial'
 
     },
     sideNavBar: {
