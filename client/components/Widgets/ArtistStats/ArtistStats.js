@@ -8,6 +8,8 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import UpdateIcon from 'material-ui/svg-icons/action/update';
+import DownArrow from 'material-ui/svg-icons/navigation/arrow-drop-down';
+import UpArrow from 'material-ui/svg-icons/navigation/arrow-drop-up';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import Artist from '../../../../imports/Artist/artist';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
@@ -39,15 +41,12 @@ const style = {
         height:'70vh',
         overflowY: 'hidden'
     },
-    listItemContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'space-between',
-        justifyContent: 'space-between'
+    tableBody: {
+        overflowY: 'auto',
+        height:'55vh'
     },
-    listItemRightLabel: {
-        position: 'absolute',
-        right: 10
+    tableHeaderColumn: {
+        justifyContent: 'space-between'
     }
 };
 
@@ -58,12 +57,29 @@ class ArtistStats extends Component {
         this.state = {
             timeFrame: 30,
             artists: [],
+            sortByName: 0,
+            sortByHours: 0,
+            sortByEarliestOpening: 0
         };
 
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
         this._handleRefreshArtistStats = this._handleRefreshArtistStats.bind(this);
 
         this._handleRefreshArtistStats(this.state.timeFrame);
+    }
+
+    _sort(field) {
+        // Get field being sorted
+        let key = 'sortBy' + String(field);
+
+        // Change sort mode
+        this.state[key]++;
+        if (this.state[key] > 3) {
+            this.state[key] = 0;
+        }
+        console.log(this.state[key]);
+
+        //
     }
 
     _handleRefreshArtistStats(timeFrame) {
@@ -91,17 +107,12 @@ class ArtistStats extends Component {
 
                 return (
 
-                <TableRow key={artist.calendarID}>
-                    <TableRowColumn>{artist.name}</TableRowColumn>
-                    <TableRowColumn>{message}</TableRowColumn>
-                    <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
-                </TableRow>
+                    <TableRow key={artist.calendarID}>
+                        <TableRowColumn>{artist.name}</TableRowColumn>
+                        <TableRowColumn>{message}</TableRowColumn>
+                        <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
+                    </TableRow>
 
-                    // <ListItem key={artist.calendarID} primaryText={artist.name}>
-                    //     <div style={style.listItemContainer} >
-                    //         <div style={style.listItemRightLabel}>{message }</div>
-                    //     </div>
-                    // </ListItem>
                 )
             });
         }
@@ -161,18 +172,27 @@ class ArtistStats extends Component {
                 </div>
                 <Divider />
                 {/*<List style={style.list}>*/}
-                    {/*{this._renderArtistStats()}*/}
+                {/*{this._renderArtistStats()}*/}
                 {/*</List>*/}
 
                 <Table selectable={false} fixedHeader={true} style={style.table}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
-                            <TableHeaderColumn>Name</TableHeaderColumn>
-                            <TableHeaderColumn tooltip="Today Onward">Hours Booked</TableHeaderColumn>
-                            <TableHeaderColumn>Earliest Opening</TableHeaderColumn>
+                            <TableHeaderColumn style={style.tableHeaderColumn}>
+                                Name
+                                <IconButton onTouchTap={this._sort('Name')}><UpArrow/></IconButton>
+                            </TableHeaderColumn>
+                            <TableHeaderColumn tooltip="Today Onward">
+                                Hours Booked
+                                <IconButton onTouchTap={this._sort('Hours')}><UpArrow/></IconButton>
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                Earliest Opening
+                                <IconButton onTouchTap={this._sort('EarliestOpening')}><UpArrow/></IconButton>
+                            </TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
-                    <TableBody displayRowCheckbox={false}>
+                    <TableBody displayRowCheckbox={false} style={style.tableBody}>
                         {this._renderArtistStats()}
                     </TableBody>
                 </Table>
@@ -181,6 +201,7 @@ class ArtistStats extends Component {
         )
     }
 }
+
 
 export default ArtistStats = createContainer(({ params }) => {
     const subscription = Meteor.subscribe('artist');
