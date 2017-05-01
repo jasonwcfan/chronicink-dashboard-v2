@@ -39,7 +39,12 @@ const style = {
         height:'70vh',
         overflowY: 'hidden'
     },
+    tableBody: {
+        overflowY: 'auto',
+        height:'55vh'
     },
+    tableHeaderColumn: {
+        justifyContent: 'space-between'
     }
 };
 
@@ -50,6 +55,9 @@ class ArtistStats extends Component {
         this.state = {
             timeFrame: 30,
             artists: [],
+            sortByName: 0,
+            sortByHours: 0,
+            sortByEarliestOpening: 0
         };
 
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
@@ -82,6 +90,12 @@ class ArtistStats extends Component {
 
 
                 return (
+
+                    <TableRow key={artist.calendarID}>
+                        <TableRowColumn>{artist.name}</TableRowColumn>
+                        <TableRowColumn>{message}</TableRowColumn>
+                        <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
+                    </TableRow>
 
                 )
             });
@@ -141,14 +155,22 @@ class ArtistStats extends Component {
                     </IconMenu>
                 </div>
                 <Divider />
-                {/*<List style={style.list}>*/}
-                {/*</List>*/}
 
                 <Table selectable={false} fixedHeader={true} style={style.table}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
+                            <TableHeaderColumn style={style.tableHeaderColumn}>
+                                Name
+                            </TableHeaderColumn>
+                            <TableHeaderColumn tooltip="Today Onward">
+                                Hours Booked
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                Earliest Opening
+                            </TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
+                    <TableBody displayRowCheckbox={false} style={style.tableBody}>
                         {this._renderArtistStats()}
                     </TableBody>
                 </Table>
@@ -157,6 +179,7 @@ class ArtistStats extends Component {
         )
     }
 }
+
 
 export default ArtistStats = createContainer(({ params }) => {
     const subscription = Meteor.subscribe('artist');
