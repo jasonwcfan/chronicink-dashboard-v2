@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import Paper from 'material-ui/Paper';
 import Colors from 'material-ui/styles/colors';
-import Divider from 'material-ui/Divider';
-import { List, ListItem } from 'material-ui/List';
+import Divider from 'material-ui/Divider';;
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
@@ -11,10 +10,12 @@ import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import UpdateIcon from 'material-ui/svg-icons/action/update';
 import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import Artist from '../../../../imports/Artist/artist';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import Moment from 'moment-timezone';
+
 
 const style = {
     widgetContainer: {
-        width: 300,
         maxHeight: '80vh',
         display: 'flex',
         flexDirection: 'column',
@@ -34,9 +35,9 @@ const style = {
     menuIcon: {
         display: 'inline'
     },
-    list: {
-        overflow: 'auto',
-        overflowX: 'hidden'
+    table: {
+        height:'70vh',
+        overflowY: 'hidden'
     },
     listItemContainer: {
         display: 'flex',
@@ -55,7 +56,8 @@ class ArtistStats extends Component {
         super(props);
 
         this.state = {
-            timeFrame: 30
+            timeFrame: 30,
+            artists: [],
         };
 
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
@@ -84,13 +86,22 @@ class ArtistStats extends Component {
             let key = 'hoursIn' + String(this.state.timeFrame) + 'Days';
 
             return this.props.artists.map((artist) => {
-                const message = artist[key] ?  artist[key] + ' hours booked': 'Error';
+                const message = artist[key] ?  artist[key] : 'Error';
+
+
                 return (
-                    <ListItem key={artist.calendarID} primaryText={artist.name}>
-                        <div style={style.listItemContainer} >
-                            <div style={style.listItemRightLabel}>{message }</div>
-                        </div>
-                    </ListItem>
+
+                <TableRow key={artist.calendarID}>
+                    <TableRowColumn>{artist.name}</TableRowColumn>
+                    <TableRowColumn>{message}</TableRowColumn>
+                    <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
+                </TableRow>
+
+                    // <ListItem key={artist.calendarID} primaryText={artist.name}>
+                    //     <div style={style.listItemContainer} >
+                    //         <div style={style.listItemRightLabel}>{message }</div>
+                    //     </div>
+                    // </ListItem>
                 )
             });
         }
@@ -149,9 +160,23 @@ class ArtistStats extends Component {
                     </IconMenu>
                 </div>
                 <Divider />
-                <List style={style.list}>
-                    {this._renderArtistStats()}
-                </List>
+                {/*<List style={style.list}>*/}
+                    {/*{this._renderArtistStats()}*/}
+                {/*</List>*/}
+
+                <Table selectable={false} fixedHeader={true} style={style.table}>
+                    <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+                        <TableRow>
+                            <TableHeaderColumn>Name</TableHeaderColumn>
+                            <TableHeaderColumn tooltip="Today Onward">Hours Booked</TableHeaderColumn>
+                            <TableHeaderColumn>Earliest Opening</TableHeaderColumn>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody displayRowCheckbox={false}>
+                        {this._renderArtistStats()}
+                    </TableBody>
+                </Table>
+
             </Paper>
         )
     }

@@ -1,40 +1,42 @@
 module.exports = {
-  servers: {
-    one: {
-      // host: 'ec2-35-163-139-178.us-west-2.compute.amazonaws.com',
-      host: 'dashboard.chronicinktattoo.com',
-      // username: 'ubuntu',
-      username: 'jason',
-      // pem: 'coil-website.pem'
-      password: 'Shift123!'
-      // or leave blank for authenticate from ssh-agent
-    }
-  },
-
-  meteor: {
-    name: 'chronicink-dashboard',
-    path: '../',
     servers: {
-      one: {}
-    },
-    buildOptions: {
-      serverOnly: true,
-    },
-    env: {
-      ROOT_URL: 'http://dashboard.chronicinktattoo.com',
-      // ROOT_URL: 'http://ec2-35-163-139-178.us-west-2.compute.amazonaws.com',
-      MONGO_URL: 'mongodb://localhost/meteor'
+        one: {
+            host: 'ec2-35-163-139-178.us-west-2.compute.amazonaws.com',
+            username: 'ubuntu',
+            pem: 'coil-website.pem'
+        },
+        two: {
+            host: 'dashboard.chronicinktattoo.com',
+            username: 'jason',
+            password: 'Shift123!'
+            // or leave blank for authenticate from ssh-agent
+        }
     },
 
-    dockerImage: 'abernix/meteord:base', 
-    deployCheckWaitTime: 60
-  },
+    meteor: {
+        name: 'chronicink-dashboard',
+        path: '../',
+        servers: {
+            one: {}
+        },
+        buildOptions: {
+            serverOnly: true,
+        },
+        env: {
+            // ROOT_URL: 'http://dashboard.chronicinktattoo.com',
+            ROOT_URL: 'http://ec2-35-163-139-178.us-west-2.compute.amazonaws.com',
+            MONGO_URL: 'mongodb://localhost/meteor'
+        },
 
-  mongo: {
-    oplog: true,
-    port: 27017,
-    servers: {
-      one: {},
+        dockerImage: 'abernix/meteord:base',
+        deployCheckWaitTime: 60
     },
-  },
+
+    mongo: {
+        oplog: true,
+        port: 27017,
+        servers: {
+            one: {},
+        },
+    },
 };

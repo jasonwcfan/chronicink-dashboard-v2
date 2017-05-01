@@ -78,7 +78,8 @@ GCalendar = {
             timeMax: timeMax.toISOString()
         }, function (err, res) {
             if (err) {
-                console.log(err);
+
+                //console.log(err);
                 callback(err, null);
                 return;
             }
@@ -93,10 +94,11 @@ GCalendar = {
                     bookedHours += eventLength;
                 }
             });
-            
+
             callback(null, bookedHours);
         })
     },
+
     /**
      * Create an event resource based on information from the BookingForm
      * @param form the BookingForm
@@ -104,6 +106,7 @@ GCalendar = {
      * @param artist
      * @returns {Array}
      */
+
     createEventResources: function(form, client, artist) {
         const bookings = form.bookings;
         const events = [];
@@ -159,7 +162,7 @@ GCalendar = {
 
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
         const today = new Moment();
-
+        
         oauth2Client.setCredentials({
             access_token: primaryUser.services.google.accessToken,
             refresh_token: primaryUser.services.google.refreshToken,
@@ -533,4 +536,56 @@ function encodeEmail(recipient, subject, body) {
     ].join('');
 
     return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
+}
+
+/**
+ * Check if there is an opening between today and the first event
+ * @param today - moment object of today's date
+ * @param firstEvent - first event returned by GCalendar API: res.items[0]
+ * @returns {{openingFound: boolean, earliestOpening: null}}
+ */
+function openingBeforeFirstEvent (today, firstEvent) {
+    let returnObj = {
+        found: false,
+        earliestOpening: null
+    }
+
+    if (eventIsDayOff(event)) {
+        // Check if there is a free day between today and first event
+        let daysBetweenTodayAndFirstEvent = Moment(firstEvent.start.dateTime).diff(today,'days');
+        if (daysBetweenTodayAndFirstEvent > 0 ) {
+            returnObj.found = true;
+            returnObj.earliestOpening = {
+                'startDateTime': today.add(1,'days').hour(12).minute(0).toDate(),
+                'endDateTime': firstEvent.start.dateTime
+            }
+        }
+        else {
+            // Check if there is at least 1 hr between now and first event
+
+            let hrsBetweenTodayAndFirstEvent = Moment(firstEvent.start.dateTime).diff(today,'hours');
+            if (hrsBetweenTodayAndFirstEvent >= 1 ) {
+                returnObj.found = true;
+                returnObj.earliestOpening = {
+                    'startDateTime': today.toDate(),
+                    'endDateTime': firstEvent.start.dateTime
+                }
+            }
+
+        }
+    }
+
+    return returnObj;
+}
+
+/**
+ * Check if an event is a day off
+ * @param event: event object returned by GCalendar API
+ * @returns {*|boolean}
+ */
+function eventIsDayOff (event) {
+    let fullDayEvent = event.start.date && event.end.date;
+    let markedAsOff = event.summary.toLowerCase().includes('off');
+
+    return fullDayEvent && markedAsOff;
 }
