@@ -191,7 +191,7 @@ GCalendar = {
             let days = {};
 
             // The first and last dates in the returned items
-            const firstDay = Moment(res.items[0].start.date || res.items[0].start.dateTime);
+            const firstDay =  Moment(today).add(1,'days');
             const lastDay = Moment(res.items[res.items.length - 1].start.date || res.items[res.items.length - 1]
                     .start.dateTime);
 
@@ -536,56 +536,4 @@ function encodeEmail(recipient, subject, body) {
     ].join('');
 
     return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
-}
-
-/**
- * Check if there is an opening between today and the first event
- * @param today - moment object of today's date
- * @param firstEvent - first event returned by GCalendar API: res.items[0]
- * @returns {{openingFound: boolean, earliestOpening: null}}
- */
-function openingBeforeFirstEvent (today, firstEvent) {
-    let returnObj = {
-        found: false,
-        earliestOpening: null
-    }
-
-    if (eventIsDayOff(event)) {
-        // Check if there is a free day between today and first event
-        let daysBetweenTodayAndFirstEvent = Moment(firstEvent.start.dateTime).diff(today,'days');
-        if (daysBetweenTodayAndFirstEvent > 0 ) {
-            returnObj.found = true;
-            returnObj.earliestOpening = {
-                'startDateTime': today.add(1,'days').hour(12).minute(0).toDate(),
-                'endDateTime': firstEvent.start.dateTime
-            }
-        }
-        else {
-            // Check if there is at least 1 hr between now and first event
-
-            let hrsBetweenTodayAndFirstEvent = Moment(firstEvent.start.dateTime).diff(today,'hours');
-            if (hrsBetweenTodayAndFirstEvent >= 1 ) {
-                returnObj.found = true;
-                returnObj.earliestOpening = {
-                    'startDateTime': today.toDate(),
-                    'endDateTime': firstEvent.start.dateTime
-                }
-            }
-
-        }
-    }
-
-    return returnObj;
-}
-
-/**
- * Check if an event is a day off
- * @param event: event object returned by GCalendar API
- * @returns {*|boolean}
- */
-function eventIsDayOff (event) {
-    let fullDayEvent = event.start.date && event.end.date;
-    let markedAsOff = event.summary.toLowerCase().includes('off');
-
-    return fullDayEvent && markedAsOff;
 }
