@@ -11,7 +11,7 @@ import UpdateIcon from 'material-ui/svg-icons/action/update';
 import FlatButton from 'material-ui/FlatButton';
 import SortUpIcon from 'material-ui/svg-icons/navigation/arrow-drop-up';
 import SortDownIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
-import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
+// import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import Artist from '../../../../imports/Artist/artist';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Moment from 'moment-timezone';
@@ -261,13 +261,6 @@ class ArtistStats extends Component {
                                     labelPosition="before"
                                     icon={this._renderSortIcon('sortByEarliestOpening')}
                                 />
-                                Name
-                            </TableHeaderColumn>
-                            <TableHeaderColumn tooltip="Today Onward">
-                                Hours Booked
-                            </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                Earliest Opening
                             </TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
