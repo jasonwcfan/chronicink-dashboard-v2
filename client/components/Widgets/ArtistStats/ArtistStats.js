@@ -8,6 +8,10 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import UpdateIcon from 'material-ui/svg-icons/action/update';
+import FlatButton from 'material-ui/FlatButton';
+import SortUpIcon from 'material-ui/svg-icons/navigation/arrow-drop-up';
+import SortDownIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
+import { startConsultation } from '../../../actions/Dashboard/Widgets/IntakeList';
 import Artist from '../../../../imports/Artist/artist';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Moment from 'moment-timezone';
@@ -44,7 +48,11 @@ const style = {
     },
     tableHeaderColumn: {
         justifyContent: 'space-between'
-    }
+    },
+    sortButtons: {
+        width: '100%',
+        textAlign: 'left'
+    },
 };
 
 class ArtistStats extends Component {
@@ -54,15 +62,82 @@ class ArtistStats extends Component {
         this.state = {
             timeFrame: 30,
             artists: [],
-            sortByName: 0,
-            sortByHours: 0,
-            sortByEarliestOpening: 0
+            sortByName: 'none', //'none' or 'asc' or 'desc'
+            sortByHoursBooked: 'none', //'none' or 'asc' or 'desc'
+            sortByEarliestOpening: 'none' //'none' or 'asc' or 'desc'
         };
 
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
         this._handleRefreshArtistStats = this._handleRefreshArtistStats.bind(this);
+        this._sortByName = this._sortByName.bind(this);
+        this._sortByHoursBooked = this._sortByHoursBooked.bind(this);
+        this._sortByEarliestOpening = this._sortByEarliestOpening.bind(this);
 
         this._handleRefreshArtistStats(this.state.timeFrame);
+    }
+
+    _sortByName() {
+
+        switch(this.state.sortByName) {
+            case 'asc':
+                this.setState({sortByName:'desc'});
+                break;
+            case 'desc':
+                this.setState({sortByName:'none'});
+                break;
+            case 'none':
+                this.setState({sortByName:'asc'});
+                break;
+            default:
+                this.setState({sortByName:'none'});
+        }
+
+    }
+
+    _sortByHoursBooked() {
+        switch(this.state.sortByHoursBooked) {
+            case 'asc':
+                this.setState({sortByHoursBooked:'desc'});
+                break;
+            case 'desc':
+                this.setState({sortByHoursBooked:'none'});
+                break;
+            case 'none':
+                this.setState({sortByHoursBooked:'asc'});
+                break;
+            default:
+                this.setState({sortByHoursBooked:'none'});
+        }
+    }
+
+    _sortByEarliestOpening() {
+        switch(this.state.sortByEarliestOpening) {
+            case 'asc':
+                this.setState({sortByEarliestOpening:'desc'});
+                break;
+            case 'desc':
+                this.setState({sortByEarliestOpening:'none'});
+                break;
+            case 'none':
+                this.setState({sortByEarliestOpening:'asc'});
+                break;
+            default:
+                this.setState({sortByEarliestOpening:'none'});
+        }
+    }
+
+    _renderSortIcon(fieldName){
+        let icon = null;
+
+        if (this.state[fieldName]=='asc') {
+            icon=<SortUpIcon/>;
+        }
+        else if (this.state[fieldName]=='desc') {
+            icon=<SortDownIcon/>;
+        }
+
+        return icon;
+
     }
 
     _handleRefreshArtistStats(timeFrame) {
@@ -159,6 +234,33 @@ class ArtistStats extends Component {
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
                             <TableHeaderColumn style={style.tableHeaderColumn}>
+                                <FlatButton
+                                    label="Name"
+                                    style={style.sortButtons}
+                                    onTouchTap={this._sortByName}
+                                    labelPosition="before"
+                                    icon={this._renderSortIcon('sortByName')}
+                                />
+
+
+                            </TableHeaderColumn>
+                            <TableHeaderColumn tooltip="Today Onward">
+                                <FlatButton
+                                    label="Hours Booked"
+                                    style={style.sortButtons}
+                                    onTouchTap={this._sortByHoursBooked}
+                                    labelPosition="before"
+                                    icon={this._renderSortIcon('sortByHoursBooked')}
+                                />
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                <FlatButton
+                                    label="Earliest Opening"
+                                    style={style.sortButtons}
+                                    onTouchTap={this._sortByEarliestOpening}
+                                    labelPosition="before"
+                                    icon={this._renderSortIcon('sortByEarliestOpening')}
+                                />
                                 Name
                             </TableHeaderColumn>
                             <TableHeaderColumn tooltip="Today Onward">
