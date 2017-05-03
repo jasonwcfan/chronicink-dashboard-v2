@@ -78,8 +78,7 @@ GCalendar = {
             timeMax: timeMax.toISOString()
         }, function (err, res) {
             if (err) {
-
-                //console.log(err);
+                console.log(err);
                 callback(err, null);
                 return;
             }
@@ -161,8 +160,8 @@ GCalendar = {
     getEarliestOpening(calendarID, callback) {
 
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
-        const today = new Moment();
-        
+        const tomorrow = new Moment().tz('America/Toronto').hour(11).minute(59).add(1,'days');
+
         oauth2Client.setCredentials({
             access_token: primaryUser.services.google.accessToken,
             refresh_token: primaryUser.services.google.refreshToken,
@@ -175,7 +174,7 @@ GCalendar = {
             maxResults: 250,
             singleEvents: true, // Break recurring events into a single instances
             orderBy: 'startTime',
-            timeMin: today.toISOString(), // List all events from today onward
+            timeMin: tomorrow.toISOString(), // List all events from tomorrow onward
         }, (err, res) => {
             if (err) {
                 callback(err, null);
@@ -191,7 +190,7 @@ GCalendar = {
             let days = {};
 
             // The first and last dates in the returned items
-            const firstDay =  Moment(today).add(1,'days');
+            const firstDay =  Moment(tomorrow);
             const lastDay = Moment(res.items[res.items.length - 1].start.date || res.items[res.items.length - 1]
                     .start.dateTime);
 
@@ -211,15 +210,52 @@ GCalendar = {
                 if (event.start.date && event.end.date) {
                     // This indicates this is a day off
                     if (event.summary.toLowerCase().indexOf('off') > -1) {
-                        days[dateStr].off = true;
+
+                        // If the event spans multiple days
+                        if (Moment(event.end.date).diff(Moment(event.start.date),'days') > 1) {
+
+                            // If the event starts before tomorrow, only consider dates tomorrow and onward
+                            let eventStart = Moment(event.start.date).isBefore(tomorrow) ? Moment(tomorrow) :
+                                Moment(event.start.date);
+                            let eventEnd = Moment(event.end.date);
+
+                            // Set each day during the span of the event to 'off'
+                            for (let day = eventStart; day.diff(eventEnd,'days') <= 0 ;day.add(1,'days')) {
+                                let dateStr2 = day.format('YYYY-MM-DD');
+                                days[dateStr2].off = true;
+                            }
+                        }
+                        else {
+                            days[dateStr].off = true;
+                        }
                         return;
                     }
                     return;
                 }
-                // This is a regular event, on a non off day add the event to that bucket
-                if (!days[dateStr].off) {
-                    days[dateStr].events.push(event);
+
+                // If it's an off event that spans multiple days but has a dateTime property
+                if (event.summary.toLowerCase().indexOf('off') > -1) {
+                    if (Moment(event.end.dateTime).diff(Moment(event.start.dateTime),'days') > 1) {
+
+                        // If the event starts before tomorrow, only consider dates tomorrow and onward
+                        let eventStart = Moment(event.start.dateTime).isBefore(tomorrow) ? Moment(tomorrow) :
+                            Moment(event.start.dateTime);
+                        let eventEnd = Moment(event.end.dateTime);
+
+                        // Set each day during the span of the event to 'off'
+                        for (let day = eventStart; day.diff(eventEnd,'days') <= 0 ;day.add(1,'days')) {
+                            let dateStr2 = day.format('YYYY-MM-DD');
+                            days[dateStr2].off = true;
+                        }
+                    }
                 }
+                else {
+                    // This is a regular event, on a non off day add the event to that bucket
+                    if (!days[dateStr].off) {
+                        days[dateStr].events.push(event);
+                    }
+                }
+
             });
 
             // Store the first opening, with Moments
