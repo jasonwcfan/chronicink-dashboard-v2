@@ -52,7 +52,7 @@ const style = {
     sortButtons: {
         width: '100%',
         textAlign: 'left'
-    }
+    },
 };
 
 class ArtistStats extends Component {
@@ -261,6 +261,13 @@ class ArtistStats extends Component {
                                     labelPosition="before"
                                     icon={this._renderSortIcon('sortByEarliestOpening')}
                                 />
+                                Name
+                            </TableHeaderColumn>
+                            <TableHeaderColumn tooltip="Today Onward">
+                                Hours Booked
+                            </TableHeaderColumn>
+                            <TableHeaderColumn>
+                                Earliest Opening
                             </TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
