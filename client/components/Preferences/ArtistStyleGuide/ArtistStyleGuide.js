@@ -3,6 +3,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import Slider from 'material-ui/Slider';
+import RaisedButton from 'material-ui/RaisedButton';
 import tattooStyles from '../../../constants/styles';
 
 const style = {
@@ -11,27 +12,24 @@ const style = {
     },
     styleSlidersContainer: {
         display: 'flex',
-        height: 124,
         flexDirection: 'row',
         justifyContent: 'space-around',
         flexWrap: 'wrap'
     },
     sliderContainer: {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        height: '100%',
-        width: 72,
-        margin: 24,
-        marginBottom: 48
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        // alignItems: 'center',
+        height: 24,
+        width: '100%',
+        margin: 12
     },
     slider: {
-        height: '100%'
+        width: '100%'
     },
     sliderLabel: {
-        marginTop: 10,
-        textAlign: 'center'
+        width: 224
     }
 };
 
@@ -44,7 +42,8 @@ class ArtistStyleGuide extends Component {
             selectedArtist: null,
             // An object where keys are styles and values are integers from 0 to 100 representing the selected artist's
             // preference for that style
-            styleValues: {}
+            styleValues: {},
+            saveDisabled: false,
         };
 
         this._handleArtistChange = this._handleArtistChange.bind(this);
@@ -109,6 +108,7 @@ class ArtistStyleGuide extends Component {
             }
             return (
                 <div style={style.sliderContainer} key={tattooStyle.value}>
+                    <div style={style.sliderLabel}>{tattooStyle.label}</div>
                     <Slider
                         ref={tattooStyle.value}
                         style={style.slider}
@@ -116,11 +116,10 @@ class ArtistStyleGuide extends Component {
                         min={0}
                         max={100}
                         step={1}
-                        axis='y'
+                        axis='x'
                         value={sliderValue}
                         onDragStop={() => this._handleSliderStop(tattooStyle.value)}
                     />
-                    <div style={style.sliderLabel}>{tattooStyle.label}</div>
                 </div>
             );
         });
@@ -148,19 +147,25 @@ class ArtistStyleGuide extends Component {
                         Use the sliders to indicate how often you would like to be booked for each style
                     </h3>
                     <p>
-                        The closer you drag each slider to the top, the more often you will be booked for that style.
+                        The closer you drag each slider to the end, the more often you will be booked for that style.
                         <br/>
                         <br/>
-                        Drag to top = As often as possible
+                        Drag to right = As often as possible
                         <br/>
-                        Drag to bottom = Never
+                        Drag to left = Never
                     </p>
                     <div style={style.styleSlidersContainer}>
                         {this._renderStyleGuide(tattooStyles)}
                     </div>
+                    <RaisedButton
+                        label='Save'
+                        primary={true}
+                        disabled={this.state.saveDisabled}
+                        onTouchTap={() => {this.setState({saveDisabled: true})}}
+                    />
                 </div> : null}
             </div>
-        ) : null;
+        ) : null
     }
 };
 
