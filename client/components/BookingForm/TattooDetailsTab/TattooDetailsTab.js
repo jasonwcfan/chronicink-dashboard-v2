@@ -253,7 +253,6 @@ class TattooDetailsTab extends Component {
                             formValues={this.props.formValues}
                             touched={this.props.formValues[field.id].touched}
                             errorText={this.props.formValues[field.id].errorText}
-                            onFieldChange={this.props.onFieldChange}
                         />
                     );
                 case 'deposit':
