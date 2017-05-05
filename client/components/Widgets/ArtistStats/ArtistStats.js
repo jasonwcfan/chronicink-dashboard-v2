@@ -142,7 +142,7 @@ class ArtistStats extends Component {
     _handleRefreshArtistStats(timeFrame) {
         // Calls back-end method to store artist hours in database
         Meteor.call('artist.getHoursBooked', timeFrame);
-        Meteor.call('artist.getEarliestOpening');
+        // Meteor.call('artist.getEarliestOpening');
     }
 
     _handleChangeTimeFrame(newTimeFrame) {
@@ -167,7 +167,7 @@ class ArtistStats extends Component {
                     <TableRow key={artist.calendarID}>
                         <TableRowColumn>{artist.name}</TableRowColumn>
                         <TableRowColumn>{message}</TableRowColumn>
-                        <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
+                        {/*<TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>*/}
                     </TableRow>
 
                 )
@@ -252,15 +252,15 @@ class ArtistStats extends Component {
                                     icon={this._renderSortIcon('sortByHoursBooked')}
                                 />
                             </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                <FlatButton
-                                    label="Earliest Opening"
-                                    style={style.sortButtons}
-                                    onTouchTap={this._sortByEarliestOpening}
-                                    labelPosition="before"
-                                    icon={this._renderSortIcon('sortByEarliestOpening')}
-                                />
-                            </TableHeaderColumn>
+                            {/*<TableHeaderColumn>*/}
+                                {/*<FlatButton*/}
+                                    {/*label="Earliest Opening"*/}
+                                    {/*style={style.sortButtons}*/}
+                                    {/*onTouchTap={this._sortByEarliestOpening}*/}
+                                    {/*labelPosition="before"*/}
+                                    {/*icon={this._renderSortIcon('sortByEarliestOpening')}*/}
+                                {/*/>*/}
+                            {/*</TableHeaderColumn>*/}
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false} style={style.tableBody}>
