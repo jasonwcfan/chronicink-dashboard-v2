@@ -68,57 +68,220 @@ class ArtistStats extends Component {
 
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
         this._handleRefreshArtistStats = this._handleRefreshArtistStats.bind(this);
+
         this._sortByName = this._sortByName.bind(this);
+        this._sortByNameAscending = this._sortByNameAscending.bind(this);
+        this._sortByNameDescending = this._sortByNameDescending.bind(this);
+
         this._sortByHoursBooked = this._sortByHoursBooked.bind(this);
+
         this._sortByEarliestOpening = this._sortByEarliestOpening.bind(this);
+        this._sortByEarliestOpeningAscending = this._sortByEarliestOpeningAscending.bind(this);
+        this._sortByEarliestOpeningDescending = this._sortByEarliestOpeningDescending.bind(this);
 
         this._handleRefreshArtistStats(this.state.timeFrame);
     }
 
-    _sortByName() {
+    _sortByNameAscending() {
+        this.props.artists.sort(function (a,b){
+            var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+            var nameB = b.name.toUpperCase(); // ignore upper and lowercase
 
+            if (nameA > nameB) {
+                return 1;
+            }
+            else if (nameA < nameB) {
+                return -1;
+            }
+            else {
+                // names must be equal
+                return 0
+            }
+        });
+    }
+
+    _sortByNameDescending() {
+        this.props.artists.sort(function (a,b){
+            var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+            var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+
+            if (nameA > nameB) {
+                return -1;
+            }
+            else if (nameA < nameB) {
+                return 1;
+            }
+            else {
+                // names must be equal
+                return 0
+            }
+        });
+    }
+
+    _sortByName() {
         switch(this.state.sortByName) {
             case 'asc':
                 this.setState({sortByName:'desc'});
+                this.setState({sortByHoursBooked:'none'});
+                this.setState({sortByEarliestOpening:'none'});
+                this._sortByNameDescending();
                 break;
             case 'desc':
                 this.setState({sortByName:'none'});
                 break;
             case 'none':
                 this.setState({sortByName:'asc'});
+                this.setState({sortByHoursBooked:'none'});
+                this.setState({sortByEarliestOpening:'none'});
+                this._sortByNameAscending();
                 break;
             default:
                 this.setState({sortByName:'none'});
         }
+    }
 
+    _sortByHoursBookedAscending() {
+        this.props.artists.sort(function (a,b){
+            // Create key for # of hours in timeFrame
+            let key = 'hoursIn' + String(this.state.timeFrame) + 'Days';
+
+            var hoursBookedA = a[key] ? a[key] : null;
+            var hoursBookedB = b[key] ? b[key] : null;
+
+            if (hoursBookedA && hoursBookedB) {
+                return hoursBookedA - hoursBookedB;
+            }
+            else if (hoursBookedA && !hoursBookedB) {
+                return -1;
+            }
+            else if (!hoursBookedA && hoursBookedB) {
+                return 1;
+            }
+            else if (!hoursBookedA && !hoursBookedB) {
+                return 0;
+            }
+        });
+    }
+
+    _sortByHoursBookedDescending() {
+        this.props.artists.sort(function (a,b){
+            // Create key for # of hours in timeFrame
+            let key = 'hoursIn' + String(this.state.timeFrame) + 'Days';
+
+            var hoursBookedA = a[key] != null ? a[key] : null;
+            var hoursBookedB = b[key] != null ? b[key] : null;
+
+            if (hoursBookedA && hoursBookedB) {
+                return hoursBookedB - hoursBookedA;
+            }
+            else if (hoursBookedA && !hoursBookedB) {
+                return -1;
+            }
+            else if (!hoursBookedA && hoursBookedB) {
+                return 1;
+            }
+            else if (!hoursBookedA && !hoursBookedB) {
+                return 0;
+            }
+        });
     }
 
     _sortByHoursBooked() {
         switch(this.state.sortByHoursBooked) {
             case 'asc':
                 this.setState({sortByHoursBooked:'desc'});
+                this.setState({sortByName:'none'});
+                this.setState({sortByEarliestOpening:'none'});
+                this._sortByEarliestOpeningDescending();
                 break;
             case 'desc':
                 this.setState({sortByHoursBooked:'none'});
                 break;
             case 'none':
                 this.setState({sortByHoursBooked:'asc'});
+                this.setState({sortByName:'none'});
+                this.setState({sortByEarliestOpening:'none'});
+                this._sortByEarliestOpeningAscending();
                 break;
             default:
                 this.setState({sortByHoursBooked:'none'});
         }
     }
 
+    _sortByEarliestOpeningAscending() {
+        this.props.artists.sort(function (a,b){
+            var earliestOpeningA = a.earliestOpening != null ? Moment(a.earliestOpening.startTime) : null;
+            var earliestOpeningB = b.earliestOpening != null ? Moment(b.earliestOpening.startTime) : null;
+
+            if (earliestOpeningA && earliestOpeningB) {
+                if (earliestOpeningA.isAfter(earliestOpeningB)) {
+                    return 1;
+                }
+                else if (earliestOpeningA.isBefore(earliestOpeningB)) {
+                    return -1;
+                }
+                else {
+                    // names must be equal
+                    return 0;
+                }
+            }
+            else if (earliestOpeningA && !earliestOpeningB) {
+                return -1;
+            }
+            else if (!earliestOpeningA && earliestOpeningB) {
+                return 1;
+            }
+            else if (!earliestOpeningA && !earliestOpeningB) {
+                return 0;
+            }
+        });
+    }
+
+    _sortByEarliestOpeningDescending() {
+        this.props.artists.sort(function (a,b){
+            var earliestOpeningA = a.earliestOpening ? Moment(a.earliestOpening.startTime) : null;
+            var earliestOpeningB = b.earliestOpening ? Moment(b.earliestOpening.startTime) : null;
+
+            if (earliestOpeningA && earliestOpeningB) {
+                if (earliestOpeningA.isAfter(earliestOpeningB)) {
+                    return -1;
+                }
+                else if (earliestOpeningA.isBefore(earliestOpeningB)) {
+                    return 1;
+                }
+                else {
+                    // names must be equal
+                    return 0;
+                }
+            }
+            else if (earliestOpeningA && !earliestOpeningB) {
+                return -1;
+            }
+            else if (!earliestOpeningA && earliestOpeningB) {
+                return 1;
+            }
+            else if (!earliestOpeningA && !earliestOpeningB) {
+                return 0;
+            }
+        });
+    }
+
     _sortByEarliestOpening() {
         switch(this.state.sortByEarliestOpening) {
             case 'asc':
                 this.setState({sortByEarliestOpening:'desc'});
+                this.setState({sortByName:'none'});
+                this.setState({sortByHoursBooked:'none'});
+                this._sortByEarliestOpeningDescending();
                 break;
             case 'desc':
                 this.setState({sortByEarliestOpening:'none'});
                 break;
             case 'none':
                 this.setState({sortByEarliestOpening:'asc'});
+                this.setState({sortByName:'none'});
+                this.setState({sortByHoursBooked:'none'});
+                this._sortByEarliestOpeningAscending()
                 break;
             default:
                 this.setState({sortByEarliestOpening:'none'});
@@ -128,10 +291,10 @@ class ArtistStats extends Component {
     _renderSortIcon(fieldName){
         let icon = null;
 
-        if (this.state[fieldName]=='asc') {
+        if (this.state[fieldName]=='desc') {
             icon=<SortUpIcon/>;
         }
-        else if (this.state[fieldName]=='desc') {
+        else if (this.state[fieldName]=='asc') {
             icon=<SortDownIcon/>;
         }
 
@@ -159,7 +322,7 @@ class ArtistStats extends Component {
             let key = 'hoursIn' + String(this.state.timeFrame) + 'Days';
 
             return this.props.artists.map((artist) => {
-                const message = artist[key] ?  artist[key] : 'Error';
+                const message = artist[key] != null ?  artist[key] : 'Error';
 
 
                 return (
@@ -167,7 +330,7 @@ class ArtistStats extends Component {
                     <TableRow key={artist.calendarID}>
                         <TableRowColumn>{artist.name}</TableRowColumn>
                         <TableRowColumn>{message}</TableRowColumn>
-                        {/*<TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>*/}
+                        <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
                     </TableRow>
 
                 )
@@ -252,15 +415,15 @@ class ArtistStats extends Component {
                                     icon={this._renderSortIcon('sortByHoursBooked')}
                                 />
                             </TableHeaderColumn>
-                            {/*<TableHeaderColumn>*/}
-                                {/*<FlatButton*/}
-                                    {/*label="Earliest Opening"*/}
-                                    {/*style={style.sortButtons}*/}
-                                    {/*onTouchTap={this._sortByEarliestOpening}*/}
-                                    {/*labelPosition="before"*/}
-                                    {/*icon={this._renderSortIcon('sortByEarliestOpening')}*/}
-                                {/*/>*/}
-                            {/*</TableHeaderColumn>*/}
+                            <TableHeaderColumn>
+                                <FlatButton
+                                    label="Earliest Opening"
+                                    style={style.sortButtons}
+                                    onTouchTap={this._sortByEarliestOpening}
+                                    labelPosition="before"
+                                    icon={this._renderSortIcon('sortByEarliestOpening')}
+                                />
+                            </TableHeaderColumn>
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false} style={style.tableBody}>
