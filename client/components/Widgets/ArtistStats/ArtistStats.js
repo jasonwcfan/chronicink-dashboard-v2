@@ -330,7 +330,7 @@ class ArtistStats extends Component {
                     <TableRow key={artist.calendarID}>
                         <TableRowColumn>{artist.name}</TableRowColumn>
                         <TableRowColumn>{message}</TableRowColumn>
-                        <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
+                        {/*<TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>*/}
                     </TableRow>
 
                 )
@@ -395,7 +395,7 @@ class ArtistStats extends Component {
                 <Table selectable={false} fixedHeader={true} style={style.table}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
-                            <TableHeaderColumn style={style.tableHeaderColumn}>
+                            <TableHeaderColumn style={style.tableHeaderColumn} tooltip="Click to sort">
                                 <FlatButton
                                     label="Name"
                                     style={style.sortButtons}
@@ -406,7 +406,7 @@ class ArtistStats extends Component {
 
 
                             </TableHeaderColumn>
-                            <TableHeaderColumn tooltip="Today Onward">
+                            <TableHeaderColumn tooltip="Click to sort">
                                 <FlatButton
                                     label="Hours Booked"
                                     style={style.sortButtons}
@@ -415,15 +415,15 @@ class ArtistStats extends Component {
                                     icon={this._renderSortIcon('sortByHoursBooked')}
                                 />
                             </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                <FlatButton
-                                    label="Earliest Opening"
-                                    style={style.sortButtons}
-                                    onTouchTap={this._sortByEarliestOpening}
-                                    labelPosition="before"
-                                    icon={this._renderSortIcon('sortByEarliestOpening')}
-                                />
-                            </TableHeaderColumn>
+                            {/*<TableHeaderColumn tooltip="Click to sort">*/}
+                                {/*<FlatButton*/}
+                                    {/*label="Earliest Opening"*/}
+                                    {/*style={style.sortButtons}*/}
+                                    {/*onTouchTap={this._sortByEarliestOpening}*/}
+                                    {/*labelPosition="before"*/}
+                                    {/*icon={this._renderSortIcon('sortByEarliestOpening')}*/}
+                                {/*/>*/}
+                            {/*</TableHeaderColumn>*/}
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false} style={style.tableBody}>
