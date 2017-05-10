@@ -160,7 +160,15 @@ GCalendar = {
     getEarliestOpening(calendarID, callback) {
 
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
-        const tomorrow = new Moment().tz('America/Toronto').hour(11).minute(59).add(1,'days');
+        const tomorrow = new Moment().hour(11).minute(59).add(1,'days').tz('America/Toronto')
+
+        // DEBUGGING - CALENDARIDs
+        let amberProdID = 'amber@chronicinktattoo.com';
+        let beckyProdID = 'becky@chronicinktattoo.com';
+        let zekeProdID = 'zeke@chronicinktattoo.com';
+        let BKSProdID = 'bks@chronicinktattoo.com';
+        let georgeProdID = 'george@chronicinktattoo.com';
+        let sarbProdID = 'chronicinktattoo.com_rsi9q95f48ih6b444121ldmahg@group.calendar.google.com'
 
         oauth2Client.setCredentials({
             access_token: primaryUser.services.google.accessToken,
@@ -192,7 +200,7 @@ GCalendar = {
             // The first and last dates in the returned items
             const firstDay =  Moment(tomorrow);
             const lastDay = Moment(res.items[res.items.length - 1].start.date || res.items[res.items.length - 1]
-                    .start.dateTime);
+                    .start.dateTime).tz('America/Toronto');
 
             for (let day = Moment(firstDay); day.diff(lastDay, 'days') <= 0; day.add(1, 'days')) {
                 days[day.format('YYYY-MM-DD')] = {
@@ -200,27 +208,34 @@ GCalendar = {
                     events: []
                 }
             }
+
             // Sort events into buckets, one for each date
             res.items.map((event) => {
                 if (!event.summary) {
                     return;
                 }
-                const dateStr = Moment(event.start.date || event.start.dateTime).format('YYYY-MM-DD');
+
                 // This is an all day event
                 if (event.start.date && event.end.date) {
+
+                    const dateStr = Moment(event.start.date).format('YYYY-MM-DD');
+
+                    let eventStart = res.timeZone == 'America/Toronto' ? Moment(event.start.date)
+                    : Moment(event.start.date).tz('America/Toronto');
+                    let eventEnd = res.timeZone == 'America/Toronto' ? Moment(event.end.date)
+                    : Moment(event.end.date).tz('America/Toronto');
+
                     // This indicates this is a day off
                     if (event.summary.toLowerCase().indexOf('off') > -1) {
 
                         // If the event spans multiple days
-                        if (Moment(event.end.date).diff(Moment(event.start.date),'days') > 1) {
+                        if (eventEnd.diff(eventStart,'days') > 1) {
 
                             // If the event starts before tomorrow, only consider dates tomorrow and onward
-                            let eventStart = Moment(event.start.date).isBefore(tomorrow) ? Moment(tomorrow) :
-                                Moment(event.start.date);
-                            let eventEnd = Moment(event.end.date);
+                            eventStart = eventStart.isBefore(tomorrow) ? Moment(tomorrow) : eventStart;
 
                             // Set each day during the span of the event to 'off'
-                            for (let day = eventStart; day.diff(eventEnd,'days') <= 0 ;day.add(1,'days')) {
+                            for (let day = eventStart; day.diff(eventEnd,'days') <= 0 ; day.add(1,'days')) {
                                 let dateStr2 = day.format('YYYY-MM-DD');
                                 days[dateStr2].off = true;
                             }
@@ -235,12 +250,16 @@ GCalendar = {
 
                 // If it's an off event that spans multiple days but has a dateTime property
                 if (event.summary.toLowerCase().indexOf('off') > -1) {
-                    if (Moment(event.end.dateTime).diff(Moment(event.start.dateTime),'days') > 1) {
+
+                    let eventStart = res.timeZone == 'America/Toronto' ? Moment(event.start.dateTime)
+                        : Moment(event.start.dateTime).tz('America/Toronto');
+                    let eventEnd = res.timeZone == 'America/Toronto' ? Moment(event.end.dateTime)
+                        : Moment(event.end.dateTime).tz('America/Toronto');
+
+                    if (eventEnd.diff(eventStart,'days') > 1) {
 
                         // If the event starts before tomorrow, only consider dates tomorrow and onward
-                        let eventStart = Moment(event.start.dateTime).isBefore(tomorrow) ? Moment(tomorrow) :
-                            Moment(event.start.dateTime);
-                        let eventEnd = Moment(event.end.dateTime);
+                        eventStart = eventStart.isBefore(tomorrow) ? Moment(tomorrow) : eventStart;
 
                         // Set each day during the span of the event to 'off'
                         for (let day = eventStart; day.diff(eventEnd,'days') <= 0 ;day.add(1,'days')) {
@@ -251,7 +270,13 @@ GCalendar = {
                 }
                 else {
                     // This is a regular event, on a non off day add the event to that bucket
+                    const dateStr = Moment(event.start.date || event.start.dateTime).tz('America/Toronto').format('YYYY-MM-DD');
                     if (!days[dateStr].off) {
+                        if (res.timeZone != 'America/Toronto') {
+                            // Specify timezone of event start and event end
+                            event.start.dateTime = Moment(event.start.dateTime).tz('America/Toronto');
+                            event.end.dateTime = Moment(event.end.dateTime).tz('America/Toronto');
+                        }
                         days[dateStr].events.push(event);
                     }
                 }
@@ -268,16 +293,36 @@ GCalendar = {
                 // If this day has events and is not an off day
                 if (days[dateStr].events.length > 0 && !days[dateStr].off) {
                     const events = days[dateStr].events;
-                    const dayStart = Moment(events[0].start.dateTime).hour(12).minute(0);
-                    const dayEnd = Moment(events[0].start.dateTime).hour(20).minute(0);
+                    const dayStart = Moment(events[0].start.dateTime).tz(res.timeZone).hour(12).minute(0);
+                    const dayEnd = Moment(events[0].start.dateTime).tz(res.timeZone).hour(20).minute(0);
+
+                    if (calendarID == sarbProdID) {
+                        console.log('#### events ####')
+                        console.log (events)
+                        console.log ('\n')
+
+                    }
 
                     // If there is an opening between the start of the day and the start of the first event
                     if (Moment(events[0].start.dateTime).diff(dayStart, 'minutes') > 60) {
+
+                        if (calendarID == sarbProdID) {
+                            console.log('#### opening in beginning of day')
+                        }
+
                         opening = {
                             startTime: dayStart,
                             endTime: Moment(events[0].start.dateTime)
                         };
                         break;
+                    }
+
+                    // Initialize latest event as the first event
+                    let latestEventEndTime = Moment(events[0].end.dateTime).tz('America/Toronto');
+
+                    if (calendarID == sarbProdID) {
+                        console.log('##### latestEventEndTime', latestEventEndTime);
+                        console.log('\n')
                     }
 
                     // If there is more than one event, compare each of their start and end times to find openings
@@ -286,12 +331,31 @@ GCalendar = {
                         for (var j = 0; j < events.length - 1; j++) {
                             // If the gap between the two events is more than an hour, and the first event ends after
                             // 12PM Noon
-                            if (Moment(events[j + 1].start.dateTime)
-                                    .diff(Moment(events[j].end.dateTime), 'minutes') > 60
-                                    && Moment(events[j].end.dateTime).hour() >= 12) {
+                            let event1End = Moment(events[j].end.dateTime).tz('America/Toronto');
+                            let event2Start = Moment(events[j + 1].start.dateTime).tz('America/Toronto');
+
+                            // If event1 ends after the latest event, it is the latest event
+                            latestEventEndTime = event1End.isAfter(latestEventEndTime) ? event1End : latestEventEndTime;
+
+                            if (calendarID == sarbProdID) {
+                                console.log('##### event1End: ', event1End);
+                                console.log('##### event2Start: ', event2Start);
+                                console.log('##### event1End.isAfter(latestEventEndTime): ', event1End.isAfter(latestEventEndTime));
+                                console.log('\n')
+
+                            }
+
+                            if (event2Start.diff(latestEventEndTime, 'minutes') > 60 && latestEventEndTime.hour() >= 12) {
+
+                                if (calendarID == sarbProdID) {
+                                    console.log('##### opening is between events');
+                                    console.log('##### event1End: ', event1End);
+                                    console.log('##### event2Start: ', event2Start);
+                                    console.log('\n')
+                                }
                                 opening = {
-                                    startTime: Moment(events[j].end.dateTime),
-                                    endTime: Moment(events[j + 1].start.dateTime)
+                                    startTime: latestEventEndTime,
+                                    endTime: event2Start
                                 };
                                 hasOpening = true;
                                 break;
@@ -300,16 +364,30 @@ GCalendar = {
                         if (hasOpening) {break;}
                     }
 
-                    // If there is an opening between the end of the last event and the end of the day
-                    if (dayEnd.diff(Moment(events[events.length - 1].end.dateTime), 'minutes') > 60) {
+                    // If last event of the day ends after latest event, it is the latest event
+                    let lastEventEndTime = Moment(events[events.length-1].end.dateTime).tz('America/Toronto');
+                    latestEventEndTime = lastEventEndTime.isAfter(latestEventEndTime) ? lastEventEndTime : latestEventEndTime;
+
+                    // If there is an opening between the end of the latest event and the end of the day
+                    if (dayEnd.diff(latestEventEndTime, 'minutes') > 60) {
+
+                        if (calendarID == sarbProdID) {
+                            console.log('##### opening is at end of day');
+                            console.log('##### lastEventEndTime: ', lastEventEndTime);
+                            console.log('##### latestEventEndTime: ', latestEventEndTime);
+                            console.log('##### lastEventEndTime.isAfter(latestEventEndTime): ', lastEventEndTime.isAfter(latestEventEndTime));
+                            console.log('\n')
+                        }
+
                         opening = {
-                            startTime: Moment(events[events.length - 1].end.dateTime),
+                            startTime: latestEventEndTime,
                             endTime: dayEnd
                         };
                         break;
                     }
+                }
                 // This day is not an off day, but has no events, so the opening is the whole day
-                } else if (!days[dateStr].off) {
+                else if (!days[dateStr].off) {
                     opening = {
                         startTime: Moment(dateStr).hour(12).minute(0),
                         endTime: Moment(dateStr).hour(20).minute(0)
@@ -317,7 +395,6 @@ GCalendar = {
                     break;
                 }
             }
-
             callback(null, opening);
         })
     }
