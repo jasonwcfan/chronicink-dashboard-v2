@@ -162,14 +162,6 @@ GCalendar = {
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
         const tomorrow = new Moment().hour(11).minute(59).add(1,'days').tz('America/Toronto')
 
-        // DEBUGGING - CALENDARIDs
-        let amberProdID = 'amber@chronicinktattoo.com';
-        let beckyProdID = 'becky@chronicinktattoo.com';
-        let zekeProdID = 'zeke@chronicinktattoo.com';
-        let BKSProdID = 'bks@chronicinktattoo.com';
-        let georgeProdID = 'george@chronicinktattoo.com';
-        let sarbProdID = 'chronicinktattoo.com_rsi9q95f48ih6b444121ldmahg@group.calendar.google.com'
-
         oauth2Client.setCredentials({
             access_token: primaryUser.services.google.accessToken,
             refresh_token: primaryUser.services.google.refreshToken,
@@ -202,6 +194,7 @@ GCalendar = {
             const lastDay = Moment(res.items[res.items.length - 1].start.date || res.items[res.items.length - 1]
                     .start.dateTime).tz('America/Toronto');
 
+            // Initializing 'days'
             for (let day = Moment(firstDay); day.diff(lastDay, 'days') <= 0; day.add(1, 'days')) {
                 days[day.format('YYYY-MM-DD')] = {
                     off : false,
@@ -220,6 +213,7 @@ GCalendar = {
 
                     const dateStr = Moment(event.start.date).format('YYYY-MM-DD');
 
+                    // Add timezone to event start & end if needed
                     let eventStart = res.timeZone == 'America/Toronto' ? Moment(event.start.date)
                     : Moment(event.start.date).tz('America/Toronto');
                     let eventEnd = res.timeZone == 'America/Toronto' ? Moment(event.end.date)
@@ -232,6 +226,7 @@ GCalendar = {
                         if (eventEnd.diff(eventStart,'days') > 1) {
 
                             // If the event starts before tomorrow, only consider dates tomorrow and onward
+                            // NOTE - NO TIMEZONE SINCE FULL DAY EVENT
                             eventStart = eventStart.isBefore(tomorrow) ? Moment(tomorrow) : eventStart;
 
                             // Set each day during the span of the event to 'off'
@@ -251,6 +246,7 @@ GCalendar = {
                 // If it's an off event that spans multiple days but has a dateTime property
                 if (event.summary.toLowerCase().indexOf('off') > -1) {
 
+                    // Add timezones if needed
                     let eventStart = res.timeZone == 'America/Toronto' ? Moment(event.start.dateTime)
                         : Moment(event.start.dateTime).tz('America/Toronto');
                     let eventEnd = res.timeZone == 'America/Toronto' ? Moment(event.end.dateTime)
@@ -296,20 +292,8 @@ GCalendar = {
                     const dayStart = Moment(events[0].start.dateTime).tz(res.timeZone).hour(12).minute(0);
                     const dayEnd = Moment(events[0].start.dateTime).tz(res.timeZone).hour(20).minute(0);
 
-                    if (calendarID == sarbProdID) {
-                        console.log('#### events ####')
-                        console.log (events)
-                        console.log ('\n')
-
-                    }
-
                     // If there is an opening between the start of the day and the start of the first event
                     if (Moment(events[0].start.dateTime).diff(dayStart, 'minutes') > 60) {
-
-                        if (calendarID == sarbProdID) {
-                            console.log('#### opening in beginning of day')
-                        }
-
                         opening = {
                             startTime: dayStart,
                             endTime: Moment(events[0].start.dateTime)
@@ -319,11 +303,6 @@ GCalendar = {
 
                     // Initialize latest event as the first event
                     let latestEventEndTime = Moment(events[0].end.dateTime).tz('America/Toronto');
-
-                    if (calendarID == sarbProdID) {
-                        console.log('##### latestEventEndTime', latestEventEndTime);
-                        console.log('\n')
-                    }
 
                     // If there is more than one event, compare each of their start and end times to find openings
                     if (events.length > 1) {
@@ -336,23 +315,8 @@ GCalendar = {
 
                             // If event1 ends after the latest event, it is the latest event
                             latestEventEndTime = event1End.isAfter(latestEventEndTime) ? event1End : latestEventEndTime;
-
-                            if (calendarID == sarbProdID) {
-                                console.log('##### event1End: ', event1End);
-                                console.log('##### event2Start: ', event2Start);
-                                console.log('##### event1End.isAfter(latestEventEndTime): ', event1End.isAfter(latestEventEndTime));
-                                console.log('\n')
-
-                            }
-
+                            
                             if (event2Start.diff(latestEventEndTime, 'minutes') > 60 && latestEventEndTime.hour() >= 12) {
-
-                                if (calendarID == sarbProdID) {
-                                    console.log('##### opening is between events');
-                                    console.log('##### event1End: ', event1End);
-                                    console.log('##### event2Start: ', event2Start);
-                                    console.log('\n')
-                                }
                                 opening = {
                                     startTime: latestEventEndTime,
                                     endTime: event2Start
@@ -370,15 +334,6 @@ GCalendar = {
 
                     // If there is an opening between the end of the latest event and the end of the day
                     if (dayEnd.diff(latestEventEndTime, 'minutes') > 60) {
-
-                        if (calendarID == sarbProdID) {
-                            console.log('##### opening is at end of day');
-                            console.log('##### lastEventEndTime: ', lastEventEndTime);
-                            console.log('##### latestEventEndTime: ', latestEventEndTime);
-                            console.log('##### lastEventEndTime.isAfter(latestEventEndTime): ', lastEventEndTime.isAfter(latestEventEndTime));
-                            console.log('\n')
-                        }
-
                         opening = {
                             startTime: latestEventEndTime,
                             endTime: dayEnd
