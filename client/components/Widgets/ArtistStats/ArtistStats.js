@@ -248,7 +248,7 @@ class ArtistStats extends Component {
                     <TableRow key={artist.calendarID}>
                         <TableRowColumn>{artist.name}</TableRowColumn>
                         <TableRowColumn>{message}</TableRowColumn>
-                        <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
+                        <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY h:mm a") : '' }</TableRowColumn>
                     </TableRow>
 
                 )

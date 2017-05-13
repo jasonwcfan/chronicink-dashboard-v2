@@ -14,6 +14,8 @@ const oauth2Client = new authFactory.OAuth2(clientID, clientSecret, redirectURL)
 const calendar = google.calendar('v3');
 const gmail = google.gmail('v1');
 
+const daysOfWeek = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
 /**
  * Google Calendar API helper functions
  */
@@ -157,7 +159,7 @@ GCalendar = {
      * @param calendarID The calendar to search through
      * @param callback Called on error or with the opening, an object with a startTime and an endTime property
      */
-    getEarliestOpening(calendarID, callback) {
+    getEarliestOpening(calendarID, schedule, minOpening, callback) {
 
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
         const tomorrow = new Moment().hour(11).minute(59).add(1,'days').tz('America/Toronto')
@@ -285,15 +287,18 @@ GCalendar = {
             // Go through the bucket for each day and see if there is an opening
             for (let day = Moment(firstDay); day.diff(lastDay, 'days') <= 0; day.add(1, 'days')) {
                 const dateStr = day.format('YYYY-MM-DD');
+                const dayOfWeek = daysOfWeek[Moment(dateStr).day()];
 
                 // If this day has events and is not an off day
                 if (days[dateStr].events.length > 0 && !days[dateStr].off) {
                     const events = days[dateStr].events;
-                    const dayStart = Moment(events[0].start.dateTime).tz(res.timeZone).hour(12).minute(0);
-                    const dayEnd = Moment(events[0].start.dateTime).tz(res.timeZone).hour(20).minute(0);
+
+                    // Get dayStart and dayEnd from schedule by day of week
+                    const dayStart = Moment(events[0].start.dateTime).tz('America/Toronto').hour(schedule[dayOfWeek].start).minute(0);
+                    const dayEnd = Moment(events[0].start.dateTime).tz('America/Toronto').hour(schedule[dayOfWeek].finish).minute(0);
 
                     // If there is an opening between the start of the day and the start of the first event
-                    if (Moment(events[0].start.dateTime).diff(dayStart, 'minutes') > 60) {
+                    if (Moment(events[0].start.dateTime).diff(dayStart, 'minutes') > minOpening*60) {
                         opening = {
                             startTime: dayStart,
                             endTime: Moment(events[0].start.dateTime)
@@ -316,7 +321,7 @@ GCalendar = {
                             // If event1 ends after the latest event, it is the latest event
                             latestEventEndTime = event1End.isAfter(latestEventEndTime) ? event1End : latestEventEndTime;
                             
-                            if (event2Start.diff(latestEventEndTime, 'minutes') > 60 && latestEventEndTime.hour() >= 12) {
+                            if (event2Start.diff(latestEventEndTime, 'minutes') > minOpening*60 && latestEventEndTime.hour() >= 12) {
                                 opening = {
                                     startTime: latestEventEndTime,
                                     endTime: event2Start
@@ -333,7 +338,7 @@ GCalendar = {
                     latestEventEndTime = lastEventEndTime.isAfter(latestEventEndTime) ? lastEventEndTime : latestEventEndTime;
 
                     // If there is an opening between the end of the latest event and the end of the day
-                    if (dayEnd.diff(latestEventEndTime, 'minutes') > 60) {
+                    if (dayEnd.diff(latestEventEndTime, 'minutes') > minOpening*60) {
                         opening = {
                             startTime: latestEventEndTime,
                             endTime: dayEnd
@@ -344,8 +349,8 @@ GCalendar = {
                 // This day is not an off day, but has no events, so the opening is the whole day
                 else if (!days[dateStr].off) {
                     opening = {
-                        startTime: Moment(dateStr).hour(12).minute(0),
-                        endTime: Moment(dateStr).hour(20).minute(0)
+                        startTime: Moment(dateStr).tz('America/Toronto').hour(schedule[dayOfWeek].start).minute(0),
+                        endTime: Moment(dateStr).tz('America/Toronto').hour(schedule[dayOfWeek].finish).minute(0)
                     };
                     break;
                 }
