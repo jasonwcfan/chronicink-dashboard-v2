@@ -8,7 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import UpdateIcon from 'material-ui/svg-icons/action/update';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import SortUpIcon from 'material-ui/svg-icons/navigation/arrow-drop-up';
 import SortDownIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import Artist from '../../../../imports/Artist/artist';
@@ -45,12 +45,9 @@ const style = {
         overflowY: 'auto',
         height:'55vh'
     },
-    tableHeaderColumn: {
-        justifyContent: 'space-between'
-    },
     sortButtons: {
-        width: '100%',
-        textAlign: 'left'
+        textAlign: 'left',
+        alignItems: 'stretch'
     },
 };
 
@@ -313,32 +310,35 @@ class ArtistStats extends Component {
                 <Table selectable={false} fixedHeader={true} style={style.table}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
-                            <TableHeaderColumn style={style.tableHeaderColumn} tooltip="Click to sort">
-                                <FlatButton
+                            <TableHeaderColumn tooltip="Click to sort">
+                                <RaisedButton
                                     label="Name"
-                                    style={style.sortButtons}
-                                    onTouchTap={this._sortByName}
+                                    buttonStyle={style.sortButtons}
                                     labelPosition="before"
+                                    fullWidth={true}
+                                    onTouchTap={this._sortByName}
                                     icon={this._renderSortIcon('sortByName')}
                                 />
 
 
                             </TableHeaderColumn>
                             <TableHeaderColumn tooltip="Click to sort">
-                                <FlatButton
+                                <RaisedButton
                                     label="Hours Booked"
-                                    style={style.sortButtons}
-                                    onTouchTap={this._sortByHoursBooked}
+                                    buttonStyle={style.sortButtons}
                                     labelPosition="before"
+                                    fullWidth={true}
+                                    onTouchTap={this._sortByHoursBooked}
                                     icon={this._renderSortIcon('sortByHoursBooked')}
                                 />
                             </TableHeaderColumn>
                             <TableHeaderColumn tooltip="Click to sort">
-                                <FlatButton
+                                <RaisedButton
                                     label="Earliest Opening"
-                                    style={style.sortButtons}
-                                    onTouchTap={this._sortByEarliestOpening}
+                                    buttonStyle={style.sortButtons}
                                     labelPosition="before"
+                                    fullWidth={true}
+                                    onTouchTap={this._sortByEarliestOpening}
                                     icon={this._renderSortIcon('sortByEarliestOpening')}
                                 />
                             </TableHeaderColumn>
