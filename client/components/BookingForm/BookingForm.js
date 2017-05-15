@@ -13,6 +13,7 @@ import defaultFields from '../../constants/defaultBookingFormFields';
 import Dialog from 'material-ui/Dialog';
 import Moment from 'moment';
 import CircularProgress from 'material-ui/CircularProgress';
+import colors from '../../theme/colors'
 
 const style = {
     tabs: {
@@ -23,6 +24,9 @@ const style = {
     },
     navButton: {
         margin: 10
+    },
+    tabItemContainer: {
+        backgroundColor: colors.CitLightGrey
     }
 };
 
@@ -316,7 +320,7 @@ class BookingForm extends Component {
     render() {
         return (
             <App appName='Booking Form'>
-                <Tabs style={style.tabs} value={this.state.tabIndex}>
+                <Tabs style={style.tabs} value={this.state.tabIndex} tabItemContainerStyle={style.tabItemContainer}>
                     <Tab label='Client Info' value={0} onActive={() => {this._handleChangeTab(null, 0)}}>
                         <ClientInfoTab
                             style={style.container}

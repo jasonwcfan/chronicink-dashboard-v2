@@ -8,7 +8,7 @@ import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import UpdateIcon from 'material-ui/svg-icons/action/update';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import SortUpIcon from 'material-ui/svg-icons/navigation/arrow-drop-up';
 import SortDownIcon from 'material-ui/svg-icons/navigation/arrow-drop-down';
 import Artist from '../../../../imports/Artist/artist';
@@ -45,12 +45,9 @@ const style = {
         overflowY: 'auto',
         height:'55vh'
     },
-    tableHeaderColumn: {
-        justifyContent: 'space-between'
-    },
     sortButtons: {
-        width: '100%',
-        textAlign: 'left'
+        textAlign: 'left',
+        alignItems: 'stretch'
     },
 };
 
@@ -68,57 +65,138 @@ class ArtistStats extends Component {
 
         this._handleChangeTimeFrame = this._handleChangeTimeFrame.bind(this);
         this._handleRefreshArtistStats = this._handleRefreshArtistStats.bind(this);
+
         this._sortByName = this._sortByName.bind(this);
+        this._sortByNameHelper = this._sortByNameHelper.bind(this);
         this._sortByHoursBooked = this._sortByHoursBooked.bind(this);
+        this._sortByHoursBookedHelper = this._sortByHoursBookedHelper.bind(this);
         this._sortByEarliestOpening = this._sortByEarliestOpening.bind(this);
+        this._sortByEarliestOpeningHelper = this._sortByEarliestOpeningHelper.bind(this);
 
         this._handleRefreshArtistStats(this.state.timeFrame);
     }
 
-    _sortByName() {
+    _sortByNameHelper(ascending) {
+        this.props.artists.sort(function (a,b){
+            var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+            var nameB = b.name.toUpperCase(); // ignore upper and lowercase
 
+            if (nameA === nameB) {
+                return 0;
+            }
+            else if (ascending) {
+                return nameA < nameB ? -1 : 1;
+            }
+            else if (!ascending) {
+                return nameA < nameB ? 1 : -1;
+            }
+        });
+    }
+
+    _sortByName() {
         switch(this.state.sortByName) {
             case 'asc':
                 this.setState({sortByName:'desc'});
+                this.setState({sortByHoursBooked:'none'});
+                this.setState({sortByEarliestOpening:'none'});
+                this._sortByNameHelper(false);
                 break;
             case 'desc':
                 this.setState({sortByName:'none'});
                 break;
             case 'none':
                 this.setState({sortByName:'asc'});
+                this.setState({sortByHoursBooked:'none'});
+                this.setState({sortByEarliestOpening:'none'});
+                this._sortByNameHelper(true);
                 break;
             default:
                 this.setState({sortByName:'none'});
         }
+    }
 
+    _sortByHoursBookedHelper(ascending) {
+        // Create key for # of hours in timeFrame
+        let key = 'hoursIn' + String(this.state.timeFrame) + 'Days';
+
+        this.props.artists.sort(function (a,b){
+            if (a[key] === null) {
+                return 1;
+            }
+            else if (b[key] === null) {
+                return -1;
+            }
+            else if (a[key] === b[key]) {
+                return 0;
+            }
+            else if (ascending) {
+                return a[key] < b[key] ? -1 : 1;
+            }
+            else if (!ascending) {
+                return a[key] < b[key] ? 1 : -1;
+            }
+
+        });
     }
 
     _sortByHoursBooked() {
         switch(this.state.sortByHoursBooked) {
             case 'asc':
                 this.setState({sortByHoursBooked:'desc'});
+                this.setState({sortByName:'none'});
+                this.setState({sortByEarliestOpening:'none'});
+                this._sortByHoursBookedHelper(false);
                 break;
             case 'desc':
                 this.setState({sortByHoursBooked:'none'});
                 break;
             case 'none':
                 this.setState({sortByHoursBooked:'asc'});
+                this.setState({sortByName:'none'});
+                this.setState({sortByEarliestOpening:'none'});
+                this._sortByHoursBookedHelper(true);
                 break;
             default:
                 this.setState({sortByHoursBooked:'none'});
         }
     }
 
+    _sortByEarliestOpeningHelper(ascending) {
+        this.props.artists.sort(function (a,b){
+            if (a.earliestOpening === null || a.earliestOpening === undefined) {
+                return 1;
+            }
+            else if (b.earliestOpening === null || b.earliestOpening === undefined) {
+                return -1;
+            }
+            else if (Moment(a.earliestOpening.startTime).isSame(Moment(b.earliestOpening.startTime))) {
+                return 0;
+            }
+            else if (ascending) {
+                return Moment(a.earliestOpening.startTime).isBefore(Moment(b.earliestOpening.startTime)) ? -1 : 1;
+            }
+            else if (!ascending) {
+                return Moment(a.earliestOpening.startTime).isBefore(Moment(b.earliestOpening.startTime)) ? 1 : -1;
+            }
+        });
+    }
+
     _sortByEarliestOpening() {
         switch(this.state.sortByEarliestOpening) {
             case 'asc':
                 this.setState({sortByEarliestOpening:'desc'});
+                this.setState({sortByName:'none'});
+                this.setState({sortByHoursBooked:'none'});
+                this._sortByEarliestOpeningHelper(false);
                 break;
             case 'desc':
                 this.setState({sortByEarliestOpening:'none'});
                 break;
             case 'none':
                 this.setState({sortByEarliestOpening:'asc'});
+                this.setState({sortByName:'none'});
+                this.setState({sortByHoursBooked:'none'});
+                this._sortByEarliestOpeningHelper(true)
                 break;
             default:
                 this.setState({sortByEarliestOpening:'none'});
@@ -128,10 +206,10 @@ class ArtistStats extends Component {
     _renderSortIcon(fieldName){
         let icon = null;
 
-        if (this.state[fieldName]=='asc') {
+        if (this.state[fieldName]=='desc') {
             icon=<SortUpIcon/>;
         }
-        else if (this.state[fieldName]=='desc') {
+        else if (this.state[fieldName]=='asc') {
             icon=<SortDownIcon/>;
         }
 
@@ -159,7 +237,7 @@ class ArtistStats extends Component {
             let key = 'hoursIn' + String(this.state.timeFrame) + 'Days';
 
             return this.props.artists.map((artist) => {
-                const message = artist[key] ?  artist[key] : 'Error';
+                const message = artist[key] != null ?  artist[key] : 'Error';
 
 
                 return (
@@ -167,7 +245,7 @@ class ArtistStats extends Component {
                     <TableRow key={artist.calendarID}>
                         <TableRowColumn>{artist.name}</TableRowColumn>
                         <TableRowColumn>{message}</TableRowColumn>
-                        <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY") : '' }</TableRowColumn>
+                        <TableRowColumn>{artist.earliestOpening ? Moment(artist.earliestOpening.startTime).format("MMM Do YYYY h:mm a") : '' }</TableRowColumn>
                     </TableRow>
 
                 )
@@ -232,32 +310,35 @@ class ArtistStats extends Component {
                 <Table selectable={false} fixedHeader={true} style={style.table}>
                     <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
                         <TableRow>
-                            <TableHeaderColumn style={style.tableHeaderColumn}>
-                                <FlatButton
+                            <TableHeaderColumn tooltip="Click to sort">
+                                <RaisedButton
                                     label="Name"
-                                    style={style.sortButtons}
-                                    onTouchTap={this._sortByName}
+                                    buttonStyle={style.sortButtons}
                                     labelPosition="before"
+                                    fullWidth={true}
+                                    onTouchTap={this._sortByName}
                                     icon={this._renderSortIcon('sortByName')}
                                 />
 
 
                             </TableHeaderColumn>
-                            <TableHeaderColumn tooltip="Today Onward">
-                                <FlatButton
+                            <TableHeaderColumn tooltip="Click to sort">
+                                <RaisedButton
                                     label="Hours Booked"
-                                    style={style.sortButtons}
-                                    onTouchTap={this._sortByHoursBooked}
+                                    buttonStyle={style.sortButtons}
                                     labelPosition="before"
+                                    fullWidth={true}
+                                    onTouchTap={this._sortByHoursBooked}
                                     icon={this._renderSortIcon('sortByHoursBooked')}
                                 />
                             </TableHeaderColumn>
-                            <TableHeaderColumn>
-                                <FlatButton
+                            <TableHeaderColumn tooltip="Click to sort">
+                                <RaisedButton
                                     label="Earliest Opening"
-                                    style={style.sortButtons}
-                                    onTouchTap={this._sortByEarliestOpening}
+                                    buttonStyle={style.sortButtons}
                                     labelPosition="before"
+                                    fullWidth={true}
+                                    onTouchTap={this._sortByEarliestOpening}
                                     icon={this._renderSortIcon('sortByEarliestOpening')}
                                 />
                             </TableHeaderColumn>

@@ -24,7 +24,7 @@ Meteor.methods({
 
             const artists = Artist.find().fetch();
             artists.forEach((artist) => {
-                GCalendar.getEarliestOpening(artist.calendarID, Meteor.bindEnvironment((err, res) => {
+                GCalendar.getEarliestOpening(artist.calendarID, artist.schedule, artist.minimumOpening, Meteor.bindEnvironment((err, res) => {
                     if (err) {console.log(err); return}
                     Artist.update({calendarID: artist.calendarID}, {$set: {earliestOpening: res ? {
                         startTime: res.startTime.toDate(),

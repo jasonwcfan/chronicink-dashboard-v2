@@ -48,7 +48,7 @@ def main():
 
     # find all artists
     for artist in db.artist.find({'preferences.styles.' + style: {'$gt': 0}}):
-        soonest_opening = (artist['nextOpening']['startTime'] - datetime.datetime.now()).days
+        soonest_opening = (artist['earliestOpening']['startTime'] - datetime.datetime.now()).days
         # if for some reason the soonest opening is before today, invert it as an estimate of how far away the soonest
         # opening really is. e.g. if it was 3 days ago, the artist is probably still around. If it was 100 days ago,
         # the artist probably hasn't had a booking in a long time and shouldn't be high up in the results
