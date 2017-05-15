@@ -68,6 +68,18 @@ Meteor.methods({
                 if (err) throw err;
             });
         }
+    },
+    'artist.update': function(id, delta, cb) {
+        return Artist.update({_id: id}, {$set: delta}, (error, affectedCount) => {
+            if(cb) {
+                return cb(error, response)
+            }
+
+            if(error) {
+                throw error;
+            }
+
+        });
     }
 });
 
