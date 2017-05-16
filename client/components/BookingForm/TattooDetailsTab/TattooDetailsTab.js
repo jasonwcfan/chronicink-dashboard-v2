@@ -315,11 +315,11 @@ class TattooDetailsTab extends Component {
                         />
                     );
                 case 'deposit':
-                    const rateFieldDisabled = artist && artist.minimumDeposit ? true : false;
+                    const rateFieldDisabled = artist && artist.deposit ? true : false;
                     let value = this.props.formValues[field.id].value;
                     
                     if(rateFieldDisabled) {
-                        this.state.otherDeposit = `\$${artist.minimumDeposit}`;
+                        this.state.otherDeposit = `\$${artist.deposit}`;
                         value = this.state.otherDeposit;
                     }
 

@@ -27,7 +27,7 @@ class HourlyRates extends Component {
         })[0];
 
         artist.hourlyRate = artist.hourlyRate || 0;
-        artist.minimumDeposit = artist.minimumDeposit || 0;
+        artist.deposit = artist.deposit || 0;
 
         this.setState({
             artist: artist,
@@ -46,7 +46,7 @@ class HourlyRates extends Component {
 
         Meteor.call('artist.update', this.state.artist._id, {
             hourlyRate: this.state.artist.hourlyRate,
-            minimumDeposit: this.state.artist.minimumDeposit,
+            deposit: this.state.artist.deposit,
         }, (error, count) => {
             if(error) {
                 throw error;
@@ -86,6 +86,7 @@ class HourlyRates extends Component {
                         <TextField
                             hintText='Hourly rate ($)'
                             label='Hourly rate ($)'
+                            floatingLabelText='Hourly rate ($)'
                             value={this.state.artist.hourlyRate}
                             onChange={(_, value) => {
                                 const artist = this.state.artist;
@@ -100,12 +101,13 @@ class HourlyRates extends Component {
                     </div>
                     <div>
                         <TextField
-                            hintText='Minimum deposit'
-                            label='Minimum deposit'
-                            value={this.state.artist.minimumDeposit}
+                            hintText='Deposit'
+                            label='Deposit'
+                            floatingLabelText='Deposit'
+                            value={this.state.artist.deposit}
                             onChange={(_, value) => {
                                 const artist = this.state.artist;
-                                artist.minimumDeposit = value;
+                                artist.deposit = value;
 
                                 this.setState({
                                     fieldsChanged: true, 
