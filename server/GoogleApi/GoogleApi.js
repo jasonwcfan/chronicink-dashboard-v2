@@ -179,12 +179,14 @@ GCalendar = {
         const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
         const tomorrow = new Moment().tz('America/Toronto').hour(11).minute(59).add(1,'days');
 
-        let edward = 'chronicinktattoo.com_6h5ienvnivq55nca4atd9blgns@group.calendar.google.com';
-        let becky = "becky@chronicinktattoo.com";
-        let winson = "winson@chronicinktattoo.com";
+        // let edward = 'chronicinktattoo.com_6h5ienvnivq55nca4atd9blgns@group.calendar.google.com';
+        // let becky = "becky@chronicinktattoo.com";
+        // let winson = "winson@chronicinktattoo.com";
+        // let mor = 'mor@chronicinktattoo.com';
+        // let tristen = 'tristen@chronicinktattoo.com'
+        // let patrick = 'chronicinktattoo.com_jg271a7c9fjac14s2q840j0q10@group.calendar.google.com';
 
-
-        // if (calendarID == winson) {
+        // if (calendarID == patrick) {
         //     console.log("#### tomorrow: ", tomorrow);
         // }
 
@@ -251,13 +253,25 @@ GCalendar = {
                         // If the event spans multiple days
                         if (eventEnd.diff(eventStart,'days') > 1) {
 
+                            // if (calendarID == patrick) {
+                            //     console.log('#### eventStart: ', eventStart);
+                            //     console.log('#### eventEnd: ', eventEnd);
+                            // }
+
                             // If the event starts before tomorrow, only consider dates tomorrow and onward
                             // NOTE - NO TIMEZONE SINCE FULL DAY EVENT
                             eventStart = eventStart.isBefore(tomorrow) ? Moment(tomorrow) : eventStart;
 
                             // Set each day during the span of the event to 'off'
-                            for (let day = eventStart; day.diff(eventEnd,'days') <= 0 ; day.add(1,'days')) {
+                            for (let day = eventStart; day.diff(eventEnd,'hours') <= 0 ; day.add(1,'days')) {
+
                                 let dateStr2 = day.format('YYYY-MM-DD');
+
+                                // if (calendarID == patrick) {
+                                //     console.log('#### day: ', day);
+                                //     console.log('#### day.diff(eventEnd,\'hours\'): ', day.diff(eventEnd,'hours'));
+                                // }
+
                                 days[dateStr2].off = true;
                             }
                         }
@@ -268,42 +282,47 @@ GCalendar = {
                     }
                     return;
                 }
+                else {
+                    // Add timezones if needed
+                    let eventStart = res.timeZone == 'America/Toronto' ? Moment(event.start.dateTime)
+                        : Moment(event.start.dateTime).tz('America/Toronto');
+                    let eventEnd = res.timeZone == 'America/Toronto' ? Moment(event.end.dateTime)
+                        : Moment(event.end.dateTime).tz('America/Toronto');
 
-                // Add timezones if needed
-                let eventStart = res.timeZone == 'America/Toronto' ? Moment(event.start.dateTime)
-                    : Moment(event.start.dateTime).tz('America/Toronto');
-                let eventEnd = res.timeZone == 'America/Toronto' ? Moment(event.end.dateTime)
-                    : Moment(event.end.dateTime).tz('America/Toronto');
+                    // If it's an off event that spans multiple days but has a dateTime property
+                    if (eventEnd.diff(eventStart,'days') > 1) {
+                        if (event.summary.toLowerCase().indexOf('off') > -1) {
 
+                            // If the event starts before tomorrow, only consider dates tomorrow and onward
+                            eventStart = eventStart.isBefore(tomorrow) ? Moment(tomorrow) : eventStart;
 
-                // If it's an off event that spans multiple days but has a dateTime property
-                if (eventEnd.diff(eventStart,'days') > 1) {
-                    if (event.summary.toLowerCase().indexOf('off') > -1) {
-
-                        // If the event starts before tomorrow, only consider dates tomorrow and onward
-                        eventStart = eventStart.isBefore(tomorrow) ? Moment(tomorrow) : eventStart;
-
-                        // Set each day during the span of the event to 'off'
-                        for (let day = eventStart; day.diff(eventEnd,'days') <= 0 ;day.add(1,'days')) {
-                            let dateStr2 = day.format('YYYY-MM-DD');
-                            days[dateStr2].off = true;
+                            // Set each day during the span of the event to 'off'
+                            for (let day = eventStart; day.diff(eventEnd,'days') <= 0 ;day.add(1,'days')) {
+                                let dateStr2 = day.format('YYYY-MM-DD');
+                                days[dateStr2].off = true;
+                            }
                         }
                     }
-                }
-                else {
-                    // This is a regular event, on a non off day add the event to that bucket
-                    const dateStr = Moment(event.start.dateTime).tz('America/Toronto').format('YYYY-MM-DD');
-                    if (!days[dateStr].off) {
-                        if (res.timeZone != 'America/Toronto') {
-                            // Specify timezone of event start and event end
-                            event.start.dateTime = Moment(event.start.dateTime).tz('America/Toronto');
-                            event.end.dateTime = Moment(event.end.dateTime).tz('America/Toronto');
+                    else {
+                        // This is a regular event, on a non off day add the event to that bucket
+                        const dateStr = Moment(event.start.dateTime).tz('America/Toronto').format('YYYY-MM-DD');
+                        if (!days[dateStr].off) {
+                            if (res.timeZone != 'America/Toronto') {
+                                // Specify timezone of event start and event end
+                                event.start.dateTime = Moment(event.start.dateTime).tz('America/Toronto');
+                                event.end.dateTime = Moment(event.end.dateTime).tz('America/Toronto');
+                            }
+                            days[dateStr].events.push(event);
                         }
-                        days[dateStr].events.push(event);
                     }
                 }
 
             });
+
+            // if (calendarID == patrick) {
+            //     console.log("##### PATRICK SUNDAY")
+            //     console.log(days['2017-05-21'])
+            // }
 
             // Store the first opening, with Moments
             let opening = null;
@@ -323,15 +342,20 @@ GCalendar = {
 
                     const firstEventStart = Moment(events[0].start.dateTime).tz('America/Toronto');
 
+                    // if (calendarID == patrick && dateStr == '2017-05-21') {
+                    //     console.log('##### PATRICK SUNDAY')
+                    //     console.log('#### dayStart: ', dayStart);
+                    //     console.log('#### firstEventStart: ', Moment(events[0].start.dateTime));
+                    // }
+
                     // If there is an opening between the start of the day and the start of the first event
-                    if (firstEventStart.diff(dayStart, 'minutes') > minOpening*60
-                        && firstEventStart.isAfter(dayStart)) {
+                    if (firstEventStart.diff(dayStart, 'minutes') > minOpening*60) {
                         opening = {
                             startTime: dayStart,
                             endTime: firstEventStart
                         };
 
-                        // if (calendarID == winson) {
+                        // if (calendarID == patrick) {
                         //     console.log('#### Opening in start of day');
                         //     console.log('#### dateStr: ', dateStr);
                         //     console.log('#### dayOfWeek: ', dayOfWeek);
@@ -359,7 +383,18 @@ GCalendar = {
                             // If event1 ends after the latest event, it is the latest event
                             latestEventEndTime = event1End.isAfter(latestEventEndTime) ? event1End : latestEventEndTime;
 
-                            if (event2Start.diff(latestEventEndTime, 'minutes') > minOpening*60 && latestEventEndTime.isAfter(dayStart)) {
+
+                            // if (calendarID == patrick && dateStr == '2017-05-21') {;
+                            //     console.log('#### event1End: ', event1End)
+                            //     console.log('#### event2start: ', event2Start);
+                            //     console.log('#### latestEventEndTime: ', latestEventEndTime);
+                            //     console.log('event2Start.diff(latestEventEndTime, \'minutes\') > minOpening*60: ', event2Start.diff(latestEventEndTime, 'minutes') > minOpening*60);
+                            //     console.log('latestEventEndTime >= dayStart: ', latestEventEndTime >= dayStart);
+                            //     console.log('\n')
+                            // }
+
+
+                            if (event2Start.diff(latestEventEndTime, 'minutes') > minOpening*60 && latestEventEndTime >= dayStart) {
 
                                 opening = {
                                     startTime: latestEventEndTime,
@@ -367,7 +402,7 @@ GCalendar = {
                                 };
                                 hasOpening = true;
 
-                                // if (calendarID == winson) {
+                                // if (calendarID == patrick) {
                                 //     console.log('#### Opening between events');
                                 //     console.log('#### dateStr: ', dateStr);
                                 //     console.log('#### dayOfWeek: ', dayOfWeek);
@@ -387,6 +422,14 @@ GCalendar = {
                     let lastEventEndTime = Moment(events[events.length-1].end.dateTime).tz('America/Toronto');
                     latestEventEndTime = lastEventEndTime.isAfter(latestEventEndTime) ? lastEventEndTime : latestEventEndTime;
 
+                    // if (calendarID == patrick && dateStr == '2017-05-18') {
+                    //     console.log('#### Mor Thursday dayStart: ', dayStart)
+                    //     console.log('#### Mor Thursday firstEvenStart: ', firstEventStart);
+                    //     console.log ('#### Mor Thursday latestEventEndTime: ', latestEventEndTime);
+                    //     console.log('#### Mor Thursday dayEnd: ', dayEnd);
+                    //
+                    // }
+
                     // If there is an opening between the end of the latest event and the end of the day
                     if (dayEnd.diff(latestEventEndTime, 'minutes') > minOpening*60) {
 
@@ -395,7 +438,7 @@ GCalendar = {
                             endTime: dayEnd
                         };
 
-                        // if (calendarID == winson) {
+                        // if (calendarID == patrick) {
                         //     console.log('#### Opening at end of day');
                         //     console.log('#### dateStr: ', dateStr);
                         //     console.log('#### dayOfWeek: ', dayOfWeek);
@@ -427,7 +470,7 @@ GCalendar = {
                         })
                     };
 
-                    // if (calendarID == winson) {
+                    // if (calendarID == patrick) {
                     //     console.log('#### year: ', parseInt(dateStr.substring(0,4)));
                     //     console.log('#### month: ', parseInt(dateStr.substring(5,7)));
                     //     console.log('#### date: ', parseInt(dateStr.substring(8)));
