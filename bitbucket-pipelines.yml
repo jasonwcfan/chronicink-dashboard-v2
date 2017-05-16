@@ -13,4 +13,4 @@ pipelines:
           - curl https://install.meteor.com/ | sh
           - npm install -g mup 
           - cd .deploy
-          - mup deploy --allow-superuser
+          - METEOR_ALLOW_SUPERUSER='' mup deploy --allow-superuser
