@@ -7,7 +7,7 @@ image: node:6.9.4
 
 pipelines:
   branches:
-    - staging
+    - staging:
       - step:
           script: # Modify the commands below to build your repository.
             - npm install
