@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import Client from '../Client/client';
 import Studio from '../Studio/studio';
+import Artist from '../Artist/artist';
 import TattooStyle from '../TattooStyle/tattooStyle';
 import Moment from 'moment';
 
@@ -18,8 +19,9 @@ Meteor.methods({
             const { tattooStyle, ...rest } = data;
             import PythonShell from '../../server/Helpers/PythonShell';
 
-            const list = PythonShell.recommendArtist(tattooStyle);
-            return list;
+            // Returns promise (asynchronous function)
+            const artistList = PythonShell.recommendArtist(tattooStyle);
+            return artistList;
         }
     },
     /**

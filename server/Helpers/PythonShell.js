@@ -42,7 +42,8 @@ function run(data, script, options, resolve, reject) {
     });
 
     shell.on('message', function(message) {
-        resolve(message)
+        console.log(message);
+        resolve(message);
     });
 }
 
