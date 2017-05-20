@@ -70,3 +70,34 @@ To directly connect to the containerized MongoDB instance, use the command:
 `docker exec -it mongodb mongo chronicink-dashboard`
 
 **Keep in mind that this will build and deploy the project in its current state in your local repository, so PLEASE MAKE SURE that your repo is synced up with the upstream before you deploy. Any errant changes in your local project WILL be incorporated into the build and deployed to the server**
+
+## Troubleshooting
+
+### Google password change
+If the password to the info@chronicinktattoo.com account is changed, the dashboard will no longer be able to send emails or push to the calendar. To fix this, simply log out of the dashboard and log in again with the new password.
+
+#### Refresh token no longer working
+Sometimes simply logging out/logging in won't fix the issue and calendar pushing will still be broken. The last time this happened this was because the refresh token associated with the main google was no longer valid after the password change. To fix this, in the Login component, where `Meteor.loginWithGoogle()` is called, pass 
+
+`forceApprovalPrompt: true`
+
+as an option. This will ensure that the next time the user logs in, they will have to re-accept the terms and a new refresh token will be issued.
+
+### Adding new artist
+To add a new artist to the database, simple log in to the production server, connect to the mongodb instance, and insert the new artist. You have to know their name, their calendarID, and any emails they would like appointment reminders to be sent to. You can find the last two things by signing into the chronic ink calendar and finding the calendar for the new artist and viewing its settings. Their calendarID will be at the bottom of the first page in the format `foo@groups.calendar.google.com` and their personal emails (if any) can be found in the "Share this calendar" tab.
+
+If you want to know what the format of an artist document takes, make a query for a single artist (`db.artist.findOne()`) and follow that format, minus the _id.
+
+### Backing up database
+Every month, back up the database on `dashboard.chronicinktattoo.com` by ssh'ing into the machine, then running
+
+```
+docker exec -it mongodb bash
+mongodump data/
+``` 
+
+This will connect to the mongodb docker container and back up the entire database (including the admin, local & chronicink-dashboard dbs) to the `data/dump` directory. Then `exit` the container, and run
+
+`docker -cp . mongodb:data/dump`
+
+to copy the files outside the container. Then transfer it to your local machine, where you can upload it to google drive or elsewhere for safe keeping.
