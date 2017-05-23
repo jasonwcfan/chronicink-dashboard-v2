@@ -1,6 +1,5 @@
 {
   "public": {
-    "pythonPath": "/usr/bin/python3",
     "primaryEmail": "info@chronicinktattoo.com",
     "production": true
   },
