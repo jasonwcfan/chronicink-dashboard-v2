@@ -21,7 +21,7 @@ node_modules/
 
 *.xml
 
-server/Helpers/ArtistRecommendation/__pycache__/test_setup.cpython-35.pyc
+server/ArtistRecommendation/__pycache__/test_setup.cpython-35.pyc
 
 mongo-test-dump/
 

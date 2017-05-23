@@ -4,6 +4,8 @@ import { Accounts } from 'meteor/accounts-base';
 Meteor.startup(() => {
     // code to run on server at startup
 
+    require('longjohn')
+
     Accounts.config({
         restrictCreationByEmailDomain: Meteor.settings.public.production ? 'chronicinktattoo.com' : null
     });

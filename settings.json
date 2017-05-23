@@ -1,7 +1,7 @@
 {
   "public": {
-    "pythonPath": "/Library/Frameworks/Python.framework/Versions/3.5/bin/python3.5",
-    "primaryEmail": "chronicinktesting@gmail.com",
+    "pythonPath": "/Users/rawn_sups/anaconda/bin/python",
+    "primaryEmail": "info@chronicinktattoo.com",
     "production": false
   },
   "google": {
