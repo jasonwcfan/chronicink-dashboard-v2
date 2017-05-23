@@ -61,7 +61,7 @@ class ArtistRecommendation extends Component {
      */
     _handleClickRecommendButton() {
         const tattooStyle = this.props.formValues.style.value;
-        if (tattooStyle) {
+        if (tattooStyle.length > 0) {
             this.setState({
                 dialogOpen: true
             });
@@ -77,9 +77,10 @@ class ArtistRecommendation extends Component {
                 this.setState({
                     recommendationResult: res
                 })
+                console.log(res);
             });
         } else {
-            // tattooStyle is not set
+            // tattooStyle is not set - should add some warning that it must be?
             this.setState({
                 dialogOpen: true
             })

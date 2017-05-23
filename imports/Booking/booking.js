@@ -16,12 +16,93 @@ Meteor.methods({
      */
     'booking.getArtistRecommendation': function(data) {
         if (Meteor.isServer) {
-            const { tattooStyle, ...rest } = data;
-            import PythonShell from '../../server/Helpers/PythonShell';
 
-            // Returns promise (asynchronous function)
-            const artistList = PythonShell.recommendArtist(tattooStyle);
-            return artistList;
+            const { tattooStyle, ...rest } = data;
+
+            console.log('#### tattooStyle: ', tattooStyle);
+
+            let recommendationList = [];
+            let today = Moment();
+
+            // Get all artists who prefer tattooStyle at a level greater than 0
+            const artists = Artist.find({['preferences.styles.' + tattooStyle]:{'$gt':0}}).fetch();
+
+            // Get # of days until earliest opening for each artist
+            // If an artist has no earliestOpening field, it's because no opening was found within 250 events.
+            //      Set those artists' daysUntilEarliestOpening value to the maximum value.
+            let completelyBookedArtists = [];
+            artists.forEach((artist, ind) => {
+
+                if (artist.earliestOpening != null) {
+                    artist.daysUntilEarliestOpening = Moment(artist.earliestOpening.startTime).diff(today,'days')
+                    console.log('### ' + String(artist.name) + ": " + String(Moment(artist.earliestOpening.startTime).format('YYYY-MM-DD')));
+                }
+                else {
+                    completelyBookedArtists.push(ind);
+                }
+            });
+
+            // Get list of values of hoursIn60Days and daysUntilEarliestOpening (with a transformation applied)
+            let list_hoursIn60Days = artists.map((artist) => {return artist.hoursIn60Days});
+            let list_daysUntilEarliestOpeningTrans = artists.map((artist) => {return 1/Math.log10(artist.daysUntilEarliestOpening+2)});
+
+            // Remove NaN values from each list
+            for (let i = 0; i < artists.length; i++) {
+                if (isNaN(list_hoursIn60Days[i])){
+                    list_hoursIn60Days.splice(i);
+                }
+                if (isNaN(list_daysUntilEarliestOpeningTrans[i])){
+                    list_daysUntilEarliestOpeningTrans.splice(i);
+                }
+            }
+
+            const min_booking_volume = Math.min(...list_hoursIn60Days);
+            const max_booking_volume = Math.max(...list_hoursIn60Days);
+            const min_soonest_opening = Math.min(...list_daysUntilEarliestOpeningTrans);
+            const max_soonest_opening = Math.max(...list_daysUntilEarliestOpeningTrans);
+
+            // Set artists who had no earliestOpening value to max_soonest_opening
+            completelyBookedArtists.forEach((ind)=>{
+               artists[ind].daysUntilEarliestOpening = max_soonest_opening;
+            });
+
+            console.log('#### list_hoursIn60Days: ', list_hoursIn60Days);
+            console.log('#### max_booking_volume: ', max_booking_volume);
+            console.log('#### min_booking_volume: ', min_booking_volume);
+
+            console.log('\n#### list_daysUntilEarliestOpeningTrans: ', list_daysUntilEarliestOpeningTrans);
+            console.log('#### max_soonest_opening: ', max_soonest_opening);
+            console.log('#### min_soonest_opening: ', min_soonest_opening);
+            
+            // Rank each artist
+            artists.forEach((artist) => {
+                let score = recommendationEngine.rankArtists(artist.preferences.styles[tattooStyle], artist.hoursIn60Days, artist.daysUntilEarliestOpening,
+                    min_booking_volume, max_booking_volume, min_soonest_opening, max_soonest_opening);
+
+                recommendationList.push({
+                    name: artist.name,
+                    _id: artist._id,
+                    preference: artist.preferences.styles[tattooStyle],
+                    daysUntilEarliestOpening: artist.daysUntilEarliestOpening,
+                    bookingVolume: artist.hoursIn60Days,
+                    score: score
+                })
+            });
+
+            console.log('#### recommendationList: ', recommendationList)
+
+            // Return list of artists sorted by score
+            return recommendationList.sort((a,b)=>{
+                if (a.score > b.score) {
+                    return 1
+                }
+                else if (a.score < b.score) {
+                    return -1
+                }
+                else {
+                    return 0;
+                }
+            })
         }
     },
     /**
