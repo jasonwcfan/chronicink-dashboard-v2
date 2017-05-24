@@ -518,12 +518,13 @@ GCalendar = {
  */
 GMail = {
     /**
-     * Self-explanatory
-     * @param recipient
-     * @param subject
-     * @param body
+     * Sends an email
+     * @param recipient the email address of the recipient
+     * @param subject the subject heading
+     * @param body the body of the email
      */
     sendEmail: function(recipient, subject, body) {
+        // If the production flag is set to false, don't send any emails
         if (!Meteor.settings.public.production) {
             console.log('Not sending email because the production flag is set to false');
             return;

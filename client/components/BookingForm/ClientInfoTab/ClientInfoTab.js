@@ -3,6 +3,9 @@ import Moment from 'moment';
 import List from 'material-ui/List';
 import ListItem from 'material-ui/List/ListItem';
 
+/**
+ * The tab with information about the client associated with this booking
+ */
 class ClientInfoTab extends Component {
     constructor(props) {
         super(props);
@@ -12,6 +15,7 @@ class ClientInfoTab extends Component {
         const clientInfo = [];
         let conditionsString = '';
 
+        // Iterate through each field in the intake and return a ListItem with that information
         Object.keys(intake.fields).forEach((key, idx) => {
             const property = intake.fields[key];
             switch (property.id) {
@@ -23,6 +27,7 @@ class ClientInfoTab extends Component {
             }
         });
 
+        // Render the medical information
         intake.medicalConditions.forEach(function(condition) {
             if (condition.value == true) {
                 conditionsString += condition.id + ', ';

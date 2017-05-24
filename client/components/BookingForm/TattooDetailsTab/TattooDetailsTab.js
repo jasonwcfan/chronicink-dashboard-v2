@@ -51,12 +51,16 @@ const style = {
     }
 };
 
+/**
+ * The meat of the BookingForm. Renders all of the fields that need to be filled in about the tattoo, but not the
+ * list of actual sessions to be booked.
+ */
 class TattooDetailsTab extends Component {
     constructor(props) {
         super(props);
         this._renderForm = this._renderForm.bind(this);
-        this.processSizeWidthAndHeight = this._processSizeWidthAndHeight.bind(this);
-        this.parseWidthAndHeight = this._parseWidthAndHeight.bind(this);
+
+        // Tracks the size and width fields for the tattoo
         this.sizeWidthAndHeight = {
             width: {
                 errorText: '',
@@ -69,15 +73,25 @@ class TattooDetailsTab extends Component {
                 touched: false,
                 value: '',
                 label: 'Height (Inches)',
-            },
+            }
         };
+
         this.state = {
             useActualSize: false,
             otherDeposit: '',
             otherDepositError: 'Please enter a deposit'
-        }
+        };
+
+        this.processSizeWidthAndHeight = this._processSizeWidthAndHeight.bind(this);
+        this.parseWidthAndHeight = this._parseWidthAndHeight.bind(this);
     }
-    
+
+    /**
+     * Render all the fields with a huge switch statement. This should probably be cleaned up at some point.
+     * @param fields
+     * @returns {*}
+     * @private
+     */
     _renderForm(fields) {
         const artistField = this.props.formValues['artist'];
         let artist;
