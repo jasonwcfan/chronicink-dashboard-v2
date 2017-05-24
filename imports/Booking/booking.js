@@ -19,8 +19,6 @@ Meteor.methods({
 
             const { tattooStyle, ...rest } = data;
 
-            console.log('#### tattooStyle: ', tattooStyle);
-
             let recommendationList = [];
             let today = Moment();
 
@@ -35,7 +33,6 @@ Meteor.methods({
 
                 if (artist.earliestOpening != null) {
                     artist.daysUntilEarliestOpening = Moment(artist.earliestOpening.startTime).diff(today,'days')
-                    console.log('### ' + String(artist.name) + ": " + String(Moment(artist.earliestOpening.startTime).format('YYYY-MM-DD')));
                 }
                 else {
                     completelyBookedArtists.push(ind);
@@ -66,14 +63,6 @@ Meteor.methods({
                artists[ind].daysUntilEarliestOpening = max_soonest_opening;
             });
 
-            console.log('#### list_hoursIn60Days: ', list_hoursIn60Days);
-            console.log('#### max_booking_volume: ', max_booking_volume);
-            console.log('#### min_booking_volume: ', min_booking_volume);
-
-            console.log('\n#### list_daysUntilEarliestOpeningTrans: ', list_daysUntilEarliestOpeningTrans);
-            console.log('#### max_soonest_opening: ', max_soonest_opening);
-            console.log('#### min_soonest_opening: ', min_soonest_opening);
-            
             // Rank each artist
             artists.forEach((artist) => {
                 let score = recommendationEngine.rankArtists(artist.preferences.styles[tattooStyle], artist.hoursIn60Days, artist.daysUntilEarliestOpening,
@@ -88,8 +77,6 @@ Meteor.methods({
                     score: score
                 })
             });
-
-            console.log('#### recommendationList: ', recommendationList)
 
             // Return list of artists sorted by score
             return recommendationList.sort((a,b)=>{
