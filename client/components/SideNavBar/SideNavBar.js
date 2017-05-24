@@ -7,6 +7,7 @@ import DashboardIcon from 'material-ui/svg-icons/action/dashboard';
 import FormsIcon from 'material-ui/svg-icons/action/assignment';
 import IntakeIcon from 'material-ui/svg-icons/action/assignment-ind';
 import ChecklistIcon from 'material-ui/svg-icons/action/assignment-turned-in';
+import EventIcon from 'material-ui/svg-icons/action/event';
 import ActionCheckCircle from 'material-ui/svg-icons/action/check-circle';
 import StoreIcon from 'material-ui/svg-icons/action/store';
 import PreferencesIcon from 'material-ui/svg-icons/action/settings';
@@ -62,6 +63,11 @@ class SideNavBar extends Component {
                         style={style.link}
                         to='/intakeform'>
                         <ListItem name='intakeForm' leftIcon={<IntakeIcon />}>Intake Form</ListItem>
+                    </NavLink>
+                    <NavLink
+                        style={style.link}
+                        to='/cancellations'>
+                        <ListItem name='cancellations' leftIcon={<EventIcon />}>Cancellations</ListItem>
                     </NavLink>
                     <NavLink
                         style={style.link}

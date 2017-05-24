@@ -35,6 +35,8 @@ const style = {
     content: {
         display: 'flex',
         width: '100%',
+        flexDirection: 'column',
+        alignItems: 'center',
         marginTop: 64,
         overflow: 'auto'
     }

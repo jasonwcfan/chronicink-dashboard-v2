@@ -114,6 +114,51 @@ GCalendar = {
     },
 
     /**
+     * Fetch all events from the calendar of the given artist and sync the events to the database
+     * @param artist
+     */
+    syncCalendar: async function(artist) {
+        const primaryUser = Meteor.users.findOne({'services.google.email': Meteor.settings.public.primaryEmail});
+        const result = [];
+
+        oauth2Client.setCredentials({
+            access_token: primaryUser.services.google.accessToken,
+            refresh_token: primaryUser.services.google.refreshToken,
+            expiry_date: primaryUser.services.google.expiresAt
+        });
+
+        var events = {nextPageToken: 1};
+
+        while (events.nextPageToken) {
+            console.log('looping', events.nextPageToken);
+
+            const calendarOptions = {
+                auth: oauth2Client,
+                calendarId: artist.calendarID,
+                maxResults: 250,
+                showDeleted: false,
+                timeMin: (new Date()).toISOString(),
+                pageToken: events.nextPageToken == 1 ? null : events.nextPageToken
+            };
+
+            events = await new Promise((resolve, reject) => {
+                calendar.events.list(calendarOptions, (err, res) => {
+                    if (err) {reject(err)}
+                    resolve(res);
+                });
+            });
+
+            console.log('numEvents:', events.items.length);
+            events.items.forEach((event) => {
+                if (event.extendedProperties) {
+                    result.push(event);
+                }
+            })
+        }
+        return result;
+    },
+
+    /**
      * Create an event resource based on information from the BookingForm
      * @param form the BookingForm
      * @param client
