@@ -153,11 +153,11 @@ class ArtistRecommendation extends Component {
     render() {
         return (
             <div>
-                <FlatButton
+                {/**<FlatButton
                     style={style.recommendButton}
                     label='Recommend'
                     onTouchTap={this._handleClickRecommendButton}
-                />
+                />**/}
                 <Dialog
                     className='test'
                     contentStyle={style.dialogContent}
