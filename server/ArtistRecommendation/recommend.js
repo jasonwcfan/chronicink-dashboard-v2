@@ -1,6 +1,6 @@
 recommendationEngine = {
     rankArtists: function (tattooStylePreference, hoursIn60Days, daysUntilEarliestOpening,
-        min_booking_volume, max_booking_volume, min_soonest_opening, max_soonest_opening) {
+                           min_booking_volume, max_booking_volume, min_soonest_opening, max_soonest_opening) {
 
         // normalize input variables between 0 and 1 so we can assign them weights
         let n_booking_volume = 1 - normalize(hoursIn60Days, max_booking_volume, min_booking_volume);

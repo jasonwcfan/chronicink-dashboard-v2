@@ -20,7 +20,7 @@ const style = {
         justifyContent: 'center',
     },
     avatar: {
-        width: '200px',
+        width: '100px',
         display: 'block',
         margin: '0 auto'
     }
@@ -77,6 +77,7 @@ class ArtistRecommendation extends Component {
                 this.setState({
                     recommendationResult: res
                 })
+                console.log("Recommendation: ");
                 console.log(res);
             });
         } else {
@@ -94,7 +95,7 @@ class ArtistRecommendation extends Component {
      */
     _handleClickArtistTile(artist) {
         this._handleCloseDialog();
-        this.props.onFieldChange('artist', artist._id, null);
+        this.props.onFieldChange('artist', artist._id._str, null);
     }
 
     /**
@@ -122,7 +123,7 @@ class ArtistRecommendation extends Component {
                     </GridTile>
                 )
             }) :
-            result.slice(0, 3).map((artist, idx) => {
+            result.slice(0, 5).map((artist, idx) => {
                 return (
                     <GridTile
                         style={style.gridTile}
