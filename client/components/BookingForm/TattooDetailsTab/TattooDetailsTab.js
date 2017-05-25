@@ -51,12 +51,16 @@ const style = {
     }
 };
 
+/**
+ * The meat of the BookingForm. Renders all of the fields that need to be filled in about the tattoo, but not the
+ * list of actual sessions to be booked.
+ */
 class TattooDetailsTab extends Component {
     constructor(props) {
         super(props);
         this._renderForm = this._renderForm.bind(this);
-        this.processSizeWidthAndHeight = this._processSizeWidthAndHeight.bind(this);
-        this.parseWidthAndHeight = this._parseWidthAndHeight.bind(this);
+
+        // Tracks the size and width fields for the tattoo
         this.sizeWidthAndHeight = {
             width: {
                 errorText: '',
@@ -69,18 +73,86 @@ class TattooDetailsTab extends Component {
                 touched: false,
                 value: '',
                 label: 'Height (Inches)',
-            },
+            }
         };
+
         this.state = {
             useActualSize: false,
             otherDeposit: '',
             otherDepositError: 'Please enter a deposit'
-        }
+        };
+
+        this.processSizeWidthAndHeight = this._processSizeWidthAndHeight.bind(this);
+        this.parseWidthAndHeight = this._parseWidthAndHeight.bind(this);
     }
-    
+
+    /**
+     * Render all the fields with a huge switch statement. This should probably be cleaned up at some point.
+     * @param fields
+     * @returns {*}
+     * @private
+     */
     _renderForm(fields) {
+        const artistField = this.props.formValues['artist'];
+        let artist;
+        if(artistField) {
+            artist = this.props.artists.filter((current) => {
+                return artistField.value == current._id._str;
+            })[0];
+        }
+
         return fields.map((field) => {
             switch (field.inputType) {
+                case 'rateType': 
+                    return (
+                        <div key={field.id}>
+                            <h3>{field.label}</h3>
+                            <RadioButtonGroup
+                                style={style.radioGroup}
+                                name={field.id}
+                                valueSelected={this.props.formValues[field.id].value}
+                                onChange={(event, value) => {
+                                    this.props.onFieldChange(field.id, value, null)
+                                }}
+                            >
+                                    {field.items.map((item) => {
+                                        let label = item.label;
+
+                                        if(artist && artist.hourlyRate && item.value == 'hourly') {
+                                            label = item.label + ` ($${artist.hourlyRate}/hr)`;
+                                        }
+
+                                        return <RadioButton
+                                            value={item.value}
+                                            label={label}
+                                            key={item.value}
+                                            style={Object.assign({}, style.radioItem, {'width': 200})}
+                                        />
+                                    })}
+                            </RadioButtonGroup>
+                        </div>
+                    );
+                case 'rate':
+                    const disabled = artist && artist.hourlyRate ? true : false;
+                    const defaultValue = disabled ? `\$${artist.hourlyRate}/hr` : this.props.formValues[field.id].value;
+                    if(disabled) {
+                        this.props.formValues[field.id].errorText = null;
+                    }
+
+                    return (
+                        <ValidatedTextField
+                            style={style.textField}
+                            defaultValue={ defaultValue }
+                            name={field.id}
+                            key={field.id}
+                            disabled={disabled}
+                            floatingLabelText={field.label}
+                            onFieldChange={this.props.onFieldChange}
+                            required={field.required}
+                            errorText={this.props.formValues[field.id].errorText}
+                            touched={this.props.formValues[field.id].touched}
+                        />
+                    );
                 case 'size':
                     const textFieldStyle = Object.assign({ width: '256px' }, style.textField);
                     const widthIsEmpty = this.sizeWidthAndHeight.width.value ==  null || !this.sizeWidthAndHeight.width.value.length;
@@ -256,7 +328,14 @@ class TattooDetailsTab extends Component {
                         />
                     );
                 case 'deposit':
-                    const value = this.props.formValues[field.id].value;
+                    const rateFieldDisabled = artist && artist.deposit ? true : false;
+                    let value = this.props.formValues[field.id].value;
+                    
+                    if(rateFieldDisabled) {
+                        this.state.otherDeposit = `\$${artist.deposit}`;
+                        value = this.state.otherDeposit;
+                    }
+
                     return (
                         <div key={field.id}>
                             <h3>{field.label}</h3>
@@ -264,6 +343,7 @@ class TattooDetailsTab extends Component {
                                 style={style.radioGroup}
                                 name={field.id}
                                 valueSelected={value}
+                                disabled={ rateFieldDisabled }
                                 onChange={(event, v) => {
                                     if (v != 80 && v != 150 && v != 350) {
                                         this.props.onFieldChange(field.id, v, this.state.otherDepositError)
@@ -294,7 +374,9 @@ class TattooDetailsTab extends Component {
                                 />
                             </RadioButtonGroup>
                             <TextField
+                                value={this.state.otherDeposit}
                                 style={style.otherDeposit}
+                                disabled={ rateFieldDisabled }
                                 name='otherDeposit'
                                 onChange={(_, v) => {
                                     // If a deposit value is entered, call onFieldChange with no errors

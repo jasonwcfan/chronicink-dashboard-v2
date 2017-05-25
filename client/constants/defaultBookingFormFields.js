@@ -153,7 +153,7 @@ export default defaultBookingFormFields = [
     {
         id: 'rateType',
         label: 'Rate Type',
-        inputType: 'radio',
+        inputType: 'rateType',
         value: 'hourly',
         valid: true,
         required: true,
@@ -175,7 +175,7 @@ export default defaultBookingFormFields = [
     {
         id: 'rate',
         label: 'Rate',
-        inputType: 'textField',
+        inputType: 'rate',
         value: '',
         errorText: null,
         required: true

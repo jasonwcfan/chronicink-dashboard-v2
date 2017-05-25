@@ -20,7 +20,7 @@ const style = {
         justifyContent: 'center',
     },
     avatar: {
-        width: '200px',
+        width: '100px',
         display: 'block',
         margin: '0 auto'
     }
@@ -61,7 +61,7 @@ class ArtistRecommendation extends Component {
      */
     _handleClickRecommendButton() {
         const tattooStyle = this.props.formValues.style.value;
-        if (tattooStyle) {
+        if (tattooStyle.length > 0) {
             this.setState({
                 dialogOpen: true
             });
@@ -77,9 +77,11 @@ class ArtistRecommendation extends Component {
                 this.setState({
                     recommendationResult: res
                 })
+                console.log("Recommendation: ");
+                console.log(res);
             });
         } else {
-            // tattooStyle is not set
+            // tattooStyle is not set - should add some warning that it must be?
             this.setState({
                 dialogOpen: true
             })
@@ -93,7 +95,7 @@ class ArtistRecommendation extends Component {
      */
     _handleClickArtistTile(artist) {
         this._handleCloseDialog();
-        this.props.onFieldChange('artist', artist._id, null);
+        this.props.onFieldChange('artist', artist._id._str, null);
     }
 
     /**
@@ -121,7 +123,7 @@ class ArtistRecommendation extends Component {
                     </GridTile>
                 )
             }) :
-            result.slice(0, 3).map((artist, idx) => {
+            result.slice(0, 5).map((artist, idx) => {
                 return (
                     <GridTile
                         style={style.gridTile}
@@ -151,11 +153,11 @@ class ArtistRecommendation extends Component {
     render() {
         return (
             <div>
-                <FlatButton
+                {/**<FlatButton
                     style={style.recommendButton}
                     label='Recommend'
                     onTouchTap={this._handleClickRecommendButton}
-                />
+                />**/}
                 <Dialog
                     className='test'
                     contentStyle={style.dialogContent}

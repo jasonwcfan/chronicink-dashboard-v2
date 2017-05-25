@@ -1,11 +1,11 @@
 module.exports = {
     servers: {
-        one: {
+        staging: {
             host: 'ec2-35-163-139-178.us-west-2.compute.amazonaws.com',
             username: 'ubuntu',
             pem: 'coil-website.pem'
         },
-        two: {
+        production: {
             host: 'dashboard.chronicinktattoo.com',
             username: 'jason',
             password: 'Shift123!'
@@ -17,7 +17,7 @@ module.exports = {
         name: 'chronicink-dashboard',
         path: '../',
         servers: {
-            one: {}
+            staging: {}
         },
         buildOptions: {
             serverOnly: true,
@@ -36,7 +36,7 @@ module.exports = {
         oplog: true,
         port: 27017,
         servers: {
-            one: {},
+            staging: {},
         },
     },
 };

@@ -5,6 +5,7 @@ import Artist from '../../../imports/Artist/artist';
 import App from '../app';
 import ArtistStyleGuide from './ArtistStyleGuide';
 import SubjectKeywordFilter from './SubjectKeywordFilter';
+import HourlyRates from './HourlyRates';
 import colors from '../../theme/colors'
 
 const style = {
@@ -35,11 +36,6 @@ class Preferences extends Component {
         return (
             <App appName='Preferences'>
                 <Tabs style={style.tabs} tabItemContainerStyle={style.tabItemContainer}>
-                    {/**<Tab label='Application'>
-                        <div style={style.container}>
-                            UNDER CONSTRUCTION
-                        </div>
-                    </Tab>**/}
                     <Tab label='Style Guide' >
                         <div style={style.container}>
                             <ArtistStyleGuide subReady={this.props.subReady} artists={this.props.artists} />
@@ -50,6 +46,11 @@ class Preferences extends Component {
                             <SubjectKeywordFilter subReady={this.props.subReady} artists={this.props.artists} />
                         </div>
                     </Tab>
+                    {/**<Tab label='Hourly Rates'>
+                        <div style={style.container} >
+                            <HourlyRates subReady={this.props.subReady} artists={this.props.artists} />
+                        </div>
+                    </Tab>**/}
                 </Tabs>
             </App>
         );
