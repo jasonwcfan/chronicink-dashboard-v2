@@ -84,21 +84,18 @@ class SideNavBar extends Component {
                                 key={1}
                                 primaryText='Manager Checklist'
                                 leftIcon={<ChecklistIcon />}
-                                onTouchTap={() => {window.open('https://docs.google.com/forms/d/e/1FAIpQLSfngr-wkl007bJo1dVQtjHy4GkHwToXOKpOKxEb_ZJRKW6SXw/viewform', '_blank')}}
                             />,
                             <ListItem
                                 name='openCloseForm'
                                 key={2}
                                 primaryText='Open/Close Form'
                                 leftIcon={<StoreIcon />}
-                                onTouchTap={() => {window.open('https://docs.google.com/forms/d/e/1FAIpQLSc8Oseu3nb8fdnQVX2STdoSfZttefY2MuWMU_gtfXRtcGdUnA/viewform?c=0&w=1', '_blank')}}
                             />,
                             <ListItem
                                 name='openCloseForm'
                                 key={3}
                                 primaryText='Shop Duties Checklist'
                                 leftIcon={<ActionCheckCircle />}
-                                onTouchTap={() => {window.open('https://goo.gl/forms/KnyhiO43VYpTvVRU2', '_blank')}}
                             />
                         ]}
                     />

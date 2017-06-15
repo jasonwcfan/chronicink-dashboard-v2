@@ -13,9 +13,6 @@ export default defaultBookingFormFields = [
             value: 'toronto',
             label: 'Toronto'
         }, {
-            value: 'markham',
-            label: 'Markham'
-        }, {
             value: 'convention',
             label: 'Convention'
         }]

@@ -17,14 +17,14 @@ module.exports = {
         name: 'chronicink-dashboard',
         path: '../',
         servers: {
-            staging: {}
+            production: {}
         },
         buildOptions: {
             serverOnly: true,
         },
         env: {
-            // ROOT_URL: 'http://dashboard.chronicinktattoo.com',
-            ROOT_URL: 'http://ec2-35-163-139-178.us-west-2.compute.amazonaws.com',
+            ROOT_URL: 'http://dashboard.chronicinktattoo.com',
+            // ROOT_URL: 'http://ec2-35-163-139-178.us-west-2.compute.amazonaws.com',
             MONGO_URL: 'mongodb://localhost/meteor'
         },
 

@@ -436,7 +436,7 @@ class IntakeForm extends Component {
                     </div>
                     <div style={style.footer}>
                         {`Copyright ${Moment().year()} `}
-                        <a style={style.homepageLink} href='http://www.chronicinktattoo.com'>Chronic Ink</a>
+                        <a style={style.homepageLink} href='http://www.coil.ink'>Coil</a>
                     </div>
                 </StyleRoot>
             </MuiThemeProvider>

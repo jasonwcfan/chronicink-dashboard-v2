@@ -60,7 +60,7 @@ class CallUsStep extends Component {
     render() {
         let message = this.props.filledInternally ?
             <div style={style.messageContainer}>
-                Please find a Chronic Ink consultant to finish your booking.
+                Please find a consultant to finish your booking.
             </div> :
             <div style={style.messageContainer}>
                 <div style={style.callUsContainer}>
