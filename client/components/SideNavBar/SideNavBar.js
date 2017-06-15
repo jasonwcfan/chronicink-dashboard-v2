@@ -97,12 +97,6 @@ class SideNavBar extends Component {
                                 primaryText='Shop Duties Checklist'
                                 leftIcon={<ActionCheckCircle />}
                             />
-                            <ListItem
-                                name='openCloseForm'
-                                key={3}
-                                primaryText='Shop Duties Checklist'
-                                leftIcon={<ActionCheckCircle />}
-                            />
                         ]}
                     />
                     <Divider />
