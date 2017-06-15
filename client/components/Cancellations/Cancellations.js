@@ -98,7 +98,7 @@ class Cancellations extends Component {
         return this.state.cancellationList.map((item) => {
             return (
                 <TableRow key={item.client._id}>
-                    <TableRowColumn>{`${item.client.firstName} ${item.client.lastName}`}</TableRowColumn>
+                    <TableRowColumn>{`${item.client.firstName}`}</TableRowColumn>
                     <TableRowColumn>{
                         <a
                             href={item.event.htmlLink}
@@ -106,8 +106,8 @@ class Cancellations extends Component {
                         >
                             {Moment(item.event.start.dateTime).fromNow()}
                         </a>}</TableRowColumn>
-                    <TableRowColumn>{item.client.primaryPhoneNumber}</TableRowColumn>
-                    <TableRowColumn>{item.client.email}</TableRowColumn>
+                    <TableRowColumn>416-555-5555</TableRowColumn>
+                    <TableRowColumn>email@example.com</TableRowColumn>
                 </TableRow>
             )
         })
