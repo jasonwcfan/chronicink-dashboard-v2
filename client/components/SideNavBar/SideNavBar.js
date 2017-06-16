@@ -50,7 +50,7 @@ class SideNavBar extends Component {
         return(
             <Paper style={style.sideNavBarContainer} >
                 <div>
-                    <img key='logo' src={'/images/chronicink_logo.png'} style={style.logo}/>
+                    <img key='logo' src={'/images/coil_logo.png'} style={style.logo}/>
                 </div>
                 <List style={style.menuList}>
                     <Divider />

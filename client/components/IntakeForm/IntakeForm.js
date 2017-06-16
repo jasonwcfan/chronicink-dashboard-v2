@@ -395,7 +395,7 @@ class IntakeForm extends Component {
                 <StyleRoot>
                     <div>
                         <div>
-                            <img key='logo' src={'/images/chronicink_logo.png'} style={style.logo}/>
+                            <img key='logo' src={'/images/coil_logo.png'} style={style.logo}/>
                         </div>
                         <Stepper activeStep={this.state.stepIndex}>
                             <Step>
